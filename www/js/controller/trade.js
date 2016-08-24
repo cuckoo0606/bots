@@ -1,0 +1,302 @@
+angular.module('starter.controllers')
+
+.controller('TradeCtrl', function($scope, $filter, $rootScope, $timeout, ionicDatePicker, $echarts, $interval, $stateParams, 
+            $ionicModal, QouteService, OrderService, LimitOrderService, UserService, HistoryQouteService, CloseOrderService) {
+    
+    $scope.chart_period = "m1";
+    $scope.history_loading = false;
+    $scope.chart_data = [];
+    $scope.qid = $stateParams.qid;
+    $scope.order_list = OrderService.order_list;
+    $rootScope.qoute = QouteService.qoute($stateParams.qid);
+
+    var conf = {
+        callback: function (val) {
+            $scope.validity = val;
+        },
+        inputDate: $scope.validity,
+    };
+
+    $scope.show_date_picker = function(){
+        ionicDatePicker.openDatePicker(conf);
+    };
+
+    OrderService.init(function(){ });
+
+    $scope.stockChartId = $echarts.generateInstanceIdentity();
+    $scope.stockOption = {
+        animation: false,
+        backgroundColor: 'black',
+        grid: [
+            {
+                left: 0,
+                top: 10,
+                bottom: 0,
+                right: 'auto',
+                height: 300,
+            },
+            {
+                left: 0,
+                top: 325,
+                bottom: 0,
+                right: 'auto',
+                height: 80,
+            },
+        ],
+        tooltip: { 
+            show: false,
+            showContent: false,
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: [],
+                axisLine: { show: false },
+                axisTick: { show: false },
+                axisLabel: { show: false },
+                splitLine: { show: false },
+                splitArea: { show: false },
+            },
+            {
+                type: 'category',
+                gridIndex: 1,
+                data: [],
+                axisLine: { show: false },
+                axisTick: { show: false },
+                axisLabel: { show: false },
+                splitLine: { show: false },
+                splitArea: { show: false },
+            }
+        ],
+        yAxis: [
+            {
+                min: 'dataMin',
+                max: 'dataMax',
+                position: 'right',
+                axisLine: { show: false },
+                splitLine: { 
+                    show: true, 
+                    lineStyle: {
+                        color: 'rgb(35,35,45)',
+                        type: 'dotted',
+                    }
+                },
+                axisLabel: {
+                    textStyle: { color: 'rgb(185, 60, 65)' },
+                    formatter: function (value, index) {
+                        return value.toFixed(0);
+                    }
+                }
+            },
+            {
+                min: 'dataMin',
+                max: 'dataMax',
+                position: 'right',
+                gridIndex: 1,
+                axisLine: { show: false },
+                axisTick: { show: false },
+                axisLabel: { show: false },
+                splitLine: { show: false },
+                splitArea: { show: false },
+            }
+        ],
+        dataZoom: [
+            { xAxisIndex: [0, 1], start: 0, end: 100, type : 'inside' },
+        ],
+        series: [
+        {
+            name: 'line',
+            type: 'line',
+            data: [],
+            showSymbol: false,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            }
+        },
+        {
+            type: 'candlestick',
+            name: 'stock',
+            data: [],
+            itemStyle: {
+                normal: {
+                    color: 'black',
+                    color0: 'rgb(80, 165, 50)',
+                    borderColor: 'rgb(150, 55, 75)',
+                    borderColor0: 'rgb(80, 165, 50)'
+                }
+            }
+        },
+        {
+            name: 'MA5',
+            type: 'line',
+            data: [],
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            }
+        },
+        {
+            name: 'MA10',
+            type: 'line',
+            data: [],
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            }
+        },
+        {
+            name: 'MA20',
+            type: 'line',
+            data: [],
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            }
+        },
+        {
+            name: 'MA30',
+            type: 'line',
+            data: [],
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+                normal: {
+                    width: 1
+                }
+            }
+        },
+        {
+            name: 'Volumn',
+            type: 'bar',
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            itemStyle: {
+                normal: {
+                    color: '#006600',
+                    borderColor: 'black',
+                }
+            },
+            data: [],
+        }]
+    };
+
+    function change_chart_data(history_list) {
+        $scope.chart_data = history_list;
+        var dates = history_list.map(function(value) {
+            return value.DateTime;
+        });
+       
+        var data = history_list.map(function(value) {
+            return [ value.Open, value.Close, value.Low, value.High];
+        });
+       
+        var line_data = history_list.map(function(value) {
+            return value.Close;
+        });
+
+        $scope.stockOption = {
+            xAxis: [
+                {
+                    data: dates,
+                },
+                {
+                    data: dates,
+                }
+            ],
+            series: [
+            {
+                data: $scope.chart_type === "line" ? line_data : [],
+            },
+            {
+                data: $scope.chart_type === "stock" ? data : [],
+            },
+            {
+                data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(5, data) : [],
+            },
+            {
+                data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(10, data) : [],
+            },
+            {
+                data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(20, data) : [],
+            },
+            {
+                data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(30, data) : [],
+            },
+            {
+                data: [],
+            }]
+        };
+    }
+
+    var history_interval = $interval(function() {
+        if ($scope.chart_data.length > 0) {
+            var last = $scope.chart_data[$scope.chart_data.length - 1];
+            last.Close = $scope.qoute.Ask;
+            if ($scope.qoute.Ask > last.High) {
+                last.High = $scope.qoute.Ask;
+            }
+            if ($scope.qoute.Ask < last.Low) {
+                last.Low = $scope.qoute.Ask;
+            }
+            change_chart_data($scope.chart_data);
+
+            var timestamp = new Date(last.DateTime);
+            timestamp.setMinutes(timestamp.getMinutes() + 1);
+            if ($scope.history_loading == false && new Date() > timestamp) {
+                $scope.history_loading = true;
+                HistoryQouteService.request_history($scope.qid, $scope.chart_period, function(history_list) {
+                    $scope.history_loading = false;
+                    history_list.reverse();
+                    change_chart_data(history_list);
+                });
+            }
+        }
+    }, 1000);
+
+    $scope.chart_type = "stock";
+
+    $scope.change_chart_type = function(type) {
+        angular.element(document.querySelectorAll(".trade-chart-type")).removeClass("active");
+        angular.element(document.querySelectorAll(".trade-chart-type." + type)).addClass("active");
+        $scope.chart_type = type;
+        change_chart_data($scope.chart_data);
+    }
+
+    $scope.change_chart_period = function(period) {
+        $scope.chart_period = period;
+        $scope.history_loading = true;
+        angular.element(document.querySelectorAll(".trade-chart-period ul li")).removeClass("active");
+        angular.element(document.querySelectorAll(".trade-chart-period ul li." + period)).addClass("active");
+        HistoryQouteService.request_history($scope.qid, period, function(history_list) {
+            history_list.reverse();
+            change_chart_data(history_list);
+            $scope.history_loading = false;
+            
+            $timeout(function() {
+                var body = angular.element(document.querySelector('body'));
+                body.append("<iframe src='/favicon.ico'></iframe>");
+
+                $timeout(function() {
+                    angular.element(document.querySelector('iframe')).remove();
+                }, 100);
+            }, 100);
+        });
+    }
+
+    $scope.change_chart_period($scope.chart_period);
+
+    $scope.$on('$destroy', function() {
+        $interval.cancel(history_interval);
+    });
+});

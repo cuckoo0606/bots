@@ -1,0 +1,40 @@
+<ion-view hide-nav-bar="true" class="signin-view">
+<div class="signin">
+    <div class="signin-header">
+        交易系统
+    </div>
+    <div class="signin-content">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">
+                    <i class="ion-ios-person-outline"></i>
+                </span>
+                <input type="text" placeholder="用户" ng-model="username" required />
+            </label>
+            <label class="item item-input">
+                <span class="input-label">
+                    <i class="ion-ios-locked-outline"></i>
+                </span>
+                <input type="password" placeholder="密码" ng-model="passwd" required />
+            </label>
+        </div>
+        <div class="signin-action">
+            <button class="button button-block signin-button" ng-disabled="username===null||passwd===null" ng-click="signin()">
+                立即登陆
+            </button>
+        </div>
+    </div>
+    <div class="signin-footer hide">
+        <a href="/signin">注册用户</a>
+        <a href="/signin">忘记密码</a>
+    </div>
+
+</div>
+<div class="spinner-view hide">
+    <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+    <div class="message" ng-class="{ 'fadein' : message }">{{ message }}</div>
+</div>
+</ion-view>

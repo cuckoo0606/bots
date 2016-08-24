@@ -1,0 +1,124 @@
+<ion-view  view-title="{{ qid }}" class="trade-view">
+    <ion-nav-buttons side="left">
+        <a href="#/tab/qoute" class="back-button">
+            <i class="icon ion-ios-arrow-left"></i>
+        </a>
+    </ion-nav-buttons>
+    <ion-content class="trade-content content-background" scroll="false">
+        <div class="trade-qoute-header">
+            <div class="row">
+                <div class="col col-40">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="main-qoute" ng-class="{ 'rise' : qoute.Fluctuation, 'fall' : !qoute.Fluctuation }">
+                                {{ qoute.Ask.toFixed(qoute.DecimalCount) }}
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="row wave">
+                        <div class="col">
+                            <span ng-class="{ 'rise' : qoute.Fluctuation, 'fall' : !qoute.Fluctuation }">
+                                {{ qoute.ChangeValue }}
+                            </span>
+                        </div>
+                        <div class="col">
+                            <span ng-class="{ 'rise' : qoute.Fluctuation, 'fall' : !qoute.Fluctuation }">
+                                {{ qoute.ChangePercent }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-60">
+                    <div class="row">
+                        <div class="col qoute-widget">
+                            <div>开盘</div>
+                            <div ng-class="{ 'rise' : qoute.Fluctuation, 'fall' : !qoute.Fluctuation }">
+                                {{ qoute.Open.toFixed(qoute.DecimalCount) }}
+                            </div>
+                        </div>
+                        <div class="col qoute-widget">
+                            <div>收盘</div>
+                            <div ng-class="{ 'rise' : qoute.Fluctuation, 'fall' : !qoute.Fluctuation }">
+                                {{ qoute.Close.toFixed(qoute.DecimalCount) }}
+                            </div>
+                        </div>
+                        <div class="col qoute-widget">
+                            <div>买价</div>
+                            <div ng-class="{ 'rise' : qoute.Fluctuation, 'fall' : !qoute.Fluctuation }">
+                                {{ qoute.Bid.toFixed(qoute.DecimalCount) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col qoute-widget">
+                            <div>卖价</div>
+                            <div ng-class="{ 'rise' : qoute.Fluctuation, 'fall' : !qoute.Fluctuation }">
+                                {{ qoute.Ask.toFixed(qoute.DecimalCount) }}
+                            </div>
+                        </div>
+                        <div class="col qoute-widget">
+                        </div>
+                        <div class="col qoute-widget">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="trade-chart">
+            <div class="trade-chart-type-bar">
+                <div class="row">
+                    <div class="col">
+                        <span class="trade-chart-type line" ng-click="change_chart_type('line')">走势</span>
+                    </div>
+                    <div class="col">
+                        <span class="trade-chart-type stock active" ng-click="change_chart_type('stock')">K线</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trade-chart-line hide">
+            </div>
+            <div class="trade-chart-stock">
+                <div echarts="stockChartId" config="stockOption" class="stock-chart"></div>
+                <div class="trade-chart-stock-tool-bar">
+                    <div class="trade-chart-period">
+                        <ul>
+                            <li class="m1" ng-click="change_chart_period('m1')">分钟</li>
+                            <li class="m5" ng-click="change_chart_period('m5')">5分钟</li>
+                            <li class="d1" ng-click="change_chart_period('d1')">日线</li>
+                        </ul>
+                    </div>
+                    <div class="trade-chart-tool">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+    <div class="bar bar-footer trade-footer">
+        <div class="row">
+            <div class="col-40">
+                <button class="button trade-panel-button" ng-click="toggle_history_order_panel()">
+                    <i class="icon ion-ios-photos-outline"></i>
+                    持仓明细
+                    <span class="badge badge-assertive">{{ order_list.length }}</span>
+                </button>
+            </div>
+            <div class="col">
+                <button class="button" ng-click="toggle_limit_order_panel()">
+                    <i class="icon ion-ios-timer-outline"></i>
+                    挂单
+                </button>
+            </div>
+            <div class="col">
+                <button class="button trade-order-button" ng-click="toggle_order_panel()">
+                    <i class="icon ion-ios-plus-outline"></i>
+                    交易
+                </button>
+            </div>
+        </div>
+    </div>
+    <div ng-include="'templates/hold-order-panel.html'"></div>
+    <div ng-include="'templates/limit-order-panel.html'"></div>
+    <div ng-include="'templates/close-order-panel.html'"></div>
+    <div ng-include="'templates/history-order-panel.html'"></div>
+</ion-view>

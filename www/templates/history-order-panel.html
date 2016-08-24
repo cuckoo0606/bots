@@ -1,0 +1,23 @@
+<div class="history-panel">
+    <div class="panel-header">
+        持仓明细
+        <div class="close" ng-click="toggle_history_order_panel()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </div>
+    <div class="panel-body">
+        <ion-scroll>
+        <ul class="list">
+            <li class="item" ng-repeat="o in order_list" ng-click="show_hold_order_modal(o)">
+            <div class="row" ng-class="{ 'rise' : o.Profit > 0, 'fall': o.Profit < 0 }">
+                <div class="col">{{ o.Symbol }}</div>
+                <div class="category">{{ o.Category == "Bid" ? "买入" : "卖出" }}</div>
+                <div class="quantity">{{ o.Quantity }}</div>
+                <div class="col">{{ o.HoldPrice }}</div>
+                <div class="col">{{ o.Profit }}</div>
+            </div>
+            </li>
+        </ul>
+        </ion-scroll>
+    </div>
+</div>

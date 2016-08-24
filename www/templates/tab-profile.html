@@ -1,0 +1,95 @@
+<ion-view view-title="个人中心">
+    <ion-content class="profile-background" scroll="false">
+    <div class="row profile-capital">
+        <div class="col">
+            <div class="capital-title">帐户余额</div>
+            <h4 class="capital-label" ng-class="{ 'rise' : account.Amount >= 0, 'fall' : account.Amount < 0 }">
+                {{ account.Amount }}
+            </h4>
+        </div>
+        <div class="col">
+            <div class="capital-title">帐户净值</div>
+            <h4 class="capital-label" ng-class="{ 'rise' : account.Net >= 0, 'fall' : account.Net < 0 }">
+                {{ account.Net }}
+            </h4>
+        </div>
+        <div class="col">
+            <div class="capital-title">浮动盈亏</div>
+            <h4 class="capital-label" ng-class="{ 'rise' : account.Profit >= 0, 'fall' : account.Profit < 0 }">
+                {{ account.Profit }}
+            </h4>
+        </div>
+    </div>
+    <div class="row profile-capital">
+        <div class="col">
+            <div class="capital-title">占用保证金</div>
+            <h4 class="capital-label" ng-class="{ 'rise' : account.OccupiedMoney >= 0, 'fall' : account.OccupiedMoney < 0 }">
+                {{ account.OccupiedMoney }}
+            </h4>
+        </div>
+        <div class="col">
+            <div class="capital-title">冻结保证金</div>
+            <h4 class="capital-label" ng-class="{ 'rise' : account.FreezingMoney >= 0, 'fall' : account.FreezingMoney < 0 }">
+                {{ account.FreezingMoney }}
+            </h4>
+        </div>
+        <div class="col">
+            <div class="capital-title">可用保证金</div>
+            <h4 class="capital-label" ng-class="{ 'rise' : account.FreeMoney >= 0, 'fall' : account.FreeMoney < 0 }">
+                {{ account.FreeMoney }}
+            </h4>
+        </div>
+    </div>
+    <div class="row profile-capital">
+        <div class="col">
+            <div class="capital-title">持仓数量</div>
+            <h4 class="capital-label rise">
+                {{ order_quantity_sum() }}
+            </h4>
+        </div>
+        <div class="col">
+            <div class="capital-title">挂单数量</div>
+            <h4 class="capital-label rise">
+                {{ limit_order_quantity_sum() }}
+            </h4>
+        </div>
+        <div class="col">
+            <div class="capital-title">风险系数</div>
+            <h4 class="capital-label" ng-class="{ 'rise' : account.Risk >= 0, 'fall' : account.Risk < 0 }">
+                {{ account.RiskString }}
+            </h4>
+        </div>
+    </div>
+    <div class="row profile-menu">
+        <div class="col">
+            <div class="list">
+                <a class="item item-input" href="#/tab/qoute">
+                    <i class="icon ion-person-stalker"></i>
+                    行情报价
+                </a>
+                <a class="item item-input" href="#/tab/history/0">
+                    <i class="icon ion-person-stalker"></i>
+                    持仓单
+                    <span class="badge badge-assertive">
+                        {{ order_list.length }}
+                    </span>
+                </a>
+                <a class="item item-input" href="#/tab/history/1">
+                    <i class="icon ion-person-stalker"></i>
+                    限价单
+                    <span class="badge badge-assertive">
+                        {{ limit_order_list.length }}
+                    </span>
+                </a>
+                <a class="item item-input" href="#/tab/history/2">
+                    <i class="icon ion-person-stalker"></i>
+                    平仓单
+                    <span class="badge badge-assertive">
+                        {{ close_order_list.length }}
+                    </span>
+                </a>
+            </ul>
+        </div>
+    </div>
+    </ion-content>
+</ion-view>

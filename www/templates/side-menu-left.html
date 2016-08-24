@@ -1,0 +1,46 @@
+<div class="side-menu">
+    <ul>
+        <li class="side-brand">
+            <h4>
+                {{ user.Name }}
+            </h4>
+            <div class="widget">
+                <div>帐户余额</div>
+                <h4>
+                    {{ account.Amount.toFixed(2) }}
+                </h4>
+            </div>
+            <div class="widget">
+                <div>浮动盈亏</div>
+                <h4 id="sidebar-profit" ng-class="{ 'rise' : account.Profit >= 0, 'fall' : account.Profit < 0 }">
+                    {{ account.Profit.toFixed(2) }}
+                </h4>
+            </div>
+        </li>
+        <li>
+            <a href="#/tab/qoute" class="menu-close">
+                <i class="ion-ios-pulse-strong" aria-hidden="true"></i>行情报价
+            </a>
+        </li>
+        <li>
+            <a href="#/tab/history/0" class="menu-close">
+                <i class="ion-ios-photos" aria-hidden="true"></i>交易历史
+            </a>
+        </li>
+        <li>
+            <a href="#/tab/profile" class="menu-close">
+                <i class="ion-ios-person" aria-hidden="true"></i>个人信息
+            </a>
+        </li>
+        <li ng-show="show_update">
+            <a href="javascript:;" class="menu-close" ng-click="check_update(true)">
+                <i class="ion-ios-person" aria-hidden="true"></i>检查更新
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="menu-close" ng-click="app_exit();">
+                <i class="ion-log-out" aria-hidden="true"></i>退出
+            </a>
+        </li>
+    </ul>
+</div>

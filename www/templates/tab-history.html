@@ -1,0 +1,122 @@
+<ion-view view-title="交易历史">
+    <ion-nav-buttons side="right">
+        <button class="button hide" ng-click="toggleRightSideMenu()">
+            筛选
+        </button>
+    </ion-nav-buttons>
+    <ion-content class="content-background" scroll="false">
+        <div class="qoute-category">
+            <ul>
+                <li ng-click="change_category(0)" ng-class="{ 'active' : category_index === 0 }"> 
+                    持仓
+                </li>
+                <li ng-click="change_category(1)" ng-class="{ 'active' : category_index === 1 }"> 
+                    挂单
+                </li>
+                <li ng-click="change_category(2)" ng-class="{ 'active' : category_index === 2 }"> 
+                    平仓
+                </li>
+            </ul>
+        </div>
+
+        <ion-slide-box delegate-handle="slide-history" on-slide-changed="slide_change($index)" 
+        show-pager="false" active-slide="category_index" class="slide-history">
+            <ion-slide>
+                <div class="order-view">
+                    <div class="order-view-header">
+                        <ul>
+                            <li>商品</li>
+                            <li>类型</li>
+                            <li>数量</li>
+                            <li>盈亏</li>
+                        </ul>
+                    </div>
+                    <div class="order-view-content">
+                        <ion-scroll>
+                            <ul ng-repeat="o in order_list">
+                                <li ng-class="{ 'rise' : o.Profit >= 0, 'fall' : o.Profit < 0 }" 
+                                    ng-click="show_hold_order_modal(o);">
+                                    {{ o.Symbol }}
+                                </li>
+                                <li ng-class="{ 'rise' : o.Profit >= 0, 'fall' : o.Profit < 0 }" 
+                                    ng-click="show_hold_order_modal(o);" 
+                                    class="category">{{ o.Category == "Bid" ? "买入" : "卖出" }}</li>
+                                <li ng-class="{ 'rise' : o.Profit > 0, 'fall' : o.Profit < 0 }"
+                                    ng-click="show_hold_order_modal(o);">
+                                    {{ o.Quantity }}
+                                </li>
+                                <li ng-class="{ 'rise' : o.Profit >= 0, 'fall' : o.Profit < 0 }"
+                                    ng-click="show_hold_order_modal(o);">
+                                    {{ o.Profit }}
+                                </li>
+                            </ul>
+                        </ion-scroll>
+                    </div>
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="order-view">
+                    <div class="order-view-header">
+                        <ul>
+                            <li>商品</li>
+                            <li>类型</li>
+                            <li>数量</li>
+                            <li>价格</li>
+                        </ul>
+                    </div>
+                    <div class="order-view-content">
+                        <ion-scroll>
+                            <ul ng-repeat="o in limit_order_list">
+                                <li ng-click="show_limit_order_modal(o);">
+                                    {{ o.Symbol }}
+                                </li>
+                                <li ng-click="show_limit_order_modal(o);" class="category">
+                                    {{ o.Category == "Bid" ? "买入" : "卖出" }}
+                                </li>
+                                <li ng-click="show_limit_order_modal(o);">{{ o.Quantity }}</li>
+                                <li ng-click="show_limit_order_modal(o);">{{ o.LimitPrice }}</li>
+                            </ul>
+                        </ion-scroll>
+                    </div>
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="order-view">
+                    <div class="order-view-header">
+                        <ul>
+                            <li>商品</li>
+                            <li>类型</li>
+                            <li>数量</li>
+                            <li>盈亏</li>
+                        </ul>
+                    </div>
+                    <div class="order-view-content">
+                        <ion-scroll>
+                            <ul ng-repeat="o in close_order_list">
+                                <li ng-class="{ 'rise' : o.Profit >= 0, 'fall' : o.Profit < 0 }"
+                                    ng-click="show_close_order_modal(o);">
+                                    {{ o.Symbol }}
+                                </li>
+                                <li ng-class="{ 'rise' : o.Profit >= 0, 'fall' : o.Profit < 0 }" 
+                                    ng-click="show_close_order_modal(o);" class="category">
+                                    {{ o.Category == "Bid" ? "买入" : "卖出" }}
+                                </li>
+                                <li ng-class="{ 'rise' : o.Profit >= 0, 'fall' : o.Profit < 0 }" 
+                                    ng-click="show_close_order_modal(o);">
+                                    {{ o.Quantity }}
+                                </li>
+                                <li ng-class="{ 'rise' : o.Profit >= 0, 'fall' : o.Profit < 0 }" 
+                                    ng-click="show_close_order_modal(o);">
+                                    {{ o.Profit }}
+                                </li>
+                            </ul>
+                        </ion-scroll>
+                    </div>
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+    </ion-content>
+    <div ng-include="'templates/hold-order-panel.html'"></div>
+    <div ng-include="'templates/limit-order-panel.html'"></div>
+    <div ng-include="'templates/close-order-panel.html'"></div>
+</ion-view>

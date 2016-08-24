@@ -1,0 +1,61 @@
+<ion-modal-view class="order-modal">
+    <ion-header-bar class="order-modal-header">
+        <h1 class="title">限价单</h1>
+        <div class="close" ng-click="limit_order_modal.hide()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </ion-header-bar>
+    <ion-content class="order-modal-content">
+        <ul class="list">
+            <li class="item item-input">
+                <span class="input-label">单号</span>
+                <span class="input-content">{{ modal_limit_order.Id }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">商品</span>
+                <span class="input-content">{{ modal_limit_order.Symbol }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">类型</span>
+                <span class="input-content">{{ modal_limit_order.Category == "Bid" ? "买入" : "卖出" }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">数量</span>
+                <span class="input-content">{{ modal_limit_order.Quantity }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">限价</span>
+                <span class="input-content">{{ modal_limit_order.LimitPrice }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">参考价</span>
+                <span class="input-content">{{ modal_limit_order.HoldPrice }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">止损价</span>
+                <span class="input-content">{{ modal_limit_order.StopPrice }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">止盈价</span>
+                <span class="input-content">{{ modal_limit_order.ProfitPrice }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">冻结款</span>
+                <span class="input-content">{{ modal_limit_order.FreezeMomney }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">有效期</span>
+                <span class="input-content">{{ modal_limit_order.Validity }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">时间</span>
+                <span class="input-content">{{ modal_limit_order.Time }}</span>
+            </li>
+        </ul>
+    </ion-content>
+    <div class="button-bar">
+        <a class="button button-balanced" ng-click="toggle_limit_order_update(modal_limit_order)">修改</a>
+        <a class="button button-dark" ng-click="cancel_limitorder(modal_limit_order)">删除</a>
+        <a class="button button-dark" ng-click="limit_order_modal.hide()">取消</a>
+    </div>
+</ion-modal-view>

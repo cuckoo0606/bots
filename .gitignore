@@ -1,0 +1,11 @@
+*.dat
+*.swp
+*.pyc
+*.*~
+*.xcodeproj
+*.DS_Store
+.*
+!.gitignore
+.tag*
+nohup.out
+platforms
