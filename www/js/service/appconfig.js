@@ -2,8 +2,28 @@ angular.module('starter.services', [])
 
 .service('AppConfigService', function(ionicToast, $http, $ionicLoading, $ionicPopup) {
     var service = this;
-    this.api_url = "http://103.249.106.200:8090/";
     
+    this.remote_list = [ 
+        { 
+            "name": "Real", 
+            "text": "实盘交易", 
+            "url": "http://120.26.224.153:8090/", 
+            "user_category" : [ 
+                { 
+                    "name" : "Customer", 
+                    "text" : "真实用户" 
+                } 
+            ], 
+        },
+    ];
+
+    this.system_name = "交易系统";
+    this.show_system_name = false;
+    this.system_logo = "img/logo.psd";
+    this.show_system_logo = true;
+    this.show_nav_bar = true;
+    this.api_url = this.remote_list[0].url;
+
     this.update = function (url) {
         if (!ionic.Platform.isAndroid()) {
             return false;

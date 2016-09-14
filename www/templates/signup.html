@@ -22,22 +22,37 @@
                 </span>
                 <input type="password" placeholder="密码" ng-model="passwd" required />
             </label>
+            <label class="item item-input">
+                <span class="input-label">
+                    <i class="ion-ios-locked-outline"></i>
+                </span>
+                <input type="password" placeholder="确认密码" ng-model="confirm" required />
+            </label>
             <label class="signin-tools item item-select" ng-show="remote_list.length > 1">
-                <select ng-model="remote" ng-options="r.text for r in remote_list" ng-change="change_remote();">
+                <select ng-model="remote" ng-options="r.text for r in remote_list" ng-change="remote_change()">
                 </select>
+            </label>
+            <label class="signin-tools item item-select" ng-show="user_category_list.length > 1">
+                <select ng-model="user_category" ng-options="c.text for c in user_category_list">
+                </select>
+            </label>
+            <label class="signin-tools item item-checkbox">
+                <ion-checkbox ng-model="agree">
+                    我已阅读《风险提醒》
+                </ion-checkbox>
+                <p>确认注册即自动生成中宝微盘帐号,且代表你已同意中宝微盘客户协议和中宝微盘入市交易协议。</p>
             </label>
         </div>
         <div class="signin-action">
-            <button class="button button-block signin-button" ng-click="signin()" 
-                ng-disabled="!username || !passwd">
-                立即登陆
+            <button class="button button-block signin-button" ng-click="signup()"
+                ng-disabled="!username || !passwd || !confirm || !agree">
+                注册登陆
             </button>
         </div>
     </div>
     <div class="signin-footer">
-        <a href="#/signup">注册用户</a>
+        <a href="#/signin">已有帐户，登陆</a>
     </div>
-
 </div>
 <div class="spinner-view hide">
     <div class="spinner">

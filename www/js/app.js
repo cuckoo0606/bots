@@ -78,6 +78,12 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
         templateUrl: 'templates/signin.html'
     })
 
+    .state('signup', {
+        url: '/signup',
+        controller: "SignupCtrl",
+        templateUrl: 'templates/signup.html'
+    })
+
     .state('trade', {
         cache: false,
         url: '/trade/:qid',

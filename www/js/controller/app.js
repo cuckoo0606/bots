@@ -1,11 +1,17 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $ionicSideMenuDelegate, $timeout, $filter, $ionicPlatform, 
+.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $ionicSideMenuDelegate, 
+            $timeout, $filter, $ionicPlatform, $ionicHistory, $state,
             AppConfigService, AccountService, CloseOrderService, UserService, OrderService, LimitOrderService, QouteService) {
     $scope.message = "";
     $scope.is_loading = false;
     $scope.account = AccountService.account;
     $scope.show_update = ionic.Platform.isAndroid();
+    $scope.show_nav_bar = AppConfigService.show_nav_bar;
+    $scope.system_name = AppConfigService.system_name;
+    $scope.show_system_name = AppConfigService.show_system_name;
+    $scope.system_logo = AppConfigService.system_logo;
+    $scope.show_system_logo = AppConfigService.show_system_logo;
 
     $scope.check_update = AppConfigService.check_update;
     $ionicPlatform.ready(function() {    
@@ -13,7 +19,14 @@ angular.module('starter.controllers', [])
     });
 
     $scope.app_exit = function() {
-        ionic.Platform.exitApp(); 
+        if (ionic.Platform.isWebView) {
+            $rootScope.user = "";
+            $ionicHistory.clearHistory();
+            $state.go("signin");
+        }
+        else {
+            ionic.Platform.exitApp();
+        } 
     }
 
     $scope.order_params = {

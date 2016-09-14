@@ -2,7 +2,7 @@
   "use strict";
 
   /*global Map:true*/
-  if (!Map) window.Map = AdaptableMap;
+  window.Map = AdaptableMap;
 
   /**
    * @constructor AdaptableMap

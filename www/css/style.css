@@ -296,18 +296,76 @@
 
 .signin {
     position: absolute;
-    top: 35%;
+    top: 30%;
     width: 100%;
-    height: 240px;
+    height: 340px;
     margin-top: -120px;
     text-align: center;
 }
 
+.signin-tools {
+    padding: 0px;
+}
+
+.signin-tools p {
+    font-size: 12px;
+    white-space: normal;
+    text-align: left;
+    padding: 5px;
+    padding-left: 10px;
+}
+
+.signin-tools.item-select {
+    padding: 16px;
+}
+
+.signin-tools select {
+    left: 0px;
+    color: rgb(200, 200, 200);
+    font-size: 12px;
+    background-color: #1d1d25;
+}
+
+.signin-tools.item-checkbox {
+    border: none !important;
+}
+
+.signin-tools .item-checkbox {
+    padding: 5px;
+    padding-top: 10px;
+    padding-left: 35px;
+    font-size: 12px;
+    text-align: left;
+    background-color: #1d1d25;
+    border: none;
+    color: rgb(200, 200, 200);
+}
+
+.signin-tools .item-checkbox .checkbox-icon:before {
+    width: 14px;
+    height: 14px;
+    margin-top: 9px;
+    border-radius: 2px !important;
+}
+
+.signin-tools .item-checkbox .checkbox-icon:after {
+    position: static;
+    margin-top: -12px;
+}
+
 .signin-header {
+    padding: 10px;
     font-size: 30px;
-    height: 80px;
-    padding: 20px;
     color: #c4b16f;
+}
+
+.signin-header .system-logo img {
+    width: 120px;
+    height: 120px;
+}
+
+.signin-content > .list {
+    margin-bottom: 10px;
 }
 
 .signin-content > .list > .item {
@@ -348,15 +406,15 @@
 }
 
 .signin-footer {
-    padding-top: 30px;
     text-align: center;
 }
 
 .signin-footer > a {
     color: #337ab7;
-    font-size: 14px;
-    text-decoration: none;
+    font-size: 12px;
     margin-right: 5px;
+    color: rgb(200, 200, 200);
+    text-decoration: underline;
 }
 
 .spinner-view {
