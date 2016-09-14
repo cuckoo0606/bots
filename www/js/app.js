@@ -78,6 +78,16 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
         templateUrl: 'templates/signin.html'
     })
 
+    .state('cpa', {
+        url: '/cpa',
+        templateUrl: 'templates/cp-agreement.html'
+    })
+
+    .state('tpa', {
+        url: '/tpa',
+        templateUrl: 'templates/trade-agreement.html'
+    })
+
     .state('signup', {
         url: '/signup',
         controller: "SignupCtrl",

@@ -40,8 +40,14 @@
                 <ion-checkbox ng-model="agree">
                     我已阅读《风险提醒》
                 </ion-checkbox>
-                <p>确认注册即自动生成中宝微盘帐号,且代表你已同意中宝微盘客户协议和中宝微盘入市交易协议。</p>
             </label>
+            <div class="signin-tools item notice">
+                <p>
+                    确认注册即自动生成中宝微盘帐号,且代表你已同意
+                    <a href="#/cpa">中宝微盘客户协议</a>和
+                    <a href="#/tpa">中宝微盘入市交易协议</a>。
+                </p>
+            </div>
         </div>
         <div class="signin-action">
             <button class="button button-block signin-button" ng-click="signup()"

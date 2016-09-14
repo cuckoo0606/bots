@@ -315,6 +315,10 @@
     padding-left: 10px;
 }
 
+.signin-tools p a {
+    color: #666;
+}
+
 .signin-tools.item-select {
     padding: 16px;
 }
@@ -1125,4 +1129,8 @@
     top: 11px;
     font-size: 10px;
     padding: 1px 8px;
+}
+
+.agreement pre {
+    padding: 10px;
 }
