@@ -36,7 +36,7 @@ angular.module('starter.services')
         var url = AppConfigService.api_url + "user/rigister";
         $http.get(url, { 
             "timeout": 10000,
-            "params": { "username": params.username, "passwd": params.passwd, "group": params.group } 
+            "params": { "username": params.username, "passwd": params.passwd, "group": params.group, "code": params.code } 
         })
         
         .success(function(protocol) {

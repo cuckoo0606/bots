@@ -83,8 +83,12 @@
                 <div class="trade-chart-stock-tool-bar">
                     <div class="trade-chart-period">
                         <ul>
-                            <li class="m1" ng-click="change_chart_period('m1')">分钟</li>
-                            <li class="m5" ng-click="change_chart_period('m5')">5分钟</li>
+                            <li class="m">
+                                <select ng-model="chart_period_m" ng-options="p.text for p in chart_period_m_list" 
+                                ng-change="change_chart_period(chart_period_m.name)">
+                                </select>
+                            </li>
+                            <li class="hour" ng-click="change_chart_period('h1')">小时</li>
                             <li class="d1" ng-click="change_chart_period('d1')">日线</li>
                         </ul>
                     </div>

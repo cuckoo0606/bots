@@ -4,6 +4,14 @@ angular.module('starter.controllers')
             $ionicModal, QouteService, OrderService, LimitOrderService, UserService, HistoryQouteService, CloseOrderService) {
     
     $scope.chart_period = "m1";
+    $scope.chart_period_m_list = [
+        { "name" : "m1", "text" : " 1分钟" },
+        { "name" : "m5", "text" : " 5分钟" },
+        { "name" : "m15", "text" : "15分钟" },
+        { "name" : "m30", "text" : "30分钟" },
+    ];
+    $scope.chart_period_m = $scope.chart_period_m_list[0];
+
     $scope.history_loading = false;
     $scope.chart_data = [];
     $scope.qid = $stateParams.qid;
@@ -104,91 +112,120 @@ angular.module('starter.controllers')
             { xAxisIndex: [0, 1], start: 0, end: 100, type : 'inside' },
         ],
         series: [
-        {
-            name: 'line',
-            type: 'line',
-            data: [],
-            showSymbol: false,
-            lineStyle: {
-                normal: {
-                    width: 1
-                }
-            }
-        },
-        {
-            type: 'candlestick',
-            name: 'stock',
-            data: [],
-            itemStyle: {
-                normal: {
-                    color: 'black',
-                    color0: 'rgb(80, 165, 50)',
-                    borderColor: 'rgb(150, 55, 75)',
-                    borderColor0: 'rgb(80, 165, 50)'
-                }
-            }
-        },
-        {
-            name: 'MA5',
-            type: 'line',
-            data: [],
-            smooth: true,
-            showSymbol: false,
-            lineStyle: {
-                normal: {
-                    width: 1
-                }
-            }
-        },
-        {
-            name: 'MA10',
-            type: 'line',
-            data: [],
-            smooth: true,
-            showSymbol: false,
-            lineStyle: {
-                normal: {
-                    width: 1
-                }
-            }
-        },
-        {
-            name: 'MA20',
-            type: 'line',
-            data: [],
-            smooth: true,
-            showSymbol: false,
-            lineStyle: {
-                normal: {
-                    width: 1
-                }
-            }
-        },
-        {
-            name: 'MA30',
-            type: 'line',
-            data: [],
-            smooth: true,
-            showSymbol: false,
-            lineStyle: {
-                normal: {
-                    width: 1
-                }
-            }
-        },
-        {
-            name: 'Volumn',
-            type: 'bar',
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            itemStyle: {
-                normal: {
-                    color: '#006600',
-                    borderColor: 'black',
+            {
+                name: 'line',
+                type: 'line',
+                data: [],
+                showSymbol: false,
+                lineStyle: {
+                    normal: {
+                        width: 1
+                    }
                 }
             },
-            data: [],
-        }]
+            {
+                type: 'candlestick',
+                name: 'stock',
+                data: [],
+                itemStyle: {
+                    normal: {
+                        color: 'black',
+                        color0: 'rgb(80, 165, 50)',
+                        borderColor: 'rgb(150, 55, 75)',
+                        borderColor0: 'rgb(80, 165, 50)'
+                    }
+                }
+            },
+            {
+                name: 'MA5',
+                type: 'line',
+                data: [],
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    normal: {
+                        width: 1
+                    }
+                }
+            },
+            {
+                name: 'MA10',
+                type: 'line',
+                data: [],
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    normal: {
+                        width: 1
+                    }
+                }
+            },
+            {
+                name: 'MA20',
+                type: 'line',
+                data: [],
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    normal: {
+                        width: 1
+                    }
+                }
+            },
+            {
+                name: 'MA30',
+                type: 'line',
+                data: [],
+                smooth: true,
+                showSymbol: false,
+                lineStyle: {
+                    normal: {
+                        width: 1
+                    }
+                }
+            },
+            {
+                name: 'DIFF',
+                type: 'line',
+                data: [],
+                smooth: true,
+                showSymbol: false,
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                lineStyle: {
+                    normal: {
+                        width: 1
+                    }
+                }
+            },
+            {
+                name: 'EMA',
+                type: 'line',
+                data: [],
+                smooth: true,
+                showSymbol: false,
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                lineStyle: {
+                    normal: {
+                        width: 1
+                    }
+                }
+            },
+            {
+                name: 'MACD',
+                type: 'bar',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                itemStyle: {
+                    normal: {
+                        color: '#006600',
+                        borderColor: 'black',
+                    }
+                },
+                data: [],
+            },
+        ]
     };
 
     function change_chart_data(history_list) {
@@ -205,6 +242,10 @@ angular.module('starter.controllers')
             return value.Close;
         });
 
+        var diff = HistoryQouteService.build_diff_data(12, 26, data);
+        var dea = HistoryQouteService.build_dea_data(9, diff);
+        var macd = HistoryQouteService.build_macd_data(data, diff, dea);
+            
         $scope.stockOption = {
             xAxis: [
                 {
@@ -215,27 +256,34 @@ angular.module('starter.controllers')
                 }
             ],
             series: [
-            {
-                data: $scope.chart_type === "line" ? line_data : [],
-            },
-            {
-                data: $scope.chart_type === "stock" ? data : [],
-            },
-            {
-                data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(5, data) : [],
-            },
-            {
-                data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(10, data) : [],
-            },
-            {
-                data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(20, data) : [],
-            },
-            {
-                data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(30, data) : [],
-            },
-            {
-                data: [],
-            }]
+                {
+                    data: $scope.chart_type === "line" ? line_data : [],
+                },
+                {
+                    data: $scope.chart_type === "stock" ? data : [],
+                },
+                {
+                    data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(5, data) : [],
+                },
+                {
+                    data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(10, data) : [],
+                },
+                {
+                    data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(20, data) : [],
+                },
+                {
+                    data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(30, data) : [],
+                },
+                {
+                    data: diff,
+                },
+                {
+                    data: dea,
+                },
+                {
+                    data: macd,
+                },
+            ]
         };
     }
 
@@ -278,6 +326,15 @@ angular.module('starter.controllers')
         $scope.history_loading = true;
         angular.element(document.querySelectorAll(".trade-chart-period ul li")).removeClass("active");
         angular.element(document.querySelectorAll(".trade-chart-period ul li." + period)).addClass("active");
+
+        if (period == "h1") {
+            angular.element(document.querySelectorAll(".trade-chart-period ul li.hour")).addClass("active");
+        }
+        
+        if ([ "m1", "m5", "m15", "m30" ].indexOf(period) >= 0) {
+            angular.element(document.querySelectorAll(".trade-chart-period ul li.m")).addClass("active");
+        }
+
         HistoryQouteService.request_history($scope.qid, period, function(history_list) {
             history_list.reverse();
             change_chart_data(history_list);

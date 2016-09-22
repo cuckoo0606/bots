@@ -7,7 +7,7 @@ angular.module('starter.services', [])
         { 
             "name": "Real", 
             "text": "实盘交易", 
-            "url": "http://120.26.224.153:8090/", 
+            "url": "http://192.168.31.219:8088/", 
             "user_category" : [ 
                 { 
                     "name" : "Customer", 
@@ -19,9 +19,10 @@ angular.module('starter.services', [])
 
     this.system_name = "交易系统";
     this.show_system_name = false;
-    this.system_logo = "img/logo.psd";
+    this.system_logo = "img/logo.png";
     this.show_system_logo = true;
     this.show_nav_bar = true;
+    this.show_signup_code = true;
     this.api_url = this.remote_list[0].url;
 
     this.update = function (url) {

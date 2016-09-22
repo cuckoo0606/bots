@@ -1,4 +1,5 @@
 <ion-view hide-nav-bar="true" class="signin-view">
+<ion-content class="signup-scroll">
 <div class="signin">
     <div class="signin-header">
         <div class="system-logo" ng-show="show_system_logo">
@@ -14,20 +15,37 @@
                 <span class="input-label">
                     <i class="ion-ios-person-outline"></i>
                 </span>
-                <input type="text" placeholder="用户" ng-model="username" required />
+                <input type="text" placeholder="用户" ng-model="user.username" required />
             </label>
             <label class="item item-input">
                 <span class="input-label">
                     <i class="ion-ios-locked-outline"></i>
                 </span>
-                <input type="password" placeholder="密码" ng-model="passwd" required />
+                <input type="password" placeholder="密码" ng-model="user.passwd" required />
             </label>
             <label class="item item-input">
                 <span class="input-label">
                     <i class="ion-ios-locked-outline"></i>
                 </span>
-                <input type="password" placeholder="确认密码" ng-model="confirm" required />
+                <input type="password" placeholder="确认密码" ng-model="user.confirm" required />
             </label>
+            <label class="item item-input" ng-show="show_signup_code">
+                <span class="input-label">
+                    <i class="ion-ipad"></i>
+                </span>
+                <input type="text" placeholder="手机号码" ng-model="user.phone" required />
+            </label>
+            <div class="item item-input-inset">
+                <span class="input-label">
+                    <i class="ion-ios-chatbubble-outline"></i>
+                </span>
+                <label class="item-input-wrapper">
+                    <input type="text" placeholder="短信验证码" ng-model="user.code" />
+                </label>
+                <button class="button button-small siup-code-btn" ng-disabled="sms_remaining != 0" ng-click="get_verify()">
+                    {{ sms_btn_text }}
+                </button>
+            </div>
             <label class="signin-tools item item-select" ng-show="remote_list.length > 1">
                 <select ng-model="remote" ng-options="r.text for r in remote_list" ng-change="remote_change()">
                 </select>
@@ -37,21 +55,21 @@
                 </select>
             </label>
             <label class="signin-tools item item-checkbox">
-                <ion-checkbox ng-model="agree">
+                <ion-checkbox ng-model="user.agree">
                     我已阅读《风险提醒》
                 </ion-checkbox>
             </label>
             <div class="signin-tools item notice">
                 <p>
-                    确认注册即自动生成中宝微盘帐号,且代表你已同意
-                    <a href="#/cpa">中宝微盘客户协议</a>和
-                    <a href="#/tpa">中宝微盘入市交易协议</a>。
+                确认注册即自动生成中宝微盘帐号,且代表你已同意
+                <a href="#/cpa">中宝微盘客户协议</a>和
+                <a href="#/tpa">中宝微盘入市交易协议</a>。
                 </p>
             </div>
         </div>
         <div class="signin-action">
             <button class="button button-block signin-button" ng-click="signup()"
-                ng-disabled="!username || !passwd || !confirm || !agree">
+                ng-disabled="!user.username || !user.passwd || !user.confirm || !user.agree">
                 注册登陆
             </button>
         </div>
@@ -67,4 +85,5 @@
     </div>
     <div class="message" ng-class="{ 'fadein' : message }">{{ message }}</div>
 </div>
+</ion-content>
 </ion-view>
