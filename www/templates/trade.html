@@ -125,4 +125,10 @@
     <div ng-include="'templates/limit-order-panel.html'"></div>
     <div ng-include="'templates/close-order-panel.html'"></div>
     <div ng-include="'templates/history-order-panel.html'"></div>
+    <div class="alert" ng-class="{ 'hide' : !is_loading }">
+        <ion-spinner icon="android"></ion-spinner>
+    </div>
+    <div class="alert" ng-class="{ 'hide' : message === '' }">
+        {{ message }}
+    </div>
 </ion-view>

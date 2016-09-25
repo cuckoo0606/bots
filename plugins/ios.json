@@ -10,10 +10,25 @@
         "com.phonegap.plugins.OrientationLock": {
             "PACKAGE_NAME": "com.hp.trade3"
         },
+        "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.hp.trade3"
+        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.hp.trade3"
         },
+        "cordova-plugin-crosswalk-webview": {
+            "PACKAGE_NAME": "com.hp.trade3"
+        },
         "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.hp.trade3"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.hp.trade3"
+        },
+        "cordova-plugin-file-opener2": {
+            "PACKAGE_NAME": "com.hp.trade3"
+        },
+        "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.hp.trade3"
         },
         "cordova-plugin-splashscreen": {
@@ -26,21 +41,6 @@
             "PACKAGE_NAME": "com.hp.trade3"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.hp.trade3"
-        },
-        "cordova-plugin-crosswalk-webview": {
-            "PACKAGE_NAME": "com.hp.trade3"
-        },
-        "cordova-plugin-app-version": {
-            "PACKAGE_NAME": "com.hp.trade3"
-        },
-        "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.hp.trade3"
-        },
-        "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.hp.trade3"
-        },
-        "cordova-plugin-file-opener2": {
             "PACKAGE_NAME": "com.hp.trade3"
         }
     },

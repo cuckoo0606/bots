@@ -1051,6 +1051,10 @@
     border-bottom: 1px solid rgb(38, 40, 52) !important;
 }
 
+.order-modal-content .list > .item input {
+    color: white;
+}
+
 .order-modal .button-bar {
     bottom: 0px;
     left: 0px;
@@ -1090,7 +1094,6 @@
 /* 个人中心样式 */
 .profile-capital {
     color: #c4b16f;
-    margin-top: 8px !important;
     background-color: rgb(38, 40, 52);
     border-bottom: 1px solid rgb(29, 32, 41);
 }
@@ -1110,7 +1113,7 @@
 }
 
 .profile-menu {
-    margin-top: 15px !important;
+    margin-top: 8px !important;
 }
 
 .profile-menu, .profile-menu .list .item {
@@ -1168,4 +1171,81 @@
     top: 25%;
 }
 
+.sub-profile-menu {
+    height: 0px;
+    overflow: hidden;
+}
 
+.sub-profile-menu.open {
+    height: auto;
+    margin-top: -1px;
+}
+
+.sub-profile-menu .item {
+    padding-left: 25px;
+}
+
+.sub-profile-menu .item:first {
+    border-top: 0px;
+}
+
+.pay-header {
+    color: rgb(200, 200, 200);
+    margin-top: -20px;
+    padding: 10px;
+    border-bottom: 1px solid rgb(38, 40, 52) !important;
+}
+
+.pay-list .item-content {
+    padding: 0px 0px 0px 10px;
+    background-color: rgb(30, 30, 40) !important;
+}
+
+.pay-list .radio-icon {
+    font-size: 14px;
+    padding: 0px 20px;
+}
+
+.pay-list img {
+    max-height: 25px;
+    max-width:100px;
+    vertical-align: middle;
+}
+
+.pay-list .img-box {
+    width: 100px;
+    float: left;
+    text-align: center;
+}
+
+.deposit_amount {
+    padding: 25px 25px 25px 0px !important;
+}
+
+.webview-modal .scroll {
+    width: 100%;
+    height: 100%;
+}
+
+.webview-modal iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.bank-info-modal ul {
+    height: 100%;
+}
+
+.bank-info-modal select {
+    color: rgb(200, 200, 200);
+    font-size: 12px;
+    background-color: #1d1d25;
+}
+
+.bank-info-modal .item-select .input-label {
+    padding-top: 0px;
+}
+
+.modal {
+    background-color: rgb(30, 30, 40);
+}

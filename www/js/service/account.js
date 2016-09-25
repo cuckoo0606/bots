@@ -2,7 +2,7 @@ angular.module('starter.services')
 
 .service('AccountService', function($rootScope, $http, $interval, $filter, UserService, AppConfigService) {
     var service = this;
-    this.account = { "Amount" : "-", "Profit" : "-" };
+    this.account = {};
 
     this.get_account = function(complete) {
         var url = AppConfigService.api_url + "account/get";

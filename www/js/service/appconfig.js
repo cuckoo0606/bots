@@ -7,7 +7,8 @@ angular.module('starter.services', [])
         { 
             "name": "Real", 
             "text": "实盘交易", 
-            "url": "http://192.168.31.219:8088/", 
+            "url": "http://120.26.224.153:8090/", 
+            //"url": "http://192.168.31.219:8088/", 
             "user_category" : [ 
                 { 
                     "name" : "Customer", 
@@ -24,6 +25,20 @@ angular.module('starter.services', [])
     this.show_nav_bar = true;
     this.show_signup_code = true;
     this.api_url = this.remote_list[0].url;
+
+    this.bank_list = [ 
+            "招商银行", 
+            "工商银行", 
+            "农业银行",
+            "中国银行", 
+            "建设银行", 
+            "民生银行", 
+            "光大银行", 
+            "交通银行",
+            "兴业银行", 
+            "浦发银行", 
+            "华夏银行", 
+        ];
 
     this.update = function (url) {
         if (!ionic.Platform.isAndroid()) {

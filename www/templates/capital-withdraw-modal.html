@@ -1,0 +1,20 @@
+<ion-modal-view class="order-modal">
+    <ion-header-bar class="order-modal-header">
+        <h1 class="title">用户出金</h1>
+        <div class="close" ng-click="capital_withdraw_modal.hide()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </ion-header-bar>
+    <ion-content class="order-modal-content">
+        <ul class="list">
+            <li class="item item-input deposit_amount">
+                <span class="input-label">金额</span>
+                <input type="number" placeholder="金额" ng-model="amount" required />
+            </li>
+        </ul>
+    </ion-content>
+    <div class="button-bar">
+        <a class="button button-balanced" ng-click="withdraw()">提交</a>
+        <a class="button button-dark" ng-click="capital_withdraw_modal.hide()">关闭</a>
+    </div>
+</ion-modal-view>

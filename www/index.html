@@ -3,7 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+    <!-- 是否启用全屏模式 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- 全屏时状态颜色设置 -->
+    <meta name="apple-mobile-web-status-bar-style" content="white">
+    <!-- 禁用电话号码自动识别 -->
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- iPhone 启动图标 -->
+    <link rel="apple-touch-icon" href="img/logo.png"/>
+    <!-- Android 启动图标 -->
+    <link rel="shortcut icon" href="logo.png">
+    <!-- 添加 favicon icon -->
+    <link rel="shortcut icon" type="image/ico" href="img/favicon.ico" />
+
+    <title>中宝微盘</title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -34,6 +48,7 @@
     <script src="js/service/limitorder.js"></script>
     <script src="js/service/historyqoute.js"></script>
     <script src="js/service/sms.js"></script>
+    <script src="js/service/capital.js"></script>
     
     <script src="js/controller/app.js"></script>
     <script src="js/controller/signin.js"></script>
@@ -42,7 +57,6 @@
     <script src="js/controller/trade.js"></script>
     <script src="js/controller/history.js"></script>
     <script src="js/controller/profile.js"></script>
-    
   </head>
   <body ng-app="starter" ng-controller="AppCtrl">
     <ion-side-menus>
@@ -68,11 +82,5 @@
             <div ng-include="'templates/side-menu-right.html'"></div>
         </ion-side-menu>
     </ion-side-menus>
-    <div class="alert" ng-class="{ 'hide' : !is_loading }">
-        <ion-spinner icon="android"></ion-spinner>
-    </div>
-    <div class="alert" ng-class="{ 'hide' : message === '' }">
-        {{ message }}
-    </div>
   </body>
 </html>

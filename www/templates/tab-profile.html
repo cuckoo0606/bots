@@ -63,33 +63,40 @@
     <div class="row profile-menu">
         <div class="col">
             <div class="list">
-                <a class="item item-input" href="#/tab/qoute">
-                    <i class="icon ion-person-stalker"></i>
-                    行情报价
+                <a class="item item-input" href="javascript:;" ng-click="toggle_capital_menu()">
+                    <i class="icon ion-social-usd"></i>
+                    资金管理
+                </a>
+                <div id="capital-menu" class="sub-profile-menu">
+                    <a class="item item-input" href="javascript:;" ng-click="capital_history_modal.show()">
+                        <i class="icon ion-social-usd"></i>
+                        资金历史
+                    </a>
+                    <a class="item item-input" href="javascript:;" ng-click="show_deposit_modal()">
+                        <i class="icon ion-social-usd"></i>
+                        用户入金
+                    </a>
+                    <a class="item item-input" href="javascript:;" ng-click="show_withdraw_modal()">
+                        <i class="icon ion-social-usd"></i>
+                        用户出金
+                    </a>
+                </div>
+                <a class="item item-input" href="javascript:;" ng-click="show_bank_modal()">
+                    <i class="icon ion-person"></i>
+                    修改资料
                 </a>
                 <a class="item item-input" href="#/tab/history/0">
-                    <i class="icon ion-person-stalker"></i>
-                    持仓单
-                    <span class="badge badge-assertive">
-                        {{ order_list.length }}
-                    </span>
-                </a>
-                <a class="item item-input" href="#/tab/history/1">
-                    <i class="icon ion-person-stalker"></i>
-                    限价单
-                    <span class="badge badge-assertive">
-                        {{ limit_order_list.length }}
-                    </span>
-                </a>
-                <a class="item item-input" href="#/tab/history/2">
-                    <i class="icon ion-person-stalker"></i>
-                    平仓单
-                    <span class="badge badge-assertive">
-                        {{ close_order_list.length }}
-                    </span>
+                    <i class="icon ion-locked"></i>
+                    修改密码
                 </a>
             </ul>
         </div>
     </div>
     </ion-content>
+    <div class="alert" ng-class="{ 'hide' : !is_loading }">
+        <ion-spinner icon="android"></ion-spinner>
+    </div>
+    <div class="alert" ng-class="{ 'hide' : message === '' }">
+        {{ message }}
+    </div>
 </ion-view>

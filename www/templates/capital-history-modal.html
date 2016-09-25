@@ -1,0 +1,31 @@
+<ion-modal-view class="order-modal">
+    <ion-header-bar class="order-modal-header">
+        <h1 class="title">资金历史</h1>
+        <div class="close" ng-click="capital_history_modal.hide()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </ion-header-bar>
+    <ion-content class="order-modal-content">
+    <div class="order-view">
+        <div class="order-view-header">
+            <ul>
+                <li>日期</li>
+                <li>操作</li>
+                <li>金额</li>
+            </ul>
+        </div>
+        <div class="order-view-content">
+            <ion-scroll>
+            <ul ng-repeat="c in capital_list">
+                <li>{{ c.Date }}</li>
+                <li>{{ c.Amount >= 0 ? "入金" : "出金" }}</li>
+                <li>{{ c.Amount }}</li>
+            </ul>
+            </ion-scroll>
+        </div>
+    </div>
+    </ion-content>
+    <div class="button-bar">
+        <a class="button button-dark" ng-click="capital_history_modal.hide()">关闭</a>
+    </div>
+</ion-modal-view>

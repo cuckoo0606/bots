@@ -1,0 +1,11 @@
+<ion-modal-view class="order-modal webview-modal">
+    <ion-header-bar class="order-modal-header">
+        <h1 class="title">在线支付</h1>
+        <div class="close" ng-click="pay_webview_modal.hide()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <iframe src="{{ pay_modal_url }}"></iframe>
+    </ion-content>
+</ion-modal-view>
