@@ -7,8 +7,8 @@ angular.module('starter.services', [])
         { 
             "name": "Real", 
             "text": "实盘交易", 
-            "url": "http://120.26.224.153:8090/", 
-            //"url": "http://192.168.31.219:8088/", 
+            //"url": "http://120.26.224.153:8090/", 
+            "url": "http://192.168.31.240:8090/", 
             "user_category" : [ 
                 { 
                     "name" : "Customer", 

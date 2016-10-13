@@ -10,7 +10,13 @@ angular.module('starter.services')
 
         $http.get(url, { 
             "timeout": 30000,
-            "params": params.deposit,
+            "params": {
+                "user": params.deposit.user,
+                "pay_type": params.deposit.pay_type,
+                "amount": params.deposit.amount,
+                "bank": params.deposit.bank.BankCode,
+                "return_url": params.deposit.return_url,
+            },
         })
         
         .success(function(protocol) {
@@ -42,6 +48,35 @@ angular.module('starter.services')
         })
         
         .success(function(protocol) {
+            if (protocol.return_code === "SUCCESS") {
+                if (params.success) {
+                    params.success(protocol.return_code, protocol.return_message, protocol.data);
+                }
+            }
+            else {
+                if (params.fail) {
+                    params.fail(protocol.return_code, protocol.return_message);
+                }
+            }
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+
+    this.get_bank_list = function(params) {
+        var url = AppConfigService.api_url + "pay/banklist";
+
+        $http.get(url, { 
+            "timeout": 30000,
+            "params": { "pay_type": params.pay_type },
+        })
+        
+        .success(function(protocol) {
+            console.log(protocol);
             if (protocol.return_code === "SUCCESS") {
                 if (params.success) {
                     params.success(protocol.return_code, protocol.return_message, protocol.data);
