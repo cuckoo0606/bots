@@ -35,15 +35,18 @@ angular.module('starter.services')
     };
 
     this.signup = function(params) {
-        var url = AppConfigService.api_url + "user/rigister";
-        $http.get(url, { 
+        var signupUrl = AppConfigService.build_api_url("user/rigister");
+        $http({
+            "url": signupUrl,
+            "method": "POST", 
             "timeout": 10000,
-            "params": { "username": params.username, "passwd": params.passwd, "group": params.group, "code": params.code } 
+            "data": { "username": params.username, "password": params.passwd ,"phone":params.phone} 
         })
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
+            if (!error) {
                 if (params.success) {
+                	console.log("success");
                     service.user = protocol.data;
                     params.success(protocol.return_code, protocol.return_message, protocol.data);
                 }

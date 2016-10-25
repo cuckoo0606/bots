@@ -17,16 +17,6 @@ angular.module('starter.controllers')
     $scope.sms_remaining = 0;
     $scope.sms_btn_text = "获取验证码";
 
-    $scope.remote = AppConfigService.remote_list[0];
-    $scope.remote_list = AppConfigService.remote_list; 
-    $scope.user_category = $scope.remote.user_category[0];
-    $scope.user_category_list = $scope.remote.user_category;
-
-    $scope.remote_change = function() {
-        AppConfigService.api_url = $scope.remote.url;
-        $scope.user_category = $scope.remote.user_category;
-    };
-
     $scope.spinner = function(visible) {
         if (visible) {
             angular.element(document.querySelectorAll(".spinner-view")).removeClass("hide");

@@ -46,14 +46,6 @@
                     {{ sms_btn_text }}
                 </button>
             </div>
-            <label class="signin-tools item item-select" ng-show="remote_list.length > 1">
-                <select ng-model="remote" ng-options="r.text for r in remote_list" ng-change="remote_change()">
-                </select>
-            </label>
-            <label class="signin-tools item item-select" ng-show="user_category_list.length > 1">
-                <select ng-model="user_category" ng-options="c.text for c in user_category_list">
-                </select>
-            </label>
             <label class="signin-tools item item-checkbox">
                 <ion-checkbox ng-model="user.agree">
                     我已阅读《风险提醒》
