@@ -9,30 +9,26 @@
         <div class="order-info">
             <ul class="list">
                 <li class="item order-qoute" ng-class="{ 'rise' : trade_qoute.Fluctuation, 'fall' : !trade_qoute.Fluctuation }">
-                    {{ trade_qoute.Bid }} / {{ trade_qoute.Ask }}
+                    {{ trade_qoute.value.toFixed(trade_qoute.decimal) }}
                 </li>
-                <label class="item item-input">
-                    <span class="input-label">手数</span>
-                    <input type="number" ng-model="order_params.quantity" ng-disabled="order_params.order_id != ''" />
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">止损</span>
-                    <input type="number" ng-model="order_params.stop_price" />
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">止盈</span>
-                    <input type="number" ng-model="order_params.profit_price" />
-                </label>
+                <li class="item item-input">
+                    <span class="input-label">类型</span>
+                    <span class="content-label">{{ order_params.direction == "1" ? "买涨" : "买跌" }}</span>
+                </li>
+                <li class="item item-input item-select">
+                    <span class="input-label">周期</span>
+                    <select ng-model="order_params.period" ng-options="c.time for c in trade.cycle">
+                    </select>
+                </li>
+                <li class="item item-input item-select">
+                    <span class="input-label">金额</span>
+                    <select ng-model="order_params.amount" ng-options="a for a in trade.amounts">
+                    </select>
+                </li>
             </ul>
         </div>
         <div class="button-bar">
-            <button class="button-bid" ng-show="!order_params.order_id" ng-click="order('bid')">
-                买
-            </button>
-            <button class="button-ask" ng-show="!order_params.order_id" ng-click="order('ask')">
-                卖
-            </button>
-            <button class="button-update-order" ng-show="order_params.order_id" ng-click="update_order()">
+            <button class="button-update-order" ng-click="order()">
                 确定
             </button>
         </div> 

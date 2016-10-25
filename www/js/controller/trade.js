@@ -1,7 +1,7 @@
 angular.module('starter.controllers')
 
 .controller('TradeCtrl', function($scope, $filter, $rootScope, $timeout, ionicDatePicker, $echarts, $interval, $stateParams, 
-            $ionicModal, QouteService, OrderService, LimitOrderService, UserService, HistoryQouteService, CloseOrderService) {
+            $ionicModal, QouteService, OrderService, UserService, HistoryQouteService, CloseOrderService) {
     
     $scope.chart_period = "m1";
     $scope.chart_period_m_list = [
@@ -14,20 +14,12 @@ angular.module('starter.controllers')
 
     $scope.history_loading = false;
     $scope.chart_data = [];
-    $scope.qid = $stateParams.qid;
+    $scope.mode = $stateParams.mode;
+    $scope.market = $stateParams.market;
+    $scope.code = $stateParams.code;
+
     $scope.order_list = OrderService.order_list;
-    $rootScope.qoute = QouteService.qoute($stateParams.qid);
-
-    var conf = {
-        callback: function (val) {
-            $scope.validity = val;
-        },
-        inputDate: $scope.validity,
-    };
-
-    $scope.show_date_picker = function(){
-        ionicDatePicker.openDatePicker(conf);
-    };
+    $rootScope.qoute = QouteService.qoute($scope.mode, $scope.market, $scope.code);
 
     OrderService.init(function(){ });
 
@@ -231,15 +223,15 @@ angular.module('starter.controllers')
     function change_chart_data(history_list) {
         $scope.chart_data = history_list;
         var dates = history_list.map(function(value) {
-            return value.DateTime;
+            return value.time;
         });
-       
+
         var data = history_list.map(function(value) {
-            return [ value.Open, value.Close, value.Low, value.High];
+            return [ value.open, value.close, value.low, value.high];
         });
        
         var line_data = history_list.map(function(value) {
-            return value.Close;
+            return value.close;
         });
 
         var diff = HistoryQouteService.build_diff_data(12, 26, data);
@@ -335,7 +327,8 @@ angular.module('starter.controllers')
             angular.element(document.querySelectorAll(".trade-chart-period ul li.m")).addClass("active");
         }
 
-        HistoryQouteService.request_history($scope.qid, period, function(history_list) {
+        HistoryQouteService.request_history($scope.market, $scope.code, period, function(history_list) {
+            console.log(history_list);
             history_list.reverse();
             change_chart_data(history_list);
             $scope.history_loading = false;

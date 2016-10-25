@@ -4,31 +4,15 @@ angular.module('starter.services', [])
     var service = this;
     
     this.token = "";
-    this.remote_list = [ 
-        { 
-            "name": "REAL", 
-            "text": "实盘交易",
-            // "url": "http://120.26.224.153:8090/",
-
-            //"url": "http://192.168.31.240:8090/", 
-// <<<<<<< Updated upstream
-            "url": "http://120.24.44.211:4002/",
-            "qouteurl": "http://120.24.44.211:7703/"
-// =======
-            // "url": "http://120.24.44.211:4002",
-            // "qouteurl": "http://120.24.44.211:7703"
-// >>>>>>> Stashed changes
-        },
-    ];
-
     this.system_name = "交易系统";
     this.show_system_name = false;
     this.system_logo = "img/logo.png";
     this.show_system_logo = true;
     this.show_nav_bar = true;
     this.show_signup_code = true;
-    this.api_url = this.remote_list[0].url;
-	this.qoute_url = this.remote_list[0].qouteurl;
+    this.api_url = "http://120.24.44.211:4002/";
+	this.qoute_url = "http://120.24.44.211:7703/";
+
     this.bank_list = [ 
             "招商银行", 
             "工商银行", 

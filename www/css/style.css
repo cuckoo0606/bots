@@ -753,8 +753,12 @@
     border-right: 1px solid rgba(15, 15, 30, 0.3) !important;
 }
 
-.trade-footer .trade-order-button {
+.trade-footer .trade-lookup-button {
     background-color: rgb(185, 60, 65) !important;
+}
+
+.trade-footer .trade-lookdown-button {
+    background-color: green !important;
 }
 
 .trade-view .history-panel {
@@ -953,6 +957,12 @@
 }
 
 .panel-body .order-info .list .item .input-label {
+    color: rgb(203, 204, 211);
+    text-align: center;
+    font-size: 12px;
+}
+
+.panel-body .order-info .list .item .content-label {
     color: rgb(203, 204, 211);
     text-align: center;
     font-size: 12px;

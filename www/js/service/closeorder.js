@@ -12,7 +12,7 @@ angular.module('starter.services')
             "timeout": 10000,
             "params": params.order,
         })
-        
+
         .success(function(protocol) {
             if (protocol.return_code === "SUCCESS") {
                 if (params.success) {
@@ -25,7 +25,7 @@ angular.module('starter.services')
                 }
             }
         })
-            
+
         .error(function(protocol) {
             if (params.error) {
                 params.error("ERROR", "网络错误");
@@ -33,55 +33,22 @@ angular.module('starter.services')
         });
     }
 
-    this.request_order_list = function(complete) {
-        var orderListUrl = AppConfigService.build_api_url("v1/orders");
-
-        $http.get(orderListUrl, {
-            "timeout": 3000 ,
-            "params": {"status": [110,120]}
+    this.request_order_list = function(page, size, complete) {
+        var url = AppConfigService.build_api_url("v1/orders");
+        $http.get(url, {
+            "timeout": 3000,
+            "params": { 
+                "size" : size, 
+                "status" : [ '110', '120' ], 
+                "page" : page, 
+            }
         })
-        
         .success(function(protocol) {
-            // if (protocol.return_code === "SUCCESS") {
-                if (complete) {
-                    complete(protocol.data);
-                }
-            // }
+            if (complete) {
+                complete(protocol);
+            }
         });
     }
-
-    this.init = function(complete) {
-        if (!service.init_complete) {
-            service.init_complete = true;
-            service.request_order_list(function(order_list) {
-                while(service.order_list.length) {
-                    service.order_list.pop();
-                }
-                angular.forEach(order_list, function(value) {
-                    service.order_list.push(value);
-                });
-
-                if (complete) {
-                    complete();
-                }
-            });
-
-            $interval(function() {
-                service.request_order_list(function(order_list) {
-                    while(service.order_list.length) {
-                        service.order_list.pop();
-                    }
-                    angular.forEach(order_list, function(value) {
-                        service.order_list.push(value);
-                    });
-                    if (complete) {
-                        complete();
-                    }
-                });
-            }, 5000);
-
-        }
-    };
 
     return this;
 });

@@ -1,18 +1,35 @@
 angular.module('starter.services')
 
 .service('HistoryQouteService', function($http, AppConfigService) {
-    this.request_history = function(symbol, period, complete) {
-        var url = AppConfigService.api_url + "historyqoute/" + period;
+    this.request_history = function(market, code, period, complete) {
+        var url = "";
+        if(period == "m1") {
+            url = AppConfigService.qoute_url + "minutes/1";
+        }
+        else if(period == "m5") {
+            url = AppConfigService.qoute_url + "minutes/5";
+        }
+        else if(period == "m15") {
+            url = AppConfigService.qoute_url + "minutes/15";
+        }
+        else if(period == "m30") {
+            url = AppConfigService.qoute_url + "minutes/30";
+        }
+        else if(period == "h1") {
+            url = AppConfigService.qoute_url + "hours";
+        }
+        else if(period == "d1") {
+            url = AppConfigService.qoute_url + "days";
+        }
+
         $http.get(url, { 
             "timeout": 10000,
-            "params": { "symbol": symbol }
+            "params": { "market": market, "code": code, "limit": 200 }
         })
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
-                if (complete) {
-                    complete(protocol.data);
-                }
+            if (complete) {
+                complete(protocol);
             }
         });
     }

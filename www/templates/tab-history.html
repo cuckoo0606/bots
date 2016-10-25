@@ -25,11 +25,13 @@
                             <li>商品</li>
                             <li>类型</li>
                             <li>金额</li>
-                            <li>买入价</li>
+                            <li>盈亏</li>
                         </ul>
                     </div>
                     <div class="order-view-content">
                         <ion-scroll>
+                            <ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_order()">
+                            </ion-refresher>
                             <ul ng-repeat="o in order_list">
                                 <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }"
                                     ng-click="show_hold_order_modal(o);">
@@ -44,9 +46,11 @@
                                 </li>
                                 <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }"
                                     ng-click="show_hold_order_modal(o);">
-                                    {{ o.buyQoute }}
+                                    {{ o.profit }}
                                 </li>
                             </ul>
+                            <ion-infinite-scroll ng-if="has_more_order" on-infinite="load_more_order()" distance="1%">
+                            </ion-infinite-scroll>
                         </ion-scroll>
                     </div>
                 </div>
@@ -63,6 +67,8 @@
                     </div>
                     <div class="order-view-content">
                         <ion-scroll>
+                            <ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_close_order()">
+                            </ion-refresher>
                             <ul ng-repeat="o in close_order_list">
                                 <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }"
                                     ng-click="show_close_order_modal(o);">
@@ -81,6 +87,8 @@
                                     {{ o.profit }}
                                 </li>
                             </ul>
+                            <ion-infinite-scroll ng-if="has_more_close_order" on-infinite="load_more_close_order()" distance="1%">
+                            </ion-infinite-scroll>
                         </ion-scroll>
                     </div>
                 </div>
@@ -88,7 +96,6 @@
         </ion-slide-box>
     </ion-content>
     <div ng-include="'templates/hold-order-panel.html'"></div>
-    <div ng-include="'templates/limit-order-panel.html'"></div>
     <div ng-include="'templates/close-order-panel.html'"></div>
     <div class="alert" ng-class="{ 'hide' : !is_loading }">
         <ion-spinner icon="android"></ion-spinner>

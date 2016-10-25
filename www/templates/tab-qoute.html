@@ -15,9 +15,9 @@
                     <div class="qoute-view-header">
                         <ul>
                             <li>商品名称</li>
-                            <li>最高价</li>
-                            <li>最低价</li>
                             <li>现价</li>
+                            <li>涨跌</li>
+                            <li>涨跌幅</li>
                         </ul>
                     </div>
                     <div class="qoute-view-content">
@@ -27,17 +27,17 @@
                                     <a href="#/trade/{{ q.Id }}">{{ q.name }}</a>
                                 </li>
                                 <li>
-                                    <a ng-class="{ 'rise' : q.Fluctuation, 'fall' : !q.Fluctuation }" href="#/trade/{{ q.Id }}">
+                                    <a ng-class="{ 'rise' : q.state == 'up', 'fall' : q.state == 'down' }" href="#/trade/{{ q.mode }}/{{ q.market }}/{{ q.code }}">
                                         {{ q.value.toFixed(q.decimal) }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a ng-class="{ 'rise' : q.Fluctuation, 'fall' : !q.Fluctuation }" href="#/trade/{{ q.Id }}">
+                                    <a ng-class="{ 'rise' : q.state == 'up', 'fall' : q.state == 'down' }" href="#/trade/{{ q.mode }}/{{ q.market }}/{{ q.code }}">
                                         {{ q.change_value }}
                                     </a>
                                 </li>
                                 <li>
-                                    <a ng-class="{ 'rise' : q.Fluctuation, 'fall' : !q.Fluctuation }" href="#/trade/{{ q.Id }}">
+                                    <a ng-class="{ 'rise' : q.state == 'up', 'fall' : q.state == 'down' }" href="#/trade/{{ q.mode }}/{{ q.market }}/{{ q.code }}">
                                         {{ q.change_percent }}
                                     </a>
                                 </li>

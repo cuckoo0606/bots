@@ -7,13 +7,6 @@ angular.module('starter.controllers')
     $scope.message = "";
     $scope.is_signin = false;
 
-    $scope.remote = AppConfigService.remote_list[0];
-    $scope.remote_list = AppConfigService.remote_list; 
-
-    $scope.change_remote = function() {
-        AppConfigService.api_url = $scope.remote.url;
-    };
-
     $scope.spinner = function(visible) {
         if (visible) {
             angular.element(document.querySelectorAll(".spinner-view")).removeClass("hide");

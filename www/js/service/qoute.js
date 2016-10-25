@@ -8,7 +8,15 @@ angular.module('starter.services')
     this.category_list = [];
 
     this.qoute = function(mode, market, code) {
-        var result = $filter('filter')(service.qoute_list, { mode, market: market, code: code });
+        var result = $filter('filter')(service.qoute_list, { mode: mode, market: market, code: code });
+        if (result.length > 0) {
+            return result[0];
+        }
+        return false;
+    };
+
+    this.trade = function(mode, market, code) {
+        var result = $filter('filter')(service.trade_list, { mode: mode, market: market, code: code });
         if (result.length > 0) {
             return result[0];
         }
@@ -18,10 +26,8 @@ angular.module('starter.services')
 	this.request_category = function(complete) {
         if (complete) {
             var categorys = [
-                { "mode":1, "name": "多空期权"},
                 { "mode":2, "name": "按需期权"},
-                { "mode":3, "name": "期间期权"},
-                { "mode":4, "name": "一触即付"},
+                { "mode":1, "name": "多空期权"},
             ]
 
         	service.mode = categorys[0].mode;
@@ -64,7 +70,6 @@ angular.module('starter.services')
             return value.market + ":" + value.code;
        });
         var url = AppConfigService.qoute_url + "last/"+ codes.join("|");
-        console.log(url);
         $http.get(url, { 
         	"timeout": 10000 ,
         	"params": {"mode":mode}
@@ -121,6 +126,9 @@ angular.module('starter.services')
                             if (qoute.value != q.value) {
                                 var sub = q.value - q.open;
                                 var sub_percent = sub / q.open;
+                                if(q.open == 0) {
+                                    sub_percent = 0;
+                                }
                                 q.change_value = sub.toFixed(2);
                                 q.change_percent = (sub_percent * 100).toFixed(2) + "%";
                                 if (sub >= 0) {

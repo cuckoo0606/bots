@@ -8,14 +8,21 @@
     <div class="panel-body">
         <ion-scroll>
         <ul class="list">
+            <li class="item">
+                <div class="row">
+                    <div class="col">商品</div>
+                    <div class="col">类型</div>
+                    <div class="col">金额</div>
+                    <div class="col">盈亏</div>
+                </div>
+            </li>
             <li class="item" ng-repeat="o in order_list" ng-click="show_hold_order_modal(o)">
-            <div class="row" ng-class="{ 'rise' : o.Profit > 0, 'fall': o.Profit < 0 }">
-                <div class="col">{{ o.Symbol }}</div>
-                <div class="category">{{ o.Category == "Bid" ? "买入" : "卖出" }}</div>
-                <div class="quantity">{{ o.Quantity }}</div>
-                <div class="col">{{ o.HoldPrice }}</div>
-                <div class="col">{{ o.Profit }}</div>
-            </div>
+                <div class="row" ng-class="{ 'rise' : o.profit > 0, 'fall': o.profit < 0 }">
+                    <div class="col">{{ o.assets.name }}</div>
+                    <div class="col">{{ o.direction == "1" ? "买涨" : "买跌" }}</div>
+                    <div class="col">{{ o.money }}</div>
+                    <div class="col">{{ o.profit }}</div>
+                </div>
             </li>
         </ul>
         </ion-scroll>

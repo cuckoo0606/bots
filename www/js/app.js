@@ -101,7 +101,7 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
 
     .state('trade', {
         cache: false,
-        url: '/trade/:qid',
+        url: '/trade/:mode/:market/:code',
         controller: "TradeCtrl",
         templateUrl: 'templates/trade.html'
     })

@@ -5,7 +5,6 @@ angular.module('starter.controllers', [])
             AppConfigService, CloseOrderService, UserService, OrderService, QouteService) {
     $scope.message = "";
     $scope.is_loading = false;
-    
     $scope.show_update = ionic.Platform.isAndroid();
     $scope.show_nav_bar = AppConfigService.show_nav_bar;
     $scope.system_name = AppConfigService.system_name;
@@ -30,16 +29,12 @@ angular.module('starter.controllers', [])
     }
 
     $scope.order_params = {
-        order_id: "",
-        limit_id: "",
-        quantity: 1,
-        stop_price: "",
-        profit_price: "",
-        limit_price: 0,
-        validity: "",
+        mode: 0,
+        amount: 0,
+        period: 0,
+        direction: 1,
     };
     $scope.modal_hold_order = {};
-    $scope.modal_limit_order = {};
     $scope.modal_close_order = {};
 
     $scope.toggleLeftSideMenu = function() {
@@ -63,13 +58,6 @@ angular.module('starter.controllers', [])
         $rootScope.trade_qoute = QouteService.qoute(order.symbol);
         $scope.hold_order_modal.show();
     };
-
-    $scope.show_limit_order_modal = function(order) {
-        $scope.order_params.limit_id = order.Id;
-        $scope.modal_limit_order = order;
-        $rootScope.trade_qoute = QouteService.qoute(order.symbol);
-        $scope.limit_order_modal.show();
-    };
     
     $ionicModal.fromTemplateUrl('templates/close-order-modal.html', {
         scope: $scope,
@@ -84,84 +72,38 @@ angular.module('starter.controllers', [])
         $scope.close_order_modal.show();
     };
 
-    $scope.toggle_order_panel = function() {
+    $scope.toggle_order_panel = function(direction) {
         $scope.hold_order_modal.hide();
-        $scope.limit_order_modal.hide();
         angular.element(document.querySelectorAll(".close-order-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".history-panel")).removeClass("open");
-        angular.element(document.querySelectorAll(".limit-order-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-panel")).toggleClass("open");
 
         if (angular.element(document.querySelectorAll(".order-panel")).hasClass("open")) {
-            $scope.order_params.order_id = "";
+            $rootScope.trade = QouteService.trade($rootScope.qoute.mode, $rootScope.qoute.market, $rootScope.qoute.code);
             $rootScope.trade_qoute = $rootScope.qoute;
-            $scope.order_params.quantity = 1;
-            $scope.order_params.stop_price = "";
-            $scope.order_params.profit_price = "";
-        }
-    };
-   
-    $scope.toggle_order_update = function(o) {
-        $scope.toggle_order_panel();
-
-        if (angular.element(document.querySelectorAll(".order-panel")).hasClass("open")) {
-            $rootScope.trade_qoute = QouteService.qoute(o.Symbol);
-            $scope.order_params.order_id = o.Id;
-            $scope.order_params.quantity = o.Quantity;
-            $scope.order_params.stop_price = o.StopPrice;
-            $scope.order_params.profit_price = o.ProfitPrice;
-        }
-    };
-    
-    $scope.toggle_limit_order_panel = function() {
-        $scope.hold_order_modal.hide();
-        $scope.limit_order_modal.hide();
-        angular.element(document.querySelectorAll(".order-panel")).removeClass("open");
-        angular.element(document.querySelectorAll(".history-panel")).removeClass("open");
-        angular.element(document.querySelectorAll(".limit-order-panel")).toggleClass("open");
-
-        if (angular.element(document.querySelectorAll(".limit-order-panel")).hasClass("open")) {
-            $rootScope.trade_qoute = $rootScope.qoute;
-            $scope.order_params.limit_id = "";
-            $scope.order_params.quantity = 1;
-            $scope.order_params.stop_price = "";
-            $scope.order_params.profit_price = "";
-            $scope.order_params.limit_price = 0;
-            $scope.order_params.validity = $filter('date')(new Date(), 'yyyy-MM-dd');
-        }
-    };
-   
-    $scope.toggle_limit_order_update = function(o) {
-        $scope.toggle_limit_order_panel();
-
-        if (angular.element(document.querySelectorAll(".limit-order-panel")).hasClass("open")) {
-            $rootScope.trade_qoute = QouteService.qoute(o.Symbol);
-            $scope.order_params.limit_id = o.Id;
-            $scope.order_params.quantity = o.Quantity;
-            $scope.order_params.stop_price = o.StopPrice;
-            $scope.order_params.profit_price = o.ProfitPrice;
-            $scope.order_params.limit_price = o.LimitPrice;
-            $scope.order_params.validity = o.Time;
+            $scope.order_params.mode = $rootScope.qoute.mode;
+            $scope.order_params.period = $rootScope.trade.cycle[0];
+            $scope.order_params.amount = $rootScope.trade.amounts[0];
+            $scope.order_params.direction = direction == "lookup" ? "1" : "0";
+            console.log($scope.order_params.direction);
         }
     };
 
     $scope.toggle_close_order_panel = function() {
         $scope.hold_order_modal.hide();
-        $scope.limit_order_modal.hide();
         angular.element(document.querySelectorAll(".order-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".history-panel")).removeClass("open");
-        angular.element(document.querySelectorAll(".limit-order-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".close-order-panel")).toggleClass("open");
     };
 
     $scope.toggle_history_order_panel = function() {
         $scope.hold_order_modal.hide();
-        $scope.limit_order_modal.hide();
         angular.element(document.querySelectorAll(".close-order-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-panel")).removeClass("open");
-        angular.element(document.querySelectorAll(".limit-order-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".history-panel")).toggleClass("open");
     };
+
+    $scope.order_profit = OrderService.order_profit;
 
     $scope.close_order = function() {
         var order = {
@@ -197,91 +139,15 @@ angular.module('starter.controllers', [])
         });
     };
 
-    $scope.limitorder = function(category) {
-        var order = {
-            "id": $scope.order_params.limit_id,
-            "user": UserService.user.Id,
-            "category": category,
-            "limit_price": $scope.order_params.limit_price,
-            "quantity": $scope.order_params.quantity,
-            "symbol": $rootScope.qoute.Id,
-            "stop_price": $scope.order_params.stop_price,
-            "profit_price": $scope.order_params.profit_price,
-            "validity": $scope.order_params.validity,
-        };
-
-        $scope.is_loading = true;
-        LimitOrderService.order({
-            "order": order,
-            "success": function(status, message) {
-                $scope.toggle_limit_order_panel();
-                $scope.is_loading = false;
-                $scope.message = "交易成功";
-                $timeout(function () {
-                    $scope.message = "";
-                }, 2000);
-            },
-            "fail": function(status, message) {
-                $scope.is_loading = false;
-                $scope.message = message;
-                $timeout(function () {
-                    $scope.message = "";
-                }, 2000);
-            },
-            "error": function(status, message) {
-                $scope.is_loading = false;
-                $scope.message = "网络错误";
-                $timeout(function () {
-                    $scope.message = "";
-                }, 2000);
-            },
-        });
-    };
-
-    $scope.cancel_limitorder = function() {
-        var params = {
-            "id": $scope.order_params.limit_id,
-            "user": UserService.user.Id,
-        };
-
-        $scope.is_loading = true;
-        LimitOrderService.cancel_order({
-            "params": params,
-            "success": function(status, message) {
-                $scope.limit_order_modal.hide();
-                $scope.is_loading = false;
-                $scope.message = "操作成功";
-                $timeout(function () {
-                    $scope.message = "";
-                }, 2000);
-            },
-            "fail": function(status, message) {
-                $scope.is_loading = false;
-                $scope.message = message;
-                $timeout(function () {
-                    $scope.message = "";
-                }, 2000);
-            },
-            "error": function(status, message) {
-                $scope.is_loading = false;
-                $scope.message = "网络错误";
-                $timeout(function () {
-                    $scope.message = "";
-                }, 2000);
-            },
-        });
-    };
-
     $scope.order = function(category) {
         var order = {
-            "id": $scope.order_params.order_id,
-            "user": UserService.user.Id,
-            "category": category,
-            "quantity": $scope.order_params.quantity,
-            "symbol": $rootScope.qoute.Id,
-            "stop_price": $scope.order_params.stop_price,
-            "profit_price": $scope.order_params.profit_price,
+            "money": $scope.order_params.amount,
+            "cycle": $scope.order_params.period.time,
+            "direction": $scope.order_params.direction,
+            "trade": $rootScope.trade.trade,
         };
+
+        console.log(order);
 
         $scope.is_loading = true;
         OrderService.order({
