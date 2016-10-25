@@ -5,22 +5,26 @@ angular.module('starter.services')
     var service = this;
 
     this.signin = function(params) {
-        var url = AppConfigService.api_url + "user/login";
-        $http.get(url, { 
+        var url = AppConfigService.build_api_url("v1/authorize");
+        $http({
+            "url": url,
+            "method": "POST", 
             "timeout": 10000,
-            "params": { "username": params.username, "passwd": params.passwd } 
+            "data": { "username": params.username, "password": params.passwd } 
         })
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
+            console.log(protocol);
+            if (!protocol.error_code) {
                 if (params.success) {
-                    service.user = protocol.data;
-                    params.success(protocol.return_code, protocol.return_message, protocol.data);
+                    AppConfigService.token = protocol.access_token,
+                    //service.user = protocol.data;
+                    params.success("SUCCESS", protocol);
                 }
             }
             else {
                 if (params.fail) {
-                    params.fail(protocol.return_code, protocol.return_message);
+                    params.fail("FAIL", protocol);
                 }
             }
         })
