@@ -8,8 +8,10 @@ angular.module('starter.services', [])
         { 
             "name": "REAL", 
             "text": "实盘交易", 
-            "url": "http://120.26.224.153:8090/", 
+            //"url": "http://120.26.224.153:8090/", 
             //"url": "http://192.168.31.240:8090/", 
+            "url": "http://120.24.44.211:4002",
+            "qouteurl": "http://120.24.44.211:7703"
         },
     ];
 
@@ -20,7 +22,7 @@ angular.module('starter.services', [])
     this.show_nav_bar = true;
     this.show_signup_code = true;
     this.api_url = this.remote_list[0].url;
-
+	this.qoute_url = this.remote_list[0].qouteurl;
     this.bank_list = [ 
             "招商银行", 
             "工商银行", 
