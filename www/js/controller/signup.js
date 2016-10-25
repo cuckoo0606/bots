@@ -73,12 +73,12 @@ angular.module('starter.controllers')
         $scope.is_signin = true;
         $scope.spinner(true);
         UserService.signup({
-            "username": $scope.user.username,
-            "passwd": $scope.user.passwd,
-            "code": $scope.user.code,
-            "success": function(status, message, user) {
+            "phone": $scope.user.phone, 
+            "passwd": $scope.user.passwd ,
+            "referralcode":$scope.user.referralcode,
+            "code":$scope.user.code,
+            "success": function(user) {
                 $rootScope.user = user;
-                $window.localStorage.id = user.Id;
                 $ionicHistory.clearHistory();
 
                 QouteService.init(function() {

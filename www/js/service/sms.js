@@ -12,6 +12,7 @@ angular.module('starter.services')
         })
         
         .success(function(protocol) {
+        	console.log("succee")
             if (protocol.return_code === "SUCCESS") {
                 if (params.success) {
                     params.success(protocol.return_code, protocol.return_message);

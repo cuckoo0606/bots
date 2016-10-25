@@ -40,17 +40,14 @@ angular.module('starter.services')
             "url": signupUrl,
             "method": "POST", 
             "timeout": 10000,
-            "data": { "username": params.phone, "password": params.passwd ,"referral_code":params.referralcode,"smscode":params.code} 
+            "data": { "username": params.phone, "password": params.passwd ,"referral_code":params.referralcode,"sms_code":params.code} 
         })
-        
         .success(function(protocol) {
-        	
-            if (!protocol.error_code) {
-                if (!PARAM_ERROR) {
+        	console.log(protocol);
+            if (!protocol.error) {
                 	console.log(protocol);
-                    service.user = protocol.data;
-                    params.success(protocol.return_code, protocol.return_message, protocol.data);
-                }
+                    service.user = protocol;
+                    params.success(protocol);
             }
             else {
                 if (params.fail) {
