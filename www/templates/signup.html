@@ -11,23 +11,11 @@
     </div>
     <div class="signin-content">
         <div class="list">
-            <label class="item item-input">
+            <label class="item item-input" style="display: none;">
                 <span class="input-label">
                     <i class="ion-ios-person-outline"></i>
                 </span>
                 <input type="text" placeholder="用户" ng-model="user.username" required />
-            </label>
-            <label class="item item-input">
-                <span class="input-label">
-                    <i class="ion-ios-locked-outline"></i>
-                </span>
-                <input type="password" placeholder="密码" ng-model="user.passwd" required />
-            </label>
-            <label class="item item-input">
-                <span class="input-label">
-                    <i class="ion-ios-locked-outline"></i>
-                </span>
-                <input type="password" placeholder="确认密码" ng-model="user.confirm" required />
             </label>
             <label class="item item-input" ng-show="show_signup_code">
                 <span class="input-label">
@@ -46,6 +34,24 @@
                     {{ sms_btn_text }}
                 </button>
             </div>
+            <label class="item item-input">
+                <span class="input-label">
+                    <i class="ion-ios-locked-outline"></i>
+                </span>
+                <input type="password" placeholder="密码" ng-model="user.passwd" required />
+            </label>
+            <label class="item item-input">
+                <span class="input-label">
+                    <i class="ion-ios-locked-outline"></i>
+                </span>
+                <input type="password" placeholder="确认密码" ng-model="user.confirm" required />
+            </label>
+            <label class="item item-input">
+                <span class="input-label">
+                    <i class="ion-ios-person-outline"></i>
+                </span>
+                <input type="text" placeholder="推荐码" ng-model="user.referralcode" required />
+            </label>
             <label class="signin-tools item item-checkbox">
                 <ion-checkbox ng-model="user.agree">
                     我已阅读《风险提醒》
@@ -61,7 +67,7 @@
         </div>
         <div class="signin-action">
             <button class="button button-block signin-button" ng-click="signup()"
-                ng-disabled="!user.username || !user.passwd || !user.confirm || !user.agree">
+                ng-disabled="!user.phone || !user.code || !user.confirm || !user.agree">
                 注册登陆
             </button>
         </div>

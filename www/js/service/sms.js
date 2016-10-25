@@ -2,10 +2,13 @@ angular.module('starter.services')
 
 .service('SMSService', function($http, AppConfigService) {
     this.get_verify = function(params) {
-        var url = AppConfigService.api_url + "sms/get";
-        $http.get(url, { 
+        var verifyUrl = AppConfigService.api_url + "v1/smscode";
+        console.log(verifyUrl);
+        $http({
+            "url": verifyUrl,
+            "method": "POST", 
             "timeout": 10000,
-            "params": { "phone": params.phone } 
+            "data": { "phone": params.phone} 
         })
         
         .success(function(protocol) {

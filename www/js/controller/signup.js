@@ -33,8 +33,8 @@ angular.module('starter.controllers')
     }; 
 
     $scope.signup = function() {
-        if ($scope.user.username == "") {
-            $ionicLoading.show({ template: "用户名不能为空。" });
+        if ($scope.user.phone == "") {
+            $ionicLoading.show({ template: "手机号不能为空。" });
             $timeout(function() {
                 $ionicLoading.hide();
             }, 1000);
@@ -75,7 +75,6 @@ angular.module('starter.controllers')
         UserService.signup({
             "username": $scope.user.username,
             "passwd": $scope.user.passwd,
-            "group": $scope.user_category.name,
             "code": $scope.user.code,
             "success": function(status, message, user) {
                 $rootScope.user = user;
