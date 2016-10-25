@@ -22,23 +22,23 @@
                     </div>
                     <div class="qoute-view-content">
                         <ion-scroll>
-                            <ul ng-repeat="q in qoute_list | filter: { Category: c.mode }">
+                            <ul ng-repeat="q in qoute_list | filter: { mode: c.mode }">
                                 <li>
-                                    <a href="#/trade/{{ q.Id }}">{{ q.Id }}</a>
+                                    <a href="#/trade/{{ q.Id }}">{{ q.name }}</a>
                                 </li>
                                 <li>
                                     <a ng-class="{ 'rise' : q.Fluctuation, 'fall' : !q.Fluctuation }" href="#/trade/{{ q.Id }}">
-                                        {{ q.Ask.toFixed(q.DecimalCount) }}
+                                        {{ q.value.toFixed(q.decimal) }}
                                     </a>
                                 </li>
                                 <li>
                                     <a ng-class="{ 'rise' : q.Fluctuation, 'fall' : !q.Fluctuation }" href="#/trade/{{ q.Id }}">
-                                        {{ q.ChangeValue }}
+                                        {{ q.change_value }}
                                     </a>
                                 </li>
                                 <li>
                                     <a ng-class="{ 'rise' : q.Fluctuation, 'fall' : !q.Fluctuation }" href="#/trade/{{ q.Id }}">
-                                        {{ q.ChangePercent }}
+                                        {{ q.change_percent }}
                                     </a>
                                 </li>
                             </ul>
