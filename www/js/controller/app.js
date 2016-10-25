@@ -2,10 +2,10 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $rootScope, $ionicModal, $ionicSideMenuDelegate, 
             $timeout, $filter, $ionicPlatform, $ionicHistory, $state,
-            AppConfigService, AccountService, CloseOrderService, UserService, OrderService, QouteService) {
+            AppConfigService, CloseOrderService, UserService, OrderService, QouteService) {
     $scope.message = "";
     $scope.is_loading = false;
-    $scope.account = AccountService.account;
+    
     $scope.show_update = ionic.Platform.isAndroid();
     $scope.show_nav_bar = AppConfigService.show_nav_bar;
     $scope.system_name = AppConfigService.system_name;

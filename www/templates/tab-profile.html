@@ -8,35 +8,9 @@
             </h4>
         </div>
         <div class="col">
-            <div class="capital-title">帐户净值</div>
-            <h4 class="capital-label" ng-class="{ 'rise' : account.Net >= 0, 'fall' : account.Net < 0 }">
-                {{ account.Net }}
-            </h4>
-        </div>
-        <div class="col">
             <div class="capital-title">浮动盈亏</div>
             <h4 class="capital-label" ng-class="{ 'rise' : account.Profit >= 0, 'fall' : account.Profit < 0 }">
-                {{ account.Profit }}
-            </h4>
-        </div>
-    </div>
-    <div class="row profile-capital">
-        <div class="col">
-            <div class="capital-title">占用保证金</div>
-            <h4 class="capital-label" ng-class="{ 'rise' : account.OccupiedMoney >= 0, 'fall' : account.OccupiedMoney < 0 }">
-                {{ account.OccupiedMoney }}
-            </h4>
-        </div>
-        <div class="col">
-            <div class="capital-title">冻结保证金</div>
-            <h4 class="capital-label" ng-class="{ 'rise' : account.FreezingMoney >= 0, 'fall' : account.FreezingMoney < 0 }">
-                {{ account.FreezingMoney }}
-            </h4>
-        </div>
-        <div class="col">
-            <div class="capital-title">可用保证金</div>
-            <h4 class="capital-label" ng-class="{ 'rise' : account.FreeMoney >= 0, 'fall' : account.FreeMoney < 0 }">
-                {{ account.FreeMoney }}
+                66
             </h4>
         </div>
     </div>
@@ -44,19 +18,13 @@
         <div class="col">
             <div class="capital-title">持仓数量</div>
             <h4 class="capital-label rise">
-                {{ order_quantity_sum() }}
+                5
             </h4>
         </div>
         <div class="col">
-            <div class="capital-title">挂单数量</div>
+            <div class="capital-title">已完成数量</div>
             <h4 class="capital-label rise">
-                {{ limit_order_quantity_sum() }}
-            </h4>
-        </div>
-        <div class="col">
-            <div class="capital-title">风险系数</div>
-            <h4 class="capital-label" ng-class="{ 'rise' : account.Risk >= 0, 'fall' : account.Risk < 0 }">
-                {{ account.RiskString }}
+                6
             </h4>
         </div>
     </div>

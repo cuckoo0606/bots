@@ -35,7 +35,7 @@ angular.module('starter.services')
     };
 
     this.signup = function(params) {
-        var signupUrl = AppConfigService.build_api_url("user/rigister");
+        var signupUrl = AppConfigService.build_api_url("/v1/user/simulation");
         $http({
             "url": signupUrl,
             "method": "POST", 

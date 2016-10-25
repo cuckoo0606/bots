@@ -1,13 +1,13 @@
 angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce,
-            UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
+            UserService, OrderService, CloseOrderService, AppConfigService, CapitalService,AccountService) {
     OrderService.init(function(){ });
     CloseOrderService.init(function(){ });
-    
+    console.log(AccountService.Amount);
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
-
+	$scope.account = AccountService.account;
     $scope.pay_modal_url = "";
     $scope.deposit_bank_list = [];
     $scope.bank_list = AppConfigService.bank_list;
