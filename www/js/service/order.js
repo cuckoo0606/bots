@@ -62,7 +62,7 @@ angular.module('starter.services')
     }
 
     this.request_order_list = function(complete) {
-        var orderTodayUrl = AppConfigService.build_api_url("v1/orders/today");
+        var orderTodayUrl = AppConfigService.build_api_url("v1/orders");
         $http.get(orderTodayUrl, {
             "timeout": 3000,
             "params": { "status":"1" }
@@ -70,7 +70,7 @@ angular.module('starter.services')
         .success(function(protocol) {
             // if (protocol.return_code === "SUCCESS") {
                 if (complete) {
-                    complete(protocol);
+                    complete(protocol.data);
                 }
             // }
         });
