@@ -78,6 +78,11 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
         templateUrl: 'templates/signin.html'
     })
 
+    .state('install', {
+        url: '/install',
+        templateUrl: 'templates/install.html'
+    })
+
     .state('cpa', {
         url: '/cpa',
         templateUrl: 'templates/cp-agreement.html'
@@ -103,41 +108,42 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
 
     .state('tab', {
         url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html',
+        abstract: true,
+        templateUrl: 'templates/tabs.html',
     })
 
     .state('tab.qoute', {
         url: '/qoute',
-    views: {
-        'tab-qoute': {
-            controller: "QouteCtrl",
-    templateUrl: 'templates/tab-qoute.html',
+        views: {
+            'tab-qoute': {
+                controller: "QouteCtrl",
+                templateUrl: 'templates/tab-qoute.html',
+            }
         }
-    }
     })
 
     .state('tab.profile', {
         url: '/profile',
-    views: {
-        'tab-profile': {
-            controller: "ProfileCtrl",
-    templateUrl: 'templates/tab-profile.html',
+        views: {
+            'tab-profile': {
+                controller: "ProfileCtrl",
+                templateUrl: 'templates/tab-profile.html',
+            }
         }
-    }
     })
 
     .state('tab.history', {
         url: '/history/:index',
-    views: {
-        'tab-history': {
-            cache: false,
-    controller: "HistoryCtrl",
-    templateUrl: 'templates/tab-history.html',
+        views: {
+            'tab-history': {
+                cache: false,
+                controller: "HistoryCtrl",
+                templateUrl: 'templates/tab-history.html',
+            }
         }
-    }
     });
 
     $urlRouterProvider.otherwise('/signin');
+    //$urlRouterProvider.otherwise('/install');
 
 });
