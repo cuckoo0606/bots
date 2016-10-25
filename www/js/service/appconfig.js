@@ -3,18 +3,13 @@ angular.module('starter.services', [])
 .service('AppConfigService', function(ionicToast, $http, $ionicLoading, $ionicPopup) {
     var service = this;
     
+    this.token = "";
     this.remote_list = [ 
         { 
-            "name": "Real", 
+            "name": "REAL", 
             "text": "实盘交易", 
             "url": "http://120.26.224.153:8090/", 
             //"url": "http://192.168.31.240:8090/", 
-            "user_category" : [ 
-                { 
-                    "name" : "Customer", 
-                    "text" : "真实用户" 
-                } 
-            ], 
         },
     ];
 
@@ -39,6 +34,10 @@ angular.module('starter.services', [])
             "浦发银行", 
             "华夏银行", 
         ];
+
+    this.build_api_url = function(url) {
+        return service.api_url + url + "?token=" + service.token;
+    }
 
     this.update = function (url) {
         if (!ionic.Platform.isAndroid()) {
