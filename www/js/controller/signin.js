@@ -36,15 +36,26 @@ angular.module('starter.controllers')
             "username": $scope.username,
             "passwd": $scope.passwd,
             "success": function(status, message, user) {
-                $rootScope.user = user;
-                $window.localStorage.id = user.Id;
-                $ionicHistory.clearHistory();
-
-                QouteService.init(function() {
-                    $scope.is_signin = false;
-                    $scope.spinner(false);
-                    $state.go("tab.qoute");
-                });
+            	var userUrl=AppConfigService.build_api_url("v1/user")
+            	$http.get(userUrl, { 
+		            "timeout": 10000,
+		            "params": {} 
+		        }).success(function(protocol){
+		        	$window.localStorage.id = protocol.username;
+		        	$rootScope.user = protocol;
+		        	$ionicHistory.clearHistory();
+					
+	                QouteService.init(function() {
+	                    $scope.is_signin = false;
+	                    $scope.spinner(false);
+	                    $state.go("tab.qoute");
+	                });
+		        })
+		        .error(function(protocol) {
+		            if (params.error) {
+		                params.error("ERROR", "网络错误");
+		            }
+		        });
             },
             "fail": function(status, message) {
                 $scope.message = message;

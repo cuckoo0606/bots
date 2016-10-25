@@ -14,11 +14,9 @@ angular.module('starter.services')
         })
         
         .success(function(protocol) {
-            console.log(protocol);
             if (!protocol.error_code) {
                 if (params.success) {
-                    AppConfigService.token = protocol.access_token,
-                    //service.user = protocol.data;
+                    AppConfigService.token = protocol.access_token;
                     params.success("SUCCESS", protocol);
                 }
             }

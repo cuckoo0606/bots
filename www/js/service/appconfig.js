@@ -10,8 +10,8 @@ angular.module('starter.services', [])
             "text": "实盘交易", 
             //"url": "http://120.26.224.153:8090/", 
             //"url": "http://192.168.31.240:8090/", 
-            "url": "http://120.24.44.211:4002",
-            "qouteurl": "http://120.24.44.211:7703"
+            "url": "http://120.24.44.211:4002/",
+            "qouteurl": "http://120.24.44.211:7703/"
         },
     ];
 
@@ -38,7 +38,7 @@ angular.module('starter.services', [])
         ];
 
     this.build_api_url = function(url) {
-        return service.api_url + url + "?token=" + service.token;
+        return service.api_url + url + "?access_token=" + service.token;
     }
 
     this.update = function (url) {

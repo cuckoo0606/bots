@@ -4,7 +4,7 @@
             <ul>
                 <li ng-repeat="c in category_list" ng-click="change_category($index)" 
                 ng-class="{ 'active' : category_index === $index }"> 
-                    {{ c }}
+                    {{ c.name }}
                 </li>
             </ul>
         </div>
@@ -14,15 +14,15 @@
                 <div class="qoute-view">
                     <div class="qoute-view-header">
                         <ul>
-                            <li>名称</li>
-                            <li>最新</li>
-                            <li>涨跌</li>
-                            <li>涨跌幅</li>
+                            <li>商品名称</li>
+                            <li>最高价</li>
+                            <li>最低价</li>
+                            <li>现价</li>
                         </ul>
                     </div>
                     <div class="qoute-view-content">
                         <ion-scroll>
-                            <ul ng-repeat="q in qoute_list | filter: { Category: c }">
+                            <ul ng-repeat="q in qoute_list | filter: { Category: c.mode }">
                                 <li>
                                     <a href="#/trade/{{ q.Id }}">{{ q.Id }}</a>
                                 </li>

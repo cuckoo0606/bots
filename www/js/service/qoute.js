@@ -2,6 +2,7 @@ angular.module('starter.services')
 
 .service('QouteService', function($http, $interval, $filter, AppConfigService) {
     var service = this;
+    this.mode = 0;
     this.qoute_list = [];
     this.category_list = [];
 
@@ -11,8 +12,20 @@ angular.module('starter.services')
             return result[0];
         }
         return false;
-    }
-
+    };
+    
+	this.request_category = function(complete) {
+        if (complete) {
+        	service.mode = 2;
+            complete([
+            	{ "mode":1, "name": "多空期权"},
+            	{ "mode":2, "name": "按需期权"},
+            	{ "mode":3, "name": "期间期权"},
+            	{ "mode":4, "name": "一触即付"},
+            ]);
+        }
+    };
+    
     this.request_qoute = function(id, complete) {
         var url = AppConfigService.api_url + "qoute/get";
         $http.get(url, { 
@@ -29,32 +42,36 @@ angular.module('starter.services')
         });
     }
 
-    this.request_qoute_list = function(complete) {
-        var url = AppConfigService.api_url + "qoute/list";
-        $http.get(url, { "timeout": 10000 })
+    this.request_qoute_names = function(mode, complete) {
+        var tradesurl = AppConfigService.build_api_url("v1/trades");
+        $http.get(tradesurl, {
+        	"timeout": 10000 ,
+        	"params": {"mode": mode}
+    	})
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
-                if (complete) {
-                    complete(protocol.data);
-                }
-            }
+        	angular.forEach(protocol, function(value) {
+        		service.qoute_list.push(value);
+        	});
         });
     }
 
-    this.request_category = function(complete) {
-        var url = AppConfigService.api_url + "qoute/category";
-        $http.get(url, { "timeout": 10000 })
-
+    this.request_qoute_list = function(mode,complete) {
+	   	var codes = service.qoute_list.map(function(value) {
+            return value.market + ":" + value.code;
+       });
+        var url = AppConfigService.qoute_url + "last/"+ "|"+codes.join();
+        $http.get(url, { 
+        	"timeout": 10000 ,
+        	"params": {"mode":mode}
+    	})
+        
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
-
-                if (complete) {
-                    complete(protocol.data);
-                }
-            }
+                
         });
-    };
+    }
+
+    
 
     this.init = function(complete) {
         this.request_category(function(category_list) {
@@ -65,9 +82,13 @@ angular.module('starter.services')
                 complete();
             }
         });
-        
+        service.category_list.forEach(function(value){
+        	return service.request_qoute_names(value.mode);
+        })
+        console.log(service.qoute_list);
         $interval(function() {
-            service.request_qoute_list(function(qoute_list) {
+      	
+            service.request_qoute_list(service.mode, function(qoute_list) {
                 angular.forEach(qoute_list, function(value) {
                     var q = service.qoute(value.Id);
                     if(!q) {
