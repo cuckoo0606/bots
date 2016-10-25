@@ -7,11 +7,17 @@ angular.module('starter.services', [])
     this.remote_list = [ 
         { 
             "name": "REAL", 
-            "text": "实盘交易", 
-            //"url": "http://120.26.224.153:8090/", 
+            "text": "实盘交易",
+            // "url": "http://120.26.224.153:8090/",
+
             //"url": "http://192.168.31.240:8090/", 
+// <<<<<<< Updated upstream
             "url": "http://120.24.44.211:4002/",
             "qouteurl": "http://120.24.44.211:7703/"
+// =======
+            // "url": "http://120.24.44.211:4002",
+            // "qouteurl": "http://120.24.44.211:7703"
+// >>>>>>> Stashed changes
         },
     ];
 
@@ -37,8 +43,15 @@ angular.module('starter.services', [])
             "华夏银行", 
         ];
 
-    this.build_api_url = function(url) {
-        return service.api_url + url + "?access_token=" + service.token;
+    this.build_api_url = function(url, params) {
+        var url = service.api_url + url + "?access_token=" + service.token;
+        if(params) {
+            var args = params.map(function(key) {
+                return key + "=" + params[key];
+            });
+            url += "&" + args.join("&");
+        }
+        return url;
     }
 
     this.update = function (url) {

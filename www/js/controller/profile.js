@@ -1,13 +1,11 @@
 angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce,
-            UserService, OrderService, LimitOrderService, CloseOrderService, AppConfigService, CapitalService) {
+            UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
     OrderService.init(function(){ });
-    LimitOrderService.init(function(){ });
     CloseOrderService.init(function(){ });
     
     $scope.order_list = OrderService.order_list;
-    $scope.limit_order_list = LimitOrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
 
     $scope.pay_modal_url = "";
@@ -179,14 +177,6 @@ angular.module('starter.controllers')
     $scope.order_quantity_sum = function() {
         var sum = 0;
         angular.forEach($scope.order_list, function(value) {
-            sum += value.Quantity;
-        });
-        return sum;
-    }
-
-    $scope.limit_order_quantity_sum = function() {
-        var sum = 0;
-        angular.forEach($scope.limit_order_list, function(value) {
             sum += value.Quantity;
         });
         return sum;

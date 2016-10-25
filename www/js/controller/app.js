@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $rootScope, $ionicModal, $ionicSideMenuDelegate, 
             $timeout, $filter, $ionicPlatform, $ionicHistory, $state,
-            AppConfigService, AccountService, CloseOrderService, UserService, OrderService, LimitOrderService, QouteService) {
+            AppConfigService, AccountService, CloseOrderService, UserService, OrderService, QouteService) {
     $scope.message = "";
     $scope.is_loading = false;
     $scope.account = AccountService.account;
@@ -63,13 +63,6 @@ angular.module('starter.controllers', [])
         $rootScope.trade_qoute = QouteService.qoute(order.symbol);
         $scope.hold_order_modal.show();
     };
-    
-    $ionicModal.fromTemplateUrl('templates/limit-order-modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.limit_order_modal = modal;
-    });
 
     $scope.show_limit_order_modal = function(order) {
         $scope.order_params.limit_id = order.Id;

@@ -34,18 +34,19 @@ angular.module('starter.services')
     }
 
     this.request_order_list = function(complete) {
-        var url = AppConfigService.api_url + "closeorder/list";
-        $http.get(url, { 
-            "timeout": 3000,
-            "params": { "user": UserService.user.Id }
+        var orderListUrl = AppConfigService.build_api_url("v1/orders");
+
+        $http.get(orderListUrl, {
+            "timeout": 3000 ,
+            "params": {"status": [110,120]}
         })
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
+            // if (protocol.return_code === "SUCCESS") {
                 if (complete) {
                     complete(protocol.data);
                 }
-            }
+            // }
         });
     }
 
@@ -64,7 +65,7 @@ angular.module('starter.services')
                     complete();
                 }
             });
-            
+
             $interval(function() {
                 service.request_order_list(function(order_list) {
                     while(service.order_list.length) {
@@ -73,12 +74,12 @@ angular.module('starter.services')
                     angular.forEach(order_list, function(value) {
                         service.order_list.push(value);
                     });
-
                     if (complete) {
                         complete();
                     }
                 });
             }, 5000);
+
         }
     };
 

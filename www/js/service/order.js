@@ -11,7 +11,7 @@ angular.module('starter.services')
         $http.get(url, { 
             "timeout": 10000,
             "params": params.order,
-        })
+    })
         
         .success(function(protocol) {
             if (protocol.return_code === "SUCCESS") {
@@ -62,18 +62,17 @@ angular.module('starter.services')
     }
 
     this.request_order_list = function(complete) {
-        var url = AppConfigService.api_url + "order/list";
-        $http.get(url, { 
+        var orderTodayUrl = AppConfigService.build_api_url("v1/orders/today");
+        $http.get(orderTodayUrl, {
             "timeout": 3000,
-            "params": { "user": UserService.user.Id }
+            "params": { "status":"1" }
         })
-        
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
+            // if (protocol.return_code === "SUCCESS") {
                 if (complete) {
-                    complete(protocol.data);
+                    complete(protocol);
                 }
-            }
+            // }
         });
     }
 
