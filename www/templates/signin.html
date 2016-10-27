@@ -14,7 +14,7 @@
                 <span class="input-label">
                     <i class="ion-ios-person-outline"></i>
                 </span>
-                <input type="text" placeholder="用户" ng-model="username" required />
+                <input type="text" placeholder="手机号码" ng-model="phone" required />
             </label>
             <label class="item item-input">
                 <span class="input-label">
@@ -29,7 +29,7 @@
         </div>
         <div class="signin-action">
             <button class="button button-block signin-button" ng-click="signin()" 
-                ng-disabled="!username || !passwd">
+                ng-disabled="!phone || !passwd">
                 立即登陆
             </button>
         </div>

@@ -21,7 +21,7 @@ angular.module('starter.controllers')
     $scope.order_list = OrderService.order_list;
     $rootScope.qoute = QouteService.qoute($scope.mode, $scope.market, $scope.code);
 
-    OrderService.init(function(){ });
+//  OrderService.init(function(){ });
 
     $scope.stockChartId = $echarts.generateInstanceIdentity();
     $scope.stockOption = {

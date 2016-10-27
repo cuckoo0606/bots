@@ -10,7 +10,7 @@ angular.module('starter.services')
             "url": url,
             "method": "POST", 
             "timeout": 10000,
-            "data": { "username": params.username, "password": params.passwd } 
+            "data": { "username": params.phone, "password": params.passwd } 
         })
         
         .success(function(protocol) {
@@ -33,9 +33,10 @@ angular.module('starter.services')
             }
         });
     };
-
+    
     this.signup = function(params) {
         var signupUrl = AppConfigService.api_url + "v1/register";
+        
         $http({
             "url": signupUrl,
             "method": "POST", 
@@ -43,11 +44,12 @@ angular.module('starter.services')
             "data": { "username": params.phone, "password": params.passwd ,"referral_code":params.referralcode,"sms_code":params.code} 
         })
         .success(function(protocol) {
-        	console.log(protocol);
+        	if(protocol.error=="USER_EXIST"){
+        		alert("用户已存在");
+        	}
             if (!protocol.error) {
-                	console.log(protocol);
-                    service.user = protocol;
-                    params.success(protocol);
+            	console.log("注册成功");
+                params.success();
             }
             else {
                 if (params.fail) {

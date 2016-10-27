@@ -77,8 +77,49 @@ angular.module('starter.controllers')
             "passwd": $scope.user.passwd ,
             "referralcode":$scope.user.referralcode,
             "code":$scope.user.code,
-            "success": function(user) {
-                $rootScope.user = user;
+            "success": function() {
+                UserService.signin({
+		            "phone": $scope.user.phone,
+		            "passwd": $scope.user.passwd,
+		            "success": function(status, message, user) {
+		            	var userUrl=AppConfigService.build_api_url("v1/user")
+		            	$http.get(userUrl, { 
+				            "timeout": 10000,
+				            "params": {} 
+				        }).success(function(protocol){
+				        	$window.localStorage.id = protocol.username;
+				        	$rootScope.user = protocol;
+				        	$ionicHistory.clearHistory();
+							
+			                QouteService.init(function() {
+			                    $scope.is_signin = false;
+			                    $scope.spinner(false);
+			                    $state.go("tab.qoute");
+			                });
+				        })
+				        .error(function(protocol) {
+				            if (params.error) {
+				                params.error("ERROR", "网络错误");
+				            }
+				        });
+		            },
+		            "fail": function(status, message) {
+		                $scope.message = message;
+		                $timeout(function() {
+		                    $scope.message = "";
+		                    $scope.spinner(false);
+		                    $scope.is_signin = false;
+		                }, 2000);
+		            },
+		            "error": function(status, message) {
+		                $scope.message = message;
+		                $timeout(function() {
+		                    $scope.message = "";
+		                    $scope.spinner(false);
+		                    $scope.is_signin = false;
+		                }, 2000);
+		            },
+		        });
                 $ionicHistory.clearHistory();
 
                 QouteService.init(function() {
@@ -120,7 +161,7 @@ angular.module('starter.controllers')
 
         SMSService.get_verify({
             "phone": $scope.user.phone,
-            "success": function(status, message, user) {
+            "success": function() {
                 $ionicLoading.hide();
                 $scope.sms_remaining = 60;
 

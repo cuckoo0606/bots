@@ -26,7 +26,7 @@ angular.module('starter.controllers')
         $scope.is_signin = true;
         $scope.spinner(true);
         UserService.signin({
-            "username": $scope.username,
+            "phone": $scope.phone,
             "passwd": $scope.passwd,
             "success": function(status, message, user) {
             	var userUrl=AppConfigService.build_api_url("v1/user")
