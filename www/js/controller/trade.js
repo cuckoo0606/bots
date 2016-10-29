@@ -20,8 +20,13 @@ angular.module('starter.controllers')
 
     $scope.order_list = OrderService.order_list;
     $rootScope.qoute = QouteService.qoute($scope.mode, $scope.market, $scope.code);
+    $scope.addfavo = false;
+    $scope.collection = [];
+    $scope.indexList = ["指标","MACD","RSI","DMI","DMA","MACD","RSI","DMI","DMA","MACD","RSI","DMI","DMA","MACD"];
+    $scope.account_list = []
 
-    OrderService.init(function(){ });
+    // OrderService.init(function(){ });
+
 
     $scope.stockChartId = $echarts.generateInstanceIdentity();
     $scope.stockOption = {
@@ -101,7 +106,7 @@ angular.module('starter.controllers')
             }
         ],
         dataZoom: [
-            { xAxisIndex: [0, 1], start: 0, end: 100, type : 'inside' },
+            { xAxisIndex: [0, 1], start: 50, end: 100, type : 'inside' },
         ],
         series: [
             {
@@ -349,4 +354,23 @@ angular.module('starter.controllers')
     $scope.$on('$destroy', function() {
         $interval.cancel(history_interval);
     });
+    
+    $scope.add_to_favo = function () {
+        $scope.addfavo = !$scope.addfavo;
+        if ($scope.addfavo) {
+            angular.element(document.querySelector(".collection")).addClass("ion-ios-heart").removeClass("ion-ios-heart-outline");
+            $scope.collection.push($scope.qoute);
+            console.log($scope.collection)
+        }else {
+            angular.element(document.querySelector(".collection")).addClass("ion-ios-heart-outline").removeClass("ion-ios-heart");
+            $scope.collection.splice(-1,1);
+            console.log($scope.collection)
+        }
+    };
+
+    $scope.change_index = function (index) {
+        $scope.list_index = index;
+    }
+
+
 });

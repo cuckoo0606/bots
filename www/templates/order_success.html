@@ -1,0 +1,44 @@
+<ion-modal-view class="order_success">
+    <ion-header-bar class="bar bar-header bar-dark bar-icon-right">
+        <h1 class="title">下单成功</h1>
+        <button class="button button-icon" ng-click="order_success.hide()">
+            <i class="ion ion-close-round"></i>
+        </button>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <div class="row">
+           <div class="col order_name">
+               <span>名称：</span>
+               <span>{{qoute.name}}</span>
+           </div>
+            <div class="col order_count">
+                <span>金额：</span>
+                <span>￥{{success_info_list[0].money}}</span>
+            </div>
+        </div>
+        <div class="countdown">
+            {{orderall_list.cycle}}
+        </div>
+        <div class="buy_price">
+            <span>执行价：</span>
+            <span>{{success_info_list[0].buyQoute}}</span>
+        </div>
+        <div class="row data_show">
+            <div class="col">
+                <span>方向：</span>
+                <span>{{buy_direction}}</span>
+            </div>
+            <div class="col">
+                <span>现价：</span>
+                <span>{{qoute.value.toFixed(qoute.decimal)}}</span>
+            </div>
+            <div class="col">
+                <span>预测结果：</span>
+                <span>￥{{(success_info_list[0].money/0.75).toFixed(0)}}</span>
+            </div>
+        </div>
+        <div>
+            <button class="button button-full continue_order" ng-click="toggle_order_success()">继续下单</button>
+        </div>
+    </ion-content>
+</ion-modal-view>
