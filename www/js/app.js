@@ -21,7 +21,7 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
 
     //判断登陆状态
     $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams, options) {
-        var views = [ "tab.qoute", "tab.history", "tab.profile", "trade" ];
+        var views = [ "tab.qoute", "tab.history", "tab.profile", "tab.trade", "trade" ];
 
         //禁止连续点击导航栏
         if (views.indexOf(toState.name) >= 0) {
@@ -32,6 +32,8 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
         }
 
         if (views.indexOf(toState.name) >= 0 && !$rootScope.user) {
+	    console.log("go signin");
+	    console.log(toState.name);
             $state.go("signin");
             event.preventDefault();
         }
@@ -39,7 +41,7 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
 
     //刷新微信标题
     $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams, options) {
-        var views = [ "signin", "tab.qoute", "tab.history", "tab.profile", "trade" ];
+        var views = [ "tab.qoute", "tab.history", "tab.profile", "tab.trade", "trade" ];
         if (views.indexOf(toState.name) >= 0) {
             $timeout(function() {
                 var body = angular.element(document.querySelector('body'));
@@ -118,6 +120,17 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
             'tab-qoute': {
                 controller: "QouteCtrl",
                 templateUrl: 'templates/tab-qoute.html',
+            }
+        }
+    })
+
+    .state('tab.trade', {
+        cache: false,
+        url: '/trade1',
+        views: {
+            'tab-trade': {
+                controller: "TradeCtrl",
+                templateUrl: 'templates/trade-agreement.html',
             }
         }
     })

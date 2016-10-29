@@ -5,9 +5,9 @@ angular.module('starter.services')
     var service = this;
 
     this.signin = function(params) {
-        var url = AppConfigService.build_api_url("v1/authorize");
+        var signinUrl = AppConfigService.build_api_url("v1/authorize");
         $http({
-            "url": url,
+            "url": signinUrl,
             "method": "POST", 
             "timeout": 10000,
             "data": { "username": params.phone, "password": params.passwd } 
@@ -66,18 +66,28 @@ angular.module('starter.services')
     };
 
     this.update_bank = function(params) {
-        var url = AppConfigService.api_url + "user/updatebank";
-        $http.get(url, { 
+        var updata_bankUrl = AppConfigService.build_api_url("v1/user");
+        $http({
+            "url": updata_bankUrl,
+            "method": "POST", 
             "timeout": 10000,
-            "params": { "user": params.user, "bank": params.bank, "bank_user": params.bank_user, "bank_brand": params.bank_brand, "bank_card": params.bank_card } 
+            "data": { 
+            	"name":params.name,
+	        	"sex":params.sex,
+	        	"phone":params.phone,
+	        	"address":params.address,
+	        	"email":params.email,
+	        	"id_card":params.id_card,
+	            "bank": params.bank,
+	            "bankholder": params.bankholder,
+	            "bankbranch": params.bankbranch,
+	            "bankaccount": params.bankaccount
+            }
         })
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
-                if (params.success) {
-                    service.user = protocol.data;
-                    params.success(protocol.return_code, protocol.return_message, protocol.data);
-                }
+            if (protocol== "Created") {
+                    params.success();
             }
             else {
                 if (params.fail) {

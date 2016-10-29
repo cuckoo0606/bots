@@ -14,9 +14,19 @@ angular.module('starter.controllers')
 
     $scope.history_loading = false;
     $scope.chart_data = [];
+
     $scope.mode = $stateParams.mode;
+    if ($scope.mode == "default") {
+    	$scope.mode = QouteService.category_list[0].mode;
+    }
     $scope.market = $stateParams.market;
+    if ($scope.market == "default") {
+    	$scope.market = QouteService.qoute_list[0].market;
+    }
     $scope.code = $stateParams.code;
+    if ($scope.code == "default") {
+    	$scope.code = QouteService.qoute_list[0].code;
+    }
 
     $scope.order_list = OrderService.order_list;
     $rootScope.qoute = QouteService.qoute($scope.mode, $scope.market, $scope.code);
@@ -24,13 +34,6 @@ angular.module('starter.controllers')
     $scope.collection = [];
     $scope.indexList = ["指标","MACD","RSI","DMI","DMA","MACD","RSI","DMI","DMA","MACD","RSI","DMI","DMA","MACD"];
     $scope.account_list = []
-
-    // OrderService.init(function(){ });
-
-<<<<<<< HEAD
-//  OrderService.init(function(){ });
-=======
->>>>>>> c777fef37462b5fd43e0487942287760c6a5b36d
 
     $scope.stockChartId = $echarts.generateInstanceIdentity();
     $scope.stockOption = {
@@ -110,7 +113,7 @@ angular.module('starter.controllers')
             }
         ],
         dataZoom: [
-            { xAxisIndex: [0, 1], start: 50, end: 100, type : 'inside' },
+            { xAxisIndex: [0, 1], start: 80, end: 100, type : 'inside' },
         ],
         series: [
             {
@@ -264,16 +267,20 @@ angular.module('starter.controllers')
                     data: $scope.chart_type === "stock" ? data : [],
                 },
                 {
-                    data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(5, data) : [],
+                    //data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(5, data) : [],
+                    data: [],
                 },
                 {
-                    data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(10, data) : [],
+                    //data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(10, data) : [],
+                    data: [],
                 },
                 {
-                    data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(20, data) : [],
+                    //data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(20, data) : [],
+                    data: [],
                 },
                 {
-                    data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(30, data) : [],
+                    //data: $scope.chart_type === "stock" ? HistoryQouteService.build_ma_data(30, data) : [],
+                    data: [],
                 },
                 {
                     data: diff,

@@ -4,18 +4,25 @@ angular.module('starter.controllers')
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
-    console.log($rootScope.user);
 	$scope.account = $rootScope.user;
     $scope.pay_modal_url = "";
     $scope.deposit_bank_list = [];
+    $scope.moneyList=[];
     $scope.bank_list = AppConfigService.bank_list;
     $scope.bank_info = {
         "bank": UserService.user.BankName,
         "bank_user": UserService.user.BankUserName,
         "bank_brand": UserService.user.BankAddress,
         "bank_card": UserService.user.BankAccount,
+        "id_card":""
     };
-
+	$scope.choseDate={
+		"startDate":"",
+		"startDate":""
+	};
+	$scope.outAmount={
+		"outamount":""
+	};
     $scope.deposit = {
         "user": UserService.user.Id,
         "pay_type": "ecpss",
@@ -67,10 +74,6 @@ angular.module('starter.controllers')
         $scope.capital_withdraw_modal.show();
     }
 
-    $scope.toggle_capital_menu = function () {
-         angular.element(document.querySelectorAll("#capital-menu")).toggleClass("open");
-    }
-
     $scope.show_bank_modal = function() {
         $scope.bank_info.bank = UserService.user.BankName;
         if($scope.bank_info.bank == "" || $scope.bank_list.indexOf($scope.bank_info.bank) < 0) {
@@ -105,13 +108,17 @@ angular.module('starter.controllers')
             template: "正在操作"   
         });
         UserService.update_bank({
-            "user": UserService.user.Id,
+        	"name":$scope.account.name,
+        	"sex":$scope.account.sex,
+        	"phone":$scope.account.phone,
+        	"address":$scope.account.address,
+        	"email":$scope.account.email,
+        	"id_card":$scope.account.id_card,
             "bank": $scope.bank_info.bank,
-            "bank_user": $scope.bank_info.bank_user,
-            "bank_brand": $scope.bank_info.bank_brand,
-            "bank_card": $scope.bank_info.bank_card,
-            "success": function(status, message, user) {
-                $rootScope.user = user;
+            "bankholder": $scope.bank_info.bank_user,
+            "bankbranch": $scope.bank_info.bank_brand,
+            "bankaccount": $scope.bank_info.bank_card,
+            "success": function() {
                 $ionicLoading.hide();
                 $scope.bank_info_modal.hide();
             },
@@ -168,8 +175,20 @@ angular.module('starter.controllers')
         $scope.capital_deposit_modal.hide();
     }
 
-    $scope.withdraw = function() {
-        $scope.capital_withdraw_modal.hide();
+    $scope.out_withdraw = function() {
+    	$ionicLoading.show({
+		            template: "成功提交请求"   
+		        });
+    	CapitalService.out_withdraw({
+        	"outamount":$scope.outAmount.outamount,
+        	"success": function(message) {
+        		$ionicLoading.hide();
+        		$rootScope.user.amount=$scope.account.amount-message.amount;
+        		$scope.capital_withdraw_modal.hide();
+          	}
+        });
+        
+        
     }
 
     $scope.order_quantity_sum = function() {
@@ -178,5 +197,29 @@ angular.module('starter.controllers')
             sum += value.Quantity;
         });
         return sum;
+    }
+    
+    $scope.show_money_list = function(){
+        CapitalService.request_capital_list({
+        	"startDate":$scope.choseDate.startDate,
+        	"overDate":$scope.choseDate.overDate,
+        	"success": function(message) {
+        		message.forEach(function(value){
+//      			if(value.remark=="订单到期获利结算"){
+//      				value.remark=value.remark.substring(6,8);
+//      			};
+        			$scope.moneyList.push({
+                        "_id": value._id,
+                        "remark": value.remark,
+                        "yearTime": value.created.substring(0,10),
+                        "dayTime": value.created.substring(11,19),
+                        "amount": value.amount,
+                        "user": value.user,
+                        "balance": value.balance,
+                        "type": value.type,
+                    });
+        		});
+          	}
+        });
     }
 });

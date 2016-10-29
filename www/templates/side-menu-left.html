@@ -2,19 +2,13 @@
     <ul>
         <li class="side-brand">
             <h4>
-                {{ user.Name }}
+                {{ user.username }}
             </h4>
             <div class="widget">
-                <div>帐户余额</div>
-                <h4>
-                    {{ account.Amount.toFixed(2) }}
-                </h4>
-            </div>
-            <div class="widget">
-                <div>浮动盈亏</div>
-                <h4 id="sidebar-profit" ng-class="{ 'rise' : account.Profit >= 0, 'fall' : account.Profit < 0 }">
-                    {{ account.Profit.toFixed(2) }}
-                </h4>
+                <span>帐户余额</span>
+                <span ng-class="{ 'rise' : user.amount >= 0, 'fall' : user.amount < 0 }">
+                    {{ user.amount.toFixed(2) }}
+                </span>
             </div>
         </li>
         <li>

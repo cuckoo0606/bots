@@ -10,17 +10,17 @@
 	        <div class="col">
 	            余额：
 	            <span ng-class="{ 'rise' : account.amount >= 0, 'fall' : account.amount < 0 }">
-	                {{ account.amount }}
+	                {{ account.amount.toFixed(2) }}
 	            </span>
 	        </div>
 	    </header>
 	    <div class="row profile-capital">
 
-	        <a class="col" href="javascript:;" ng-click="show_change_user()">
+	        <a class="col" href="javascript:;" ng-click="show_bank_modal()">
 	        	<i class="icon ion-person"></i>
 	            编辑资料
 	        </a>
-	        	        <a class="col" href="javascript:;" ng-click="capital_history_modal.show()">
+	        <a class="col" href="javascript:;" ng-click="show_money_list();capital_history_modal.show()">
 	            资金流水
 	        </a>
 	    </div>

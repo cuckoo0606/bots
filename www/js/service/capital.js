@@ -4,7 +4,7 @@ angular.module('starter.services')
     var service = this;
     this.capital_list = [];
     this.init_complete = false;
-
+	this.money_list = [];
     this.deposit = function(params) {
         var url = AppConfigService.api_url + "pay/order";
 
@@ -20,16 +20,7 @@ angular.module('starter.services')
         })
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
-                if (params.success) {
-                    params.success(protocol.return_code, protocol.return_message, protocol.data);
-                }
-            }
-            else {
-                if (params.fail) {
-                    params.fail(protocol.return_code, protocol.return_message);
-                }
-            }
+            params.success(protocol);
         })
             
         .error(function(protocol) {
@@ -38,26 +29,21 @@ angular.module('starter.services')
             }
         });
     }
+	//出金接口
+    this.out_withdraw = function(params) {
+        var outWithdrawUrl = AppConfigService.build_api_url("v1/outflow");
 
-    this.withdraw = function(params) {
-        var url = AppConfigService.api_url + "capital/withdraw";
-
-        $http.get(url, { 
-            "timeout": 10000,
-            "params": params.withdraw,
+		console.log(outWithdrawUrl);
+		console.log(params.outamount);
+        $http({
+            "url": outWithdrawUrl,
+            "method": "POST", 
+            "timeout": 3000,
+            "data": { "amount": params.outamount } 
         })
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
-                if (params.success) {
-                    params.success(protocol.return_code, protocol.return_message, protocol.data);
-                }
-            }
-            else {
-                if (params.fail) {
-                    params.fail(protocol.return_code, protocol.return_message);
-                }
-            }
+            params.success(protocol);
         })
             
         .error(function(protocol) {
@@ -95,20 +81,21 @@ angular.module('starter.services')
             }
         });
     }
-
+	//资金列表接口
     this.request_capital_list = function(complete) {
-        var url = AppConfigService.api_url + "capital/list";
-        $http.get(url, { 
+        var capital_listUrl = AppConfigService.build_api_url("v1/books");
+        console.log(capital_listUrl);
+        $http.get(capital_listUrl, { 
             "timeout": 3000,
-            "params": { "user": UserService.user.Id }
+            "params": { "begin": "2016-01-01" }
         })
         
         .success(function(protocol) {
-            if (protocol.return_code === "SUCCESS") {
-                if (complete) {
-                    complete(protocol.data);
-                }
+            this.money_list=protocol;
+            if(complete){
+            	complete.success(protocol);
             }
+            
         });
     }
 

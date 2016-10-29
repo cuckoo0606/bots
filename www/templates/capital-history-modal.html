@@ -1,30 +1,36 @@
 <ion-modal-view class="order-modal">
     <ion-header-bar class="order-modal-header">
-        <h1 class="title">资金历史</h1>
+        <h1 class="title">资金流水</h1>
         <div class="close" ng-click="capital_history_modal.hide()">
             <i class="icon ion-ios-close-empty"></i>
         </div>
     </ion-header-bar>
     <ion-content class="order-modal-content">
-    <div class="order-view">
-        <div class="order-view-header">
-            <ul>
-                <li>日期</li>
-                <li>操作</li>
-                <li>金额</li>
-            </ul>
-        </div>
-        <div class="order-view-content">
+    <div class="order-view person_money_list">
             <ion-scroll>
-            <ul ng-repeat="c in capital_list">
-                <li>{{ c.Date }}</li>
-                <li>{{ c.Amount >= 0 ? "入金" : "出金" }}</li>
-                <li>{{ c.Amount }}</li>
+            <ul ng-repeat="c in moneyList">
+                <li  class="money_list_header">
+                	<span>{{ c.remark }}</span>
+                	<span ng-class="{ 'rise' : c.amount >= 0, 'fall' : c.amount < 0 }">{{ c.amount>0?"+"+c.amount: c.amount}}</span>
+                </li>
+                <li class="money_list_footer">
+                	<p>
+                		<span>{{c.yearTime}}</span>
+                		<span>{{c.dayTime}}</span>
+                	</p>
+                	<span>{{ c.balance.toFixed(2) }}</span>
+                </li>
             </ul>
             </ion-scroll>
-        </div>
     </div>
     </ion-content>
+    <div class="dataChose" style="display: none;">
+    	<label>开始：</label>
+    	<input type="date" ng-model="choseDate.startDate" required />
+    	<label>截止：</label>
+    	<input type="date" ng-model="choseDate.overDate" required />
+    	<button ng-click="show_money_list()">查询</button>
+    </div>
     <div class="button-bar">
         <a class="button button-dark" ng-click="capital_history_modal.hide()">关闭</a>
     </div>

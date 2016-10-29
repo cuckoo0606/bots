@@ -6,7 +6,6 @@ angular.module('starter.controllers')
     $scope.passwd = "";
     $scope.message = "";
     $scope.is_signin = false;
-
     $scope.spinner = function(visible) {
         if (visible) {
             angular.element(document.querySelectorAll(".spinner-view")).removeClass("hide");
