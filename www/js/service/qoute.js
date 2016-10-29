@@ -91,7 +91,7 @@ angular.module('starter.services')
                 complete();
             }
         });
-        
+
         while (service.trade_list.length) {
             service.trade_list.pop();
         }
@@ -109,6 +109,7 @@ angular.module('starter.services')
                         "high": 0,
                         "low": 0,
                         "value": 0,
+                        "trade": value.trade,
                         "decimal": value.decimal,
                         "change_value": "+0.00",
                         "change_percent": "+0.00%",

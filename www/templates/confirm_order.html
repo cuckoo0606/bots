@@ -1,0 +1,44 @@
+<ion-modal-view class="confirm_order">
+    <ion-header-bar class="bar bar-header bar-dark bar-icon-right order_confirm_title">
+        <h1 class="title">确认下单</h1>
+        <button class="button button-icon" ng-click="confirm_order.hide()">
+            <i class="ion ion-close-round"></i>
+        </button>
+    </ion-header-bar>
+    <ion-content class="padding order_content">
+        <ion-scroll direction="x" style="width: 490px">
+            <div class="well" ng-repeat="type in order_type_list" ng-class="{'selected':$index == index}" ng-click="well_selected($index)">
+                <p class="balance_time">结算时间</p>
+                <p class="remain_time">{{type.time}}秒</p>
+                <p class="profit">收益{{type.profit}}</p>
+            </div>
+        </ion-scroll>
+        <div class="price_row">
+            <a href="javascript:void(0);" ng-repeat="num in account_list" class="price_box" ng-class="{'selected':$index == selectedRow}" ng-click="amount_selected($index)">
+                &yen;{{num}}
+            </a>
+            <input type="text" ng-model="other_account" id="other_account" placeholder="其他金额" ng-change="other_choice()">
+            <div class="col price_box last_price_box no_border">
+                <span>余额</span>
+                ￥{{user.amount.toFixed(2)}}
+            </div>
+        </div>
+        <div class="buy_infos">
+            潜在赔率： ￥180/保底金额：￥5
+        </div>
+        <div class="poundage">手续费： 8%</div>
+        <div class="padding inside_box">
+            <div class="row">
+                <div class="col confirm_infos">
+                    名称：<span class="white_font">{{qoute.name}}</span>
+                </div>
+                <div class="col confirm_infos">金额：<span class="orange_font">￥{{choice}}</span></div>
+            </div>
+            <div class="row">
+                <div class="col confirm_infos">方向：<span class="changed_font">{{buy_direction}}</span></div>
+                <div class="col confirm_infos">现价：<span class="changed_font">{{ qoute.value.toFixed(qoute.decimal) }}</span></div>
+            </div>
+            <button class="button button-full order_confirm" ng-click="toggle_confirm_order()">确认下单</button>
+        </div>
+    </ion-content>
+    </ion-modal-view>

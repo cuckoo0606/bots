@@ -1,59 +1,29 @@
-<ion-view  view-title="{{ qoute.name }}" class="trade-view" hide-nav-bar="{{ !show_nav_bar }}">
+<ion-view  view-title="{{ qoute.name }}" class="trade-view" hide-nav-bar="{{ show_nav_bar }}">
     <ion-nav-buttons side="left">
         <a href="#/tab/qoute" class="back-button">
             <i class="icon ion-ios-arrow-left"></i>
         </a>
     </ion-nav-buttons>
-    <ion-content class="trade-content content-background" scroll="false">
+    <ion-content class="trade-content content-background" scroll="true">
         <div class="trade-qoute-header">
-            <div class="row">
-                <div class="col col-40">
-                    <div class="row">
-                        <div class="col">
-                            <h1 class="main-qoute" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.value.toFixed(qoute.decimal) }}
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="row wave">
-                        <div class="col">
-                            <span ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.change_value }}
-                            </span>
-                        </div>
-                        <div class="col">
-                            <span ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.change_percent }}
-                            </span>
-                        </div>
-                    </div>
+            <div class="row row_padding">
+                <div class="col col-20">
+                    <h1 class="main-qoute">
+                        {{ qoute.name }}
+                    </h1>
                 </div>
-                <div class="col col-60">
-                    <div class="row">
+                <div class="col col-80">
+                    <div class="row row_price">
                         <div class="col qoute-widget">
-                            <div>开盘</div>
-                            <div ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.open.toFixed(qoute.decimal) }}
-                            </div>
-                        </div>
-                        <div class="col qoute-widget">
-                            <div>收盘</div>
-                            <div ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.close.toFixed(qoute.decimal) }}
-                            </div>
-                        </div>
-                        <div class="col qoute-widget">
-                            <div>最高</div>
-                            <div ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.high.toFixed(qoute.decimal) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col qoute-widget">
-                            <div>最低</div>
+                            <div>最低价</div>
                             <div ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
                                 {{ qoute.low.toFixed(qoute.decimal) }}
+                            </div>
+                        </div>
+                        <div class="col qoute-widget">
+                            <div>最高价</div>
+                            <div ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
+                                {{ qoute.high.toFixed(qoute.decimal) }}
                             </div>
                         </div>
                         <div class="col qoute-widget">
@@ -63,6 +33,9 @@
                             </div>
                         </div>
                         <div class="col qoute-widget">
+                            <div class="myfavo" ng-click="add_to_favo()">
+                                <i class="collection ion-ios-heart-outline"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,6 +73,20 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <ion-scroll class="index_scroll" direction="x" ng-style="scroll_width">
+            <ul class="index_ul">
+                <li ng-repeat="k in indexList track by $index" ng-class="{'active': list_index == $index}" ng-click="change_index($index)" class="index_li">
+                    <a href="">{{k}}</a>
+                </li>
+            </ul>
+        </ion-scroll>
+        <div class="row row_buy  row_padding">
+            <div class="col col-35" ng-click="toggle_confirm_order_panel_rise()">买涨</div>
+            <div class="col col-25" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }" ng-click="">
+                {{qoute.value.toFixed(qoute.decimal)}}
+            </div>
+            <div class="col col-35" ng-click="toggle_confirm_order_panel_fall()">买跌</div>
         </div>
     </ion-content>
     <div class="bar bar-footer trade-footer">
