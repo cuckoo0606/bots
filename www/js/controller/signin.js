@@ -2,8 +2,8 @@ angular.module('starter.controllers')
 
 .controller('SigninCtrl', function($scope, $rootScope, $http, $state, $timeout, $ionicHistory, $window, 
             UserService, QouteService, AppConfigService) {
-    $scope.username = $window.localStorage.id;
-    $scope.passwd = "";
+    $scope.phone = $window.localStorage.id;
+    $scope.passwd = "123";
     $scope.message = "";
     $scope.is_signin = false;
     $scope.spinner = function(visible) {
@@ -28,26 +28,23 @@ angular.module('starter.controllers')
             "phone": $scope.phone,
             "passwd": $scope.passwd,
             "success": function(status, message, user) {
-            	var userUrl=AppConfigService.build_api_url("v1/user")
-            	$http.get(userUrl, { 
-		            "timeout": 10000,
-		            "params": {} 
-		        }).success(function(protocol){
-		        	$window.localStorage.id = protocol.username;
-		        	$rootScope.user = protocol;
-		        	$ionicHistory.clearHistory();
-					
+                //获取系统时间用于计算订单时间
+                UserService.request_time(function(time) {
+                    var now = new Date().getTime();
+                    $rootScope.server_time_tick = time - now;
+                });
+
+                UserService.request_user(function(user) {
+                    $window.localStorage.id = $scope.phone;
+                    $rootScope.user = user;
+                    $ionicHistory.clearHistory();
+
 	                QouteService.init(function() {
 	                    $scope.is_signin = false;
 	                    $scope.spinner(false);
 	                    $state.go("tab.qoute");
 	                });
-		        })
-		        .error(function(protocol) {
-		            if (params.error) {
-		                params.error("ERROR", "网络错误");
-		            }
-		        });
+                });
             },
             "fail": function(status, message) {
                 $scope.message = message;

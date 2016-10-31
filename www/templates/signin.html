@@ -12,30 +12,25 @@
         <div class="list">
             <label class="item item-input">
                 <span class="input-label">
-                    <i class="ion-ios-person-outline"></i>
+                    <i class="ion-android-person"></i>
                 </span>
-                <input type="text" placeholder="手机号码" ng-model="phone" required />
+                <input type="text" placeholder="用户名" ng-model="phone" required />
             </label>
             <label class="item item-input">
                 <span class="input-label">
-                    <i class="ion-ios-locked-outline"></i>
+                    <i class="ion-locked"></i>
                 </span>
                 <input type="password" placeholder="密码" ng-model="passwd" required />
             </label>
-            <label class="signin-tools item item-select" ng-show="remote_list.length > 1">
-                <select ng-model="remote" ng-options="r.text for r in remote_list" ng-change="change_remote();">
-                </select>
-            </label>
         </div>
         <div class="signin-action">
-            <button class="button button-block signin-button" ng-click="signin()" 
-                ng-disabled="!phone || !passwd">
-                立即登陆
+            <button class="button button-block signin-button" ng-click="signin()">
+                登&nbsp;&nbsp;录
             </button>
         </div>
     </div>
     <div class="signin-footer">
-        <a href="#/signup">注册用户</a>
+        <a href="#/signup">——&nbsp;&nbsp;立即开户&nbsp;&nbsp;——</a>
     </div>
 
 </div>

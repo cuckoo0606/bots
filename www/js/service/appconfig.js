@@ -8,10 +8,10 @@ angular.module('starter.services', [])
     this.show_system_name = false;
     this.system_logo = "img/logo.png";
     this.show_system_logo = true;
-    this.show_nav_bar = true;
+    this.show_nav_bar = false;
     this.show_signup_code = true;
-    this.api_url = "http://120.24.44.211:4002/";
-	this.qoute_url = "http://120.24.44.211:7703/";
+    this.api_url = "http://weixin.leather-boss.com:8793/";
+	this.qoute_url = "http://weixin.leather-boss.com:7794/";
 
     this.bank_list = [ 
             "招商银行", 

@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('QouteCtrl', function($scope, $interval, $ionicSlideBoxDelegate, QouteService) {
+.controller('QouteCtrl', function($scope, $interval, $ionicSlideBoxDelegate, $timeout, QouteService) {
     $scope.category_index = 0;
     $scope.qoute_list = QouteService.qoute_list;
     $scope.category_list = QouteService.category_list;

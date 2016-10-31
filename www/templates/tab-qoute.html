@@ -1,4 +1,4 @@
-<ion-view view-title="行情" hide-nav-bar="{{ !show_nav_bar }}">
+<ion-view view-title="商品行情" hide-nav-bar="{{ !show_nav_bar }}">
     <ion-content class="content-background" scroll="false">
         <div class="qoute-category">
             <ul>
@@ -16,29 +16,29 @@
                         <ul>
                             <li>商品名称</li>
                             <li>现价</li>
-                            <li>涨跌</li>
-                            <li>涨跌幅</li>
+                            <li>最高</li>
+                            <li>最低</li>
                         </ul>
                     </div>
                     <div class="qoute-view-content">
                         <ion-scroll>
                             <ul ng-repeat="q in qoute_list | filter: { mode: c.mode }">
                                 <li>
-                                    <a href="#/trade/{{ q.Id }}">{{ q.name }}</a>
+                                    <a href="#/trade/{{ q.mode }}/{{ q.market }}/{{ q.code }}">{{ q.name }}</a>
                                 </li>
                                 <li>
-                                    <a ng-class="{ 'rise' : q.state == 'up', 'fall' : q.state == 'down' }" href="#/trade/{{ q.mode }}/{{ q.market }}/{{ q.code }}">
+                                    <a ng-class="{ 'rise-value' : q.state == 'up', 'fall-value' : q.state == 'down' }" href="#/trade/{{ q.mode }}/{{ q.market }}/{{ q.code }}">
                                         {{ q.value.toFixed(q.decimal) }}
                                     </a>
                                 </li>
                                 <li>
                                     <a ng-class="{ 'rise' : q.state == 'up', 'fall' : q.state == 'down' }" href="#/trade/{{ q.mode }}/{{ q.market }}/{{ q.code }}">
-                                        {{ q.change_value }}
+                                        {{ q.high.toFixed(q.decimal) }}
                                     </a>
                                 </li>
                                 <li>
                                     <a ng-class="{ 'rise' : q.state == 'up', 'fall' : q.state == 'down' }" href="#/trade/{{ q.mode }}/{{ q.market }}/{{ q.code }}">
-                                        {{ q.change_percent }}
+                                        {{ q.low.toFixed(q.decimal) }}
                                     </a>
                                 </li>
                             </ul>

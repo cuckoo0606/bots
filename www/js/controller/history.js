@@ -1,17 +1,14 @@
 angular.module('starter.controllers')
 
-.controller('HistoryCtrl', function($scope, $rootScope, $stateParams, $ionicModal, $ionicSlideBoxDelegate, OrderService, CloseOrderService) {
-    $scope.order_page_index = 1;
-    $scope.close_order_page_index = 1;
+.controller('HistoryCtrl', function($scope, $rootScope, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $interval, OrderService, CloseOrderService, QouteService) {
+    $scope.order_page_index = 0;
+    $scope.close_order_page_index = 0;
 
     $scope.order_list = [];
     $scope.has_more_order = true;
     $scope.close_order_list = [];
     $scope.has_more_close_order = true;
-
     $scope.category_index = parseInt($stateParams.index);
-    $scope.order_list = OrderService.order_list;
-    $scope.close_order_list = CloseOrderService.order_list;
     
     $scope.slide_change = function(index) {
         if (isNaN(index)) {
@@ -32,7 +29,7 @@ angular.module('starter.controllers')
     $scope.refresh_order = function() {
         $scope.order_list = [];
         $scope.has_more_order = true;
-        $scope.order_page_index = 1;
+        $scope.order_page_index = 0;
         $scope.load_more_order();
     }
 
@@ -40,7 +37,17 @@ angular.module('starter.controllers')
         OrderService.request_order_list($scope.order_page_index + 1, 20, function(protocol) {
             $scope.order_page_index = $scope.order_page_index + 1;
             protocol.data.forEach(function(value) {
-                $scope.order_list.push(value);
+                value.profit = $scope.order_profit(value);
+                value.qoute = QouteService.qoute(value.mode, value.assets.market, value.assets.code);
+                var expired = new Date(value.expired);
+                var now = new Date();
+
+                var tick = now.getTime() + $rootScope.server_time_tick;
+                var remaining = (expired.getTime() - tick) / 1000;
+                value.remaining = remaining;
+                if (remaining > 0) {
+                    $scope.order_list.push(value);
+                }
             });
 
             if(protocol.data.length == 0) {
@@ -55,7 +62,7 @@ angular.module('starter.controllers')
     $scope.refresh_close_order = function() {
         $scope.close_order_list = [];
         $scope.has_more_close_order = true;
-        $scope.close_order_page_index = 1;
+        $scope.close_order_page_index = 0;
         $scope.load_more_close_order();
     }
 
@@ -75,4 +82,26 @@ angular.module('starter.controllers')
             $scope.$broadcast('scroll.infiniteScrollComplete');
         }); 
     }
+
+    var order_interval = $interval(function() {
+        if ($scope.order_list.length > 0) {
+            for (var i = 0; i < $scope.order_list.length; i++) {
+                var o = $scope.order_list[i];
+                o.profit = $scope.order_profit(o);
+                var expired = new Date(o.expired);
+                var now = new Date();
+
+                var tick = now.getTime() + $rootScope.server_time_tick;
+                var remaining = (expired.getTime() - tick) / 1000;
+                o.remaining = remaining;
+                if(o.remaining <= 0) {
+                    $scope.order_list.splice(i, 1);
+                }
+            }
+        }
+    }, 1000);
+    
+    $scope.$on('$destroy', function() {
+        $interval.cancel(order_interval);
+    });
 });

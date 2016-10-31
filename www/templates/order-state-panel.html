@@ -1,0 +1,93 @@
+<div class="order-state-panel">
+    <div class="panel-header">
+        {{ order_result.message }}
+        <div class="close" ng-click="toggle_order_state_panel()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="success" ng-show="order_result.status == 'SUCCESS'">
+            <div class="row remaining">
+                <div class="col">
+                    {{ order_result.order.remaining.toFixed(0) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    名称: {{ qoute.name }}
+                </div>
+                <div class="col" ng-class="{ 'rise' : order_params.direction == '1', 'fall': order_params.direction == '0' }">
+                    方向: {{ order_params.direction == "1" ? "买涨" : "买跌" }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    金额: {{ (order_params.other_amount != "" && order_params.other_amount != "0") ? order_params.other_amount : order_params.amount }}
+                </div>
+                <div class="col" ng-class="{ 'rise' : order_result.order.profit > 0, 'fall': order_result.order.profit < 0 }">
+                    盈亏: {{ order_result.order.profit.toFixed(2) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    成交价: {{ order_result.order.buyQoute }}
+                </div>
+                <div class="col" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
+                    最新价: {{ qoute.value.toFixed(qoute.decimal) }}
+                </div>
+            </div>
+        </div>
+        <div class="wait" ng-show="order_result.status == 'POST'">
+            <div class="row">
+                <div class="col">
+                    <i class="ion-paper-airplane"></i>
+                    {{ order_result.message }}
+                </div>
+            </div>
+        </div>
+        <div class="fail" ng-show="order_result.status == 'FAILD'">
+            <div class="row">
+                <div class="col">
+                    <i class="ion-close-circled"></i>
+                    {{ order_result.message }}
+                </div>
+            </div>
+        </div>
+        <div class="success" ng-show="order_result.status == 'FINISH'">
+            <div class="row remaining">
+                <div class="col">
+                    {{ order_result.order.profit.toFixed(2) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    名称: {{ qoute.name }}
+                </div>
+                <div class="col">
+                    方向: {{ order_params.direction == "1" ? "买涨" : "买跌" }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    金额: {{ (order_params.other_amount != "" && order_params.other_amount != "0") ? order_params.other_amount : order_params.amount }}
+                </div>
+                <div class="col">
+                    盈亏: {{ order_result.order ? order_profit(order_result.order) : 0 }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    成交价: {{ order_result.order.buyQoute }}
+                </div>
+                <div class="col">
+                    最新价: {{ qoute.value.toFixed(qoute.decimal) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button" ng-click="toggle_order_state_panel()">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

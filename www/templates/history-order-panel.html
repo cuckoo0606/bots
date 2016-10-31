@@ -7,24 +7,23 @@
     </div>
     <div class="panel-body">
         <ion-scroll>
-        <ul class="list">
-            <li class="item">
-                <div class="row">
-                    <div class="col">商品</div>
-                    <div class="col">类型</div>
-                    <div class="col">金额</div>
-                    <div class="col">盈亏</div>
-                </div>
-            </li>
-            <li class="item" ng-repeat="o in order_list" ng-click="show_hold_order_modal(o)">
-                <div class="row" ng-class="{ 'rise' : o.profit > 0, 'fall': o.profit < 0 }">
-                    <div class="col">{{ o.assets.name }}</div>
-                    <div class="col">{{ o.direction == "1" ? "买涨" : "买跌" }}</div>
-                    <div class="col">{{ o.money }}</div>
-                    <div class="col">{{ o.profit }}</div>
-                </div>
-            </li>
-        </ul>
+            <ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_order()">
+            </ion-refresher>
+            <ul class="list">
+                <li class="item" ng-repeat="o in trade_order_list" ng-click="show_hold_order_modal(o)">
+                    <div class="row" ng-class="{ 'rise' : o.profit > 0, 'fall': o.profit < 0 }">
+                        <div class="col">{{ o.assets.name }}</div>
+                        <div class="col">{{ o.direction == "1" ? "买涨" : "买跌" }}</div>
+                        <div class="col">{{ o.money }}</div>
+                        <div class="col">{{ o.buyQoute.toFixed(o.qoute.decimal) }}</div>
+                        <div class="col">{{ o.qoute.value.toFixed(o.qoute.decimal) }}</div>
+                        <div class="col">{{ o.profit.toFixed(2) }}</div>
+                        <div class="col" style="width: 40px;">{{ o.remaining.toFixed(0) }}</div>
+                    </div>
+                </li>
+            </ul>
+            <ion-infinite-scroll ng-if="has_more_order" on-infinite="load_more_order()" distance="1%">
+            </ion-infinite-scroll>
         </ion-scroll>
     </div>
 </div>

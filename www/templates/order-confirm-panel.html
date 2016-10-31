@@ -1,0 +1,63 @@
+<div class="order-confirm-panel">
+    <div class="panel-header">
+        订单确认
+        <div class="close" ng-click="toggle_order_confirm_panel()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="period">
+            <ion-scroll direction="x">
+                <div class="period-widget-view">
+                    <div class="period-widget" ng-class="{ 'active' : order_params.cycle == c }" ng-repeat="c in trade.cycle" ng-click="change_cycle(c)">
+                        <div class="period-widget-header">
+                            结算时间
+                        </div>
+                        <div class="period-widget-content">
+                            {{ c.time }}{{ mode == 2 ? "秒" : "" }}
+                        </div>
+                        <div class="period-widget-footer">
+                            收益: {{ c.inprice * 100 }}%
+                        </div>
+                    </div>
+                </div>
+            </ion-scroll>
+        </div>
+        <div class="amount">
+            <ion-scroll direction="x">
+                <div class="amount-view">
+                    <div class="amount-box" ng-class="{ 'active' : (order_params.other_amount == '' || order_params.other_amount == '0') &&a == order_params.amount }" 
+                        ng-repeat="a in trade.amounts" ng-click="change_amount(a)">
+                        {{ a }}
+                    </div>
+                </div>
+            </ion-scroll>
+            <div class="other-amount" ng-class="{ 'active' : order_params.other_amount != '' && order_params.other_amount != '0' }">
+                <input type="number" placeholder="其它金额" ng-model="order_params.other_amount" />
+            </div>
+        </div>
+        <div class="info-view">
+            <div>收益:{{ (order_params.amount * order_params.cycle.inprice + order_params.amount).toFixed(2) }}</div>
+            <div>保底:{{ (order_params.amount * order_params.cycle.outprice).toFixed(2) }}</div>
+            <div>手续费:8%</div>
+            <div>余额:{{ user.amount.toFixed(2) }}</div>
+        </div>
+        <div class="order-detail-view">
+            <div class="order-detail">
+                <div class="row">
+                    <div class="col-50">名称: {{ qoute.name }}</div>
+                    <div class="col-50">金额: {{ (order_params.other_amount == "" || order_params.other_amount == "0") ? order_params.amount : order_params.other_amount }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-50">方向: {{ order_params.direction == "1" ? "买涨" : "买跌" }}</div>
+                    <div class="col-50">现价: {{ qoute.value.toFixed(qoute.decimal) }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="button" ng-click="order()">确认下单</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,14 +22,16 @@ angular.module('starter.services')
             url = AppConfigService.qoute_url + "days";
         }
 
+        console.log(url);
+
         $http.get(url, { 
             "timeout": 10000,
-            "params": { "market": market, "code": code, "limit": 200 }
+            "params": { "market": market, "code": code, "limit": 100 }
         })
         
         .success(function(protocol) {
             if (complete) {
-                complete(protocol);
+                complete(protocol.data);
             }
         });
     }

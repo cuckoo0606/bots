@@ -26,8 +26,8 @@ angular.module('starter.services')
 	this.request_category = function(complete) {
         if (complete) {
             var categorys = [
-                { "mode":2, "name": "按需期权"},
-                { "mode":1, "name": "多空期权"},
+                { "mode":2, "name": "按需"},
+                { "mode":1, "name": "多空"},
             ]
 
         	service.mode = categorys[0].mode;
@@ -83,6 +83,16 @@ angular.module('starter.services')
     }
 
     this.init = function(complete) {
+        while (service.qoute_list.length) {
+            service.qoute_list.pop();
+        }
+        while (service.trade_list.length) {
+            service.trade_list.pop();
+        }
+        while (service.category_list.length) {
+            service.category_list.pop();
+        }
+
         this.request_category(function(category_list) {
             angular.forEach(category_list, function(value) {
                 service.category_list.push(value);
@@ -92,9 +102,6 @@ angular.module('starter.services')
             }
         });
 
-        while (service.trade_list.length) {
-            service.trade_list.pop();
-        }
         service.category_list.forEach(function(category){
         	service.request_trades(category.mode, function(trades) {
         	    angular.forEach(trades, function(value) {

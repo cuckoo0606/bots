@@ -16,16 +16,30 @@
                 <span class="input-content">{{ modal_hold_order.direction == "0" ? "买跌" : "买涨" }}</span>
             </li>
             <li class="item item-input">
-                <span class="input-label">买入价</span>
-                <span class="input-content">{{ modal_hold_order.buyQoute }}</span>
+                <span class="input-label">成交价</span>
+                <span class="input-content">{{ modal_hold_order.buyQoute.toFixed(modal_hold_order.qoute.decimal) }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">现价</span>
+                <span class="input-content">{{ modal_hold_order.qoute.value.toFixed(modal_hold_order.qoute.decimal) }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">盈亏</span>
+                <span class="input-content" ng-class="{ 'rise' : modal_hold_order.profit > 0, 'fall': modal_hold_order.profit < 0 }">
+                    {{ modal_hold_order.profit.toFixed(2) }}
+                </span>
             </li>
             <li class="item item-input">
                 <span class="input-label">手续费</span>
                 <span class="input-content">{{ modal_hold_order.tax }}</span>
             </li>
             <li class="item item-input">
-                <span class="input-label">建仓时间</span>
+                <span class="input-label">成交时间</span>
                 <span class="input-content">{{ modal_hold_order.created }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">到期时间</span>
+                <span class="input-content">{{ modal_hold_order.expired }}</span>
             </li>
         </ul>
     </ion-content>

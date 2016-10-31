@@ -22,7 +22,7 @@ angular.module('starter.services')
             }
             else {
                 if (params.fail) {
-                    params.fail("FAIL", protocol);
+                    params.fail("FAIL", "帐号或密码错误");
                 }
             }
         })
@@ -32,6 +32,32 @@ angular.module('starter.services')
                 params.error("ERROR", "网络错误");
             }
         });
+    };
+
+    this.request_user = function(complete) {
+        var url = AppConfigService.build_api_url("v1/user")
+        $http.get(url, {
+            "timeout": 10000,
+        })
+        
+        .success(function(protocol) {
+            if (complete) {
+                complete(protocol);
+            }
+        })
+    };
+
+    this.request_time = function(complete) {
+        var url = AppConfigService.build_api_url("v1/time")
+        $http.get(url, {
+            "timeout": 10000,
+        })
+        
+        .success(function(protocol) {
+            if (complete) {
+                complete(protocol);
+            }
+        })
     };
     
     this.signup = function(params) {

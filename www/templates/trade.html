@@ -1,4 +1,4 @@
-<ion-view  view-title="{{ qoute.name }}" class="trade-view" hide-nav-bar="{{ show_nav_bar }}">
+<ion-view  view-title="{{ qoute.name }}" class="trade-view" hide-nav-bar="{{ !show_nav_bar }}">
     <ion-nav-buttons side="left">
         <a href="#/tab/qoute" class="back-button">
             <i class="icon ion-ios-arrow-left"></i>
@@ -6,119 +6,115 @@
     </ion-nav-buttons>
     <ion-content class="trade-content content-background" scroll="true">
         <div class="trade-qoute-header">
-            <div class="row row_padding">
-                <div class="col col-20">
-                    <h1 class="main-qoute">
-                        {{ qoute.name }}
-                    </h1>
-                </div>
-                <div class="col col-80">
-                    <div class="row row_price">
-                        <div class="col qoute-widget">
-                            <div>最低价</div>
-                            <div ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.low.toFixed(qoute.decimal) }}
-                            </div>
-                        </div>
-                        <div class="col qoute-widget">
-                            <div>最高价</div>
-                            <div ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.high.toFixed(qoute.decimal) }}
-                            </div>
-                        </div>
-                        <div class="col qoute-widget">
-                            <div>现价</div>
-                            <div ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
+            <div class="row">
+                <div class="col col-40">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="main-qoute" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
                                 {{ qoute.value.toFixed(qoute.decimal) }}
-                            </div>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-60">
+                    <div class="row">
+                        <div class="col qoute-widget">
+                            <span class="qoute-widget-title">最低</span>
+                            <span class="qoute-widget-value" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
+                                {{ qoute.low.toFixed(qoute.decimal) }}
+                            </span>
                         </div>
                         <div class="col qoute-widget">
-                            <div class="myfavo" ng-click="add_to_favo()">
-                                <i class="collection ion-ios-heart-outline"></i>
-                            </div>
+                            <span class="qoute-widget-title">最高</span>
+                            <span class="qoute-widget-value" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
+                                {{ qoute.low.toFixed(qoute.decimal) }}
+                            </span>
+                        </div>
+                        <div class="col qoute-widget">
+                            <span class="qoute-widget-title">开盘</span>
+                            <span class="qoute-widget-value" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
+                                {{ qoute.low.toFixed(qoute.decimal) }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="trade-chart">
-            <div class="trade-chart-type-bar">
+            <div class="trade-chart-bar">
                 <div class="row">
+                    <div class="col">
+                        <span class="trade-chart-type stock active" ng-click="change_chart_type('stock')">K线</span>
+                    </div>
                     <div class="col">
                         <span class="trade-chart-type line" ng-click="change_chart_type('line')">走势</span>
                     </div>
                     <div class="col">
-                        <span class="trade-chart-type stock active" ng-click="change_chart_type('stock')">K线</span>
+                        <span class="trade-chart-period m1 active" ng-click="change_chart_period('m1')">M1</span>
+                    </div>
+                    <div class="col">
+                        <span class="trade-chart-period m5" ng-click="change_chart_period('m5')">M5</span>
+                    </div>
+                    <div class="col">
+                        <span class="trade-chart-period m15" ng-click="change_chart_period('m15')">M15</span>
+                    </div>
+                    <div class="col">
+                        <span class="trade-chart-period m30" ng-click="change_chart_period('m30')">M30</span>
+                    </div>
+                    <div class="col">
+                        <span class="trade-chart-period h1" ng-click="change_chart_period('h1')">H1</span>
+                    </div>
+                    <div class="col">
+                        <span class="trade-chart-period d1" ng-click="change_chart_period('d1')">D1</span>
                     </div>
                 </div>
             </div>
 
-            <div class="trade-chart-line hide">
-            </div>
-            <div class="trade-chart-stock">
-                <div echarts="stockChartId" config="stockOption" class="stock-chart"></div>
-                <div class="trade-chart-stock-tool-bar">
-                    <div class="trade-chart-period">
-                        <ul>
-                            <li class="m">
-                                <select ng-model="chart_period_m" ng-options="p.text for p in chart_period_m_list" 
-                                ng-change="change_chart_period(chart_period_m.name)">
-                                </select>
-                            </li>
-                            <li class="hour" ng-click="change_chart_period('h1')">小时</li>
-                            <li class="d1" ng-click="change_chart_period('d1')">日线</li>
-                        </ul>
-                    </div>
-                    <div class="trade-chart-tool">
-                    </div>
+            <div class="trade-chart">
+                <ng-echarts ec-config="chart_config"  ec-option="chart_option" class="history-chart"></ng-echarts>
+                <div class="chart-tip">
+                    <ul>
+                        <li class="history-time">{{ history_qoute.datetime.split(" ")[1] }}</li>
+                        <li class="history-open">{{ history_qoute.open.toFixed(qoute.decimal) }}</li>
+                        <li class="history-close">{{ history_qoute.close.toFixed(qoute.decimal) }}</li>
+                        <li class="history-high">{{ history_qoute.high.toFixed(qoute.decimal) }}</li>
+                        <li class="history-low">{{ history_qoute.low.toFixed(qoute.decimal) }}</li>
+                    </ul>
+                </div>
+                <div class="func-tip">
+                    <ul>
+                        <li class="history-time">DIFF:{{ diff[diff.length - 1].toFixed(4) }}</li>
+                        <li class="history-open">DEA:{{ dea[dea.length - 1].toFixed(4) }}</li>
+                        <li class="history-close">MACD:{{ macd[macd.length - 1].toFixed(4) }}</li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <ion-scroll class="index_scroll" direction="x" ng-style="scroll_width">
-            <ul class="index_ul">
-                <li ng-repeat="k in indexList track by $index" ng-class="{'active': list_index == $index}" ng-click="change_index($index)" class="index_li">
-                    <a href="">{{k}}</a>
-                </li>
-            </ul>
-        </ion-scroll>
-        <div class="row row_buy  row_padding">
-            <div class="col col-35" ng-click="toggle_confirm_order_panel_rise()">买涨</div>
-            <div class="col col-25" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }" ng-click="">
-                {{qoute.value.toFixed(qoute.decimal)}}
-            </div>
-            <div class="col col-35" ng-click="toggle_confirm_order_panel_fall()">买跌</div>
-        </div>
     </ion-content>
-    <!--<div class="bar bar-footer trade-footer">
+    <div class="bar bar-footer trade-footer">
         <div class="row">
-            <div class="col-40">
+            <div class="col">
                 <button class="button trade-panel-button" ng-click="toggle_history_order_panel()">
-                    <i class="icon ion-ios-photos-outline"></i>
-                    持仓明细
+                    <i class="ion-clipboard"></i>
+                    <span class="nav-name">持仓</span>
                     <span class="badge badge-assertive">{{ order_list.length }}</span>
                 </button>
             </div>
             <div class="col">
-                <button class="button trade-lookup-button" ng-click="toggle_order_panel('lookup')">
-                    <i class="icon ion-ios-timer-outline"></i>
-                    买涨
+                <button class="button trade-lookup-button" ng-click="toggle_order_confirm_panel('lookup')">
+                    <i class="ion-arrow-graph-up-right"></i>
+                    <span class="nav-name">买涨</span>
                 </button>
             </div>
             <div class="col">
-                <button class="button trade-lookdown-button" ng-click="toggle_order_panel('lookdown')">
-                    <i class="icon ion-ios-plus-outline"></i>
-                    买跌
+                <button class="button trade-lookdown-button" ng-click="toggle_order_confirm_panel('lookdown')">
+                    <i class="ion-arrow-graph-down-right"></i>
+                    <span class="nav-name">买跌</span>
                 </button>
             </div>
         </div>
     </div>
-    <div ng-include="'templates/hold-order-panel.html'"></div>
-    <div ng-include="'templates/close-order-panel.html'"></div>
-    <div ng-include="'templates/history-order-panel.html'"></div>-->
-    <div class="alert" ng-class="{ 'hide' : !is_loading }">
-        <ion-spinner icon="android"></ion-spinner>
-    </div>
-    <div class="alert" ng-class="{ 'hide' : message === '' }">
-        {{ message }}
-    </div>
+    <div ng-include="'templates/order-confirm-panel.html'"></div>
+    <div ng-include="'templates/order-state-panel.html'"></div>
+    <div ng-include="'templates/history-order-panel.html'"></div>
 </ion-view>

@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toast', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ng-echarts', 'ionic-toast', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform, $rootScope, $state, $timeout, $ionicLoading, $ionicPopup, $http) {
     $ionicPlatform.ready(function() {
@@ -49,8 +49,8 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
 
                 $timeout(function() {
                     angular.element(document.querySelector('iframe')).remove();
-                }, 100);
-            }, 100);
+                }, 500);
+            }, 500);
         }
     });
 })
@@ -75,27 +75,32 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
     $stateProvider
 
     .state('signin', {
+        cache: false,
         url: '/signin',
         controller: "SigninCtrl",
         templateUrl: 'templates/signin.html'
     })
 
     .state('install', {
+        cache: false,
         url: '/install',
         templateUrl: 'templates/install.html'
     })
 
     .state('cpa', {
+        cache: false,
         url: '/cpa',
         templateUrl: 'templates/cp-agreement.html'
     })
 
     .state('tpa', {
+        cache: false,
         url: '/tpa',
         templateUrl: 'templates/trade-agreement.html'
     })
 
     .state('signup', {
+        cache: false,
         url: '/signup',
         controller: "SignupCtrl",
         templateUrl: 'templates/signup.html'
@@ -115,6 +120,7 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
     })
 
     .state('tab.qoute', {
+        cache: false,
         url: '/qoute',
         views: {
             'tab-qoute': {
@@ -124,18 +130,8 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
         }
     })
 
-    .state('tab.trade', {
-        cache: false,
-        url: '/trade1',
-        views: {
-            'tab-trade': {
-                controller: "TradeCtrl",
-                templateUrl: 'templates/trade-agreement.html',
-            }
-        }
-    })
-
     .state('tab.profile', {
+        cache: false,
         url: '/profile',
         views: {
             'tab-profile': {
@@ -146,10 +142,10 @@ angular.module('starter', ['ionic', 'ionic-datepicker', 'echarts-ng', 'ionic-toa
     })
 
     .state('tab.history', {
+        cache: false,
         url: '/history/:index',
         views: {
             'tab-history': {
-                cache: false,
                 controller: "HistoryCtrl",
                 templateUrl: 'templates/tab-history.html',
             }
