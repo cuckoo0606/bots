@@ -27,13 +27,13 @@
                         <div class="col qoute-widget">
                             <span class="qoute-widget-title">最高</span>
                             <span class="qoute-widget-value" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.low.toFixed(qoute.decimal) }}
+                                {{ qoute.high.toFixed(qoute.decimal) }}
                             </span>
                         </div>
                         <div class="col qoute-widget">
                             <span class="qoute-widget-title">开盘</span>
                             <span class="qoute-widget-value" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.low.toFixed(qoute.decimal) }}
+                                {{ qoute.open.toFixed(qoute.decimal) }}
                             </span>
                         </div>
                     </div>
