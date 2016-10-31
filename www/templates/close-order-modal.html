@@ -16,23 +16,31 @@
                 <span class="input-content">{{ modal_close_order.direction == "0" ? "买跌" : "买涨"  }}</span>
             </li>
             <li class="item item-input">
-                <span class="input-label">买入价</span>
-                <span class="input-content">{{ modal_close_order.buyQoute }}</span>
+                <span class="input-label">成交价</span>
+                <span class="input-content">{{ modal_close_order.buyQoute.toFixed(modal_close_order.assets.decimal) }}</span>
             </li>
             <li class="item item-input">
-                <span class="input-label">盈亏</span>
-                <span class="input-content"
-                    ng-class="{ 'rise' : modal_close_order.profit >= 0, 'fall' : modal_close_order.profit < 0 }">
-                    {{ modal_close_order.profit }}
-                </span>
+                <span class="input-label">结算价</span>
+                <span class="input-content">{{ modal_close_order.endQoute.toFixed(modal_close_order.assets.decimal) }}</span>
             </li>
             <li class="item item-input">
                 <span class="input-label">手续费</span>
                 <span class="input-content">{{ modal_close_order.tax }}</span>
             </li>
             <li class="item item-input">
-                <span class="input-label">建仓时间</span>
+                <span class="input-label">盈亏</span>
+                <span class="input-content"
+                    ng-class="{ 'rise' : modal_close_order.profit >= 0, 'fall' : modal_close_order.profit < 0 }">
+                    {{ modal_close_order.profit.toFixed(2) }}
+                </span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">成交时间</span>
                 <span class="input-content">{{ modal_close_order.created }}</span>
+            </li>
+            <li class="item item-input">
+                <span class="input-label">结算时间</span>
+                <span class="input-content">{{ modal_close_order.expired }}</span>
             </li>
         </ul>
     </ion-content>

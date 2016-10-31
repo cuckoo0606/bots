@@ -25,10 +25,9 @@
                             <li>商品</li>
                             <li>类型</li>
                             <li>金额</li>
-                            <li>成交</li>
                             <li>现价</li>
                             <li>盈亏</li>
-                            <li>时间</li>
+                            <li></li>
                         </ul>
                     </div>
                     <div class="order-view-content">
@@ -46,9 +45,6 @@
                                 </li>
                                 <li ng-class="{ 'rise' : o.profit > 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
                                     {{ o.money }}
-                                </li>
-                                <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
-                                    {{ o.buyQoute.toFixed(o.qoute.decimal) }}
                                 </li>
                                 <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
                                     {{ o.qoute.value.toFixed(o.qoute.decimal) }}
