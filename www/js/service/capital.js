@@ -5,21 +5,22 @@ angular.module('starter.services')
     this.capital_list = [];
     this.init_complete = false;
 	this.money_list = [];
-    this.deposit = function(params) {
-        var url = AppConfigService.api_url + "pay/order";
+    this.deposit_hc = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/hcmobile")
 
-        $http.get(url, { 
+        $http({
+            "url": url,
+            "method": "POST",
             "timeout": 30000,
-            "params": {
-                "user": params.deposit.user,
-                "pay_type": params.deposit.pay_type,
-                "amount": params.deposit.amount,
-                "bank": params.deposit.bank.BankCode,
-                "return_url": params.deposit.return_url,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": params.deposit.body,
+                "bankcode": params.deposit.bank.code,
             },
         })
         
         .success(function(protocol) {
+            console.log(protocol);
             params.success(protocol);
         })
             
@@ -33,8 +34,6 @@ angular.module('starter.services')
     this.out_withdraw = function(params) {
         var outWithdrawUrl = AppConfigService.build_api_url("v1/outflow");
 
-		console.log(outWithdrawUrl);
-		console.log(params.outamount);
         $http({
             "url": outWithdrawUrl,
             "method": "POST", 
@@ -48,43 +47,38 @@ angular.module('starter.services')
             
         .error(function(protocol) {
             if (params.error) {
-                params.error("ERROR", "网络错误");
+                var message = "网络错误";
+                if (protocol.error_message) {
+                    message = protocol.error_message;
+                }
+                params.error(message);
             }
         });
     }
 
-    this.get_bank_list = function(params) {
-        var url = AppConfigService.api_url + "pay/banklist";
-
-        $http.get(url, { 
-            "timeout": 30000,
-            "params": { "pay_type": params.pay_type },
-        })
-        
-        .success(function(protocol) {
-            console.log(protocol);
-            if (protocol.return_code === "SUCCESS") {
-                if (params.success) {
-                    params.success(protocol.return_code, protocol.return_message, protocol.data);
-                }
-            }
-            else {
-                if (params.fail) {
-                    params.fail(protocol.return_code, protocol.return_message);
-                }
-            }
-        })
-            
-        .error(function(protocol) {
-            if (params.error) {
-                params.error("ERROR", "网络错误");
-            }
-        });
+    this.get_bank_list = function(complete) {
+        if (complete) {
+            var bank_list = [
+                { "name": "快捷支付", "code": "NOCARD" },
+                { "name": "招商银行", "code": "CMB" },
+                { "name": "工商银行", "code": "ICBC" },
+                { "name": "农业银行", "code": "ABC" },
+                { "name": "中国银行", "code": "BOCSH" },
+                { "name": "建设银行", "code": "CCB" },
+                { "name": "民生银行", "code": "CMBC" },
+                { "name": "光大银行", "code": "CEB" },
+                { "name": "交通银行", "code": "BOCOM" },
+                { "name": "兴业银行", "code": "CIB" },
+                { "name": "浦发银行", "code": "HXB" },
+                { "name": "华夏银行", "code": "HXB" },
+            ];
+            complete(bank_list);
+        }
     }
+
 	//资金列表接口
     this.request_capital_list = function(complete) {
         var capital_listUrl = AppConfigService.build_api_url("v1/books");
-        console.log(capital_listUrl);
         $http.get(capital_listUrl, { 
             "timeout": 3000,
             "params": { "begin": "2016-01-01" }

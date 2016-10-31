@@ -2,13 +2,13 @@
     <ion-content class="profile-background" scroll="false">
     	<header class="row ">
 	        <div class="col">
-	            账号：
+	            用户:
 	            <span>
 	                {{ account.username }}
 	            </span>
 	        </div>
 	        <div class="col">
-	            余额：
+	            余额:
 	            <span ng-class="{ 'rise' : account.amount >= 0, 'fall' : account.amount < 0 }">
 	                {{ account.amount.toFixed(2) }}
 	            </span>
@@ -16,9 +16,8 @@
 	    </header>
 	    <div class="row profile-capital">
 
-	        <a class="col" href="javascript:;" ng-click="show_bank_modal()">
-	        	<i class="icon ion-person"></i>
-	            编辑资料
+	        <a class="col" href="javascript:;" ng-click="show_user_modal()">
+	            个人资料
 	        </a>
 	        <a class="col" href="javascript:;" ng-click="show_money_list();capital_history_modal.show()">
 	            资金流水
@@ -26,10 +25,10 @@
 	    </div>
 	    <div class="row profile-capital">
 	        <a class="col" href="javascript:;" ng-click="show_deposit_modal()">
-	            充值
+	            用户入金
 	        </a>
 	        <a class="col" href="javascript:;" ng-click="show_withdraw_modal()">
-	            提现
+	            用户出金
 	        </a>
 	    </div>
 	    <!--<div class="row profile-capital">
@@ -47,12 +46,8 @@
 	            退出
 	        </a>
 	    </div>
-	    <div id="code"></div>
+	    <div id="code">
+            <img src="{{ qrcode_url }}" alt="我的二维码" />
+        </div>
     </ion-content>
-    <div class="alert" ng-class="{ 'hide' : !is_loading }">
-        <ion-spinner icon="android"></ion-spinner>
-    </div>
-    <div class="alert" ng-class="{ 'hide' : message === '' }">
-        {{ message }}
-    </div>
 </ion-view>

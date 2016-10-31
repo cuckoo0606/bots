@@ -47,7 +47,15 @@ angular.module('starter.services')
 
         .error(function(protocol) {
             if (params.error) {
-                params.error("ERROR", "网络错误");
+                var message = "网络错误";
+                if (protocol.error_code) {
+                    message = protocol.error_code;
+                    if (message == "Market_Close") {
+                        message = "非交易时间";
+                    }
+                }
+
+                params.error("ERROR", message);
             }
         });
     }

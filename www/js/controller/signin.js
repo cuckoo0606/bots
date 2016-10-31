@@ -3,7 +3,7 @@ angular.module('starter.controllers')
 .controller('SigninCtrl', function($scope, $rootScope, $http, $state, $timeout, $ionicHistory, $window, 
             UserService, QouteService, AppConfigService) {
     $scope.phone = $window.localStorage.id;
-    $scope.passwd = "123";
+    $scope.passwd = "";
     $scope.message = "";
     $scope.is_signin = false;
     $scope.spinner = function(visible) {

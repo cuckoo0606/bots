@@ -70,11 +70,7 @@ angular.module('starter.services')
             "data": { "username": params.phone, "password": params.passwd ,"referral_code":params.referralcode,"sms_code":params.code} 
         })
         .success(function(protocol) {
-        	if(protocol.error=="USER_EXIST"){
-        		alert("用户已存在");
-        	}
             if (!protocol.error) {
-            	console.log("注册成功");
                 params.success();
             }
             else {
@@ -91,19 +87,19 @@ angular.module('starter.services')
         });
     };
 
-    this.update_bank = function(params) {
+    this.update_user = function(params) {
         var updata_bankUrl = AppConfigService.build_api_url("v1/user");
         $http({
             "url": updata_bankUrl,
             "method": "POST", 
             "timeout": 10000,
             "data": { 
-            	"name":params.name,
-	        	"sex":params.sex,
-	        	"phone":params.phone,
-	        	"address":params.address,
-	        	"email":params.email,
-	        	"id_card":params.id_card,
+            	"name": params.name,
+	        	"sex": params.sex,
+	        	"phone": params.phone,
+	        	"address": params.address,
+	        	"email": params.email,
+	        	"idcard": params.id_card,
 	            "bank": params.bank,
 	            "bankholder": params.bankholder,
 	            "bankbranch": params.bankbranch,
@@ -113,7 +109,7 @@ angular.module('starter.services')
         
         .success(function(protocol) {
             if (protocol== "Created") {
-                    params.success();
+                    params.success("SUCCESS", "SUCCESS", protocol);
             }
             else {
                 if (params.fail) {

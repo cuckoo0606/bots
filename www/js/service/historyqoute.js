@@ -22,8 +22,6 @@ angular.module('starter.services')
             url = AppConfigService.qoute_url + "days";
         }
 
-        console.log(url);
-
         $http.get(url, { 
             "timeout": 10000,
             "params": { "market": market, "code": code, "limit": 100 }

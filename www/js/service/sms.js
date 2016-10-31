@@ -3,7 +3,6 @@ angular.module('starter.services')
 .service('SMSService', function($http, AppConfigService) {
     this.get_verify = function(params) {
         var verifyUrl = AppConfigService.api_url + "v1/smscode";
-        console.log(verifyUrl);
         $http({
             "url": verifyUrl,
             "method": "POST", 

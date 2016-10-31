@@ -67,7 +67,6 @@ angular.module('starter.controllers')
     }
 
     $scope.load_more_close_order = function() {
-        console.log($scope.close_order_page_index + 1);
         CloseOrderService.request_order_list($scope.close_order_page_index + 1, 20, function(protocol) {
             $scope.close_order_page_index = $scope.close_order_page_index + 1;
             protocol.data.forEach(function(value) {

@@ -138,7 +138,7 @@ angular.module('starter.controllers', [])
 
         $scope.order_result = {
             "status": "POST",
-            "message": "正在提交订单",
+            "message": "正在交易",
         }
         
         $scope.toggle_order_confirm_panel();
@@ -149,7 +149,6 @@ angular.module('starter.controllers', [])
             "success": function(status, protocol) {
                 var check_order = function() {
                     OrderService.request_order(protocol._id, function(protocol) {
-                        console.log(protocol);
                         if (protocol.status === 1) {
                             $scope.order_result.status = "SUCCESS";
                             $scope.order_result.message = "交易成功";

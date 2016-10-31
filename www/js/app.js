@@ -32,8 +32,6 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ionic-toast', 'starter.contro
         }
 
         if (views.indexOf(toState.name) >= 0 && !$rootScope.user) {
-	    console.log("go signin");
-	    console.log(toState.name);
             $state.go("signin");
             event.preventDefault();
         }

@@ -39,7 +39,6 @@
         <div class="info-view">
             <div>收益:{{ (order_params.amount * order_params.cycle.inprice + order_params.amount).toFixed(2) }}</div>
             <div>保底:{{ (order_params.amount * order_params.cycle.outprice).toFixed(2) }}</div>
-            <div>手续费:8%</div>
             <div>余额:{{ user.amount.toFixed(2) }}</div>
         </div>
         <div class="order-detail-view">
