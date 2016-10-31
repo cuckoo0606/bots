@@ -27,7 +27,7 @@ angular.module('starter.controllers')
         UserService.signin({
             "phone": $scope.phone,
             "passwd": $scope.passwd,
-            "success": function(status, message, user) {
+            "success": function(user) {
                 //获取系统时间用于计算订单时间
                 UserService.request_time(function(time) {
                     var now = new Date().getTime();

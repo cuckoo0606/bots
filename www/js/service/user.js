@@ -17,7 +17,7 @@ angular.module('starter.services')
             if (!protocol.error_code) {
                 if (params.success) {
                     AppConfigService.token = protocol.access_token;
-                    params.success("SUCCESS", protocol);
+                    params.success(protocol);
                 }
             }
             else {
@@ -46,7 +46,7 @@ angular.module('starter.services')
             }
         })
     };
-
+	
     this.request_time = function(complete) {
         var url = AppConfigService.build_api_url("v1/time")
         $http.get(url, {

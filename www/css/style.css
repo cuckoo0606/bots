@@ -1525,6 +1525,11 @@
 }
 
 /* 个人中心样式 */
+#code{
+	width:250px;
+	height:250px;
+	margin: 50px auto;
+}
 .person_money_list ul{
 	width:100%;
 	height:50px;

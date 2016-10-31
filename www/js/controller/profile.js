@@ -2,6 +2,12 @@ angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
+	$('#code').qrcode({
+		render:"canvas",
+		width:250,
+		height:250,
+		text:AppConfigService.erweima_url+"/#/signup?code="+$rootScope.user.referee
+	});
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
 	$scope.account = $rootScope.user;
