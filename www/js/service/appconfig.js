@@ -12,21 +12,28 @@ angular.module('starter.services', [])
     this.show_signup_code = true;
     this.api_url = "http://weixin.leather-boss.com:8793/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-	this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
+	this.erweima_url= "http://192.168.1.26:8100/";
+	this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
     this.bank_list = [ 
-            "招商银行", 
-            "工商银行", 
-            "农业银行",
-            "中国银行", 
-            "建设银行", 
-            "民生银行", 
-            "光大银行", 
-            "交通银行",
-            "兴业银行", 
-            "浦发银行", 
-            "华夏银行", 
+            { "name": "中国农业银行", "code": "ABC" },
+            { "name": "中国银行", "code": "BOC" },
+            { "name": "中国工商银行", "code": "ICBC" },
+            { "name": "交通银行", "code": "BOCOM" },
+            { "name": "中国建设银行", "code": "CCB" },
+            { "name": "中国邮政储蓄银行", "code": "PSBC" },
+            { "name": "招商银行", "code": "CMBC" },
+            { "name": "浦发银行", "code": "SPDB" },
+            { "name": "中国光大银行", "code": "CEEBBANK" },
+            { "name": "中信银行", "code": "ECITIC" },
+            { "name": "平安银行", "code": "PINGAN" },
+            { "name": "中国民生银行", "code": "CMBCS" },
+            { "name": "华夏银行", "code": "HXB" },
+            { "name": "广发银行", "code": "CGB" },
+            { "name": "兴业银行", "code": "CIB" },
+            { "name": "微商银行", "code": "HSB" },
+            { "name": "长沙银行", "code": "CSCB" },
+			{ "name": "浙江省农村信用社联合社", "code": "ZJRCC" }
         ];
-
     this.build_api_url = function(url, params) {
         var url = service.api_url + url + "?access_token=" + service.token;
         if(params) {

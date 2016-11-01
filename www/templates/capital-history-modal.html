@@ -8,17 +8,17 @@
     <ion-content class="order-modal-content">
     <div class="order-view person_money_list">
             <ion-scroll>
-            <ul ng-repeat="c in moneyList">
-                <li  class="money_list_header">
-                	<span>{{ c.remark }}</span>
-                	<span ng-class="{ 'rise' : c.amount >= 0, 'fall' : c.amount < 0 }">{{ c.amount>0?"+"+c.amount: c.amount}}</span>
-                </li>
-                <li class="money_list_footer">
-                	<p>
+            <ul >
+                <li ng-repeat="c in moneyList">
+                	<div class="money_list_header" ng-click="show_money_list_footer()">
                 		<span>{{c.yearTime}}</span>
                 		<span>{{c.dayTime}}</span>
-                	</p>
-                	<span>{{ c.balance.toFixed(2) }}</span>
+                		<span ng-class="{ 'rise' : c.amount >= 0, 'fall' : c.amount < 0 }">{{ c.amount>0?"+"+c.amount: c.amount}}</span>
+                	</div>
+                	<article >
+                		<p>说明：{{ c.remark }}</p>
+                		<p>余额：{{ c.balance.toFixed(2) }}</p>
+                	</article>
                 </li>
             </ul>
             </ion-scroll>

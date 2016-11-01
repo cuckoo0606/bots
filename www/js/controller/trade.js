@@ -429,6 +429,7 @@ angular.module('starter.controllers')
         angular.element(document.querySelectorAll(".trade-chart-period." + period)).addClass("active");
 
         HistoryQouteService.request_history($scope.market, $scope.code, period, function(history_list) {
+        	console.log(history_list);
             history_list.reverse();
             change_chart_data(history_list);
             $scope.history_loading = false;

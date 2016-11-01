@@ -445,6 +445,8 @@
     height: 50px;
     line-height: 50px;
     font-size: 18px;
+    border: none;
+    background-color: transparent !important;
 }
 
 .signin-content > .signin-action {
@@ -1525,6 +1527,7 @@
 }
 
 /* 个人中心样式 */
+
 #code {
 	width: 100%;
 	height: 250px;
@@ -1539,40 +1542,47 @@
 
 .person_money_list ul{
 	width:100%;
-	height:50px;
 	color: white;
-	border-bottom:1px solid #999999;
+	
 }
 .person_money_list ul li{
+	border-bottom:1px solid #333;
 	width: 94%;
 	margin-left: 3%;
-	height: 25px;
-	line-height: 25px;
+	height: auto;
 }
-.person_money_list ul li span{
+.person_money_list ul li .money_list_header{
+	width: 100%;
+	height:50px;
+	line-height:50px;
+}
+.person_money_list ul li .money_list_header span{
 	display: inline-block;
 	vertical-align: top;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
-.money_list_header span:first-child{
-	width:60%;
+.money_list_header span{
+	width:25%;
 	text-align: left;
 }
 .money_list_header span:last-child{
-	width:36%;
+	width:46%;
 	text-align: right;
+}
+.person_money_list ul li article{
+	width: 100%;
+	background-color: rgb(46, 49, 58);
+	display: none;
+	height: 50px;
+}
+.person_money_list ul li article p{
+	margin: 0 0 10px 0 !important;
+	height:20px;
+	line-height:20px ;
 }
 
-.money_list_footer p{
-	margin: 0;
-	width:60%;
-	display: inline-block;
-	vertical-align: top;
-	text-align: left;
-}
-.money_list_footer span:last-child{
-	width: 36%;
-	text-align: right;
-}
 .dataChose{
 	width: 100%;
 	position: absolute;

@@ -15,8 +15,13 @@ angular.module('starter.controllers')
     }
     $scope.sms_remaining = 0;
     $scope.sms_btn_text = "获取验证码";
+    //判断当前页面是否有code，有推荐码输入框则无法修改
     $scope.url=window.location.href;
-	$scope.user.referralcode=$scope.url.substring($scope.url.indexOf("?")+6,$scope.url.length);
+    if($scope.url.indexOf("code")>0){
+    	angular.element(document.querySelectorAll(".sign_code"))[0].readOnly=true;
+    	$scope.user.referralcode=$scope.url.substring($scope.url.indexOf("code")+5,$scope.url.length);
+    }
+	
     $scope.spinner = function(visible) {
         if (visible) {
             angular.element(document.querySelectorAll(".spinner-view")).removeClass("hide");

@@ -9,7 +9,7 @@
         <ul class="list">
             <li class="item item-select">
                 <span class="input-label">开户银行</span>
-                <select ng-model="user_info.bank" ng-options="r for r in bank_list">
+                <select ng-model="user_info.bank" ng-options="r.name for r in bank_list">
                 </select>
             </li>
             <li class="item item-input">
@@ -25,8 +25,8 @@
                 <input type="text" placeholder="银行卡号" ng-model="user_info.bank_card" required />
             </li>
             <li class="item item-input">
-                <span class="input-label">身份证卡号</span>
-                <input type="text" placeholder="身份证卡号" ng-model="user_info.id_card" required />
+                <span class="input-label">身份证号</span>
+                <input type="text" placeholder="身份证号" ng-model="user_info.id_card" required />
             </li>
         </ul>
     </ion-content>

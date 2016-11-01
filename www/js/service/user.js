@@ -86,7 +86,7 @@ angular.module('starter.services')
             }
         });
     };
-
+	
     this.update_user = function(params) {
         var updata_bankUrl = AppConfigService.build_api_url("v1/user");
         $http({
