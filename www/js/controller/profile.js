@@ -140,7 +140,6 @@ angular.module('starter.controllers')
             "bankaccount": $scope.user_info.bank_card,
             "success": function(status, message, protocol) {
                 UserService.request_user(function(user) {
-                    console.log(user);
                     $rootScope.user = user;
                     $ionicLoading.hide();
                     $scope.user_info_modal.hide();

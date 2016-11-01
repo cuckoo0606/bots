@@ -16,7 +16,7 @@
                 <div class="col">
                     名称: {{ qoute.name }}
                 </div>
-                <div class="col" ng-class="{ 'rise' : order_params.direction == '1', 'fall': order_params.direction == '0' }">
+                <div class="col" ng-class="{ 'rise' : order_result.order.direction == '1', 'fall': order_result.order.direction == '0' }">
                     方向: {{ order_result.order.direction == "1" ? "买涨" : "买跌" }}
                 </div>
             </div>

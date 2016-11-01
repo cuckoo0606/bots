@@ -13,7 +13,7 @@ angular.module('starter.services', [])
 
     this.api_url = "http://weixin.leather-boss.com:8793/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-	this.erweima_url= "http://weixin.leather-boss.com:8085/index.html/";
+	this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
 	this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
     this.bank_list = [ 

@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $ionicSideMenuDelegate,
+.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $ionicSideMenuDelegate, $ionicScrollDelegate,
             $interval, $timeout, $filter, $ionicPlatform, $ionicHistory, $state, $http, $ionicLoading,
             AppConfigService, CloseOrderService, UserService, OrderService, QouteService) {
     $scope.message = "";
@@ -82,6 +82,7 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
         $scope.order_params.direction = direction == "lookup" ? "1" : "0";
+        $ionicScrollDelegate.resize();
     };
 
     $scope.toggle_order_state_panel = function () {

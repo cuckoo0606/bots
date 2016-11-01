@@ -20,7 +20,6 @@ angular.module('starter.services')
         })
         
         .success(function(protocol) {
-            console.log(protocol);
             params.success(protocol);
         })
             

@@ -1072,7 +1072,7 @@
 }
 
 .period-widget-content > span {
-	font-size: 32px;
+	font-size: 28px;
     font-weight: bold;
     color: #fdbe19;
 }
@@ -1161,11 +1161,11 @@
 }
 
 .expect_profit {
+    color: #fdbe19;
 	width: 90%;
 	margin: 0 auto;
 	text-align: center;
 	margin-top: 15px;
-	color: #6d6d6d;
 	font-size: 12px;
 }
 
@@ -1308,7 +1308,7 @@
 	font-family: "microsoft yahei";
 }
 
-.panel-body {
+.order-confirm-panel .panel-body {
     position: absolute;
     top: 45px;
     left: 0px;
