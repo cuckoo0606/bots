@@ -69,7 +69,7 @@ angular.module('starter.controllers', [])
         $scope.close_order_modal.show();
     };
 
-    $scope.toggle_history_order_panel = function() {
+     $scope.toggle_history_order_panel = function() {
         $scope.hold_order_modal.hide();
         angular.element(document.querySelectorAll(".order-confirm-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-confirm-panel")).removeClass("open");

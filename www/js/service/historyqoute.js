@@ -29,7 +29,7 @@ angular.module('starter.services')
         
         .success(function(protocol) {
             if (complete) {
-                complete(protocol.data);
+                complete(protocol);
             }
         });
     }

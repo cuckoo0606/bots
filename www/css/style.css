@@ -954,10 +954,12 @@
     top: 50%;
     left: 50%;
     margin-left: -45%;
-    height: 325px;
-    margin-top: -162px;
-    background-color: rgb(30, 30, 40);
-    border: 1px solid rgb(46, 49, 58);
+    height: 424px;
+    margin-top: -212px;
+    background-color: #1b1a1e;
+    border: 1px solid #585352;
+    border-radius: 10px;
+    z-index: 20;
 }
 
 .trade-view .order-confirm-panel.open {
@@ -966,7 +968,7 @@
 
 .trade-view .order-confirm-panel .period {
     width: 100%;
-    height: 110px;
+    height: 130px;
     padding: 10px 5px 0px 10px;
     overflow: hidden;
 }
@@ -981,22 +983,29 @@
 }
 
 .period-widget {
-    color: white;
-    height: 95px;
-    width: 100px;
+    height: 85px;
+    width: 90px;
     float: left;
     padding: 5px;
-    margin-right: 5px;
-    background-color: rgb(38, 40, 52);;
+    margin-right: 10px;
+    background-image: url(../img/clock.png);
+    background-size: contain;
+    background-color: #2c2d31;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .period-widget.active {
-    border: 2px solid rgb(253, 142, 0);
+    border: 1px solid #fdbe19;
+    background-image: url(../img/sele.png);
+    background-size: contain;
+    background-position: right top;
+    background-repeat: no-repeat;
 }
 
 .trade-view .order-confirm-panel .amount {
     width: 100%;
-    height: 35px;
+    height: 70px;
     padding: 2px 5px 0px 10px;
     overflow: hidden;
 }
@@ -1027,11 +1036,17 @@
     padding: 0px 8px;
     text-align: center;
     margin-right: 5px;
-    background-color: rgb(38, 40, 52);
+    background-color: #38373e;
+    border-radius: 3px;
 }
 
+
 .amount-box.active {
-    border: 1px solid rgb(253, 142, 0);
+    border: 1px solid #fdbe19;
+    background-image: url(../img/selection.png);
+    background-size: 15px;
+    background-position: right top;
+    background-repeat: no-repeat;
 }
 
 .trade-view .order-confirm-panel .amount .amount-view {
@@ -1039,18 +1054,25 @@
 }
 
 .period-widget-header {
-    font-size: 14px;
+    font-size: 12px;
+    color: #6d6d6d;
     height: 20px;
     line-height: 20px;
     text-align: center;
 }
 
 .period-widget-content {
-    font-size: 20px;
-    font-weight: bold;
-    height: 40px;
-    line-height: 40px;
+    font-size: 15px;
     text-align: center;
+    color: #e1ab32;
+    height: 34px;
+    line-height: 34px;
+}
+
+.period-widget-content > span {
+	font-size: 32px;
+    font-weight: bold;
+    color: #fdbe19;
 }
 
 .period-widget-footer {
@@ -1058,6 +1080,7 @@
     height: 20px;
     line-height: 20px;
     text-align: center;
+    color: #fa2e42;
 }
 
 .info-view {
@@ -1083,7 +1106,7 @@
 .order-detail-view .order-detail {
     height: 100%;
     width: 100%;
-    border: 1px solid rgb(253, 142, 0);
+    border-top: 1px solid #333235;
 }
 
 .order-detail-view .order-detail .row {
@@ -1091,9 +1114,26 @@
     line-height: 30px;
 }
 
+.fields  > div{
+	color: #6d6d6d;
+	font-size: 12px;
+}
+
+.fields {
+	margin-top: 5px !important;
+	height: 24px !important;
+	line-height: 24px !important;
+}
+
 .order-detail-view .order-detail .row > div {
+	font-size: 14px;
     padding-left: 10px;
     padding-right: 10px;
+    text-align: center;
+}
+
+#money {
+	color: #fdbe19;
 }
 
 .order-detail-view .order-detail .row:last-child > div {
@@ -1104,32 +1144,52 @@
 
 .order-detail-view .button {
     width: 90%;
-    color: white;
-    background-color: rgb(255, 91, 45);
+    color: #000000;
+    background-color: #fdbe19;
+    min-height: 0;
+    height: 40px;
+    font-size: 15px;
+   line-height: 40px;
+   font-family: "microsoft yahei";
+}
+
+.btn_confirm {
+	margin-top: 12px !important;
+		
+}
+
+.expect_profit {
+	width: 90%;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 15px;
+	color: #6d6d6d;
+	font-size: 12px;
 }
 
 .other-amount {
     width: 22%;
     float: left;
-    height: 30px;
-    padding-left: 5px;
-    padding-top: 3px;
-    background-color: rgb(38, 40, 52);
+    height: 29px;
 }
 
 .other-amount.active {
-    border: 1px solid rgb(253, 142, 0);
+    border: 1px solid #fdbe19;
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 .other-amount input {
     color: white;
-    width: 95%;
+    width: 100%;
     font-size: 12px;
-    height: 24px;
-    line-height: 24px;
+    height: 30px;
+    line-height: 230px;
     text-align: center;
-    background-color: rgb(38, 40, 52);
+    background-color: #38373e;
+    border-radius: 3px;
 }
+
 
 .trade-view .order-state-panel {
     display: none;
@@ -1220,21 +1280,53 @@
 
 .panel-header {
     position: relative;
-    font-size: 16px;
-    height: 35px;
-    line-height: 35px;
+    font-size: 15px;
+    height: 45px;
+    line-height: 45px;
     color: white;
     text-align: center;
-    background-color: rgb(38, 40, 52);
+    background-color: #1b1a1e;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 1px solid #161619;
+    width: 90%;
+    margin: 0 auto;
+    font-family: "microsoft yahei";
+}
+
+.close_tag {
+	color: #6d6d6d;	
+	font-size: 28px;
+	vertical-align: middle;
+}
+
+.end_time,.invest_account,.info-view > div {
+	font-size: 12px;
+	color: #6D6D6D;
+	font-family: "microsoft yahei";
 }
 
 .panel-body {
     position: absolute;
-    top: 35px;
+    top: 45px;
     left: 0px;
     right: 0px;
     bottom: 0px;
-    background-color: rgb(30, 30, 40);
+    background-color: #1b1a1e;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top: 1px solid #2b2930;
+    border-bottom: 1px solid #000;
+    width: 90%;
+    margin: 0 auto;
+    background-image: url(../img/back_logo.png);
+    background-size: 150px;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+}
+
+.end_time {
+	color: #6D6D6D;
 }
 
 .panel-header .close {
