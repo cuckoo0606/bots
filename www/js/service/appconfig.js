@@ -10,10 +10,12 @@ angular.module('starter.services', [])
     this.show_system_logo = true;
     this.show_nav_bar = false;
     this.show_signup_code = true;
+
     this.api_url = "http://weixin.leather-boss.com:8793/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-	this.erweima_url= "http://192.168.1.26:8100/";
+	this.erweima_url= "http://weixin.leather-boss.com:8085/index.html/";
 	this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
+
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
             { "name": "中国银行", "code": "BOC" },

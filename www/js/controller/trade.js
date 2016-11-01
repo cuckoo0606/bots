@@ -438,7 +438,6 @@ angular.module('starter.controllers')
     }
 
     $scope.change_chart_period($scope.chart_period);
-
     $scope.$on('$destroy', function() {
         $interval.cancel(order_interval);
         $interval.cancel(history_interval);
