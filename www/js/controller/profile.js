@@ -14,9 +14,10 @@ angular.module('starter.controllers')
     $scope.footshow={
     	none:true
     };
+    $scope.judge_bank_value=false;
     $scope.user_info = {
         "id_card": "",
-        "bank": "",
+        "bank":$scope.bank_list[2].name,
         "bank_user": "",
         "bank_brand": "",
         "bank_card": "",
@@ -141,6 +142,7 @@ angular.module('starter.controllers')
             "success": function(status, message, protocol) {
                 UserService.request_user(function(user) {
                     $rootScope.user = user;
+                    console.log($rootScope.user);
                     $ionicLoading.hide();
                     $scope.user_info_modal.hide();
                 });
@@ -208,7 +210,19 @@ angular.module('starter.controllers')
         });
         $scope.capital_deposit_modal.hide();
     }
-
+	
+	$scope.judge=function(){
+			for(var i=0;i<$scope.bank_list.length;i++){
+        	
+				if($rootScope.user.bank==$scope.bank_list[i].code){
+					$scope.judge_bank_value=true;
+					return $scope.judge_bank_value;
+				}else{
+					$scope.judge_bank_value=false;
+					return $scope.judge_bank_value;
+				}
+			}
+		}
     $scope.out_withdraw = function() {
         if ($scope.outAmount.outamount == "" || $scope.outAmount.outamount == "0")  {
             $ionicLoading.show({
@@ -221,48 +235,64 @@ angular.module('starter.controllers')
 
             return;
         }
-        
-        $ionicLoading.show({
+		$scope.judge();
+        if($scope.judge_bank_value){
+        	$ionicLoading.show({
             template: "正在提交"
-        });
-    	
-        CapitalService.out_withdraw({
-        	"outamount": $scope.outAmount.outamount,
-        	"success": function(protocol) {
-                if (protocol.error) {
-                    $ionicLoading.show({
-                        template: protocol.error_message
-                    });
-
-                    $timeout(function() {
-                        $ionicLoading.hide();
-                    }, 3000);
-                }
-                else {
-                    $ionicLoading.hide();
-                    $rootScope.user.amount = $scope.account.amount - message.amount;
-                    $scope.capital_withdraw_modal.hide();
-                }
-          	},
-        	"fail": function(message) {
-                $ionicLoading.show({
-                    template: message
-                });
-
-                $timeout(function() {
-                    $ionicLoading.hide();
-                }, 3000);
-          	},
-        	"error": function(message) {
-                $ionicLoading.show({
-                    template: message
-                });
-
-                $timeout(function() {
-                    $ionicLoading.hide();
-                }, 3000);
-          	}
-        });
+	        });
+	    	
+	        CapitalService.out_withdraw({
+	        	"outamount": $scope.outAmount.outamount,
+	        	"success": function(protocol) {
+	                if (protocol.error) {
+	                    $ionicLoading.show({
+	                        template: protocol.error_message
+	                    });
+	
+	                    $timeout(function() {
+	                        $ionicLoading.hide();
+	                    }, 3000);
+	                }
+	                else {
+	                    $ionicLoading.hide();
+	                    $rootScope.user.amount = $scope.account.amount - $scope.outAmount.outamount;
+	                    $ionicLoading.show({
+	                        template: "提交成功"
+	                    });
+	                    $timeout(function() {
+	                    $ionicLoading.hide();
+	                    $scope.capital_withdraw_modal.hide();
+	                	}, 3000);
+	                }
+	          	},
+	        	"fail": function(message) {
+	                $ionicLoading.show({
+	                    template: message
+	                });
+	
+	                $timeout(function() {
+	                    $ionicLoading.hide();
+	                }, 3000);
+	          	},
+	        	"error": function(message) {
+	                $ionicLoading.show({
+	                    template: message
+	                });
+	
+	                $timeout(function() {
+	                    $ionicLoading.hide();
+	                }, 3000);
+	          	}
+	        });
+        }else{
+        	$ionicLoading.show({
+            template: "银行签约信息不全。请前往个人--个人资料处编辑银行卡信息。"
+	        });
+	        $timeout(function () {
+                $ionicLoading.hide();
+            }, 2000);
+        }
+        
     }
 
     $scope.order_quantity_sum = function() {
@@ -296,5 +326,9 @@ angular.module('starter.controllers')
     
     $scope.$on('$destroy', function() {
         $scope.user_info_modal.hide();
+        $scope.capital_history_modal.hide();
+        $scope.pay_webview_modal.hide();
+        $scope.capital_deposit_modal.hide();
+        $scope.capital_withdraw_modal();
     });
 });
