@@ -1236,8 +1236,8 @@
 
 .trade-view .order-state-panel .success .remaining {
     position: relative;
-    height: 137px;
-    border-bottom: 1px solid #000;;
+    height: 60px;
+
 }
 
 .trade-view .order-state-panel .success .remaining > .col {
