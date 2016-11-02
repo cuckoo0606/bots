@@ -1049,6 +1049,7 @@
     background-size: 15px;
     background-position: right top;
     background-repeat: no-repeat;
+    color: #fdbe19;
 }
 
 .trade-view .order-confirm-panel .amount .amount-view {
@@ -1200,8 +1201,8 @@
     top: 50%;
     left: 50%;
     margin-left: -40%;
-    height: 240px;
-    margin-top: -120px;
+    height: 260px;
+    margin-top: -130px;
     background-color: rgb(30, 30, 40);
     border: 1px solid rgb(46, 49, 58);
 }
@@ -1268,7 +1269,7 @@
     font-size: 25px;
 }
 
-.trade-view .order-state-panel .button {
+.order-confirm-panel  .trade-view .order-state-panel .button {
     width: 96%;
     color: white;
     margin-left: 2%;
@@ -1276,11 +1277,19 @@
     background-color: rgb(255, 91, 45);
 }
 
+ .trade-view .order-state-panel .button {
+ 	width: 90%;
+    color: white;
+    background-color: rgb(255, 91, 45);
+    left: 0;
+    margin-left: 5%;
+ }
+
 .trade-view .order-state-panel.open {
     display: block;
 }
 
-.panel-header {
+.order-confirm-panel .panel-header {
     position: relative;
     font-size: 15px;
     height: 45px;
@@ -1294,6 +1303,22 @@
     width: 90%;
     margin: 0 auto;
     font-family: "microsoft yahei";
+}
+
+.other_amount_tips {
+	text-align: right;
+	color: red !important;
+}
+
+.panel-header {
+	position: relative;
+    font-size: 15px;
+    height: 45px;
+    line-height: 45px;
+    color: white;
+    text-align: center;
+    background-color: #1b1a1e; 
+    border-bottom: 1px solid #000;
 }
 
 .close_tag {
@@ -1325,6 +1350,16 @@
     background-size: 150px;
     background-position: bottom right;
     background-repeat: no-repeat;
+}
+
+.panel-body {
+	position: absolute;
+    top: 45px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #1b1a1e;
+    border-top: 1px solid #2b2930;
 }
 
 .end_time {

@@ -36,11 +36,13 @@
                 </div>
             </ion-scroll>
             <div class="other-amount" ng-class="{ 'active' : order_params.other_amount != '' && order_params.other_amount != '0' }">
-                <input type="number" placeholder="其它金额" ng-model="order_params.other_amount" />
+                <input type="number" name="other_amount" placeholder="其它金额" ng-model="order_params.other_amount" ng-change="limit_account()"/>
             </div>
         </div>
         <div class="info-view">
-            <div>余额:{{ user.amount.toFixed(2) }}</div>
+            <div>余额:  &yen; {{ user.amount.toFixed(2) }}</div>
+            <div ng-show="order_params.other_amount > 5000" class="other_amount_tips">输入金额不超过5000</div>
+            <div ng-show="order_params.other_amount < 10 && order_params.other_amount != ''" class="other_amount_tips">输入金额不少于10</div>
         </div>
         <div class="order-detail-view">
             <div class="order-detail">
@@ -58,13 +60,13 @@
                 </div>
                 <div class="row btn_confirm">
                     <div class="col">
-                        <button class="button" ng-click="order()">确认下单</button>
+                        <button class="button" ng-click="order()" ng-disabled="max_over">确认下单</button>
                     </div>
                 </div>
                 <p class="expect_profit">
-                	<span>预期收益 : &yen;{{ (order_params.other_amount == "" || order_params.other_amount == "0") ? (order_params.amount * order_params.cycle.inprice + order_params.amount).toFixed(2) : (order_params.other_amount * order_params.cycle.inprice + order_params.other_amount).toFixed(2) }}</span>
+                	<span>预期收益 :  &yen; {{ (order_params.other_amount == "" || order_params.other_amount == "0") ? (order_params.amount * order_params.cycle.inprice + order_params.amount).toFixed(2) : (order_params.other_amount * order_params.cycle.inprice + order_params.other_amount).toFixed(2) }}</span>
                 	&nbsp;&nbsp;
-                	<span>保底金额 : &yen;{{ (order_params.amount * order_params.cycle.outprice).toFixed(2) }}</span>
+                	<span>保底金额 :  &yen; {{ (order_params.amount * order_params.cycle.outprice).toFixed(2) }}</span>
                 </p>
             </div>
         </div>
