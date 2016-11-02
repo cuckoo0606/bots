@@ -60,6 +60,17 @@ angular.module('starter.services')
         });
     }
 
+    this.trade_boundage = function (params) {
+        var url = AppConfigService.build_api_url("v1/config/order-handling-percent");
+        $http.get(url,{
+            "timeout": 10000
+        }).success(function (protocol) {
+            if(!protocol.error_code) {
+                params.success("SUCCESS",protocol);
+            }
+        })
+    }
+
     this.request_order = function(id, complete) {
         var url = AppConfigService.build_api_url("v1/orders/" + id);
         $http.get(url, {

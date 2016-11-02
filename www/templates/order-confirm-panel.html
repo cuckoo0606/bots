@@ -1,8 +1,10 @@
 <div class="order-confirm-panel">
     <div class="panel-header">
-        订单确认
-        <div class="close" ng-click="toggle_order_confirm_panel()">
-            <i class="icon ion-ios-close-empty close_tag"></i>
+        <div>
+            订单确认
+            <div class="close" ng-click="toggle_order_confirm_panel()">
+                <i class="icon ion-ios-close-empty close_tag"></i>
+            </div>
         </div>
     </div>
     <div class="panel-body">
@@ -41,6 +43,7 @@
         </div>
         <div class="info-view">
             <div>余额:  &yen; {{ user.amount.toFixed(2) }}</div>
+            <div ng-hide="order_params.other_amount > 5000 || order_params.other_amount < 10 && order_params.other_amount != ''">手续费： {{boundage * 100 }}%</div>
             <div ng-show="order_params.other_amount > 5000" class="other_amount_tips">输入金额不超过5000</div>
             <div ng-show="order_params.other_amount < 10 && order_params.other_amount != ''" class="other_amount_tips">输入金额不少于10</div>
         </div>

@@ -12,6 +12,7 @@ angular.module('starter.controllers', [])
     $scope.system_logo = AppConfigService.system_logo;
     $scope.show_system_logo = AppConfigService.show_system_logo;
     $scope.max_over = false;
+    $scope.boundage = "";
 
     $scope.order_params = {
         "cycle": {},
@@ -84,6 +85,7 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
         $scope.order_params.direction = direction == "lookup" ? "1" : "0";
         $ionicScrollDelegate.resize();
+        $scope.trade_boundage();
     };
 
     $scope.toggle_order_state_panel = function () {
@@ -136,6 +138,15 @@ angular.module('starter.controllers', [])
 	    	$scope.max_over = false;
 	    }
     }
+
+    $scope.trade_boundage = function () {
+        OrderService.trade_boundage({
+            "success": function (status,protocol) {
+                $scope.boundage = protocol;
+            }
+        })
+    }
+
     
     $scope.order = function() {
         var order = {

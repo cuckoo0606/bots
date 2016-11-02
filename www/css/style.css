@@ -973,6 +973,7 @@
     height: 130px;
     padding: 10px 5px 0px 10px;
     overflow: hidden;
+    border-top: 1px solid #2b2930;
 }
 
 .trade-view .order-confirm-panel .period .scroll {
@@ -1203,12 +1204,23 @@
     margin-left: -40%;
     height: 260px;
     margin-top: -130px;
-    background-color: rgb(30, 30, 40);
-    border: 1px solid rgb(46, 49, 58);
+    background-color: #1b1a1e;
+    border-radius: 10px;
+    z-index: 20;
+}
+
+
+
+.trade-view .order-state-panel .close {
+	line-height: 44px;
+	color: #6d6d6d;	
+	font-size: 28px;
+	vertical-align: middle;
 }
 
 .trade-view .order-state-panel .success {
     color: white;
+    border-top: 1px solid #2b2930;
 }
 
 .trade-view .order-state-panel .success .row {
@@ -1223,8 +1235,9 @@
 }
 
 .trade-view .order-state-panel .success .remaining {
-    height: 60px;
-    line-height: 60px;
+    position: relative;
+    height: 137px;
+    border-bottom: 1px solid #000;;
 }
 
 .trade-view .order-state-panel .success .remaining > .col {
@@ -1234,6 +1247,12 @@
     height: 60px;
     line-height: 60px;
     padding-left: 0px !important;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin: auto !important;
 }
 
 .trade-view .order-state-panel .wait .row {
@@ -1289,7 +1308,7 @@
     display: block;
 }
 
-.order-confirm-panel .panel-header {
+.order-confirm-panel .panel-header,.order-state-panel .panel-header {
     position: relative;
     font-size: 15px;
     height: 45px;
@@ -1299,10 +1318,18 @@
     background-color: #1b1a1e;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    border-bottom: 1px solid #161619;
-    width: 90%;
-    margin: 0 auto;
+    width: 100%;
+    padding: 0 10px;
     font-family: "microsoft yahei";
+}
+
+.order-state-panel .panel-header > div{
+	color: #fdbe19;
+    border-bottom: 1px solid #000;
+}
+
+.order-confirm-panel .panel-header > div {
+    border-bottom: 1px solid #000;
 }
 
 .other_amount_tips {
@@ -1317,8 +1344,7 @@
     line-height: 45px;
     color: white;
     text-align: center;
-    background-color: #1b1a1e; 
-    border-bottom: 1px solid #000;
+    background-color: #1b1a1e;
 }
 
 .close_tag {
@@ -1333,7 +1359,7 @@
 	font-family: "microsoft yahei";
 }
 
-.order-confirm-panel .panel-body {
+.order-confirm-panel .panel-body,.order-state-panel .panel-body {
     position: absolute;
     top: 45px;
     left: 0px;
@@ -1342,10 +1368,11 @@
     background-color: #1b1a1e;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    border-top: 1px solid #2b2930;
+    border-top: 0;
     border-bottom: 1px solid #000;
-    width: 90%;
-    margin: 0 auto;
+    width: 100%;
+    padding: 0 10px;
+    margin-top: 1px;
     background-image: url(../img/back_logo.png);
     background-size: 150px;
     background-position: bottom right;

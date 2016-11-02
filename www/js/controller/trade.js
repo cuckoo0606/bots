@@ -69,6 +69,7 @@ angular.module('starter.controllers')
         }); 
     }
 
+
     $scope.refresh_order();
 
     $scope.chart_config = {
