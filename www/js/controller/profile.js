@@ -11,13 +11,18 @@ angular.module('starter.controllers')
     $scope.deposit_bank_list = [];
     $scope.moneyList=[];
     $scope.bank_list = AppConfigService.bank_list;
+    $scope.type_list = AppConfigService.type_list;
     $scope.footshow={
     	none:true
+    };
+    $scope.user_bank={
+    	name:"",
+    	code:""
     };
     $scope.judge_bank_value=false;
     $scope.user_info = {
         "id_card": "",
-        "bank":$scope.bank_list[2].name,
+        "bank": "",
         "bank_user": "",
         "bank_brand": "",
         "bank_card": "",
@@ -79,10 +84,17 @@ angular.module('starter.controllers')
         $scope.capital_withdraw_modal.show();
     }
 
+	$scope.get_user_bank = function(){
+		
+	}
     $scope.show_user_modal = function() {
     	$ionicHistory.clearHistory();
-    	
-        $scope.user_info.bank = $rootScope.user.bank;
+    	$scope.user_bank=$scope.bank_list.filter(function(obj){
+    		if(obj.code==$rootScope.user.bank){
+    			return obj;
+    		}
+    	});
+        $scope.user_info.bank = $scope.user_bank[0];
         if($scope.user_info.bank == "" || $scope.bank_list.indexOf($scope.user_info.bank) < 0) {
             $scope.user_info.bank = $scope.bank_list[0];
         }
@@ -95,25 +107,21 @@ angular.module('starter.controllers')
 
 	$scope.show_money_list_footer = function() {
 		var article_list = document.getElementsByTagName("article");
+		var clickshow_list = document.getElementsByClassName("clickshow");
+		console.log(clickshow_list);
 		for (var i=0;i<article_list.length;i++){
 			if(i==this.$index){
 				if(article_list[i].style.display=="block"){
+					clickshow_list[i].className="icon clickshow ion-ios-arrow-up";
 					article_list[i].style.display="none";
 				}else {
+					clickshow_list[i].className="icon clickshow ion-ios-arrow-down";
 					article_list[i].style.display="block";
 				}
 			}else{
 				article_list[i].style.display="none";
 			}
 		}
-		
-//		if(this.footshow.none==true){
-//			this.footshow.none=false;
-//		} else if(this.footshow.none==false){
-//			this.footshow.none=true;
-//			
-//		}
-		
     }
 	
     $scope.pay_type_change = function() {
@@ -308,18 +316,24 @@ angular.module('starter.controllers')
         	"startDate":$scope.choseDate.startDate,
         	"overDate":$scope.choseDate.overDate,
         	"success": function(message) {
-        		message.forEach(function(value){
-        			$scope.moneyList.push({
-                        "_id": value._id,
-                        "remark": value.remark,
-                        "yearTime": value.created.substring(0,10),
-                        "dayTime": value.created.substring(11,19),
-                        "amount": value.amount,
-                        "user": value.user,
-                        "balance": value.balance,
-                        "type": value.type,
-                    });
+        		message.forEach(function(servicevalue){
+        			$scope.type_list.filter(function(arr){
+        				if(servicevalue.type==arr.value){
+        					$scope.moneyList.push({
+		                        "_id": servicevalue._id,
+		                        "remark": servicevalue.remark,
+		                        "yearTime": servicevalue.created.substring(0,10),
+		                        "dayTime": servicevalue.created.substring(11,19),
+		                        "amount": servicevalue.amount,
+		                        "user": servicevalue.user,
+		                        "balance": servicevalue.balance,
+		                        "type": servicevalue.type,
+		                        "typename":arr.name
+		                    });
+        				}
+        			});
         		});
+        		console.log($scope.moneyList);
           	}
         });
     }
