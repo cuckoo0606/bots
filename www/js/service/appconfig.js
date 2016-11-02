@@ -36,6 +36,20 @@ angular.module('starter.services', [])
             { "name": "长沙银行", "code": "CSCB" },
 			{ "name": "浙江省农村信用社联合社", "code": "ZJRCC" }
         ];
+        
+	this.type_list = [
+			{ "value": 0, "name": "初始化" },
+            { "value": 1, "name": "转账" },
+            { "value": 2, "name": "充值" },
+            { "value": 3, "name": "下单" },
+            { "value": 4, "name": "结单" },
+            { "value": 5, "name": "佣金" },
+            { "value": 6, "name": "管理员加款" },
+            { "value": 7, "name": "头寸" },
+            { "value": 8, "name": "出金申请" },
+            { "value": 9, "name": "出金取消" },
+            { "value": 10, "name": "出金加款" }
+	]
     this.build_api_url = function(url, params) {
         var url = service.api_url + url + "?access_token=" + service.token;
         if(params) {
