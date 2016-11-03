@@ -13,6 +13,8 @@ angular.module('starter.controllers', [])
     $scope.show_system_logo = AppConfigService.show_system_logo;
     $scope.max_over = false;
     $scope.boundage = "";
+ 
+    
 
     $scope.order_params = {
         "cycle": {},
@@ -94,6 +96,11 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".order-confirm-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-state-panel")).toggleClass("open");
     }
+    
+    $scope.continue_order = function() {
+    	angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
+        angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
+    }
 
     $scope.order_profit = OrderService.order_profit;
 
@@ -147,7 +154,17 @@ angular.module('starter.controllers', [])
         })
     }
 
-    
+	$scope.count_time = function() {
+		   $scope.remain_time = $scope.order_params.cycle.time;
+			if ($scope.remain_time > 0) {
+					function count_remain(){
+						$scope.remain_time --;
+					}
+					var timer = setInterval(count_remain,1000)
+			}else {
+				clearInterval(timer)
+			}	
+		}
     $scope.order = function() {
         var order = {
             "trade": $rootScope.trade.trade,
@@ -182,8 +199,9 @@ angular.module('starter.controllers', [])
                         }
                     });
                 }
-
-                $timeout(check_order, 1000);                
+				console.log($scope.order_params);
+                $timeout(check_order, 1000);  
+                $scope.count_time();
             },
             "fail": function(status, protocol) {
                 $scope.order_result.status = "FAIL";

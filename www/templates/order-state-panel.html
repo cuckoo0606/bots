@@ -11,33 +11,29 @@
         <div class="success" ng-show="order_result.status == 'SUCCESS'">
             <div class="row remaining">
                 <div class="col">
-                    {{ order_result.order.remaining.toFixed(0) }}
+                		<div>{{remain_time}}</div>
+                		<div>现价</div>
+                		<div>{{qoute.value.toFixed(qoute.decimal)}}</div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    名称: {{ qoute.name }}
+            <div class="row info_list">
+                <div class="col col-15 first_info">
+                	<p>方向</p>
+                	<p ng-class="{ 'rise' : order_result.order.direction == '1', 'fall': order_result.order.direction == '0' }">{{ order_result.order.direction == "1" ? "买涨" : "买跌" }}</p>
                 </div>
-                <div class="col" ng-class="{ 'rise' : order_result.order.direction == '1', 'fall': order_result.order.direction == '0' }">
-                    方向: {{ order_result.order.direction == "1" ? "买涨" : "买跌" }}
+                <div class="col col-30">
+                	<p>金额</p>
+                	<p>&yen; {{ (order_params.other_amount != "" && order_params.other_amount != "0") ? order_params.other_amount : order_params.amount }}</p>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    金额: {{ (order_params.other_amount != "" && order_params.other_amount != "0") ? order_params.other_amount : order_params.amount }}
-                </div>
-                <div class="col" ng-class="{ 'rise' : order_result.order.profit > 0, 'fall': order_result.order.profit < 0 }">
-                    盈亏: {{ order_result.order.profit.toFixed(2) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    成交价: {{ order_result.order.buyQoute }}
-                </div>
-                <div class="col" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                    最新价: {{ qoute.value.toFixed(qoute.decimal) }}
-                </div>
-            </div>
+                <div class="col col-30">
+                	<p>执行价</p>
+                	<p>  {{ order_result.order.buyQoute }}</p>
+                </div>    
+                <div class="col col-25 last_info">
+                	<p>预测结果</p>
+                	<p ng-class="{'rise': (order_result.order.money * order_result.order.inprice + order_result.order.money)>0,'fall': (order_result.order.money * order_result.order.inprice + order_result.order.money) < 0}">  &yen; {{ (order_result.order.money * order_result.order.inprice + order_result.order.money).toFixed(2) }}</p>
+                </div>             
+        	</div>
         </div>
         <div class="wait" ng-show="order_result.status == 'POST'">
             <div class="row">
@@ -57,38 +53,34 @@
         </div>
         <div class="success" ng-show="order_result.status == 'FINISH'">
             <div class="row remaining">
-                <div class="col">
-                    {{ order_result.order.profit.toFixed(2) }}
+                 <div class="col">
+                		<div>0</div>
+                		<div>现价</div>
+                		<div>{{qoute.value.toFixed(qoute.decimal)}}</div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    名称: {{ qoute.name }}
+            <div class="row info_list">
+                <div class="col col-15 first_info">
+                	<p>方向</p>
+                	<p ng-class="{ 'rise' : order_result.order.direction == '1', 'fall': order_result.order.direction == '0' }">{{ order_result.order.direction == "1" ? "买涨" : "买跌" }}</p>
                 </div>
-                <div class="col">
-                    方向: {{ order_params.direction == "1" ? "买涨" : "买跌" }}
+                <div class="col col-30">
+                	<p>金额</p>
+                	<p>&yen; {{ (order_params.other_amount != "" && order_params.other_amount != "0") ? order_params.other_amount : order_params.amount }}</p>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    金额: {{ (order_params.other_amount != "" && order_params.other_amount != "0") ? order_params.other_amount : order_params.amount }}
-                </div>
-                <div class="col">
-                    盈亏: {{ order_result.order ? order_profit(order_result.order) : 0 }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    成交价: {{ order_result.order.buyQoute }}
-                </div>
-                <div class="col">
-                    最新价: {{ qoute.value.toFixed(qoute.decimal) }}
-                </div>
-            </div>
+                <div class="col col-30">
+                	<p>执行价</p>
+                	<p>  {{ order_result.order.buyQoute }}</p>
+                </div>    
+                <div class="col col-25 last_info">
+                	<p>预测结果</p>
+                	<p ng-class="{'rise': (order_result.order.money * order_result.order.inprice + order_result.order.money)>0,'fall': (order_result.order.money * order_result.order.inprice + order_result.order.money) < 0}">  &yen; {{ (order_result.order.money * order_result.order.inprice + order_result.order.money).toFixed(2) }}</p>
+                </div>             
+        	</div>
         </div>
         <div class="row">
             <div class="col">
-                <button class="button" ng-click="toggle_order_state_panel()">关闭</button>
+                <button class="button" ng-click="continue_order()">继续下单</button>
             </div>
         </div>
     </div>
