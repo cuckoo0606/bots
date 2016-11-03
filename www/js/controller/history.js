@@ -50,7 +50,7 @@ angular.module('starter.controllers')
                 }
             });
 
-            if(protocol.data.length == 0) {
+            if(protocol.data.length === 0) {
                 $scope.has_more_order = false;
             }
 
@@ -73,7 +73,7 @@ angular.module('starter.controllers')
                 $scope.close_order_list.push(value);
             });
 
-            if(protocol.data.length == 0) {
+            if(protocol.data.length === 0) {
                 $scope.has_more_close_order = false;
             }
 

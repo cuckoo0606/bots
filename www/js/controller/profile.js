@@ -233,7 +233,7 @@ angular.module('starter.controllers')
 		var judge_bank_value = false;
 		(function(){
 			for(var i=0;i<$scope.bank_list.length;i++){
-				if($rootScope.user.bank==$scope.bank_list[i].code||$rootScope.user.bank==$scope.bank_list[i].name){
+				if(($rootScope.user.bankaccount!="")&&($rootScope.user.bankbranch!="")&&($rootScope.user.bankholder!="")&& ($rootScope.user.bank==$scope.bank_list[i].code||$rootScope.user.bank==$scope.bank_list[i].name)){
 					judge_bank_value=true;
 					return judge_bank_value;
 				}else{
@@ -319,8 +319,10 @@ angular.module('starter.controllers')
     
     $scope.show_money_list = function(){
         CapitalService.request_capital_list({
-        	"startDate":$scope.choseDate.startDate,
+        	"startDate":moment().toJSON().substring(0,10),
         	"overDate":$scope.choseDate.overDate,
+        	"size":1000,
+        	"page":1,
         	"success": function(message) {
         		message.forEach(function(servicevalue){
         			$scope.type_list.filter(function(arr){
