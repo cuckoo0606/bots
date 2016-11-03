@@ -233,7 +233,7 @@ angular.module('starter.controllers')
 		var judge_bank_value = false;
 		(function(){
 			for(var i=0;i<$scope.bank_list.length;i++){
-				if(($rootScope.user.bankaccount!="")&&($rootScope.user.bankbranch!="")&&($rootScope.user.bankholder!="")&& ($rootScope.user.bank==$scope.bank_list[i].code||$rootScope.user.bank==$scope.bank_list[i].name)){
+				if(($rootScope.user.bankaccount)&&($rootScope.user.bankbranch)&&($rootScope.user.bankholder)&& ($rootScope.user.bank==$scope.bank_list[i].code||$rootScope.user.bank==$scope.bank_list[i].name)){
 					judge_bank_value=true;
 					return judge_bank_value;
 				}else{
