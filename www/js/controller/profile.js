@@ -108,7 +108,6 @@ angular.module('starter.controllers')
 	$scope.show_money_list_footer = function() {
 		var article_list = document.getElementsByTagName("article");
 		var clickshow_list = document.getElementsByClassName("clickshow");
-		console.log(clickshow_list);
 		for (var i=0;i<article_list.length;i++){
 			if(i==this.$index){
 				if(article_list[i].style.display=="block"){
@@ -150,7 +149,6 @@ angular.module('starter.controllers')
             "success": function(status, message, protocol) {
                 UserService.request_user(function(user) {
                     $rootScope.user = user;
-                    console.log($rootScope.user);
                     $ionicLoading.hide();
                     $scope.user_info_modal.hide();
                 });
@@ -219,18 +217,7 @@ angular.module('starter.controllers')
         $scope.capital_deposit_modal.hide();
     }
 	
-	$scope.judge=function(){
-			for(var i=0;i<$scope.bank_list.length;i++){
-        	
-				if($rootScope.user.bank==$scope.bank_list[i].code){
-					$scope.judge_bank_value=true;
-					return $scope.judge_bank_value;
-				}else{
-					$scope.judge_bank_value=false;
-					return $scope.judge_bank_value;
-				}
-			}
-		}
+	
     $scope.out_withdraw = function() {
         if ($scope.outAmount.outamount == "" || $scope.outAmount.outamount == "0")  {
             $ionicLoading.show({
@@ -243,8 +230,20 @@ angular.module('starter.controllers')
 
             return;
         }
-		$scope.judge();
-        if($scope.judge_bank_value){
+		var judge_bank_value = false;
+		(function(){
+			for(var i=0;i<$scope.bank_list.length;i++){
+				if($rootScope.user.bank==$scope.bank_list[i].code||$rootScope.user.bank==$scope.bank_list[i].name){
+					judge_bank_value=true;
+					return judge_bank_value;
+				}else{
+					judge_bank_value=false;
+				}
+			}
+			return judge_bank_value;
+		})();
+
+        if(judge_bank_value){
         	$ionicLoading.show({
             template: "正在提交"
 	        });
@@ -262,7 +261,7 @@ angular.module('starter.controllers')
 	                    }, 3000);
 	                }
 	                else {
-	                    $ionicLoading.hide();
+
 	                    $rootScope.user.amount = $scope.account.amount - $scope.outAmount.outamount;
 	                    $ionicLoading.show({
 	                        template: "提交成功"
@@ -270,7 +269,7 @@ angular.module('starter.controllers')
 	                    $timeout(function() {
 	                    $ionicLoading.hide();
 	                    $scope.capital_withdraw_modal.hide();
-	                	}, 3000);
+	                	}, 1000);
 	                }
 	          	},
 	        	"fail": function(message) {
@@ -311,6 +310,13 @@ angular.module('starter.controllers')
         return sum;
     }
     
+    //用户输入银行卡号必须为数字
+    $scope.only_number = function(){
+    	if((event.keyCode<48||event.keyCode>57)&&(event.keyCode<96||event.keyCode>105)&&(event.keyCode!=8)){
+    		event.preventDefault();
+    	}
+    }
+    
     $scope.show_money_list = function(){
         CapitalService.request_capital_list({
         	"startDate":$scope.choseDate.startDate,
@@ -322,8 +328,8 @@ angular.module('starter.controllers')
         					$scope.moneyList.push({
 		                        "_id": servicevalue._id,
 		                        "remark": servicevalue.remark,
-		                        "yearTime": servicevalue.created.substring(0,10),
-		                        "dayTime": servicevalue.created.substring(11,19),
+		                        "yearTime": moment(servicevalue.created).format().substring(0,10),
+		                        "dayTime": moment(servicevalue.created).format().substring(11,19),
 		                        "amount": servicevalue.amount,
 		                        "user": servicevalue.user,
 		                        "balance": servicevalue.balance,
@@ -333,7 +339,6 @@ angular.module('starter.controllers')
         				}
         			});
         		});
-        		console.log($scope.moneyList);
           	}
         });
     }

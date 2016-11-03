@@ -6,35 +6,33 @@
         </div>
     </ion-header-bar>
     <ion-content class="order-modal-content">
-    <div class="order-view person_money_list">
-            <ion-scroll>
-            <ul >
-                <li ng-repeat="c in moneyList">
-                	<div class="money_list_header" ng-click="show_money_list_footer()">
-                		<section ng-class="{'in_money_bg':c.type==2,'out_money_bg':c.type==1||c.type==8||c.type==10,'other_money_bg':c.type!=1||c.type!=2}">
-                			
-                		</section><section>
-                			<p ng-class="{'in_money':c.type==2,'out_money':c.type==1||c.type==8||c.type==10,'other_money':c.type!=1||c.type!=2}">{{c.typename}}</p>
-                			<p>
-                				<i><img src="../img/rmb_logo.png"/></i>
-                				<span>{{ c.balance.toFixed(2) }}</span></p>
-                			<p>
-                				<i><img src="../img/time_logo.png"/></i>
-                				<span>{{c.yearTime}}</span>
-                				<span>{{c.dayTime}}</span>
-                			</p>
-                		</section><section ng-class="{'in_money':c.type==2,'out_money':c.type==1||c.type==8||c.type==10,'other_money':c.type!=1||c.type!=2}">
-                			{{ c.amount>0?"+"+c.amount: c.amount}}
-                		</section><section class="clickshow icon ion-ios-arrow-up">
-                		</section>
-                	</div>
-                	<article >
-                		<p>详情：{{ c.remark }}</p>
-                	</article>
-                </li>
-            </ul>
-            </ion-scroll>
-    </div>
+	    <div class="order-view person_money_list">
+	            <ul >
+	                <li ng-repeat="c in moneyList">
+	                	<div class="money_list_header" ng-click="show_money_list_footer()">
+	                		<section ng-class="{'in_money_bg':c.type==2,'out_money_bg':c.type==3||c.type==1||c.type==8||c.type==10,'other_money_bg':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">
+	                			
+	                		</section><section>
+	                			<p ng-class="{'in_money':c.type==2,'out_money':c.type==3||c.type==1||c.type==8||c.type==10,'other_money':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">{{c.typename}}</p>
+	                			<p>
+	                				<i><img src="../img/rmb_logo.png"/></i>
+	                				<span>{{ c.balance.toFixed(2) }}</span></p>
+	                			<p>
+	                				<i><img src="../img/time_logo.png"/></i>
+	                				<span>{{c.yearTime}}</span>
+	                				<span>{{c.dayTime}}</span>
+	                			</p>
+	                		</section><section ng-class="{'in_money':c.type==2,'out_money':c.type==3||c.type==1||c.type==8||c.type==10,'other_money':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">
+	                			{{ c.amount>0?"+"+c.amount: c.amount}}
+	                		</section><section class="clickshow icon ion-ios-arrow-up">
+	                		</section>
+	                	</div>
+	                	<article >
+	                		<p>详情：{{ c.remark }}</p>
+	                	</article>
+	                </li>
+	            </ul>
+	    </div>
     </ion-content>
     <div class="dataChose" style="display: none;">
     	<label>开始：</label>
