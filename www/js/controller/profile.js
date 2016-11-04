@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,
+.controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
             	
     $scope.qrcode_url = AppConfigService.get_erweima_url + AppConfigService.erweima_url + "%23/signup?code=" + $rootScope.user.referee;
@@ -9,9 +9,14 @@ angular.module('starter.controllers')
 	$scope.account = $rootScope.user;
     $scope.pay_modal_url = "";
     $scope.deposit_bank_list = [];
+    
     $scope.moneyList=[];
+    $scope.has_more_money_order = false;
+    $scope.money_page_index = 0;
+    
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
+
     $scope.footshow={
     	none:true
     };
@@ -108,7 +113,6 @@ angular.module('starter.controllers')
 	$scope.show_money_list_footer = function() {
 		var article_list = document.getElementsByTagName("article");
 		var clickshow_list = document.getElementsByClassName("clickshow");
-		console.log(clickshow_list);
 		for (var i=0;i<article_list.length;i++){
 			if(i==this.$index){
 				if(article_list[i].style.display=="block"){
@@ -150,7 +154,6 @@ angular.module('starter.controllers')
             "success": function(status, message, protocol) {
                 UserService.request_user(function(user) {
                     $rootScope.user = user;
-                    console.log($rootScope.user);
                     $ionicLoading.hide();
                     $scope.user_info_modal.hide();
                 });
@@ -219,18 +222,7 @@ angular.module('starter.controllers')
         $scope.capital_deposit_modal.hide();
     }
 	
-	$scope.judge=function(){
-			for(var i=0;i<$scope.bank_list.length;i++){
-        	
-				if($rootScope.user.bank==$scope.bank_list[i].code){
-					$scope.judge_bank_value=true;
-					return $scope.judge_bank_value;
-				}else{
-					$scope.judge_bank_value=false;
-					return $scope.judge_bank_value;
-				}
-			}
-		}
+	
     $scope.out_withdraw = function() {
         if ($scope.outAmount.outamount == "" || $scope.outAmount.outamount == "0")  {
             $ionicLoading.show({
@@ -243,8 +235,20 @@ angular.module('starter.controllers')
 
             return;
         }
-		$scope.judge();
-        if($scope.judge_bank_value){
+		var judge_bank_value = false;
+		(function(){
+			for(var i=0;i<$scope.bank_list.length;i++){
+				if(($rootScope.user.bankaccount)&&($rootScope.user.bankbranch)&&($rootScope.user.bankholder)&& ($rootScope.user.bank==$scope.bank_list[i].code||$rootScope.user.bank==$scope.bank_list[i].name)){
+					judge_bank_value=true;
+					return judge_bank_value;
+				}else{
+					judge_bank_value=false;
+				}
+			}
+			return judge_bank_value;
+		})();
+
+        if(judge_bank_value){
         	$ionicLoading.show({
             template: "正在提交"
 	        });
@@ -262,7 +266,7 @@ angular.module('starter.controllers')
 	                    }, 3000);
 	                }
 	                else {
-	                    $ionicLoading.hide();
+
 	                    $rootScope.user.amount = $scope.account.amount - $scope.outAmount.outamount;
 	                    $ionicLoading.show({
 	                        template: "提交成功"
@@ -270,7 +274,7 @@ angular.module('starter.controllers')
 	                    $timeout(function() {
 	                    $ionicLoading.hide();
 	                    $scope.capital_withdraw_modal.hide();
-	                	}, 3000);
+	                	}, 1000);
 	                }
 	          	},
 	        	"fail": function(message) {
@@ -311,32 +315,61 @@ angular.module('starter.controllers')
         return sum;
     }
     
+    //用户输入银行卡号必须为数字
+    $scope.only_number = function(){
+    	if((event.keyCode<48||event.keyCode>57)&&(event.keyCode<96||event.keyCode>105)&&(event.keyCode!=8)){
+    		event.preventDefault();
+    	}
+    };
+    
+    //请求个人资金历史
     $scope.show_money_list = function(){
-        CapitalService.request_capital_list({
-        	"startDate":$scope.choseDate.startDate,
-        	"overDate":$scope.choseDate.overDate,
-        	"success": function(message) {
-        		message.forEach(function(servicevalue){
-        			$scope.type_list.filter(function(arr){
-        				if(servicevalue.type==arr.value){
-        					$scope.moneyList.push({
-		                        "_id": servicevalue._id,
-		                        "remark": servicevalue.remark,
-		                        "yearTime": servicevalue.created.substring(0,10),
-		                        "dayTime": servicevalue.created.substring(11,19),
-		                        "amount": servicevalue.amount,
-		                        "user": servicevalue.user,
-		                        "balance": servicevalue.balance,
-		                        "type": servicevalue.type,
-		                        "typename":arr.name
-		                    });
-        				}
-        			});
-        		});
-        		console.log($scope.moneyList);
-          	}
-        });
-    }
+        $scope.has_more_money_order = true;
+    };
+    
+    //上拉刷新
+    $scope.refresh_moneylist_order = function(){
+    	$scope.moneyList = [];
+        $scope.has_more_money_order = true;
+        $scope.money_page_index = 0;
+        $scope.load_more_money_order();
+    };
+    //下拉加载更多
+    $scope.load_more_money_order = function(){
+    	CapitalService.request_capital_list(
+    		{
+    			"startDate":$filter('date')(new Date(),'yyyy-MM-dd'),
+    			"overDate":$scope.choseDate.overDate,
+    			"page":$scope.money_page_index + 1,
+    			"size":5,
+    			"success":function(protocol) {
+		            $scope.money_page_index = $scope.money_page_index + 1;
+		            protocol.forEach(function(servicevalue){
+	        			$scope.type_list.filter(function(arr){
+	        				if(servicevalue.type==arr.value){
+	        					$scope.moneyList.push({
+			                        "_id": servicevalue._id,
+			                        "remark": servicevalue.remark,
+			                        "yearTime": $filter('date')(servicevalue.created,'yyyy-MM-dd'),
+			                        "dayTime": $filter('date')(servicevalue.created,'HH:mm:ss'),
+			                        "amount": servicevalue.amount,
+			                        "user": servicevalue.user,
+			                        "balance": servicevalue.balance,
+			                        "type": servicevalue.type,
+			                        "typename":arr.name
+			                    });
+	        				}
+	        			});
+	        		});
+		            if(protocol.length === 0) {
+		                $scope.has_more_money_order = false;
+		            }
+		
+		            $scope.$broadcast('scroll.refreshComplete');
+		            $scope.$broadcast('scroll.infiniteScrollComplete');
+		        }
+    		}); 
+    };
     
     $scope.$on('$destroy', function() {
         $scope.user_info_modal.hide();

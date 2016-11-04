@@ -13,7 +13,7 @@ angular.module('starter.services', [])
 
     this.api_url = "http://weixin.leather-boss.com:8793/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-	this.erweima_url= "http://192.168.1.27:8100/";
+	this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
 	this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
     this.bank_list = [ 
@@ -41,7 +41,7 @@ angular.module('starter.services', [])
 			{ "value": 0, "name": "初始化" },
             { "value": 1, "name": "转账" },
             { "value": 2, "name": "充值" },
-            { "value": 3, "name": "下单" },
+            { "value": 3, "name": "出金" },
             { "value": 4, "name": "结单" },
             { "value": 5, "name": "佣金" },
             { "value": 6, "name": "管理员加款" },

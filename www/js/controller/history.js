@@ -50,7 +50,7 @@ angular.module('starter.controllers')
                 }
             });
 
-            if(protocol.data.length == 0) {
+            if(protocol.data.length === 0) {
                 $scope.has_more_order = false;
             }
 
@@ -69,11 +69,12 @@ angular.module('starter.controllers')
     $scope.load_more_close_order = function() {
         CloseOrderService.request_order_list($scope.close_order_page_index + 1, 20, function(protocol) {
             $scope.close_order_page_index = $scope.close_order_page_index + 1;
+            console.log($scope.close_order_page_index);
             protocol.data.forEach(function(value) {
                 $scope.close_order_list.push(value);
             });
 
-            if(protocol.data.length == 0) {
+            if(protocol.data.length === 0) {
                 $scope.has_more_close_order = false;
             }
 

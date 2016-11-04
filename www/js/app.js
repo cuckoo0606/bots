@@ -17,8 +17,13 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ionic-toast', 'starter.contro
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
+        
     });
 
+		//设置适配rem
+        var change_rem = ((window.screen.width > 640) ? 640 : window.screen.width)/375*100;
+    	document.getElementsByTagName("html")[0].style.fontSize=change_rem+"px";
+	
     //判断登陆状态
     $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams, options) {
         var views = [ "tab.qoute", "tab.history", "tab.profile", "tab.trade", "trade" ];
