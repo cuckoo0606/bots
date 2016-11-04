@@ -200,7 +200,6 @@ angular.module('starter.controllers', [])
                         }
                     });
                 }
-				console.log($scope.order_params);
                 $timeout(check_order, 1000);  
                 $scope.count_time();
             },
