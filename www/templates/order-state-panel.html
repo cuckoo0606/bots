@@ -11,7 +11,7 @@
         <div class="success" ng-show="order_result.status == 'SUCCESS'">
             <div class="row remaining">
                 <div class="col">
-                		<div>{{remain_time}}</div>
+                		<div>{{ order_result.order.remaining.toFixed(0) }}</div>
                 		<div>现价</div>
                 		<div>{{qoute.value.toFixed(qoute.decimal)}}</div>
                 </div>

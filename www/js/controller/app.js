@@ -143,7 +143,6 @@ angular.module('starter.controllers', [])
 	   }
     }
     
-
     $scope.trade_boundage = function () {
         OrderService.trade_boundage({
             "success": function (status,protocol) {
@@ -151,18 +150,7 @@ angular.module('starter.controllers', [])
             }
         })
     }
-
-	$scope.count_time = function() {
-		   $scope.remain_time = $scope.order_params.cycle.time;
-			if ($scope.remain_time > 0) {
-					function count_remain(){
-						$scope.remain_time --;
-					}
-					var timer = setInterval(count_remain,1000)
-			}else {
-				clearInterval(timer)
-			}	
-		}
+	
     $scope.order = function() {
         var order = {
             "trade": $rootScope.trade.trade,
@@ -170,7 +158,6 @@ angular.module('starter.controllers', [])
             "money": ($scope.order_params.other_amount != "" && $scope.order_params.other_amount != "0") ? $scope.order_params.other_amount : $scope.order_params.amount,
             "cycle": $scope.order_params.cycle.time,
         };
-
 
         $scope.order_result = {
             "status": "POST",
@@ -190,6 +177,14 @@ angular.module('starter.controllers', [])
                             $scope.order_result.message = "交易成功";
                             $scope.order_result.order = protocol;
                             protocol.qoute = QouteService.qoute(protocol.mode, protocol.assets.market, protocol.assets.code);
+                            
+                            var expired = new Date(protocol.expired);
+			                var now = new Date();
+			
+			                var tick = now.getTime() + $rootScope.server_time_tick;
+			                var remaining = (expired.getTime() - tick) / 1000;
+			                protocol.remaining = remaining;
+                            
                             $rootScope.trade_order_list.push(protocol);
                         }
                         else {
@@ -198,7 +193,6 @@ angular.module('starter.controllers', [])
                     });
                 }
                 $timeout(check_order, 1000);  
-                $scope.count_time();
             },
             "fail": function(status, protocol) {
                 $scope.order_result.status = "FAIL";
@@ -218,4 +212,8 @@ angular.module('starter.controllers', [])
             });
         }
     }, 1000);
+    
+   	$scope.$on('$destroy', function() {
+   		$interval($scope.remain_interval);
+   	});
 });
