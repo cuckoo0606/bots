@@ -145,6 +145,7 @@ angular.module('starter.controllers', [])
 	    	$scope.max_over = false;
 	    }
     }
+    
 
     $scope.trade_boundage = function () {
         OrderService.trade_boundage({
