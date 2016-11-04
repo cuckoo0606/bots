@@ -11,7 +11,6 @@ angular.module('starter.controllers', [])
     $scope.show_system_name = AppConfigService.show_system_name;
     $scope.system_logo = AppConfigService.system_logo;
     $scope.show_system_logo = AppConfigService.show_system_logo;
-    $scope.max_over = false;
     $scope.boundage = "";
  
     
@@ -138,12 +137,10 @@ angular.module('starter.controllers', [])
         });
     };
     
-    $scope.limit_account = function() {
-	   if($scope.order_params.other_amount>5000) {
-	    	$scope.max_over = true;
-	    }else{
-	    	$scope.max_over = false;
-	    }
+    $scope.min_money = function() {
+	   if(($scope.order_params.other_amount>500)&&(event.keyCode!=8)) {
+	   		event.preventDefault()
+	   }
     }
     
 
