@@ -208,6 +208,13 @@ angular.module('starter.controllers')
 	            }, 1000);
 	            return;
 	        }
+	        if ($scope.change_userpass.newpass != $scope.change_userpass.oldpass) {
+	            $ionicLoading.show({ template: "新旧密码必须不一致" });
+	            $timeout(function() {
+	                $ionicLoading.hide();
+	            }, 1000);
+	            return;
+	        }
 			UserService.user_change_pass({
 				"oldpass":$scope.change_userpass.oldpass,
 				"newpass":$scope.change_userpass.newpass,
