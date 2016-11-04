@@ -125,5 +125,32 @@ angular.module('starter.services')
         });
     };
 
+	this.user_change_pass = function(params){
+		var change_pass_url = AppConfigService.build_api_url("v1/user/password");
+        $http({
+            "url": change_pass_url,
+            "method": "POST", 
+            "timeout": 10000,
+            "data": { "new": params.newpass, "old": params.oldpass} 
+        })
+        
+        .success(function(protocol) {
+            if (protocol== "Created") {
+                params.success();
+            }
+            else {
+                if (params.fail) {
+                    params.fail(protocol.error);
+                }
+            }
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "密码错误");
+            }
+        });
+	}
+	
     return this;
 });

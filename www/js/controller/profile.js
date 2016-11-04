@@ -17,6 +17,11 @@ angular.module('starter.controllers')
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
 
+	$scope.change_userpass={
+		oldpass:"",
+		newpass:"",
+		newpassangin:""
+	};
     $scope.footshow={
     	none:true
     };
@@ -80,6 +85,13 @@ angular.module('starter.controllers')
     }).then(function(modal) {
         $scope.capital_withdraw_modal = modal;
     });
+    
+    $ionicModal.fromTemplateUrl('templates/user-change-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.user_change_modal = modal;
+    });
 
     $scope.show_deposit_modal = function() {
         $scope.capital_deposit_modal.show();
@@ -89,10 +101,10 @@ angular.module('starter.controllers')
         $scope.capital_withdraw_modal.show();
     }
 
-	$scope.get_user_bank = function(){
-		
+	$scope.show_user_modal = function(){
+		$scope.user_change_modal.show();
 	}
-    $scope.show_user_modal = function() {
+    $scope.show_user_bank_modal = function() {
     	$ionicHistory.clearHistory();
     	$scope.user_bank=$scope.bank_list.filter(function(obj){
     		if(obj.code==$rootScope.user.bank){
@@ -135,6 +147,8 @@ angular.module('starter.controllers')
         });
     }
     $scope.pay_type_change();
+    
+    //修改个人银行资料
     $scope.update_user = function() {
         $ionicLoading.show({
             template: "正在操作"   
@@ -178,6 +192,54 @@ angular.module('starter.controllers')
         $scope.capital_deposit_modal.hide();
     }
 
+	//修改用户密码
+	$scope.update_user_pass = function(){
+			if ($scope.change_userpass.oldpass == ""||$scope.change_userpass.newpass == ""||$scope.change_userpass.newpassangin == "") {
+            $ionicLoading.show({ template: "密码不能为空。" });
+            $timeout(function() {
+                $ionicLoading.hide();
+            }, 1000);
+            return;
+	        }
+	        if ($scope.change_userpass.newpass != $scope.change_userpass.newpassangin) {
+	            $ionicLoading.show({ template: "两次输入密码不一致。" });
+	            $timeout(function() {
+	                $ionicLoading.hide();
+	            }, 1000);
+	            return;
+	        }
+			UserService.user_change_pass({
+				"oldpass":$scope.change_userpass.oldpass,
+				"newpass":$scope.change_userpass.newpass,
+				"success":function(message){
+					$ionicLoading.show({
+                    template: "修改成功"
+	                });
+	                $timeout(function () {
+	                    $ionicLoading.hide();
+	                    $scope.user_change_modal.hide();
+	                }, 2000);
+	                
+				},
+				"fail": function( message) {
+	                $ionicLoading.show({
+	                    template: message
+	                });
+	                $timeout(function () {
+	                    $ionicLoading.hide();
+	                }, 2000);
+	            },
+	            "error": function(status,message) {
+	                $ionicLoading.show({
+	                    template: message
+	                });
+	                $timeout(function () {
+	                    $ionicLoading.hide();
+	                }, 2000);
+	            },
+			});
+	}
+	
     $scope.submit_deposit = function() {
         if ($scope.deposit.amount == "" || $scope.deposit.amount == "0")  {
             $ionicLoading.show({

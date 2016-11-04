@@ -1,0 +1,28 @@
+<ion-modal-view class="order-modal bank-info-modal">
+    <ion-header-bar class="order-modal-header">
+        <h1 class="title">{{user.username}}</h1>
+        <div class="close" ng-click="user_change_modal.hide()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </ion-header-bar>
+    <ion-content class="order-modal-content">
+        <ul class="list">
+            <li class="item item-input">
+                <span class="input-label">旧密码</span>
+                <input type="text" placeholder="输入旧密码" ng-model="change_userpass.oldpass" required />
+            </li>
+            <li class="item item-input">
+                <span class="input-label">新密码</span>
+                <input type="text" placeholder="输入新密码" ng-model="change_userpass.newpass"  required />
+            </li>
+            <li class="item item-input">
+                <span class="input-label">确认新密码</span>
+                <input type="text" placeholder="再输入一次新密码" ng-model="change_userpass.newpassangin" required />
+            </li>
+        </ul>
+    </ion-content>
+    <div class="button-bar">
+        <a class="button button-balanced" ng-click="update_user_pass()">确定</a>
+        <a class="button button-dark" ng-click="user_change_modal.hide()">关闭</a>
+    </div>
+</ion-modal-view>
