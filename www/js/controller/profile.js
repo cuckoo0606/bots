@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,
+.controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
             	
     $scope.qrcode_url = AppConfigService.get_erweima_url + AppConfigService.erweima_url + "%23/signup?code=" + $rootScope.user.referee;
@@ -9,9 +9,14 @@ angular.module('starter.controllers')
 	$scope.account = $rootScope.user;
     $scope.pay_modal_url = "";
     $scope.deposit_bank_list = [];
+    
     $scope.moneyList=[];
+    $scope.has_more_money_order = false;
+    $scope.money_page_index = 0;
+    
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
+
     $scope.footshow={
     	none:true
     };
@@ -315,35 +320,56 @@ angular.module('starter.controllers')
     	if((event.keyCode<48||event.keyCode>57)&&(event.keyCode<96||event.keyCode>105)&&(event.keyCode!=8)){
     		event.preventDefault();
     	}
-    }
+    };
     
+    //请求个人资金历史
     $scope.show_money_list = function(){
-        CapitalService.request_capital_list({
-        	"startDate":moment().toJSON().substring(0,10),
-        	"overDate":$scope.choseDate.overDate,
-        	"size":1000,
-        	"page":1,
-        	"success": function(message) {
-        		message.forEach(function(servicevalue){
-        			$scope.type_list.filter(function(arr){
-        				if(servicevalue.type==arr.value){
-        					$scope.moneyList.push({
-		                        "_id": servicevalue._id,
-		                        "remark": servicevalue.remark,
-		                        "yearTime": moment(servicevalue.created).format().substring(0,10),
-		                        "dayTime": moment(servicevalue.created).format().substring(11,19),
-		                        "amount": servicevalue.amount,
-		                        "user": servicevalue.user,
-		                        "balance": servicevalue.balance,
-		                        "type": servicevalue.type,
-		                        "typename":arr.name
-		                    });
-        				}
-        			});
-        		});
-          	}
-        });
-    }
+        $scope.has_more_money_order = true;
+    };
+    
+    //上拉刷新
+    $scope.refresh_moneylist_order = function(){
+    	$scope.moneyList = [];
+        $scope.has_more_money_order = true;
+        $scope.money_page_index = 0;
+        $scope.load_more_money_order();
+    };
+    //下拉加载更多
+    $scope.load_more_money_order = function(){
+    	CapitalService.request_capital_list(
+    		{
+    			"startDate":$filter('date')(new Date(),'yyyy-MM-dd'),
+    			"overDate":$scope.choseDate.overDate,
+    			"page":$scope.money_page_index + 1,
+    			"size":5,
+    			"success":function(protocol) {
+		            $scope.money_page_index = $scope.money_page_index + 1;
+		            protocol.forEach(function(servicevalue){
+	        			$scope.type_list.filter(function(arr){
+	        				if(servicevalue.type==arr.value){
+	        					$scope.moneyList.push({
+			                        "_id": servicevalue._id,
+			                        "remark": servicevalue.remark,
+			                        "yearTime": $filter('date')(servicevalue.created,'yyyy-MM-dd'),
+			                        "dayTime": $filter('date')(servicevalue.created,'HH:mm:ss'),
+			                        "amount": servicevalue.amount,
+			                        "user": servicevalue.user,
+			                        "balance": servicevalue.balance,
+			                        "type": servicevalue.type,
+			                        "typename":arr.name
+			                    });
+	        				}
+	        			});
+	        		});
+		            if(protocol.length === 0) {
+		                $scope.has_more_money_order = false;
+		            }
+		
+		            $scope.$broadcast('scroll.refreshComplete');
+		            $scope.$broadcast('scroll.infiniteScrollComplete');
+		        }
+    		}); 
+    };
     
     $scope.$on('$destroy', function() {
         $scope.user_info_modal.hide();

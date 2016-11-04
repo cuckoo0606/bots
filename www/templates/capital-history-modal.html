@@ -1,36 +1,42 @@
 <ion-modal-view class="order-modal">
     <ion-header-bar class="order-modal-header">
-        <h1 class="title">资金流水</h1>
+        <h1 class="title">今日资金流水</h1>
         <div class="close" ng-click="capital_history_modal.hide()">
             <i class="icon ion-ios-close-empty"></i>
         </div>
     </ion-header-bar>
-    <ion-content class="order-modal-content person_money_list">
-
-		                <div class="moneylist_one" ng-repeat="c in moneyList">
-		                	<div class="money_list_header" ng-click="show_money_list_footer()">
-		                		<section ng-class="{'in_money_bg':c.type==2,'out_money_bg':c.type==3||c.type==1||c.type==8||c.type==10,'other_money_bg':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">
-		                			
-		                		</section><section>
-		                			<p ng-class="{'in_money':c.type==2,'out_money':c.type==3||c.type==1||c.type==8||c.type==10,'other_money':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">{{c.typename}}</p>
-		                			<p>
-		                				<i><img src="../img/rmb_logo.png"/></i>
-		                				<span>{{ c.balance.toFixed(2) }}</span></p>
-		                			<p>
-		                				<i><img src="../img/time_logo.png"/></i>
-		                				<span>{{c.yearTime}}</span>
-		                				<span>{{c.dayTime}}</span>
-		                			</p>
-		                		</section><section ng-class="{'in_money':c.type==2,'out_money':c.type==3||c.type==1||c.type==8||c.type==10,'other_money':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">
-		                			{{ c.amount>0?"+"+c.amount: c.amount}}
-		                		</section><section class="clickshow icon ion-ios-arrow-up">
-		                		</section>
-		                	</div>
-		                	<article >
-		                		<p>详情：{{ c.remark }}</p>
-		                	</article>
-		                </div>
-
+    <ion-content class="person_money_list">
+		<ion-scroll style="height:100%">
+			<ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_moneylist_order()">
+            </ion-refresher>
+			<ul>
+                <li  ng-repeat="c in moneyList">
+                	<div class="money_list_header" ng-click="show_money_list_footer()">
+                		<section ng-class="{'in_money_bg':c.type==2,'out_money_bg':c.type==3||c.type==1||c.type==8||c.type==10,'other_money_bg':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">
+                			
+                		</section><section>
+                			<p ng-class="{'in_money':c.type==2,'out_money':c.type==3||c.type==1||c.type==8||c.type==10,'other_money':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">{{c.typename}}</p>
+                			<p>
+                				<i><img src="../img/rmb_logo.png"/></i>
+                				<span>{{ c.balance.toFixed(2) }}</span></p>
+                			<p>
+                				<i><img src="../img/time_logo.png"/></i>
+                				<span>{{c.yearTime}}</span>
+                				<span>{{c.dayTime}}</span>
+                			</p>
+                		</section><section ng-class="{'in_money':c.type==2,'out_money':c.type==3||c.type==1||c.type==8||c.type==10,'other_money':c.type!=1&&c.type!=2&&c.type!=3&&c.type!=8&&c.type!=10}">
+                			{{ c.amount>0?"+"+c.amount: c.amount}}
+                		</section><section class="clickshow icon ion-ios-arrow-up">
+                		</section>
+                	</div>
+                	<article >
+                		<p>详情：{{ c.remark }}</p>
+                	</article>
+                </li>
+			</ul>
+			<ion-infinite-scroll ng-if="has_more_money_order" on-infinite="load_more_money_order()" distance="1%">
+            </ion-infinite-scroll>
+		</ion-scroll>
     </ion-content>
     <div class="dataChose" style="display: none;">
     	<label>开始：</label>
