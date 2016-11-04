@@ -5,7 +5,7 @@ import requests
 from lixingtie.web import RequestHandler, route
 
 
-SERVER_DOMAIN = "http://weixin.leather-boss.com:8085/"
+SERVER_DOMAIN = "http://weixin.leather-boss.com/"
 WECHAT_APPID = "wx3002d0a8d625f4c6"
 WECHAT_APP_SECRET = "a1a0468c725f6b17d1043399ea17bb42"
 WECHAT_AUTHORIZE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirect"
@@ -17,7 +17,7 @@ class WechatOpenId(RequestHandler):
     def get(self):
         code = self.get_argument("code", "")
         if not code:
-            url = WECHAT_AUTHORIZE_URL.format(WECHAT_APPID, SERVER_DOMAIN + "/wechat/index", "")
+            url = WECHAT_AUTHORIZE_URL.format(WECHAT_APPID, SERVER_DOMAIN + "wechat/openid", "")
             return self.redirect(url)
 
         url = WECHAT_AUTH_TOKEN_URL.format(WECHAT_APPID, WECHAT_APP_SECRET, code)

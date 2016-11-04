@@ -1,0 +1,49 @@
+1、修改蜡烛图蜡烛间距计算函数
+
+原型:
+function calculateCandleWidth(seriesModel, data) {                                                                                                                                                        
+    var baseAxis = seriesModel.getBaseAxis();
+    var extent;
+
+    var bandWidth = baseAxis.type === 'category'
+        ? baseAxis.getBandWidth()
+        : (   
+                extent = baseAxis.getExtent(),
+                Math.abs(extent[1] - extent[0]) / data.count()
+          );    
+
+    // Half band width is perfect when space is enouph, otherwise
+    // try not to be smaller than CANDLE_MIN_NICE_WIDTH (and only
+    // gap is compressed), otherwise ensure not to be smaller than
+    // CANDLE_MIN_WIDTH in spite of overlap.
+
+    return bandWidth / 2 - 2 > CANDLE_MIN_NICE_WIDTH // "- 2" is minus border width
+        ? bandWidth / 2 - 2 
+        : bandWidth - CANDLE_MIN_NICE_WIDTH > GPA_MIN
+        ? CANDLE_MIN_NICE_WIDTH
+        : Math.max(bandWidth - GPA_MIN, CANDLE_MIN_WIDTH);
+} 
+
+修改后:
+function calculateCandleWidth(seriesModel, data) {                                                                                                                                                        
+    var baseAxis = seriesModel.getBaseAxis();
+    var extent;
+
+    var bandWidth = baseAxis.type === 'category'
+        ? baseAxis.getBandWidth()
+        : (   
+                extent = baseAxis.getExtent(),
+                Math.abs(extent[1] - extent[0]) / data.count()
+          );    
+
+    // Half band width is perfect when space is enouph, otherwise
+    // try not to be smaller than CANDLE_MIN_NICE_WIDTH (and only
+    // gap is compressed), otherwise ensure not to be smaller than
+    // CANDLE_MIN_WIDTH in spite of overlap.
+
+    return bandWidth - 2 - 2 > CANDLE_MIN_NICE_WIDTH // "- 2" is minus border width
+        ? bandWidth - 2 - 2 
+        : bandWidth - CANDLE_MIN_NICE_WIDTH > GPA_MIN
+        ? CANDLE_MIN_NICE_WIDTH
+        : Math.max(bandWidth - GPA_MIN, CANDLE_MIN_WIDTH);
+} 

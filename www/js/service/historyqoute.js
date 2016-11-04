@@ -46,7 +46,7 @@ angular.module('starter.services')
             for (var j = 0; j < count; j++) {
                 sum += data[i - j][1];
             }
-            result.push(+(sum / count).toFixed(3));
+            result.push(sum / count);
         }
         return result;
     }

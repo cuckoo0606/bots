@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('TradeCtrl', function($scope, $filter, $rootScope, $timeout, $interval, $stateParams, 
+.controller('TradeCtrl', function($scope, $filter, $rootScope, $timeout, $interval, $stateParams, $echartsDelegate,
             $ionicModal, QouteService, OrderService, UserService, HistoryQouteService, CloseOrderService) {
     $scope.chart_period = "m5";
 
@@ -69,7 +69,6 @@ angular.module('starter.controllers')
         }); 
     }
 
-
     $scope.refresh_order();
 
     $scope.chart_config = {
@@ -91,7 +90,7 @@ angular.module('starter.controllers')
             return value.close;
         });
 
-        function calculateMA(dayCount, data) {
+        function calculate_ma(dayCount, data) {
             var result = [];
             for (var i = 0, len = data.length; i < len; i++) {
                 if (i < dayCount) {
@@ -110,20 +109,14 @@ angular.module('starter.controllers')
         var diff = HistoryQouteService.build_diff_data(12, 26, data);
         var dea = HistoryQouteService.build_dea_data(9, diff);
         var macd = HistoryQouteService.build_macd_data(data, diff, dea);
-
-        $scope.stock_dates = dates;
-        $scope.stock_data = data;
-        $scope.stock_m5 = calculateMA(5, data);
-        $scope.stock_m10 = calculateMA(10, data);
-        $scope.stock_m20 = calculateMA(20, data);
-        $scope.stock_m30 = calculateMA(30, data);
-        $scope.diff = diff;
-        $scope.dea = dea;
-        $scope.macd = macd;
+        var m5 = HistoryQouteService.build_ma_data(5, data);
+        var m10 = HistoryQouteService.build_ma_data(10, data);
+        var m20 = HistoryQouteService.build_ma_data(20, data);
+        var m30 = HistoryQouteService.build_ma_data(30, data);
 
         $scope.chart_option = {
             animation: false,
-            backgroundColor: 'black',
+            backgroundColor: 'rgb(25, 25, 26)',
             legend: {
                 show: false,
             },
@@ -160,9 +153,16 @@ angular.module('starter.controllers')
                     axisLabel: {
                         textStyle: { color: 'rgb(100, 100, 100)' },
                         formatter: function (value, index) {
-                            var time = value.split(" ")[1];
-                            var split = time.split(":");
-                            return split[0] + ":" + split[1];
+                            if ($scope.chart_period == "d1") {
+                                var time = value.split(" ")[0];
+                                var split = time.split("-");
+                                return split[1] + "/" + split[2];
+                            }
+                            else {
+                                var time = value.split(" ")[1];
+                                var split = time.split(":");
+                                return split[0] + ":" + split[1];
+                            }
                         }   
                     },
                 },
@@ -198,7 +198,12 @@ angular.module('starter.controllers')
                     axisTick: {
                         show: false,
                     },
-                    splitLine: { show: false }
+                    splitLine: { 
+                        show: true,
+                        lineStyle: {
+                            color: 'rgb(35, 34, 38)',
+                        }
+                    }
                 },
                 {
                     gridIndex: 1,
@@ -225,8 +230,6 @@ angular.module('starter.controllers')
             dataZoom: [
                 { 
                     xAxisIndex: [0, 1], 
-                    startValue: dates[dates.length - 61],
-                    endValue: dates[dates.length - 1],
                     type : 'inside' },
             ],
             series: [
@@ -254,6 +257,60 @@ angular.module('starter.controllers')
                             }])
                         },
                     },
+                    markPoint: {
+                        symbol: "rect",
+                        animation: false,
+                        symbolSize: [60, 18],
+                        symbolOffset: [-21, 0],
+                        data: [
+                        { 
+                            name: '最新价', 
+                            x: '100%',
+                            yAxis: line_data[line_data.length - 1],
+                            value: line_data[line_data.length - 1],
+                            label: {
+                                normal: {
+                                    position: [ 0, 2 ],
+                                    textStyle: {
+                                        color: "#FFFFFF",
+                                    },
+                                    formatter: function(params) {
+                                        return params.value.toFixed($rootScope.qoute.decimal);
+                                    },
+                                }
+                            },
+                        }
+                        ]
+                    },
+                    markLine: {
+                        symbolSize: 0,
+                        animation: false,
+                        label: {
+                            normal: {
+                                show: false,
+                            }
+                        },
+                        lineStyle: {
+                            normal: {
+                                type: 'dashed',
+                                width: 1,
+                            },
+                        },
+                        data: [
+                            [
+                            {
+                                name: $rootScope.qoute.value,
+                                x: 0,
+                                yAxis: line_data[line_data.length - 1],
+                            },
+                            {
+                                name: $rootScope.qoute.value,
+                                x: '100%',
+                                yAxis: line_data[line_data.length - 1],
+                            }
+                            ],
+                        ]
+                    },
                 },  
                 {
                     name: 'stick',
@@ -263,10 +320,10 @@ angular.module('starter.controllers')
                     data: $scope.chart_type === "stock" ? data : [],
                     itemStyle: {
                         normal: {
-                            color: 'black',
-                            color0: 'rgb(20, 190, 82)',
-                            borderColor: 'red',
-                            borderColor0: 'rgb(20, 190, 82)',
+                            color: 'rgb(25, 25, 26)',
+                            color0: 'rgb(19, 233, 236)',
+                            borderColor: 'rgb(250, 46, 66)',
+                            borderColor0: 'rgb(19, 233, 236)',
                         }
                     }
                 },
@@ -275,7 +332,7 @@ angular.module('starter.controllers')
                     type: 'line',
                     xAxisIndex: 0,
                     yAxisIndex: 0,
-                    data: $scope.chart_type === "stock" ? calculateMA(5, data) : [],
+                    data: $scope.chart_type === "stock" ? m5 : [],
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
@@ -289,12 +346,13 @@ angular.module('starter.controllers')
                     type: 'line',
                     xAxisIndex: 0,
                     yAxisIndex: 0,
-                    data: $scope.chart_type === "stock" ? calculateMA(10, data) : [],
+                    data: $scope.chart_type === "stock" ? m10 : [],
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
                         normal: {
-                            width: 1
+                            width: 1,
+                            color: '#86da2b'
                         }
                     }
                 },
@@ -303,12 +361,13 @@ angular.module('starter.controllers')
                     type: 'line',
                     xAxisIndex: 0,
                     yAxisIndex: 0,
-                    data: $scope.chart_type === "stock" ? calculateMA(20, data) : [],
+                    data: $scope.chart_type === "stock" ? m20 : [],
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
                         normal: {
-                            width: 1
+                            width: 1,
+                            color: '#ff5382'
                         }
                     }
                 },
@@ -317,12 +376,13 @@ angular.module('starter.controllers')
                     type: 'line',
                     xAxisIndex: 0,
                     yAxisIndex: 0,
-                    data: $scope.chart_type === "stock" ? calculateMA(30, data) : [],
+                    data: $scope.chart_type === "stock" ? m30 : [],
                     smooth: true,
                     showSymbol: false,
                     lineStyle: {
                         normal: {
-                            width: 1
+                            width: 1,
+                            color: '#3d8ef6'
                         }
                     }
                 },
@@ -336,7 +396,8 @@ angular.module('starter.controllers')
                     yAxisIndex: 1,
                     lineStyle: {
                         normal: {
-                            width: 1
+                            width: 1,
+                            color: '#00ffff'
                         }
                     }
                 },
@@ -350,7 +411,8 @@ angular.module('starter.controllers')
                     yAxisIndex: 1,
                     lineStyle: {
                         normal: {
-                            width: 1
+                            width: 1,
+                            color: '#fe337f'
                         }
                     }
                 },
@@ -361,7 +423,7 @@ angular.module('starter.controllers')
                     yAxisIndex: 1,
                     itemStyle: {
                         normal: {
-                            color: '#006600',
+                            color: 'rgb(31, 198, 91)',
                             borderColor: 'black',
                         }
                     },
@@ -437,8 +499,33 @@ angular.module('starter.controllers')
         });
     }
 
+    var qoute_watcher = $rootScope.$watch('qoute', function(qoute) {
+        if($scope.chart_option) {
+            var line_chart = $scope.chart_option.series[0];
+            line_chart.data[line_chart.data.length - 1] = qoute.value;
+
+            var stock = $scope.chart_option.series[1];
+            stock.data[stock.data.length - 1][1] = qoute.value;
+            if (qoute.value > stock.data[stock.data.length - 1][3]) {
+                stock.data[stock.data.length - 1][3] = qoute.value;
+            }
+            if (qoute.value < stock.data[stock.data.length - 1][2]) {
+                stock.data[stock.data.length - 1][2] = qoute.value;
+            }
+
+            var mark_point = $scope.chart_option.series[0].markPoint;
+            mark_point.data[0].value = qoute.value;
+            mark_point.data[0].yAxis = qoute.value;
+
+            var mark_line = $scope.chart_option.series[0].markLine;
+            mark_line.data[0][0].yAxis = qoute.value;
+            mark_line.data[0][1].yAxis = qoute.value;
+        }
+    }, true);
+
     $scope.change_chart_period($scope.chart_period);
     $scope.$on('$destroy', function() {
+        qoute_watcher();
         $interval.cancel(order_interval);
         $interval.cancel(history_interval);
     });

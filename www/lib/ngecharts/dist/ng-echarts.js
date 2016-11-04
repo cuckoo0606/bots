@@ -11,6 +11,8 @@ angular.module('ng-echarts',[])
                             ? scope.config.theme : 'default';
                         var chart = echarts.init(element[0],theme);
 
+                        scope.stock_chart = chart;
+
                         chart.setOption(scope.option);
                         chart.resize();
                     }
