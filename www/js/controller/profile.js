@@ -202,13 +202,13 @@ angular.module('starter.controllers')
             return;
 	        }
 	        if ($scope.change_userpass.newpass != $scope.change_userpass.newpassangin) {
-	            $ionicLoading.show({ template: "两次输入密码不一致。" });
+	            $ionicLoading.show({ template: "新密码两次输入不一致。" });
 	            $timeout(function() {
 	                $ionicLoading.hide();
 	            }, 1000);
 	            return;
 	        }
-	        if ($scope.change_userpass.newpass != $scope.change_userpass.oldpass) {
+	        if ($scope.change_userpass.newpass === $scope.change_userpass.oldpass) {
 	            $ionicLoading.show({ template: "新旧密码必须不一致" });
 	            $timeout(function() {
 	                $ionicLoading.hide();
