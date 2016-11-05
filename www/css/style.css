@@ -1805,8 +1805,8 @@
 }
 .money_list_header section:nth-of-type(2) p {
     margin:0;
-	height:2rem;
-	line-height: 2rem;
+	height:0.2rem;
+	line-height: 0.2rem;
 }
 .money_list_header section:nth-of-type(2) p:first-child {
     font-size: 0.15rem;
