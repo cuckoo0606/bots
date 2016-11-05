@@ -27,7 +27,7 @@
                 </div>
                 网银支付
             </ion-radio>
-            <ion-radio ng-model="deposit.pay_type" ng-value="'wechatpay'" ng-change="pay_type_change()" class="hide">
+            <ion-radio ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="deposit.openid">
                 <div class="img-box">
                     <img src="img/wechatpay.png" alt="微信支付" />
                 </div>

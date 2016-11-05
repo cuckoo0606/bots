@@ -85,10 +85,16 @@ angular.module('starter.controllers')
         var data = history_list.map(function(value) {
             return [ value.open, value.close, value.low, value.high];
         });
+        if (data.length > 0) {
+            data[data.length - 1][1] = $rootScope.qoute.value;
+        }
        
         var line_data = history_list.map(function(value) {
             return value.close;
         });
+        if (line_data.length > 0) {
+            line_data[line_data.length - 1] = $rootScope.qoute.value;
+        }
 
         function calculate_ma(dayCount, data) {
             var result = [];
@@ -113,6 +119,10 @@ angular.module('starter.controllers')
         var m10 = HistoryQouteService.build_ma_data(10, data);
         var m20 = HistoryQouteService.build_ma_data(20, data);
         var m30 = HistoryQouteService.build_ma_data(30, data);
+
+        $scope.diff = diff;
+        $scope.dea = dea;
+        $scope.macd = macd;
 
         $scope.chart_option = {
             animation: false,

@@ -5,6 +5,7 @@ angular.module('starter.services')
     this.capital_list = [];
     this.init_complete = false;
 	this.money_list = [];
+
     this.deposit_hc = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/hcmobile")
 
@@ -29,6 +30,32 @@ angular.module('starter.services')
             }
         });
     }
+
+    this.deposit_swift = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/swiftpass")
+
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": params.deposit.body,
+                "openid": params.deposit.openid,
+            },
+        })
+        
+        .success(function(protocol) {
+            params.success(protocol);
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+
 	//出金接口
     this.out_withdraw = function(params) {
         var outWithdrawUrl = AppConfigService.build_api_url("v1/outflow");
@@ -55,23 +82,29 @@ angular.module('starter.services')
         });
     }
 
-    this.get_bank_list = function(complete) {
+    this.get_bank_list = function(pay_type, complete) {
+        console.log(pay_type);
         if (complete) {
-            var bank_list = [
-                { "name": "快捷支付", "code": "NOCARD" },
-                { "name": "招商银行", "code": "CMB" },
-                { "name": "工商银行", "code": "ICBC" },
-                { "name": "农业银行", "code": "ABC" },
-                { "name": "中国银行", "code": "BOCSH" },
-                { "name": "建设银行", "code": "CCB" },
-                { "name": "民生银行", "code": "CMBC" },
-                { "name": "光大银行", "code": "CEB" },
-                { "name": "交通银行", "code": "BOCOM" },
-                { "name": "兴业银行", "code": "CIB" },
-                { "name": "浦发银行", "code": "HXB" },
-                { "name": "华夏银行", "code": "HXB" },
-            ];
-            complete(bank_list);
+            if (pay_type == "ecpss") {
+                var bank_list = [
+                    { "name": "快捷支付", "code": "NOCARD" },
+                    { "name": "招商银行", "code": "CMB" },
+                    { "name": "工商银行", "code": "ICBC" },
+                    { "name": "农业银行", "code": "ABC" },
+                    { "name": "中国银行", "code": "BOCSH" },
+                    { "name": "建设银行", "code": "CCB" },
+                    { "name": "民生银行", "code": "CMBC" },
+                    { "name": "光大银行", "code": "CEB" },
+                    { "name": "交通银行", "code": "BOCOM" },
+                    { "name": "兴业银行", "code": "CIB" },
+                    { "name": "浦发银行", "code": "HXB" },
+                    { "name": "华夏银行", "code": "HXB" },
+                ];
+                complete(bank_list);
+            }
+            else {
+                complete([]);
+            }
         }
     }
 

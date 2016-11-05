@@ -2,12 +2,12 @@ angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
-            	
     $scope.qrcode_url = AppConfigService.get_erweima_url + AppConfigService.erweima_url + "%23/signup?code=" + $rootScope.user.referee;
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
 	$scope.account = $rootScope.user;
     $scope.pay_modal_url = "";
+    $scope.pay_qrcode_url = "";
     $scope.deposit_bank_list = [];
     
     $scope.moneyList=[];
@@ -48,7 +48,8 @@ angular.module('starter.controllers')
         "pay_type": "ecpss",
         "amount": 100,
         "bank": "",
-        "body": "WECHAT RECHARGE"
+        "body": "WECHAT RECHARGE",
+        "openid": AppConfigService.wx_auth.openid
     };
 
     $ionicModal.fromTemplateUrl('templates/capital-history-modal.html', {
@@ -63,6 +64,13 @@ angular.module('starter.controllers')
         animation: 'slide-in-up'
     }).then(function(modal) {
         $scope.pay_webview_modal = modal;
+    });
+    
+    $ionicModal.fromTemplateUrl('templates/pay-qrcode-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.pay_qrcode_modal = modal;
     });
     
     $ionicModal.fromTemplateUrl('templates/user-info-modal.html', {
@@ -141,9 +149,14 @@ angular.module('starter.controllers')
     }
 	
     $scope.pay_type_change = function() {
-        CapitalService.get_bank_list(function(list) {
+        CapitalService.get_bank_list($scope.deposit.pay_type, function(list) {
             $scope.deposit_bank_list = list;
-            $scope.deposit.bank = list[0];
+            if (list) {
+                $scope.deposit.bank = list[0];
+            }
+            else {
+                $scope.deposit.bank = {};
+            }
         });
     }
     $scope.pay_type_change();
@@ -264,31 +277,50 @@ angular.module('starter.controllers')
             template: "正在提交"
         });
         
-        CapitalService.deposit_hc({
-            "deposit": $scope.deposit,
-            "success": function(url) {
+        var fail = function(status, message) {
+            $ionicLoading.show({
+                template: message
+            });
+            $timeout(function () {
                 $ionicLoading.hide();
-                $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
-                $scope.pay_webview_modal.show();
-            },
-            "fail": function(status, message) {
-                $ionicLoading.show({
-                    template: message
-                });
-                $timeout(function () {
+            }, 2000);
+        }
+
+        var error = function(status, message) {
+            $ionicLoading.show({
+                template: message
+            });
+            $timeout(function () {
+                $ionicLoading.hide();
+            }, 2000);
+        }
+       
+        if ($scope.deposit.pay_type == "ecpss") { 
+            CapitalService.deposit_hc({
+                "deposit": $scope.deposit,
+                "success": function(url) {
                     $ionicLoading.hide();
-                }, 2000);
-            },
-            "error": function(status, message) {
-                $ionicLoading.show({
-                    template: message
-                });
-                $timeout(function () {
+                    $scope.capital_deposit_modal.hide();
+                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
+                    $scope.pay_webview_modal.show();
+                },
+                "fail": fail,
+                "error": error,
+            });
+        }
+        else if($scope.deposit.pay_type == "swiftpass") {
+            CapitalService.deposit_swift({
+                "deposit": $scope.deposit,
+                "success": function(url) {
                     $ionicLoading.hide();
-                }, 2000);
-            },
-        });
-        $scope.capital_deposit_modal.hide();
+                    $scope.capital_deposit_modal.hide();
+                    $scope.pay_qrcode_url = AppConfigService.get_erweima_url + url;
+                    $scope.pay_qrcode_modal.show();
+                },
+                "fail": fail,
+                "error": error,
+            });
+        }
     }
 	
 	
@@ -392,17 +424,11 @@ angular.module('starter.controllers')
     };
     
     //请求个人资金历史
-    $scope.show_money_list = function(){
-    	$scope.has_more_money_order = true;
-    	$scope.capital_history_modal.show();
-    };
-    
-        //modal关闭的时候清除数据
-    $scope.close_money_modal = function(){
-    	$scope.capital_history_modal.hide();
-    	$scope.money_page_index = 0;
+    $scope.show_money_list = function() {
     	$scope.moneyList = [];
-    }
+    	$scope.money_page_index = 0;
+        $scope.has_more_money_order = true;
+    };
     
     //上拉刷新
     $scope.refresh_moneylist_order = function(){
@@ -448,15 +474,27 @@ angular.module('starter.controllers')
     		}); 
     };
     
-
-    
-    
     $scope.$on('$destroy', function() {
-        $scope.user_info_modal.hide();
-        $scope.capital_history_modal.hide();
-        $scope.pay_webview_modal.hide();
-        $scope.capital_deposit_modal.hide();
-        $scope.capital_withdraw_modal().hide();
-        $scope.user_change_modal().hide();
+        if ($scope.user_info_modal) {
+            $scope.user_info_modal.hide();
+        }
+        if ($scope.capital_history_modal) {
+            $scope.capital_history_modal.hide();
+        }
+        if ($scope.pay_webview_modal) {
+            $scope.pay_webview_modal.hide();
+        }
+        if ($scope.pay_qrcode_modal) {
+            $scope.pay_qrcode_modal.hide();
+        }
+        if($scope.capital_deposit_modal) {
+            $scope.capital_deposit_modal.hide();
+        }
+        if ($scope.capital_withdraw_modal) {
+            $scope.capital_withdraw_modal.hide();
+        }
+        if($scope.user_change_modal) {
+            $scope.user_change_modal.hide();
+        }
     });
 });

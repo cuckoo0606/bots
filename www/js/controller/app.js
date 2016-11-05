@@ -8,6 +8,7 @@ angular.module('starter.controllers', [])
     $scope.show_update = ionic.Platform.isAndroid();
     $scope.show_nav_bar = AppConfigService.show_nav_bar;
     $scope.system_name = AppConfigService.system_name;
+    $scope.company_name = AppConfigService.company_name;
     $scope.show_system_name = AppConfigService.show_system_name;
     $scope.system_logo = AppConfigService.system_logo;
     $scope.show_system_logo = AppConfigService.show_system_logo;

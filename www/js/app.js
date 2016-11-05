@@ -1,6 +1,6 @@
-angular.module('starter', ['ionic', 'ng-echarts', 'ionic-toast', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform, $rootScope, $state, $timeout, $ionicLoading, $ionicPopup, $http) {
+.run(function($ionicPlatform, $rootScope, $state, $timeout, $ionicLoading, $ionicPopup, $http, $cookies, AppConfigService) {
     $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -18,12 +18,19 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ionic-toast', 'starter.contro
             StatusBar.styleDefault();
         }
         
+        //从Cookie读取微信信息
+        AppConfigService.wx_auth.scope = $cookies.get("ws");
+        AppConfigService.wx_auth.openid = $cookies.get("wo");
+        AppConfigService.wx_auth.unionid = $cookies.get("wu");
+        AppConfigService.wx_auth.expires_in = $cookies.get("we");
+        AppConfigService.wx_auth.access_token = $cookies.get("wa");
+        AppConfigService.wx_auth.refresh_token = $cookies.get("wr");
     });
 
-		//设置适配rem
-        var change_rem = ((window.screen.width > 640) ? 640 : window.screen.width)/375*100;
-    	document.getElementsByTagName("html")[0].style.fontSize=change_rem+"px";
-	
+	//设置适配rem
+    var change_rem = ((window.screen.width > 640) ? 640 : window.screen.width)/375*100;
+    document.getElementsByTagName("html")[0].style.fontSize=change_rem+"px";
+
     //判断登陆状态
     $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams, options) {
         var views = [ "tab.qoute", "tab.history", "tab.profile", "tab.trade", "trade" ];

@@ -1,0 +1,11 @@
+<ion-modal-view class="order-modal qrcode-modal">
+    <ion-header-bar class="order-modal-header">
+        <h1 class="title">微信支付</h1>
+        <div class="close" ng-click="pay_qrcode_modal.hide()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <img ng-src="{{ pay_qrcode_url }}" >
+    </ion-content>
+</ion-modal-view>

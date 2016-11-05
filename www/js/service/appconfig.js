@@ -4,7 +4,11 @@ angular.module('starter.services', [])
     var service = this;
     
     this.token = "";
+    this.wx_auth = {}
+    this.wx_user_info = {}
+
     this.system_name = "交易系统";
+    this.company_name = "恒忆微盘";
     this.show_system_name = false;
     this.system_logo = "img/logo.png";
     this.show_system_logo = true;
@@ -13,8 +17,8 @@ angular.module('starter.services', [])
 
     this.api_url = "http://weixin.leather-boss.com:8793/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-	this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
-	this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
+	this.erweima_url= "http://weixin.leather-boss.com/index.html";
+	this.get_erweima_url = "http://weixin.leather-boss.com/qrcode?text=";
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
