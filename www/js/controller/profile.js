@@ -393,8 +393,16 @@ angular.module('starter.controllers')
     
     //请求个人资金历史
     $scope.show_money_list = function(){
-        $scope.has_more_money_order = true;
+    	$scope.has_more_money_order = true;
+    	$scope.capital_history_modal.show();
     };
+    
+        //modal关闭的时候清除数据
+    $scope.close_money_modal = function(){
+    	$scope.capital_history_modal.hide();
+    	$scope.money_page_index = 0;
+    	$scope.moneyList = [];
+    }
     
     //上拉刷新
     $scope.refresh_moneylist_order = function(){
@@ -440,11 +448,15 @@ angular.module('starter.controllers')
     		}); 
     };
     
+
+    
+    
     $scope.$on('$destroy', function() {
         $scope.user_info_modal.hide();
         $scope.capital_history_modal.hide();
         $scope.pay_webview_modal.hide();
         $scope.capital_deposit_modal.hide();
-        $scope.capital_withdraw_modal();
+        $scope.capital_withdraw_modal().hide();
+        $scope.user_change_modal().hide();
     });
 });
