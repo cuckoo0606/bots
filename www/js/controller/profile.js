@@ -39,7 +39,7 @@ angular.module('starter.controllers')
     };
 	$scope.choseDate={
 		"startDate":"",
-		"startDate":""
+		"endDate":""
 	};
 	$scope.outAmount={
 		"outamount":""
@@ -126,7 +126,7 @@ angular.module('starter.controllers')
         $scope.user_info.id_card = $rootScope.user.idcard;
         $scope.user_info.bank_brand = $rootScope.user.bankbranch;
         $scope.user_info.bank_user = $rootScope.user.bankholder;
-        $scope.user_info.bank_card = $rootScope.user.bankaccount;
+        $scope.user_info.bank_card = parseInt($rootScope.user.bankaccount);
         $scope.user_info_modal.show();
     }
 
@@ -425,6 +425,7 @@ angular.module('starter.controllers')
     
     //请求个人资金历史
     $scope.show_money_list = function() {
+    	$scope.capital_history_modal.show();
     	$scope.moneyList = [];
     	$scope.money_page_index = 0;
         $scope.has_more_money_order = true;

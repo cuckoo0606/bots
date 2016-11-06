@@ -83,7 +83,6 @@ angular.module('starter.services')
     }
 
     this.get_bank_list = function(pay_type, complete) {
-        console.log(pay_type);
         if (complete) {
             if (pay_type == "ecpss") {
                 var bank_list = [
