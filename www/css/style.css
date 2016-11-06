@@ -2392,3 +2392,15 @@
 .person_money_list .scroll .scroll-view .scroll{
     height: auto;
 }
+
+.pay_code {
+	width: 100%;
+	height: 250px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pay_code img {
+	width: 250px;
+	height: 250px;
+}

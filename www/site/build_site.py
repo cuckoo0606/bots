@@ -16,11 +16,10 @@ os.system("echo '' >> app.py")
 os.system("""echo 'if __name__ == "__main__":' >> app.py""")
 os.system("echo '    Application.start(port=8085)' >> app.py")
 
-os.system("cp ../favicon.ico .")
-
 # 生成静态目录
 os.system("rm -rf static")
 os.system("mkdir static")
+os.system("cp ../favicon.ico static/")
 os.system("cp -r ../img/ static/img/")
 os.system("cp -r ../css/ static/css/")
 os.system("cp -r ../js/ static/js/")

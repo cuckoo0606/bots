@@ -9,3 +9,7 @@
 .tag*
 nohup.out
 platforms
+www/site/views/
+www/site/static/
+www/site/app.py
+www/site/faicon.ico
