@@ -23,7 +23,7 @@
                 </div>
                 <div class="col col-30">
                 	<p>金额</p>
-                	<p>&yen; {{ (order_params.other_amount != "" && order_params.other_amount != "0") ? order_params.other_amount : order_params.amount }}</p>
+                	<p>&yen; {{ order_result.order.money }}</p>
                 </div>
                 <div class="col col-30">
                 	<p>执行价</p>
@@ -31,7 +31,7 @@
                 </div>    
                 <div class="col col-25 last_info">
                 	<p>预测结果</p>
-                	<p ng-class="{'rise': (order_result.order.money * order_result.order.inprice + order_result.order.money)>0,'fall': (order_result.order.money * order_result.order.inprice + order_result.order.money) < 0}">  &yen; {{ (order_result.order.money * order_result.order.inprice + order_result.order.money).toFixed(2) }}</p>
+                	<p ng-class="{'rise' : order_result.order.profit > 0, 'fall':  order_result.order.profit < 0}">  &yen; {{ order_result.order.profit < 0 ? order_result.order.profit : order_result.order.profit + order_result.order.money}}</p>
                 </div>             
         	</div>
         </div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="col col-30">
                 	<p>金额</p>
-                	<p>&yen; {{ (order_params.other_amount != "" && order_params.other_amount != "0") ? order_params.other_amount : order_params.amount }}</p>
+                	<p>&yen; {{ order_result.order.money }}</p>
                 </div>
                 <div class="col col-30">
                 	<p>执行价</p>
@@ -74,11 +74,11 @@
                 </div>    
                 <div class="col col-25 last_info">
                 	<p>预测结果</p>
-                	<p ng-class="{'rise': (order_result.order.money * order_result.order.inprice + order_result.order.money)>0,'fall': (order_result.order.money * order_result.order.inprice + order_result.order.money) < 0}">  &yen; {{ (order_result.order.money * order_result.order.inprice + order_result.order.money).toFixed(2) }}</p>
+                    <p ng-class="{'rise' : order_result.order.profit > 0, 'fall':  order_result.order.profit < 0}">  &yen; {{ order_result.order.profit < 0 ? order_result.order.profit : order_result.order.profit + order_result.order.money}}</p>
                 </div>             
         	</div>
         </div>
-        <div class="row">
+        <div class="row button_row">
             <div class="col">
                 <button class="button" ng-click="continue_order()">继续下单</button>
             </div>
