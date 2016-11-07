@@ -1320,6 +1320,12 @@
     padding-left: 0px !important;
 }
 
+.trade-view .order-state-panel .button_row {
+	position: absolute;
+	bottom: 15px;
+	padding-right: 20px !important;
+}
+
 .trade-view .order-state-panel .wait .row .col i {
     color: yellow;
     font-size: 25px;
