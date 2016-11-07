@@ -17,9 +17,9 @@ angular.module('starter.controllers')
     $scope.sms_btn_text = "获取验证码";
     //判断当前页面是否有code，有推荐码输入框则无法修改
     $scope.url=window.location.href;
-    if($scope.url.indexOf("code")>0){
+    if($scope.url.indexOf("tuijianma")>0){
     	angular.element(document.querySelectorAll(".sign_code"))[0].readOnly=true;
-    	$scope.user.referralcode=$scope.url.substring($scope.url.indexOf("code")+5,$scope.url.length);
+    	$scope.user.referralcode=$scope.url.substring($scope.url.indexOf("tuijianma")+10,$scope.url.length);
     }
 	
     $scope.spinner = function(visible) {

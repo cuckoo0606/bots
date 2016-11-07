@@ -28,7 +28,12 @@
             </ion-scroll>
         </div>
         <div class="amount">
-        	<p class="invest_account">投资金额</p>
+        	<p class="invest_account">
+        		投资金额
+        		<span ng-show="((order_params.other_amount == '' || order_params.other_amount == '0') ? order_params.amount : order_params.other_amount) > user.amount" >投资金额余额不足，请充值！</span>
+        		<span ng-show="order_params.other_amount > 500 && user.amount > 5000" >单笔投资金额不超过5000</span>
+            	<span ng-show="order_params.other_amount < 10 && order_params.other_amount != ''" >单笔投资金额不少于10</span>
+        	</p>
             <ion-scroll direction="x">
                 <div class="amount-view">
                     <div class="amount-box" ng-class="{ 'active' : (order_params.other_amount == '' || order_params.other_amount == '0') &&a == order_params.amount }" 
@@ -43,9 +48,8 @@
         </div>
         <div class="info-view">
             <div>余额:  &yen; {{ user.amount.toFixed(2) }}</div>
-            <div ng-hide="order_params.other_amount > 500 || order_params.other_amount < 10 && order_params.other_amount != ''">手续费： {{boundage * 100 }}%</div>
-            <div ng-show="order_params.other_amount > 500" class="other_amount_tips">输入金额不超过5000</div>
-            <div ng-show="order_params.other_amount < 1 && order_params.other_amount != ''" class="other_amount_tips">输入金额不少于10</div>
+            <div>手续费： {{boundage * 100 }}%</div>
+            
         </div>
         <div class="order-detail-view">
             <div class="order-detail">
@@ -63,7 +67,7 @@
                 </div>
                 <div class="row btn_confirm">
                     <div class="col">
-                        <button class="button" ng-click="order()" >确认下单</button>
+                        <button class="button" ng-click="order()" ng-disabled="((order_params.other_amount == '' || order_params.other_amount == '0') ? order_params.amount : order_params.other_amount) < 10||((order_params.other_amount == '' || order_params.other_amount == '0') ? order_params.amount : order_params.other_amount) > user.amount">确认下单</button>
                     </div>
                 </div>
                 <p class="expect_profit">

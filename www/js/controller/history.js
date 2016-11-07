@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
 
-.controller('HistoryCtrl', function($scope, $rootScope, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $interval, OrderService, CloseOrderService, QouteService) {
+.controller('HistoryCtrl', function($scope, $rootScope, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $interval, $filter, OrderService, CloseOrderService, QouteService) {
     $scope.order_page_index = 0;
     $scope.close_order_page_index = 0;
 
@@ -72,7 +72,11 @@ angular.module('starter.controllers')
             protocol.data.forEach(function(value) {
                 $scope.close_order_list.push(value);
             });
-
+			$scope.close_order_list.forEach(function(arr){
+				arr.closed = $filter('date')(arr.closed,'yyyy-MM-dd HH:mm:ss');
+				arr.created = $filter('date')(arr.created,'yyyy-MM-dd HH:mm:ss');
+				arr.expired = $filter('date')(arr.expired,'yyyy-MM-dd HH:mm:ss');
+			});
             if(protocol.data.length === 0) {
                 $scope.has_more_close_order = false;
             }
@@ -81,7 +85,6 @@ angular.module('starter.controllers')
             $scope.$broadcast('scroll.infiniteScrollComplete');
         }); 
     }
-
     var order_interval = $interval(function() {
         if ($scope.order_list.length > 0) {
             for (var i = 0; i < $scope.order_list.length; i++) {
