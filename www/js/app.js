@@ -1,6 +1,6 @@
 angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform, $rootScope, $state, $timeout, $ionicLoading, $ionicPopup, $http, $cookies, AppConfigService) {
+.run(function($ionicPlatform, $rootScope, $state, $timeout, $ionicLoading, $ionicPopup, $http, $cookies, $location, AppConfigService) {
     $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -17,7 +17,7 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
-        
+
         //从Cookie读取微信信息
         AppConfigService.wx_auth.scope = $cookies.get("ws");
         AppConfigService.wx_auth.openid = $cookies.get("wo");
@@ -25,6 +25,13 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
         AppConfigService.wx_auth.expires_in = $cookies.get("we");
         AppConfigService.wx_auth.access_token = $cookies.get("wa");
         AppConfigService.wx_auth.refresh_token = $cookies.get("wr");
+
+        var reg = new RegExp("(^|&)show=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            var state = unescape(r[2]);
+            $state.go(state);
+        }
     });
 
 	//设置适配rem

@@ -2,7 +2,8 @@ angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
-    $scope.qrcode_url = AppConfigService.get_erweima_url + AppConfigService.erweima_url + "%23/signup?tuijianma=" + $rootScope.user.referee;
+    $scope.qrcode_url = AppConfigService.get_erweima_url + escape(AppConfigService.erweima_url + "?show=signup&ref=" + $rootScope.user.referee + "#/signup");
+    console.log($scope.qrcode_url);
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
 	$scope.account = $rootScope.user;
