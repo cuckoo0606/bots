@@ -1387,9 +1387,11 @@
     border-bottom: 1px solid #000;
 }
 
-.other_amount_tips {
+.invest_account span{
 	text-align: right;
-	color: red !important;
+	color: #FF0000;
+	display: inline-block;
+	width: 80%;
 }
 
 .panel-header {
