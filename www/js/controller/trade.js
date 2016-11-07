@@ -4,7 +4,6 @@ angular.module('starter.controllers')
             $ionicModal, QouteService, OrderService, UserService, HistoryQouteService, CloseOrderService) {
     $scope.chart_period = "m5";
 
-    $scope.history_loading = false;
     $scope.chart_data = [];
     $rootScope.trade_order_list = [];
 
@@ -71,9 +70,42 @@ angular.module('starter.controllers')
 
     $scope.refresh_order();
 
-    $scope.chart_config = {
-        "theme": "default",
-        "dataLoaded": true,
+    var has_new_history = function(dt_now, dt_chart, period) {
+        var sub = dt_now.getTime() - dt_chart.getTime();
+        sub = sub / 1000;
+
+        if (period == "m1") {
+            if (sub / 60 >= 1) {
+                return true;
+            }
+        }
+        else if (period == "m5") {
+            if (sub / 60 / 5 >= 1) {
+                return true;
+            }
+        }
+        else if (period == "m15") {
+            if (sub / 60 / 15 >= 1) {
+                return true;
+            }
+        }
+        else if (period == "m30") {
+            if (sub / 60 / 30 >= 1) {
+                return true;
+            }
+        }
+        else if (period == "h1") {
+            if (sub / 60 / 60 >= 1) {
+                return true;
+            }
+        }
+        else if (period == "d1") {
+            if (sub / 60 / 60 / 24 >= 1) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     function change_chart_data(history_list) {
@@ -94,22 +126,6 @@ angular.module('starter.controllers')
         });
         if (line_data.length > 0) {
             line_data[line_data.length - 1] = $rootScope.qoute.value;
-        }
-
-        function calculate_ma(dayCount, data) {
-            var result = [];
-            for (var i = 0, len = data.length; i < len; i++) {
-                if (i < dayCount) {
-                    result.push('-');
-                    continue;
-                }
-                var sum = 0;
-                for (var j = 0; j < dayCount; j++) {
-                    sum += data[i - j][1];
-                }
-                result.push(sum / dayCount);
-            }
-            return result;
         }
 
         var diff = HistoryQouteService.build_diff_data(12, 26, data);
@@ -443,11 +459,6 @@ angular.module('starter.controllers')
         };
     }
 
-    var history_interval = $interval(function() {
-        if ($scope.chart_data.length > 0) {
-        }
-    }, 1000);
-
     var order_interval = $interval(function() {
         if ($rootScope.trade_order_list.length > 0) {
             for (var i = 0; i < $rootScope.trade_order_list.length; i++) {
@@ -497,14 +508,12 @@ angular.module('starter.controllers')
 
     $scope.change_chart_period = function(period) {
         $scope.chart_period = period;
-        $scope.history_loading = true;
         angular.element(document.querySelectorAll(".trade-chart-period")).removeClass("active");
         angular.element(document.querySelectorAll(".trade-chart-period." + period)).addClass("active");
 
         HistoryQouteService.request_history($scope.market, $scope.code, period, function(history_list) {
             history_list.reverse();
             change_chart_data(history_list);
-            $scope.history_loading = false;
             $scope.history_qoute = history_list[history_list.length - 1];
         });
     }
@@ -530,13 +539,28 @@ angular.module('starter.controllers')
             var mark_line = $scope.chart_option.series[0].markLine;
             mark_line.data[0][0].yAxis = qoute.value;
             mark_line.data[0][1].yAxis = qoute.value;
+                
+            var dates = $scope.chart_option.xAxis[0].data;
+            if (dates && $rootScope.qoute) {
+                var dt_now = new Date($rootScope.qoute.time.replace(/-/g, "/"));
+                var dt_chart = new Date(dates[dates.length - 1].replace(/-/g, "/"));
+                if (has_new_history(dt_now, dt_chart, $scope.chart_period)) {
+                    $scope.change_chart_period($scope.chart_period)
+                }
+            }
         }
     }, true);
 
     $scope.change_chart_period($scope.chart_period);
     $scope.$on('$destroy', function() {
-        qoute_watcher();
-        $interval.cancel(order_interval);
-        $interval.cancel(history_interval);
+        if (qoute_watcher) {
+            qoute_watcher();
+        }
+        if (order_interval) {
+            $interval.cancel(order_interval);
+        }
+        if ($scope.history_interval) {
+            $interval.cancel(history_interval);
+        }
     });
 });
