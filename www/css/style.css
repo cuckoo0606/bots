@@ -1191,7 +1191,7 @@
     width: 100%;
     font-size: 12px;
     height: 30px;
-    line-height: 230px;
+    line-height: 30px;
     text-align: center;
     background-color: #38373e;
     border-radius: 3px;
@@ -1320,6 +1320,12 @@
     height: 150px;
     line-height: 150px;
     padding-left: 0px !important;
+}
+
+.trade-view .order-state-panel .button_row {
+	position: absolute;
+	bottom: 15px;
+	padding-right: 20px !important;
 }
 
 .trade-view .order-state-panel .wait .row .col i {

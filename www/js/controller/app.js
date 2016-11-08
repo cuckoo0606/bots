@@ -13,8 +13,9 @@ angular.module('starter.controllers', [])
     $scope.system_logo = AppConfigService.system_logo;
     $scope.show_system_logo = AppConfigService.show_system_logo;
     $scope.boundage = "";
- 
-    
+    $scope.order_profit = OrderService.order_profit;
+
+
 
     $scope.order_params = {
         "cycle": {},
@@ -102,8 +103,6 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
     }
 
-    $scope.order_profit = OrderService.order_profit;
-
     $scope.close_order = function() {
         var order = {
             "quantity": $scope.modal_hold_order.Quantity,
@@ -151,7 +150,8 @@ angular.module('starter.controllers', [])
             }
         })
     }
-	
+
+
     $scope.order = function() {
         var order = {
             "trade": $rootScope.trade.trade,
@@ -164,7 +164,8 @@ angular.module('starter.controllers', [])
             "status": "POST",
             "message": "正在交易",
         }
-        
+
+
         $scope.toggle_order_confirm_panel();
         $scope.toggle_order_state_panel();
 
@@ -193,7 +194,7 @@ angular.module('starter.controllers', [])
                         }
                     });
                 }
-                $timeout(check_order, 1000);  
+                $timeout(check_order, 1000);
             },
             "fail": function(status, protocol) {
                 $scope.order_result.status = "FAIL";

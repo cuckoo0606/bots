@@ -1,10 +1,12 @@
 #!/usr/lib/env python
 # -*- encoding:utf-8 -*-
 
+import re
 import requests
+from urllib import quote
 from lixingtie.web import RequestHandler, route
 
-SERVER_DOMAIN = "http://weixin.leather-boss.com/"
+SERVER_DOMAIN = "http://weixin.leather-boss.com"
 WECHAT_APPID = "wx3002d0a8d625f4c6"
 WECHAT_APP_SECRET = "a1a0468c725f6b17d1043399ea17bb42"
 WECHAT_AUTHORIZE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirect"
@@ -17,7 +19,7 @@ class Index(RequestHandler):
     def get(self):
         code = self.get_argument("code", "")
         if not code and not self.get_cookie("openid"):
-            url = WECHAT_AUTHORIZE_URL.format(WECHAT_APPID, SERVER_DOMAIN + "index.html", "")
+            url = WECHAT_AUTHORIZE_URL.format(WECHAT_APPID, quote(SERVER_DOMAIN + self.request.uri), "")
             return self.redirect(url)
 
         url = WECHAT_AUTH_TOKEN_URL.format(WECHAT_APPID, WECHAT_APP_SECRET, code)
