@@ -1,3 +1,5 @@
+/*交易历史样式*/
+@import url("trade-history.css");
 /* 公用CSS */
 .header {
     top: 50px;

@@ -19,59 +19,39 @@
         <ion-slide-box delegate-handle="slide-history" on-slide-changed="slide_change($index)" 
         show-pager="false" active-slide="category_index" class="slide-history">
             <ion-slide>
-                <div class="order-view">
-                    <div class="order-view-header">
-                        <ul>
-                            <li>商品</li>
-                            <li>类型</li>
-                            <li>金额</li>
-                            <li>现价</li>
-                            <li>盈亏</li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div class="order-view-content">
-                        <ion-scroll>
-                            <ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_order()">
-                            </ion-refresher>
-                            <ul ng-repeat="o in order_list">
-                                <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }"
-                                    ng-click="show_hold_order_modal(o);">
-                                    {{ o.assets.name }}
-                                </li>
-                                <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }"
-                                    ng-click="show_hold_order_modal(o);" class="category">
-                                    {{ o.direction == "0" ? "买跌" : "买涨" }}
-                                </li>
-                                <li ng-class="{ 'rise' : o.profit > 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
-                                    {{ o.money }}
-                                </li>
-                                <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
-                                    {{ o.qoute.value.toFixed(o.qoute.decimal) }}
-                                </li>
-                                <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
-                                    {{ o.profit.toFixed(2) }}
-                                </li>
-                                <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
-                                    {{ o.remaining.toFixed(0) }}
-                                </li>
-                            </ul>
-                            <ion-infinite-scroll ng-if="has_more_order" on-infinite="load_more_order()" distance="1%">
-                            </ion-infinite-scroll>
-                        </ion-scroll>
-                    </div>
-                </div>
+            	<ul>
+            		<ion-scroll>
+                        <ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_order()">
+                        </ion-refresher>
+                        <li ng-repeat="o in order_list">
+                            <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }"
+                                ng-click="show_hold_order_modal(o);">
+                                {{ o.assets.name }}
+                            </li>
+                            <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }"
+                                ng-click="show_hold_order_modal(o);" class="category">
+                                {{ o.direction == "0" ? "买跌" : "买涨" }}
+                            </li>
+                            <li ng-class="{ 'rise' : o.profit > 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
+                                {{ o.money }}
+                            </li>
+                            <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
+                                {{ o.qoute.value.toFixed(o.qoute.decimal) }}
+                            </li>
+                            <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
+                                {{ o.profit.toFixed(2) }}
+                            </li>
+                            <li ng-class="{ 'rise' : o.profit >= 0, 'fall' : o.profit < 0 }" ng-click="show_hold_order_modal(o);">
+                                {{ o.remaining.toFixed(0) }}
+                            </li>
+                        </li>
+                        <ion-infinite-scroll ng-if="has_more_order" on-infinite="load_more_order()" distance="1%">
+                        </ion-infinite-scroll>
+                    </ion-scroll>
+            	</ul>
             </ion-slide>
             <ion-slide>
                 <div class="order-view">
-                    <div class="order-view-header">
-                        <ul>
-                            <li>商品</li>
-                            <li>类型</li>
-                            <li>金额</li>
-                            <li>盈亏</li>
-                        </ul>
-                    </div>
                     <div class="order-view-content">
                         <ion-scroll>
                             <ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_close_order()">
