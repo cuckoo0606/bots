@@ -195,6 +195,7 @@ angular.module('starter.controllers', [])
                     });
                 }
                 $timeout(check_order, 1000);
+                console.log($scope.order_result)
             },
             "fail": function(status, protocol) {
                 $scope.order_result.status = "FAIL";

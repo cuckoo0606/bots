@@ -1211,6 +1211,70 @@
     z-index: 20;
 }
 
+/*倒计时圆形进度条*/
+.circle_wrapper {
+	position: relative;
+	left: 0;
+	right: 0;
+	top: 5px;
+	bottom: 120px;
+	margin: auto;
+	width: 110px;
+	height: 127px;
+	box-sizing: content-box;
+}
+
+.right_circle,.left_circle {
+	position: absolute;
+    width: 110px;
+    height: 110px;
+    overflow: hidden;
+    top: 8px;
+}
+.right_circle {
+    right: -50%;
+}
+.left_circle {
+	left: -50%;
+}
+.right_circle > img {
+    width: 100%;
+    position: absolute;
+    right: 50%;
+    -webkit-animation: run 5s linear;
+    animation-fill-mode: forwards;
+	   
+}
+@-webkit-keyframes run{
+	0{
+		transform: rotate(0);
+	}
+	50%{
+		transform: rotate(180deg);
+	}
+	100% {
+		transform: rotate(180deg);
+	}
+}
+.left_circle > img {
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    -webkit-animation: runaway 5s linear;
+    animation-fill-mode: forwards;
+}
+@-webkit-keyframes runaway{
+	0{
+		transform: rotate(0);
+	}
+	50%{
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(180deg);
+	}
+}
+
 .trade-view .order-state-panel .close {
 	line-height: 44px;
 	color: #6d6d6d;	
@@ -1264,8 +1328,15 @@
     position: relative;
     height: 138px;
     border-bottom: 1px solid #000;
-    background-image: url(../img/circle_back.png);
-    background-repeat: no-repeat;
+}
+
+.trade-view .order-state-panel .success .count_remaining {
+	margin-top: -128px !important;
+}
+
+.trade-view .order-state-panel .success .finish_remaining {
+	background-image: url(../img/complete_back.png);
+	background-repeat: no-repeat;
     background-size: 110px;
     background-position: 50%;
 }
