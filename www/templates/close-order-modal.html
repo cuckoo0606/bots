@@ -36,11 +36,11 @@
             </li>
             <li class="item item-input">
                 <span class="input-label">成交时间</span>
-                <span class="input-content">{{ modal_close_order.created }}</span>
+                <span class="input-content">{{ modal_close_order.created|date:'yyyy-MM-dd HH:mm:ss' }}</span>
             </li>
             <li class="item item-input">
                 <span class="input-label">结算时间</span>
-                <span class="input-content">{{ modal_close_order.expired }}</span>
+                <span class="input-content">{{ modal_close_order.expired|date:'yyyy-MM-dd HH:mm:ss' }}</span>
             </li>
         </ul>
     </ion-content>

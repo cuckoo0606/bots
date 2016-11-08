@@ -35,11 +35,11 @@
             </li>
             <li class="item item-input">
                 <span class="input-label">成交时间</span>
-                <span class="input-content">{{ modal_hold_order.created }}</span>
+                <span class="input-content">{{ modal_hold_order.created|date:'yyyy-MM-dd HH:mm:ss' }}</span>
             </li>
             <li class="item item-input">
                 <span class="input-label">到期时间</span>
-                <span class="input-content">{{ modal_hold_order.expired }}</span>
+                <span class="input-content">{{ modal_hold_order.expired|date:'yyyy-MM-dd HH:mm:ss'}}</span>
             </li>
         </ul>
     </ion-content>

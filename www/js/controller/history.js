@@ -45,11 +45,11 @@ angular.module('starter.controllers')
                 var tick = now.getTime() + $rootScope.server_time_tick;
                 var remaining = (expired.getTime() - tick) / 1000;
                 value.remaining = remaining;
+                value.cycle = parseInt(value.cycle);
                 if (remaining > 0) {
                     $scope.order_list.push(value);
                 }
             });
-
             if(protocol.data.length === 0) {
                 $scope.has_more_order = false;
             }
@@ -72,11 +72,6 @@ angular.module('starter.controllers')
             protocol.data.forEach(function(value) {
                 $scope.close_order_list.push(value);
             });
-			$scope.close_order_list.forEach(function(arr){
-				arr.closed = $filter('date')(arr.closed,'yyyy-MM-dd HH:mm:ss');
-				arr.created = $filter('date')(arr.created,'yyyy-MM-dd HH:mm:ss');
-				arr.expired = $filter('date')(arr.expired,'yyyy-MM-dd HH:mm:ss');
-			});
             if(protocol.data.length === 0) {
                 $scope.has_more_close_order = false;
             }
