@@ -14,8 +14,8 @@ angular.module('starter.controllers', [])
     $scope.show_system_logo = AppConfigService.show_system_logo;
     $scope.boundage = "";
     $scope.order_profit = OrderService.order_profit;
-
-
+    $scope.last_result = [];
+	
 
     $scope.order_params = {
         "cycle": {},
@@ -101,6 +101,7 @@ angular.module('starter.controllers', [])
     $scope.continue_order = function() {
     	angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
         angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
+        $scope.order_params.direction = $scope.order_result.order.direction;
     }
 
     $scope.close_order = function() {
@@ -195,7 +196,6 @@ angular.module('starter.controllers', [])
                     });
                 }
                 $timeout(check_order, 1000);
-                console.log($scope.order_result)
             },
             "fail": function(status, protocol) {
                 $scope.order_result.status = "FAIL";

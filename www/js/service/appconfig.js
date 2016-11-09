@@ -63,7 +63,10 @@ angular.module('starter.services', [])
             url += "&" + args.join("&");
         }
         return url;
+        
     }
+    
+    
 
     this.update = function (url) {
         if (!ionic.Platform.isAndroid()) {

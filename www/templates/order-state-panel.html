@@ -62,9 +62,8 @@
         <div class="success" ng-show="order_result.status == 'FINISH'">
             <div class="row remaining finish_remaining">
                  <div class="col">
-                		<div>0</div>
-                		<div>现价</div>
-                		<div>{{qoute.value.toFixed(qoute.decimal)}}</div>
+                    <div class="result_profit" ng-class="{'rise' : order_result.order.profit > 0, 'fall':  order_result.order.profit < 0}"> &yen;{{ order_result.order.profit < 0 ? order_result.order.profit : order_result.order.profit + order_result.order.money}}</div>
+                    <div class="expired_statements">到期结算完成</div>
                 </div>
             </div>
             <div class="row info_list">
@@ -81,8 +80,8 @@
                 	<p>  {{ order_result.order.buyQoute }}</p>
                 </div>    
                 <div class="col col-25 last_info">
-                	<p>预测结果</p>
-                    <p ng-class="{'rise' : order_result.order.profit > 0, 'fall':  order_result.order.profit < 0}">  &yen; {{ order_result.order.profit < 0 ? order_result.order.profit : order_result.order.profit + order_result.order.money}}</p>
+                	<p>成交价</p>
+                    <p ng-class="{'rise' : order_result.order.profit > 0, 'fall':  order_result.order.profit < 0}">  &yen; {{order_result.order.endQoute }}</p>
                 </div>             
         	</div>
         </div>
