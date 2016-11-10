@@ -132,7 +132,7 @@ angular.module('starter.controllers')
     }
 
 	$scope.show_money_list_footer = function() {
-		var article_list = document.getElementsByTagName("article");
+		var article_list = document.getElementsByClassName("today_list_footer");
 		var clickshow_list = document.getElementsByClassName("clickshow");
 		for (var i=0;i<article_list.length;i++){
 			if(i==this.$index){
@@ -430,6 +430,7 @@ angular.module('starter.controllers')
     	$scope.moneyList = [];
     	$scope.money_page_index = 0;
         $scope.has_more_money_order = true;
+        $scope.load_more_money_order();
     };
     
     //上拉刷新

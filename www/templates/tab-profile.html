@@ -1,56 +1,45 @@
 <ion-view view-title="个人中心" hide-nav-bar="{{ !show_nav_bar }}">
-    <ion-content class="profile-background" scroll="false">
-    	<header class="row ">
-	        <div class="col">
-	            用户:
-	            <span>
-	                {{ account.username }}
-	            </span>
-	        </div>
-	        <div class="col">
-	            余额:
-	            <span ng-class="{ 'rise' : account.amount >= 0, 'fall' : account.amount < 0 }">
-	                {{ account.amount.toFixed(2) }}
-	            </span>
-	        </div>
-	    </header>
-	    <div class="row profile-capital">
-
-	        <a class="col" href="javascript:;" ng-click="show_user_bank_modal()">
-	            修改个人银行资料
-	        </a>
-	        <a class="col" href="javascript:;" ng-click="show_money_list()">
-	            资金流水
-	        </a>
-	    </div>
-	    <div class="row profile-capital">
-	        <a class="col" href="javascript:;" ng-click="show_deposit_modal()">
-	            用户入金
-	        </a>
-	        <a class="col" href="javascript:;" ng-click="show_withdraw_modal()">
-	            用户出金
-	        </a>
-	    </div>
-	    <!--<div class="row profile-capital">
-	        <a class="col" href="javascript:;" ng-click="show_bank_modal()">
-	        	<i class="icon ion-social-usd"></i>
-	            银行卡签约
-	        </a>
-	        <a class="col" href="javascript:;" ng-click="show_report_form()">
-	            报表
-	        </a>
-
-	    </div>-->
-	    <div class="row profile-capital">
-	    	<a class="col" href="javascript:;" ng-click="show_user_modal()">
-	            修改密码
-	        </a>
-	        <a class="col" style="margin: 0 !important;" href="javascript:;" ng-click="app_exit()">
-	            退出
-	        </a>
-	    </div>
-	    <div id="code">
-            <img ng-src="{{ qrcode_url }}" alt="我的二维码" />
-        </div>
+    <ion-content class="personalbg" scroll="false">
+		<header>
+			<i ng-click="app_exit()" class="iconfont">&#xe620;</i>
+			<article></article>
+			<p>{{ account.username }}</p>
+			<p ng-click="show_user_modal()">修改个人资料</p>
+		</header>
+		<ul>
+			<li>
+				<section ng-click="show_user_bank_modal()">
+					<i class="iconfont">&#xe635;</i>
+					<p>修改银行信息</p>
+				</section>
+			</li>
+			<li>
+				<section ng-click="show_deposit_modal()">
+					<i class="iconfont">&#xe616;</i>
+					<p>用户入金</p>
+				</section>
+			</li>
+			<li>
+				<section ng-click="show_withdraw_modal()">
+					<i class="iconfont">&#xe618;</i>
+					<p>用户出金</p>
+				</section>
+			</li>
+			<li>
+				<section ng-click="show_money_list()">
+					<i class="iconfont">&#xe615;</i>
+					<p>资金流水</p>
+				</section>
+			</li>
+		</ul>
+		<footer>
+			<div class="erwema_img">
+            	<img ng-src="{{ qrcode_url }}" alt="我的二维码" />
+        	</div>
+        	<p>
+        		<span>扫描二维码注册</span>
+        		<span>分享<i class="iconfont">&#xe634;</i></span>
+        	</p>
+		</footer>
     </ion-content>
 </ion-view>
