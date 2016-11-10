@@ -62,7 +62,6 @@ angular.module('starter.services')
         $http.get(system_config_url, {
             "timeout": 10000,
         }).success(function (protocol) {
-        	console.log(protocol);
             if(params.success) {
                 params.success(protocol);
             }

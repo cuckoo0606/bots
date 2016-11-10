@@ -39,7 +39,7 @@
                 </div>    
                 <div class="col col-25 last_info">
                 	<p>预测结果</p>
-                	<p ng-class="{'rise' : (order_result.order.direction == '0'  && qoute.value < order_result.order.buyQoute) || (order_result.order.direction == '1' && qoute.value   > order_result.order.buyQoute), 'fall':  (order_result.order.direction == 0 && qoute.value > order_result.order.buyQoute) || (order_result.order.direction == 1 && qoute.value < order_result.order.buyQoute)}">  &yen; {{ (order_result.order.direction == '0'  && qoute.value > order_result.order.buyQoute) || (order_result.order.direction == '1' && qoute.value  < order_result.order.buyQoute)? order_result.order.profit - order_result.order.money: order_result.order.profit + order_result.order.money}}</p>
+                	<p ng-class="{'rise' : (order_result.order.direction == '0'  && qoute.value < order_result.order.buyQoute) || (order_result.order.direction == '1' && qoute.value   > order_result.order.buyQoute), 'fall':  (order_result.order.direction == '0' && qoute.value > order_result.order.buyQoute) || (order_result.order.direction == '1' && qoute.value < order_result.order.buyQoute)}">  &yen; {{ (order_result.order.direction == '0'  && qoute.value > order_result.order.buyQoute) || (order_result.order.direction == '1' && qoute.value  < order_result.order.buyQoute)? order_result.order.profit - order_result.order.money: order_result.order.profit + order_result.order.money}}</p>
                 </div>             
         	</div>
         </div>

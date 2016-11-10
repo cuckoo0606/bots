@@ -36,9 +36,9 @@
                             	</p>
                             	<p>{{o.created|date:'yyyy-MM-dd HH:mm:ss'}}</p>
                             </section><section>
-                            	<p ng-class="{'in_money':o.profit>0,'out_money':o.profit<0}">{{o.profit>0?o.money+o.profit:o.profit}}</p>
-                            	<p>{{o.remaining*1000|date:'00:mm:ss'}}</p>
-                        	</section>
+		                    	<p style="margin: 0" ng-class="{'in_money':(o.direction == '0' && o.qoute.value < o.buyQoute) || (o.direction == '1' && o.qoute.value > o.buyQoute) ,'out_money':(o.direction == '1' && o.qoute.value < o.buyQoute) || (o.direction == '0' && o.qoute.value > o.buyQoute)}">{{(o.direction == '0'  && o.qoute.value > o.buyQoute) || (o.direction == '1' && o.qoute.value  < o.buyQoute)? o.profit - o.money: o.profit + o.money}}</p>
+		                    	<p style="margin: 0">{{o.remaining*1000|date:'00:mm:ss'}}</p>
+		                	</section>
                             <article ng-hide="o.remaining === 0">
                     		<span ng-style="{width: o.remaining/o.cycle*100-2+'%'}">
                     		</span>
