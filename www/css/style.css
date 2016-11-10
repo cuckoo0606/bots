@@ -1363,13 +1363,6 @@
 	margin-top: -128px !important;
 }
 
-.trade-view .order-state-panel .success .finish_remaining {
-	background-image: url(../img/complete_back.png);
-	background-repeat: no-repeat;
-    background-size: 110px;
-    background-position: 50%;
-}
-
 .trade-view .order-state-panel .success .remaining > div >div:nth-of-type(1) {
     font-size: 40px;
     color: #fdbe19;
@@ -1389,6 +1382,17 @@
     color: #fa2e42;
     text-align: center;
 }
+
+.trade-view .order-state-panel .success .finish_remaining .result_profit {
+    margin-top: 0 !important;
+    height: 105px;
+    line-height: 105px;
+}
+
+.trade-view .order-state-panel .success .finish_remaining .expired_statements {
+    margin-top: -30px !important;
+}
+
 
 .trade-view .order-state-panel .success .remaining > .col {
     color: red;
