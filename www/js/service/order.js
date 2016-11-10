@@ -14,10 +14,10 @@ angular.module('starter.services')
         }
 
         if (order.direction == 0 && value > buy) {
-            profit = profit * -1;
+            profit = order.money * order.outprice;
         }
         if (order.direction == 1 && value < buy) {
-            profit = profit * -1;
+            profit = order.money * order.outprice;
         }
         return profit;
     }

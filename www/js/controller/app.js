@@ -187,7 +187,7 @@ angular.module('starter.controllers', [])
 			                var tick = now.getTime() + $rootScope.server_time_tick;
 			                var remaining = (expired.getTime() - tick) / 1000;
 			                protocol.remaining = remaining;
-                            
+                            console.log($scope.order_result.order.outprice)
                             $rootScope.trade_order_list.push(protocol);
                         }
                         else {
