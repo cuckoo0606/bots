@@ -36,7 +36,7 @@
                             	</p>
                             	<p>{{o.created|date:'yyyy-MM-dd HH:mm:ss'}}</p>
                             </section><section>
-                            	<p ng-class="{'in_money':o.direction === 1,'out_money':o.direction === 0}">{{o.profit>0?o.money+o.profit:o.profit}}</p>
+                            	<p ng-class="{'in_money':o.profit>0,'out_money':o.profit<0}">{{o.profit>0?o.money+o.profit:o.profit}}</p>
                             	<p>{{o.remaining*1000|date:'00:mm:ss'}}</p>
                         	</section>
                             <article ng-hide="o.remaining === 0">

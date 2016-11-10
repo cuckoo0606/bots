@@ -2,9 +2,11 @@
     <ion-content class="personalbg" scroll="false">
 		<header>
 			<i ng-click="app_exit()" class="iconfont">&#xe620;</i>
-			<article></article>
-			<p>{{ account.username }}</p>
-			<p ng-click="show_user_modal()">修改个人资料</p>
+			<article>
+				<img src="../img/userbg.png" />
+			</article>
+			<p>{{ user.username }}</p>
+			<p ng-click="show_user_modal()">修改密码</p>
 		</header>
 		<ul>
 			<li>
@@ -38,7 +40,7 @@
         	</div>
         	<p>
         		<span>扫描二维码注册</span>
-        		<span>分享<i class="iconfont">&#xe634;</i></span>
+        		<span style="display: none;">分享<i class="iconfont">&#xe634;</i></span>
         	</p>
 		</footer>
     </ion-content>

@@ -56,6 +56,24 @@ angular.module('starter.services')
         });
     }
 
+	//系统配置接口
+	this.system_config = function(params){
+		var system_config_url = AppConfigService.build_api_url("v1/config/"+params.type);
+        $http.get(system_config_url, {
+            "timeout": 10000,
+        }).success(function (protocol) {
+        	console.log(protocol);
+            if(params.success) {
+                params.success(protocol);
+            }
+        })
+
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+	}
 	//出金接口
     this.out_withdraw = function(params) {
         var outWithdrawUrl = AppConfigService.build_api_url("v1/outflow");

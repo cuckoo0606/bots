@@ -5,20 +5,13 @@
             <i class="icon ion-ios-close-empty"></i>
         </div>
     </ion-header-bar>
-    <ion-content class="out_money_content">
-        <header class="hotbg">
-        	<p>中国工商银行</p>
-        	<p>622568448999555</p>
-        	<i class="iconfont">&#xe632;</i>
-        	<i class="iconfont">&#xe632;</i>
-        </header>
-        <article>
-        	<span>
-        		<i class="iconfont">&#xe618;</i>
-        		提现金额：
-        	</span>
-        	<input type="number" placeholder="请输入提现金额"/>
-        </article>
+    <ion-content class="order-modal-content">
+        <ul class="list">
+            <li class="item item-input deposit_amount">
+                <span class="input-label">金额</span>
+                <input type="number" placeholder="金额" ng-model="outAmount.outamount" required />
+            </li>
+        </ul>
     </ion-content>
     <div class="button-bar">
         <a class="button button-balanced" ng-click="out_withdraw()">提交</a>

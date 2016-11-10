@@ -3,14 +3,18 @@ angular.module('starter.controllers')
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
     $scope.qrcode_url = AppConfigService.get_erweima_url + escape(AppConfigService.erweima_url + "?show=signup&ref=" + $rootScope.user.referee + "#/signup");
-    console.log($scope.qrcode_url);
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
-	$scope.account = $rootScope.user;
     $scope.pay_modal_url = "";
     $scope.pay_qrcode_url = "";
     $scope.deposit_bank_list = [];
-    
+    $scope.money_fee = {
+    	"outmoney_fee_type":"",
+    	"outmoney_fee":"",
+    	"outmoneymin":"",
+    	"outmoneymax":"",
+    	"inmoney_fee":""
+    };
     $scope.moneyList=[];
     $scope.has_more_money_order = false;
     $scope.money_page_index = 0;
@@ -108,6 +112,65 @@ angular.module('starter.controllers')
 
     $scope.show_withdraw_modal = function() {
         $scope.capital_withdraw_modal.show();
+        CapitalService.system_config({
+        	"type":"pay-handling-type",
+			"success":function(value){
+				$scope.money_fee.outmoney_fee_type = value;
+				if(value == 0){
+					CapitalService.system_config({
+						"type":"pay-handling-percent",
+						"success":function(value){
+							$scope.money_fee.outmoney_fee = value;
+						},
+						"error":function(status,message){
+							$ionicLoading.show({
+			                    template: message
+			                });
+			                $timeout(function () {
+			                    $ionicLoading.hide();
+			                }, 2000);
+						}
+					})
+				}else if(value == 1){
+					CapitalService.system_config({
+						"type":"pay-handling-amount",
+						"success":function(){
+							$scope.money_fee.outmoney_fee = value;
+						},
+						"error":function(status,message){
+							$ionicLoading.show({
+			                    template: message
+			                });
+			                $timeout(function () {
+			                    $ionicLoading.hide();
+			                }, 2000);
+						}
+					})
+				}
+			},
+			"error":function(status,message){
+				$ionicLoading.show({
+                    template: message
+                });
+                $timeout(function () {
+                    $ionicLoading.hide();
+                }, 2000);
+			}
+		});
+		CapitalService.system_config({
+        	"type":"pay-least-amount",
+			"success":function(value){
+				$scope.money_fee.outmoneymin = value;
+			},
+			"error":function(status,message){
+				$ionicLoading.show({
+                    template: message
+                });
+                $timeout(function () {
+                    $ionicLoading.hide();
+                }, 2000);
+			}
+		});
     }
 
 	$scope.show_user_modal = function(){
@@ -127,7 +190,7 @@ angular.module('starter.controllers')
         $scope.user_info.id_card = $rootScope.user.idcard;
         $scope.user_info.bank_brand = $rootScope.user.bankbranch;
         $scope.user_info.bank_user = $rootScope.user.bankholder;
-        $scope.user_info.bank_card = parseInt($rootScope.user.bankaccount);
+        $scope.user_info.bank_card = $rootScope.user.bankaccount;
         $scope.user_info_modal.show();
     }
 

@@ -27,8 +27,12 @@
 	height: 0.6rem;
 	border-radius:50% ;
 	margin: 0 auto;
-	background: #006600;
 	border: 0.05rem solid #ccc9c6;
+}
+.personalbg header article img{
+	width: 100%;
+	height: 100%;
+	border-radius:50% ;
 }
 .personalbg header p{
 	text-align: center;
@@ -209,7 +213,60 @@
 	height: 0.4rem;
 	background: #222225;
 }
-.out_money_content article{
-	
+.out_money_content article span{
+	display: inline-block;
+	vertical-align: top;
+	width: 34%;
+	font-size: 0.15rem;
+	color: #FFFFFF;
+	height: 0.3rem;
+	margin-top: 0.05rem;
+	line-height: 0.3rem;
+}
+.out_money_content article span i{
+	font-size: 0.2rem;
+	color: #ebac34;
+	margin-left:0.25rem ;
+}
+.out_money_content article input{
+	display: inline-block;
+	vertical-align: top;
+	width: 60%;
+	height: 0.2rem;
+	line-height: 0.2rem;
+	margin-top:0.1rem ;
+	background: transparent;
+	border: none;
+	color: #4e4e4f;
+	font-size: 0.12rem;
+}
+.out_money_content footer{
+	margin-top: 0.2rem;
+	width: 100%;
+	padding-left:0.25rem;
+	height: 0.3rem;
+	line-height: 0.3rem;
+	color: #4e4e4f;
+	font-size: 0.12rem;
+	text-align: left;
+}
+.out_money_content footer span{
+	display: inline-block;
+	width: 18%;
+	height: 100%;
+	overflow: hidden;
+	vertical-align: top;
+	color: #fdbe19;
+}
+.out_money_content footer span:nth-of-type(1){
+	color: #4e4e4f;
+}
+.out_money_content .outmoneybtn{
+	width: 70%;
+	margin: 0.3rem 15% 0.3rem 15%;
+	border: none;
+}
+.btndisabled{
+	background: #000000;
 }
 
