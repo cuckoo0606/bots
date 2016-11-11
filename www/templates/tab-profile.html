@@ -1,35 +1,35 @@
 <ion-view view-title="个人中心" hide-nav-bar="{{ !show_nav_bar }}">
     <ion-content class="personalbg" scroll="false">
 		<header>
-			<i ng-click="app_exit()" class="iconfont">&#xe620;</i>
+			<i ng-click="app_exit()" class="iconfont icon-11-01"></i>
 			<article>
-				<img src="../img/userbg.png" />
+				<img src="../img/logobg.jpg" />
 			</article>
-			<p>{{ user.username }}</p>
-			<p ng-click="show_user_modal()">修改密码</p>
+			<p>{{ user.username }}<span class="iconfont icon-31-01" ng-click="show_user_modal()"></span></p>
+			<p>¥{{user.amount.toFixed(0)}}</p>
 		</header>
 		<ul>
 			<li>
 				<section ng-click="show_user_bank_modal()">
-					<i class="iconfont">&#xe635;</i>
-					<p>修改银行信息</p>
+					<i class="iconfont icon-46-01"></i>
+					<p>签约</p>
 				</section>
 			</li>
 			<li>
 				<section ng-click="show_deposit_modal()">
-					<i class="iconfont">&#xe616;</i>
+					<i class="iconfont icon-4-01"></i>
 					<p>用户入金</p>
 				</section>
 			</li>
 			<li>
 				<section ng-click="show_withdraw_modal()">
-					<i class="iconfont">&#xe618;</i>
+					<i class="iconfont icon-3-01"></i>
 					<p>用户出金</p>
 				</section>
 			</li>
 			<li>
 				<section ng-click="show_money_list()">
-					<i class="iconfont">&#xe615;</i>
+					<i class="iconfont icon-1-01-01"></i>
 					<p>资金流水</p>
 				</section>
 			</li>
@@ -40,7 +40,7 @@
         	</div>
         	<p>
         		<span>扫描二维码注册</span>
-        		<span style="display: none;">分享<i class="iconfont">&#xe634;</i></span>
+        		<span style="display: none;">分享<i class="iconfont">&#xe651;</i></span>
         	</p>
 		</footer>
     </ion-content>

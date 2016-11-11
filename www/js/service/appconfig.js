@@ -22,9 +22,9 @@ angular.module('starter.services', [])
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
-            { "name": "中国银行", "code": "BOC" },
-            { "name": "中国工商银行", "code": "ICBC" },
-            { "name": "交通银行", "code": "BOCOM" },
+            { "name": "中国银行", "code": "BOC"},
+            { "name": "中国工商银行", "code": "ICBC"},
+            { "name": "交通银行", "code": "BOCOM"},
             { "name": "中国建设银行", "code": "CCB" },
             { "name": "中国邮政储蓄银行", "code": "PSBC" },
             { "name": "招商银行", "code": "CMBC" },
@@ -36,7 +36,7 @@ angular.module('starter.services', [])
             { "name": "华夏银行", "code": "HXB" },
             { "name": "广发银行", "code": "CGB" },
             { "name": "兴业银行", "code": "CIB" },
-            { "name": "微商银行", "code": "HSB" },
+            { "name": "徽商银行", "code": "HSB" },
             { "name": "长沙银行", "code": "CSCB" },
 			{ "name": "浙江省农村信用社联合社", "code": "ZJRCC" }
         ];

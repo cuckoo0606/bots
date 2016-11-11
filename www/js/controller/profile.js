@@ -31,13 +31,17 @@ angular.module('starter.controllers')
     	none:true
     };
     $scope.user_bank={
-    	name:"",
-    	code:""
+    	"userbankmes":"",
     };
+    $scope.user_bank.userbankmes=$scope.bank_list.filter(function(obj){
+		if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
+			return obj;
+		}
+	});
     $scope.judge_bank_value=false;
     $scope.user_info = {
         "id_card": "",
-        "bank": "",
+        "bank": {},
         "bank_user": "",
         "bank_brand": "",
         "bank_card": "",
@@ -56,7 +60,6 @@ angular.module('starter.controllers')
         "body": "WECHAT RECHARGE",
         "openid": AppConfigService.wx_auth.openid
     };
-
     $ionicModal.fromTemplateUrl('templates/capital-history-modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -120,7 +123,7 @@ angular.module('starter.controllers')
 					CapitalService.system_config({
 						"type":"pay-handling-percent",
 						"success":function(value){
-							$scope.money_fee.outmoney_fee = value;
+							$scope.money_fee.outmoney_fee = parseFloat(value);
 						},
 						"error":function(status,message){
 							$ionicLoading.show({
@@ -135,7 +138,7 @@ angular.module('starter.controllers')
 					CapitalService.system_config({
 						"type":"pay-handling-amount",
 						"success":function(){
-							$scope.money_fee.outmoney_fee = value;
+							$scope.money_fee.outmoney_fee = parseFloat(value);
 						},
 						"error":function(status,message){
 							$ionicLoading.show({
@@ -178,12 +181,7 @@ angular.module('starter.controllers')
 	}
     $scope.show_user_bank_modal = function() {
     	$ionicHistory.clearHistory();
-    	$scope.user_bank=$scope.bank_list.filter(function(obj){
-    		if(obj.code==$rootScope.user.bank){
-    			return obj;
-    		}
-    	});
-        $scope.user_info.bank = $scope.user_bank[0];
+        $scope.user_info.bank = $scope.user_bank.userbankmes[0];
         if($scope.user_info.bank == "" || $scope.bank_list.indexOf($scope.user_info.bank) < 0) {
             $scope.user_info.bank = $scope.bank_list[0];
         }
@@ -230,7 +228,6 @@ angular.module('starter.controllers')
         $ionicLoading.show({
             template: "正在操作"   
         });
-        
         UserService.update_user({
         	"name": $rootScope.user.name,
         	"sex": $rootScope.user.sex,
@@ -245,8 +242,18 @@ angular.module('starter.controllers')
             "success": function(status, message, protocol) {
                 UserService.request_user(function(user) {
                     $rootScope.user = user;
+                    $scope.user_bank.userbankmes=$scope.bank_list.filter(function(obj){
+						if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
+							return obj;
+						}
+					});
+                    $ionicLoading.show({
+			            template: "修改成功"   
+			        });
+                    $timeout(function () {
                     $ionicLoading.hide();
                     $scope.user_info_modal.hide();
+	                }, 2000);
                 });
             },
             "fail": function(status, message) {
@@ -387,7 +394,7 @@ angular.module('starter.controllers')
         }
     }
 	
-	
+	//出金
     $scope.out_withdraw = function() {
         if ($scope.outAmount.outamount == "" || $scope.outAmount.outamount == "0")  {
             $ionicLoading.show({
@@ -431,8 +438,8 @@ angular.module('starter.controllers')
 	                    }, 3000);
 	                }
 	                else {
-
-	                    $rootScope.user.amount = $scope.account.amount - $scope.outAmount.outamount;
+							
+	                    $rootScope.user.amount -= ($scope.money_fee.outmoney_fee_type == 0?$scope.outAmount.outamount*($scope.money_fee.outmoney_fee+1):$scope.outAmount.outamount+$scope.money_fee.outmoney_fee);
 	                    $ionicLoading.show({
 	                        template: "提交成功"
 	                    });

@@ -3,6 +3,7 @@
 /*交易历史样式*/
 @import url("trade-history.css");
 /*图标库*/
+@import url("../lib/iconfont/iconfont.css");
 @font-face {
   font-family: 'iconfont';
   src: url('../lib/iconfont/iconfont.eot');
@@ -29,6 +30,9 @@
 	line-height: 0.4rem;
 	text-align: center;
 	font-size: 0.15rem;
+}
+button:disabled{
+	background: #515151;
 }
 .header {
     top: 50px;
