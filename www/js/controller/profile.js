@@ -17,7 +17,7 @@ angular.module('starter.controllers')
     };
     $scope.moneyList=[];
     $scope.has_more_money_order = false;
-    $scope.money_page_index = 0;
+    $scope.money_page_index = 1;
     
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
@@ -424,7 +424,6 @@ angular.module('starter.controllers')
         	$ionicLoading.show({
             template: "正在提交"
 	        });
-	    	
 	        CapitalService.out_withdraw({
 	        	"outamount": $scope.outAmount.outamount,
 	        	"success": function(protocol) {
@@ -496,18 +495,17 @@ angular.module('starter.controllers')
     
     //请求个人资金历史
     $scope.show_money_list = function() {
-    	$scope.capital_history_modal.show();
     	$scope.moneyList = [];
-    	$scope.money_page_index = 0;
+    	$scope.money_page_index = 1;
         $scope.has_more_money_order = true;
-        $scope.load_more_money_order();
+    	$scope.capital_history_modal.show();
     };
     
     //上拉刷新
     $scope.refresh_moneylist_order = function(){
     	$scope.moneyList = [];
+    	$scope.money_page_index = 1;
         $scope.has_more_money_order = true;
-        $scope.money_page_index = 0;
         $scope.load_more_money_order();
     };
     //下拉加载更多
@@ -516,10 +514,10 @@ angular.module('starter.controllers')
     		{
     			"startDate":$filter('date')(new Date(),'yyyy-MM-dd'),
     			"overDate":$scope.choseDate.overDate,
-    			"page":$scope.money_page_index + 1,
-    			"size":5,
+    			"page":$scope.money_page_index,
+    			"size":10,
     			"success":function(protocol) {
-		            $scope.money_page_index = $scope.money_page_index + 1;
+    				$scope.money_page_index = $scope.money_page_index + 1;
 		            protocol.forEach(function(servicevalue){
 	        			$scope.type_list.filter(function(arr){
 	        				if(servicevalue.type==arr.value){
@@ -545,6 +543,7 @@ angular.module('starter.controllers')
 		            $scope.$broadcast('scroll.infiniteScrollComplete');
 		        }
     		}); 
+    		
     };
     
     $scope.$on('$destroy', function() {

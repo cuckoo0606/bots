@@ -4,7 +4,6 @@ angular.module('starter.services')
     var service = this;
     this.capital_list = [];
     this.init_complete = false;
-	this.money_list = [];
 
     this.deposit_hc = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/hcmobile")
@@ -124,7 +123,7 @@ angular.module('starter.services')
         }
     }
 
-	//资金列表接口
+	//资金列表历史接口
     this.request_capital_list = function(complete) {
         var capital_listUrl = AppConfigService.build_api_url("v1/books");
         $http.get(capital_listUrl, { 
@@ -133,7 +132,6 @@ angular.module('starter.services')
         })
         
         .success(function(protocol) {
-            this.money_list=protocol;
             if(complete){
             	complete.success(protocol);
             }

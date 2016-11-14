@@ -6,41 +6,42 @@
         </div>
     </ion-header-bar>
     <ion-content class="order-modal-content">
-        <ul class="list">
-            <li class="item item-input deposit_amount">
-                <span class="input-label">金额</span>
-                <input type="number" placeholder="金额" ng-model="deposit.amount" required />
-            </li>
-            <li class="item item-select" ng-show="deposit.bank">
-                <span class="input-label">银行</span>
-                <select ng-model="deposit.bank" ng-options="r.name for r in deposit_bank_list">
-                </select>
-            </li>
-        </ul>
-        <div class="pay-header">
-            支付方式
-        </div>
-        <ion-list class="pay-list">
-            <ion-radio ng-model="deposit.pay_type" ng-value="'ecpss'" ng-change="pay_type_change()">
-                <div class="img-box">
-                    <img src="img/unionpay.png" alt="网银支付" />
-                </div>
-                网银支付
-            </ion-radio>
-            <ion-radio ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="deposit.openid">
-                <div class="img-box">
-                    <img src="img/wechatpay.png" alt="微信支付" />
-                </div>
-                微信支付
-            </ion-radio>
-            <ion-radio ng-model="deposit.pay_type" ng-value="'alipay'" ng-change="pay_type_change()" class="hide">
-                <div class="img-box">
-                    <img src="img/alipay.png" alt="支付宝支付" />
-                </div>
-                支付宝支付
-            </ion-radio>
-        </ion-list>
-    </ion-content>
+	    <ul class="list">
+	        <li class="item item-input deposit_amount">
+	            <span class="input-label">金额</span>
+	            <input type="number" placeholder="金额" ng-model="deposit.amount" required />
+	        </li>
+	        <li class="item item-select" ng-show="deposit.bank">
+	            <span class="input-label">银行</span>
+	            <select ng-model="deposit.bank" ng-options="r.name for r in deposit_bank_list">
+	            </select>
+	        </li>
+	    </ul>
+	    <div class="pay-header">
+	        支付方式
+	    </div>
+	    <ion-list class="pay-list">
+	        <ion-radio ng-model="deposit.pay_type" ng-value="'ecpss'" ng-change="pay_type_change()">
+	            <div class="img-box">
+	                <img src="img/unionpay.png" alt="网银支付" />
+	            </div>
+	            网银支付
+	        </ion-radio>
+	        <ion-radio ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="deposit.openid">
+	            <div class="img-box">
+	                <img src="img/wechatpay.png" alt="微信支付" />
+	            </div>
+	            微信支付
+	        </ion-radio>
+	        <ion-radio ng-model="deposit.pay_type" ng-value="'alipay'" ng-change="pay_type_change()" class="hide">
+	            <div class="img-box">
+	                <img src="img/alipay.png" alt="支付宝支付" />
+	            </div>
+	            支付宝支付
+	        </ion-radio>
+	    </ion-list>
+	</ion-content>
+    
     <div class="button-bar">
         <a class="button button-balanced" ng-click="submit_deposit()">提交</a>
         <a class="button button-dark" ng-click="capital_deposit_modal.hide()">关闭</a>
