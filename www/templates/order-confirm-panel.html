@@ -17,8 +17,12 @@
                             结算时间
                         </div>
                         <div class="period-widget-content">
-                           <span>{{ c.time }}</span>
-                            {{ mode == 2 ?time_unit:"" }}
+                            <span ng-show="c.time<1000" class="final_time">{{ c.time }}</span>
+                            <span ng-show="c.time<3600&&c.time>=1000" class="final_time">{{ c.time/60 }}</span>
+                            <span ng-show="c.time>=3600" class="final_time">{{ c.time/3600 }}</span>
+                            <span ng-show="c.time<1000" class="final_unit">秒</span>
+                            <span ng-show="c.time<3600&&c.time>=1000" class="final_unit">分钟</span>
+                            <span ng-show="c.time>=3600" class="final_unit">小时</span>
                         </div>
                         <div class="period-widget-footer period_footer">
                             收益  {{ c.inprice * 100 }}%
