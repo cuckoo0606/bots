@@ -16,7 +16,7 @@ angular.module('starter.controllers')
     	"inmoney_fee":""
     };
     $scope.moneyList=[];
-    $scope.has_more_money_order = false;
+    $scope.has_more_money_order = true;
     $scope.money_page_index = 1;
     
     $scope.bank_list = AppConfigService.bank_list;
@@ -495,14 +495,16 @@ angular.module('starter.controllers')
     //	资金历史隐藏
 	$scope.capital_history_modal_hide = function(){
 		$scope.has_more_money_order = false;
+		$scope.$broadcast('scroll.refreshComplete');
+		$scope.$broadcast('scroll.infiniteScrollComplete');
 		$scope.capital_history_modal.hide();
 	};
     //请求个人资金历史
     $scope.show_money_list = function() {
     	$scope.moneyList = [];
     	$scope.money_page_index = 1;
-        $scope.has_more_money_order = true;
-    	$scope.capital_history_modal.show();
+    	$scope.refresh_moneylist_order();
+        $scope.capital_history_modal.show();
     };
     
     //上拉刷新
@@ -512,7 +514,7 @@ angular.module('starter.controllers')
         $scope.has_more_money_order = true;
         $scope.load_more_money_order();
     };
-    //下拉加载更多
+    //下拉加载
     $scope.load_more_money_order = function(){
     	CapitalService.request_capital_list(
     		{
