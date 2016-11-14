@@ -15,6 +15,8 @@ angular.module('starter.controllers', [])
     $scope.boundage = "";
     $scope.order_profit = OrderService.order_profit;
     $scope.last_result = [];
+    $scope.phase = "";
+    $scope.time_unit = "";
 	
 
     $scope.order_params = {
@@ -89,6 +91,18 @@ angular.module('starter.controllers', [])
         $scope.order_params.direction = direction == "lookup" ? "1" : "0";
         $ionicScrollDelegate.resize();
         $scope.trade_boundage();
+        $scope.trade.cycle.forEach(function(item){
+            if(item.time < 1000){
+                $scope.time_unit = "秒";
+                console.log(123);
+            }else if(1000 <= item.time < 3600) {
+                item.time =item.time / 60;
+                $scope.time_unit = "分钟"
+            }else if(item.time >= 3600) {
+                item.time = item.time / 3600;
+                $scope.time_unit = "小时"
+            }
+        });
     };
 
     $scope.toggle_order_state_panel = function () {
