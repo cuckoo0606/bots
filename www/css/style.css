@@ -1120,7 +1120,12 @@ button:disabled{
     padding-right: 5px;
 }
 
-.period-widget-content > span {
+.period-widget-content > .final_unit {
+    font-size: 15px;
+    color: #e1ab32;
+}
+
+.period-widget-content > .final_time {
 	font-size: 28px;
     font-weight: bold;
     color: #fdbe19;
