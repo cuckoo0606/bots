@@ -94,7 +94,6 @@ angular.module('starter.controllers', [])
         $scope.trade.cycle.forEach(function(item){
             if(item.time < 1000){
                 $scope.time_unit = "秒";
-                console.log(123);
             }else if(1000 <= item.time < 3600) {
                 item.time =item.time / 60;
                 $scope.time_unit = "分钟"

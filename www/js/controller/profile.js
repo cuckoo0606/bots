@@ -137,7 +137,7 @@ angular.module('starter.controllers')
 				}else if(value == 1){
 					CapitalService.system_config({
 						"type":"pay-handling-amount",
-						"success":function(){
+						"success":function(value){
 							$scope.money_fee.outmoney_fee = parseFloat(value);
 						},
 						"error":function(status,message){

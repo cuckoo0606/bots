@@ -965,11 +965,17 @@ button:disabled{
 }
 
 .trade-footer .trade-lookup-button {
-    background-color: rgb(185, 60, 65) !important;
+		font-family: "微软雅黑" !important;
+    background: #d8404f !important;
+    color: #242424 !important;
+    font-size: 12px !important;
 }
 
 .trade-footer .trade-lookdown-button {
-    background-color: green !important;
+		font-family: "微软雅黑" !important;
+    background: #1ec55b !important;
+    color: #242424 !important;
+    font-size: 12px !important;
 }
 
 .trade-view .history-panel {
