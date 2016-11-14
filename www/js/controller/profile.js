@@ -209,7 +209,7 @@ angular.module('starter.controllers')
 			}
 		}
     }
-	
+
     $scope.pay_type_change = function() {
         CapitalService.get_bank_list($scope.deposit.pay_type, function(list) {
             $scope.deposit_bank_list = list;
@@ -492,7 +492,11 @@ angular.module('starter.controllers')
     		event.preventDefault();
     	}
     };
-    
+    //	资金历史隐藏
+	$scope.capital_history_modal_hide = function(){
+		$scope.has_more_money_order = false;
+		$scope.capital_history_modal.hide();
+	};
     //请求个人资金历史
     $scope.show_money_list = function() {
     	$scope.moneyList = [];
