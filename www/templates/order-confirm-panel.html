@@ -17,8 +17,8 @@
                             结算时间
                         </div>
                         <div class="period-widget-content">
-                           <span>{{ c.time }}</span> 
-                            {{ mode == 2 ? "秒" : "" }}
+                           <span>{{ c.time }}</span>
+                            {{ mode == 2 ?time_unit:"" }}
                         </div>
                         <div class="period-widget-footer period_footer">
                             收益  {{ c.inprice * 100 }}%
