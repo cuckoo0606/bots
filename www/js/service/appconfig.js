@@ -15,7 +15,7 @@ angular.module('starter.services', [])
     this.show_nav_bar = false;
     this.show_signup_code = true;
 
-    this.api_url = "http://weixin.leather-boss.com:8793/";
+    this.api_url = "http://120.24.44.211:4002/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
 	this.erweima_url= "http://weixin.leather-boss.com/index.html";
 	this.get_erweima_url = "http://weixin.leather-boss.com/qrcode?text=";

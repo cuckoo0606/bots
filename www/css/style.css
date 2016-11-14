@@ -353,7 +353,7 @@ button:disabled{
 }
 
 .navbar > .tab-nav > .tab-item {
-    padding-top: px;
+    padding-top: 5px;
     color: white !important;
 }
 .navbar > .tab-nav > .tab-item:before{
