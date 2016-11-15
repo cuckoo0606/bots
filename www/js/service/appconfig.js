@@ -16,10 +16,10 @@ angular.module('starter.services', [])
     this.show_signup_code = true;
 
 
-    this.api_url = "http://weixin.leather-boss.com:8793/";
-	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-	this.erweima_url= "http://weixin.leather-boss.com/index.html";
-	this.get_erweima_url = "http://weixin.leather-boss.com/qrcode?text=";
+    this.api_url ="http://120.24.44.211:4002/";
+	this.qoute_url = "http://120.24.44.211:7703/";
+	this.erweima_url= "http://120.24.44.211:8085/index.html";
+	this.get_erweima_url = "http://120.24.44.211:8085/qrcode?text=";
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },

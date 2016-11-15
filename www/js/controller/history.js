@@ -53,7 +53,6 @@ angular.module('starter.controllers')
             if(protocol.data.length === 0) {
                 $scope.has_more_order = false;
             }
-
             $scope.$broadcast('scroll.refreshComplete');
             $scope.$broadcast('scroll.infiniteScrollComplete');
         }); 
@@ -67,7 +66,6 @@ angular.module('starter.controllers')
     }
 
     $scope.load_more_close_order = function() {
-    	console.log("123");
         CloseOrderService.request_order_list($scope.close_order_page_index + 1, 20, function(protocol) {
             $scope.close_order_page_index = $scope.close_order_page_index + 1;
             protocol.data.forEach(function(value) {
