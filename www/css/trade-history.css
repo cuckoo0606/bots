@@ -4,6 +4,8 @@
 .move_width{
 	animation-name:changewidth ;
 	animation-timing-function:linear ;
+	-webkit-animation-name:changewidth ;
+	-webkit-animation-timing-function:linear ;
 }
 @-webkit-keyframes changewidth{
 	from{

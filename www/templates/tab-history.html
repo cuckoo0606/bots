@@ -40,7 +40,7 @@
 		                    	<p style="margin: 0">{{o.remaining*1000|date:'00:mm:ss'}}</p>
 		                	</section>
                             <article ng-hide="o.remaining === 0">
-                    		<span class="move_width" ng-style="{'animation-duration':o.cycle+'s'}">
+                    		<span class="move_width" ng-style="{'animation-duration':o.cycle+'s','-webkit-animation-duration':o.cycle+'s'}">
                     		</span>
                     		<i>
                     			<em></em>

@@ -19,6 +19,12 @@
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
+.icon {
+   width: 1em; height: 1em;
+   vertical-align: -0.15em;
+   fill: currentColor;
+   overflow: hidden;
+}
 /* 公用CSS */
 
 /*所有按钮样式*/
@@ -30,6 +36,7 @@
 	line-height: 0.4rem;
 	text-align: center;
 	font-size: 0.15rem;
+	border: none;
 }
 button:disabled{
 	background: #515151;
@@ -454,10 +461,14 @@ button:disabled{
     color: rgb(236, 181, 64);
     margin-bottom: 20px;
 }
-
+.signin-header .system-logo{
+		width: 1.29rem;
+		height: 1.16rem;
+		margin: 0 auto;
+}
 .signin-header .system-logo img {
-    width: 128px;
-    height: 128px;
+    width: 100%;
+    height: 100%;
 }
 
 .signin-content > .list {
@@ -476,7 +487,7 @@ button:disabled{
 
 .signin-content > .list > .item > .input-label {
     width: auto;
-    color: rgb(226, 165, 41);
+    color: #fdbe19;
     text-align: left;
     padding: 5px 20px 0px 0px;
 }
@@ -499,16 +510,8 @@ button:disabled{
     padding: 5px 10px;
 }
 
-.signin-content > .signin-action > .signin-button {
-    height: 50px;
-    line-height: 50px;
-    padding: 0px 20px;
-    border-width: 1px;
-    border-color: rgb(236, 181, 64);
-    border-radius: 50px;
-    font-size: 20px;
-    background-color: rgb(226, 165, 41);
-    color: white;
+.signin-action .sign_button{
+	width: 100%;
 }
 
 .signin-footer {
@@ -1891,139 +1894,6 @@ button:disabled{
 	height: 250px;
 }
 
-/* 个人中心资金流水样式 */
-.in_money{
-	color:#fa2e42;
-}
-.out_money{
-	color:#1fc65b;
-}
-.other_money{
-	color:#159aef;
-}
-.in_money_bg{
-	background-color:#fa2e42;
-}
-.out_money_bg{
-	background-color:#1fc65b;
-}
-.other_money_bg{
-	background-color:#159aef;
-}
-.person_money_list ul{
-	width:100%;
-	color: white;
-	
-}
-.person_money_list ul li{
-    margin-top:0.1rem;
-    width: 94%;
-    margin-left: 3%;
-    height: auto;
-}
-.person_money_list ul li .money_list_header{
-    width: 100%;
-    height:0.8rem;
-    border-radius: 0.1rem;
-    box-shadow: 0 0 2px #000000;
-    background: #232326;
-}
-.person_money_list ul li .money_list_header section{
-    display: inline-block;
-    vertical-align: top;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    height:100%;
-}
-.money_list_header section:nth-of-type(1){
-    width: 2%;
-    border-top-left-radius: 0.1rem;
-    border-bottom-left-radius: 0.1rem;
-}
-.money_list_header section:nth-of-type(2){
-    width: 60%;
-    padding: 0.05rem 0.1rem;
-}
-.money_list_header section:nth-of-type(2) p {
-    margin:0;
-    height:0.2rem;
-    line-height: 0.2rem;
-}
-.money_list_header section:nth-of-type(2) p:first-child {
-    font-size: 0.15rem;
-    height:0.3rem;
-    line-height: 0.3rem;
-}
-.money_list_header section:nth-of-type(2) p i{
-    display: inline-block;
-    width: 0.11rem;
-    height:0.11rem;
-    vertical-align: top;
-}
-.money_list_header section:nth-of-type(2) p:nth-of-type(2){
-    color: white;
-    font-size: 0.14rem;
-}
-.money_list_header section:nth-of-type(2) p:nth-of-type(3){
-    color: #b0b0b0;
-    font-size: 0.12rem;
-}
-.money_list_header section:nth-of-type(2) p i img{
-	width: 100%;
-	height:100%;
-}
-.money_list_header section:nth-of-type(3){
-    width: 30%;
-    line-height: 0.8rem;
-    font-size: 0.18rem;
-}
-.money_list_header section:nth-of-type(4){
-    width: 7%;
-    font-size: 0.2rem;
-    line-height: 0.8rem;
-}
-
-.person_money_list ul li article{
-    width: 100%;
-    background-color: #1e1e21;
-    display: none;
-    height: 0.4rem;
-    padding-top:0.1rem;
-}
-
-.person_money_list ul li article p{
-    margin: 0 0 0 0.2rem !important;
-    height:0.3rem;
-    font-size: 0.11rem;
-    line-height: 0.14rem;
-    color: #737373;
-}
-
-.dataChose{
-	width: 100%;
-	position: absolute;
-	left: 0;
-	bottom: 47px;
-	color: white;
-}
-.dataChose input{
-		display: inline-block !important;
-		vertical-align: top;
-		padding: 0 !important;
-		width:35%;
-		height:20px;
-		line-height: 20px;
-}
-.dataChose button{
-	margin-top:10px;
-	width: 100%;
-	height:40px;
-	background-color: rgb(38, 40, 52);
-	font-size: 18px;
-	color: white;
-	border: none;
-}
 .profile-background {
     background-color: rgb(17, 20, 29);
     padding: 0 4%;

@@ -10,14 +10,14 @@ angular.module('starter.services', [])
     this.system_name = "交易系统";
     this.company_name = "恒忆微盘";
     this.show_system_name = false;
-    this.system_logo = "img/logo.png";
+    this.system_logo = "img/newlogo.png";
     this.show_system_logo = true;
     this.show_nav_bar = false;
     this.show_signup_code = true;
 
 
     this.api_url ="http://120.24.44.211:4002/";
-	this.qoute_url = "http://120.24.44.211:7703/";
+	this.qoute_url = "http://120.24.44.211:7794/";
 	this.erweima_url= "http://120.24.44.211:8085/index.html";
 	this.get_erweima_url = "http://120.24.44.211:8085/qrcode?text=";
 

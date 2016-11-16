@@ -17,7 +17,7 @@
 'icon-youchu':user_bank.userbankmes[0].name == '中国邮政储蓄银行',
 'icon-zhaoshang':user_bank.userbankmes[0].name == '招商银行',
 'icon-pufa':user_bank.userbankmes[0].name == '浦发银行',
-'icon-guangda':user_bank.userbankmes[0].name == '中国光大银行',
+'icon-gunagda':user_bank.userbankmes[0].name == '中国光大银行',
 'icon-zhongxin':user_bank.userbankmes[0].name == '中信银行',
 'icon-pingan':user_bank.userbankmes[0].name == '平安银行',
 'icon-minsheng':user_bank.userbankmes[0].name == '中国民生银行',
@@ -35,7 +35,7 @@
 'icon-youchu':user_bank.userbankmes[0].name == '中国邮政储蓄银行',
 'icon-zhaoshang':user_bank.userbankmes[0].name == '招商银行',
 'icon-pufa':user_bank.userbankmes[0].name == '浦发银行',
-'icon-guangda':user_bank.userbankmes[0].name == '中国光大银行',
+'icon-gunagda':user_bank.userbankmes[0].name == '中国光大银行',
 'icon-zhongxin':user_bank.userbankmes[0].name == '中信银行',
 'icon-pingan':user_bank.userbankmes[0].name == '平安银行',
 'icon-minsheng':user_bank.userbankmes[0].name == '中国民生银行',
@@ -61,6 +61,6 @@
         	实际支付：<span ng-show="money_fee.outmoney_fee_type == 0">{{outAmount.outamount>0?outAmount.outamount*(money_fee.outmoney_fee/100+1):0}}</span>
         	<span ng-show="money_fee.outmoney_fee_type == 1">{{outAmount.outamount>0?outAmount.outamount+money_fee.outmoney_fee:0}}</span>
         </footer>
-        <button class="newbutton outmoneybtn" ng-disabled="outAmount.outamount==''||outAmount.outamount=='undefined'||(outAmount.outamount<money_fee.outmoneymin)||(user.amount <= (money_fee.outmoney_fee_type == 0?outAmount.outamount*(money_fee.outmoney_fee/100+1):outAmount.outamount+money_fee.outmoney_fee))" ng-click="out_withdraw()">确认出金</button>
+        <button class="newbutton outmoneybtn" ng-disabled="outAmount.outamount==''||outAmount.outamount==undefined||(outAmount.outamount<money_fee.outmoneymin)||(user.amount <= (money_fee.outmoney_fee_type == 0?outAmount.outamount*(money_fee.outmoney_fee/100+1):outAmount.outamount+money_fee.outmoney_fee))" ng-click="out_withdraw()">确认出金</button>
     </ion-content>
 </ion-modal-view>

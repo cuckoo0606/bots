@@ -5,45 +5,182 @@
             <i class="icon ion-ios-close-empty"></i>
         </div>
     </ion-header-bar>
-    <ion-content class="order-modal-content">
-	    <ul class="list">
-	        <li class="item item-input deposit_amount">
-	            <span class="input-label">金额</span>
-	            <input type="number" placeholder="金额" ng-model="deposit.amount" required />
-	        </li>
-	        <li class="item item-select" ng-show="deposit.bank">
-	            <span class="input-label">银行</span>
-	            <select ng-model="deposit.bank" ng-options="r.name for r in deposit_bank_list">
-	            </select>
-	        </li>
-	    </ul>
-	    <div class="pay-header">
-	        支付方式
-	    </div>
-	    <ion-list class="pay-list">
-	        <ion-radio ng-model="deposit.pay_type" ng-value="'ecpss'" ng-change="pay_type_change()">
-	            <div class="img-box">
-	                <img src="img/unionpay.png" alt="网银支付" />
-	            </div>
-	            网银支付
+    <ion-content id="in_money_content">
+    	<header>
+			<ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'ecpss'" ng-change="pay_type_change()">
+				<div class="pay_bank_list_header">
+					<div class="kuang"></div>
+					<i class="pay_blue_bg"></i>
+					<article>
+						<p class="pay_blue"><span class="iconfont icon-22-01"></span><span>快捷支付</span></p>
+						<p><span class="iconfont" ng-class="{'icon-nongye qing':inmoneybank.bankname == '中国农业银行',
+'icon-zhongguo red':inmoneybank.bankname == '中国银行',
+'icon-gongshang red':inmoneybank.bankname == '中国工商银行',
+'icon-jiaotong pay_purple':inmoneybank.bankname == '交通银行',
+'icon-jianshe blue':inmoneybank.bankname == '中国建设银行',
+'icon-youchu green':inmoneybank.bankname == '中国邮政储蓄银行',
+'icon-zhaoshang red':inmoneybank.bankname == '招商银行',
+'icon-pufa pay_purple':inmoneybank.bankname == '浦发银行',
+'icon-gunagda pay_yellow':inmoneybank.bankname == '中国光大银行',
+'icon-zhongxin red':inmoneybank.bankname == '中信银行',
+'icon-pingan orange':inmoneybank.bankname == '平安银行',
+'icon-minsheng pay_purple':inmoneybank.bankname == '中国民生银行',
+'icon-huaxia red':inmoneybank.bankname == '华夏银行',
+'icon-35-01 red':inmoneybank.bankname == '广发银行',
+'icon-xingye blue':inmoneybank.bankname == '兴业银行',
+'icon-huishang red':inmoneybank.bankname == '徽商银行',
+'icon-changsha red':inmoneybank.bankname == '长沙银行',
+'icon-xingyong green':inmoneybank.bankname == '浙江省农村信用社联合社'}" ></span><span>{{inmoneybank.bankname}}</span></p>
+					</article>
+				</div>
 	        </ion-radio>
-	        <ion-radio ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="deposit.openid">
-	            <div class="img-box">
-	                <img src="img/wechatpay.png" alt="微信支付" />
-	            </div>
-	            微信支付
+	        <div ng-show="deposit.pay_type=='ecpss'" class="pay_bank_list_content">
+				<ion-scroll style="height: 100%;" scrollbar-y="true" scrollbar-x="false">
+					<ul>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'中国农业银行'" >
+					            <p><span class="qing bankicon iconfont icon-nongye"></span><span>中国农业银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'中国银行'" >
+					            <p><span class="red bankicon iconfont icon-zhongguo"></span><span>中国银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'中国工商银行'" >
+					            <p><span class="red bankicon iconfont icon-gongshang"></span><span>中国工商银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'交通银行'" >
+					            <p><span class="pay_purple bankicon iconfont icon-jiaotong"></span><span>交通银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'中国建设银行'" >
+					            <p><span class="blue bankicon iconfont icon-jianshe"></span><span>中国建设银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'中国邮政储蓄银行'" >
+					            <p><span class="green bankicon iconfont icon-youchu"></span><span>中国邮政储蓄银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'招商银行'" >
+					            <p><span class="red bankicon iconfont icon-zhaoshang"></span><span>招商银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'浦发银行'" >
+					            <p><span class="pay_purple bankicon iconfont icon-pufa"></span><span>浦发银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'中国光大银行'" >
+					            <p><span class="pay_yellow bankicon iconfont icon-gunagda"></span><span>中国光大银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'中信银行'" >
+					            <p><span class="red bankicon iconfont icon-zhongxin"></span><span>中信银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'平安银行'" >
+					            <p><span class="orange bankicon iconfont icon-pingan"></span><span>平安银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'中国民生银行'" >
+					            <p><span class="pay_purple orange bankicon iconfont icon-minsheng"></span><span>中国民生银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'华夏银行'" >
+					            <p><span class="red bankicon iconfont icon-huaxia"></span><span>华夏银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'广发银行'" >
+					            <p><span class="red bankicon iconfont icon-35-01"></span><span>广发银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'兴业银行'" >
+					            <p><span class="blue bankicon iconfont icon-xingye"></span><span>兴业银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'徽商银行'" >
+					            <p><span class="red  bankicon iconfont icon-huishang"></span><span>徽商银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'长沙银行'" >
+					            <p><span class="red bankicon iconfont icon-changsha"></span><span>长沙银行</span></p>
+					        </ion-radio>
+						</li>
+						<li>
+							<div class="kuang"></div>
+							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankname" ng-value="'浙江省农村信用社联合社'" >
+					            <p><span class="green bankicon iconfont icon-xingyong"></span><span>浙江省农村信用社联合社</span></p>
+					        </ion-radio>
+						</li>
+					</ul>
+				</ion-scroll>
+			</div>
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="deposit.openid">
+	            <div class="pay_bank_list_header">
+	            	<div class="kuang"></div>
+					<i class="pay_green_bg"></i>
+					<article>
+						<p class="pay_green"><span class="iconfont icon-21-01"></span><span>微信支付</span></p>
+					</article>
+				</div>
 	        </ion-radio>
-	        <ion-radio ng-model="deposit.pay_type" ng-value="'alipay'" ng-change="pay_type_change()" class="hide">
+	        <ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'alipay'" ng-change="pay_type_change()" class="hide">
 	            <div class="img-box">
 	                <img src="img/alipay.png" alt="支付宝支付" />
 	            </div>
 	            支付宝支付
 	        </ion-radio>
-	    </ion-list>
+    	</header>
+    	<div class="out_money_content">
+    		<article>
+	        	<span>
+	        		<i class="iconfont icon-4-01"></i>
+	        		充值金额：
+	        	</span>
+	        	<input type="number" placeholder="请输入金额" ng-model="deposit.amount" ng-keydown="only_number()" required/>
+	        </article>
+	        <section>单次充值至少¥{{money_fee.inmoneymin}}起</section>
+	        <footer>
+	        	余额：<span>{{user.amount.toFixed(0)}}</span>
+	        	手续费：<span ng-show="money_fee.inmoney_fee_type == 0">{{money_fee.inmoney_fee}}%</span>
+	        	<span ng-show="money_fee.inmoney_fee_type == 1">¥{{money_fee.inmoney_fee}}</span>
+	        	实际支付：<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?deposit.amount*(money_fee.inmoney_fee/100+1):0}}</span>
+	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{deposit.amount>0?deposit.amount+money_fee.inmoney_fee:0}}</span>
+	        </footer>
+	        <button class="newbutton outmoneybtn" ng-disabled="deposit.amount==''||deposit.amount==undefined||(deposit.amount<money_fee.inmoneymin)" ng-click="submit_deposit()">确认充值</button>
+    	</div>
 	</ion-content>
-    
-    <div class="button-bar">
-        <a class="button button-balanced" ng-click="submit_deposit()">提交</a>
-        <a class="button button-dark" ng-click="capital_deposit_modal.hide()">关闭</a>
-    </div>
 </ion-modal-view>

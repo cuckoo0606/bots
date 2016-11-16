@@ -13,11 +13,15 @@ angular.module('starter.controllers')
     	"outmoney_fee":"",
     	"outmoneymin":"",
     	"outmoneymax":"",
-    	"inmoney_fee":""
+    	"inmoney_fee_type":"",
+    	"inmoney_fee":"",
+    	"inmoneymin":""
     };
     $scope.moneyList=[];
-    $scope.has_more_money_order = true;
-    $scope.money_page_index = 1;
+    $scope.has_more_money_order = {
+    	if_has_more_money_order:false,
+    };
+    $scope.money_page_index = 0;
     
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
@@ -51,7 +55,7 @@ angular.module('starter.controllers')
 		"endDate":""
 	};
 	$scope.outAmount={
-		"outamount":""
+		"outamount":"",
 	};
     $scope.deposit = {
         "pay_type": "ecpss",
@@ -59,6 +63,9 @@ angular.module('starter.controllers')
         "bank": "",
         "body": "WECHAT RECHARGE",
         "openid": AppConfigService.wx_auth.openid
+    };
+    $scope.inmoneybank={
+    	"bankname":"",
     };
     $ionicModal.fromTemplateUrl('templates/capital-history-modal.html', {
         scope: $scope,
@@ -110,7 +117,72 @@ angular.module('starter.controllers')
     });
 
     $scope.show_deposit_modal = function() {
+    	if($scope.user_bank.userbankmes[0].name){
+    		$scope.inmoneybank.bankname = $scope.user_bank.userbankmes[0].name;
+    	}else{
+    		$scope.inmoneybank.bankname = '中国农业银行';
+    	}
+    	
         $scope.capital_deposit_modal.show();
+        CapitalService.system_config({
+        	"type":"income-handling-type",
+			"success":function(value){
+				$scope.money_fee.inmoney_fee_type = value;
+				if(value == 0){
+					CapitalService.system_config({
+						"type":"income-handling-percent",
+						"success":function(value){
+							$scope.money_fee.inmoney_fee = parseFloat(value);
+						},
+						"error":function(status,message){
+							$ionicLoading.show({
+			                    template: message
+			                });
+			                $timeout(function () {
+			                    $ionicLoading.hide();
+			                }, 2000);
+						}
+					})
+				}else if(value == 1){
+					CapitalService.system_config({
+						"type":"income-handling-amount",
+						"success":function(value){
+							$scope.money_fee.inmoney_fee = parseFloat(value);
+						},
+						"error":function(status,message){
+							$ionicLoading.show({
+			                    template: message
+			                });
+			                $timeout(function () {
+			                    $ionicLoading.hide();
+			                }, 2000);
+						}
+					})
+				}
+			},
+			"error":function(status,message){
+				$ionicLoading.show({
+                    template: message
+                });
+                $timeout(function () {
+                    $ionicLoading.hide();
+                }, 2000);
+			}
+		});
+		CapitalService.system_config({
+        	"type":"income-least-amount",
+			"success":function(value){
+				$scope.money_fee.inmoneymin = value;
+			},
+			"error":function(status,message){
+				$ionicLoading.show({
+                    template: message
+                });
+                $timeout(function () {
+                    $ionicLoading.hide();
+                }, 2000);
+			}
+		});
     }
 
     $scope.show_withdraw_modal = function() {
@@ -332,7 +404,7 @@ angular.module('starter.controllers')
 	}
 	
     $scope.submit_deposit = function() {
-        if ($scope.deposit.amount == "" || $scope.deposit.amount == "0")  {
+        if ($scope.deposit.amount == "" || $scope.deposit.amount == "0"||$scope.deposit.amount == "undefined")  {
             $ionicLoading.show({
                 template: "无效的金额"
             });
@@ -343,7 +415,7 @@ angular.module('starter.controllers')
 
             return;
         }
-
+		
         $ionicLoading.show({
             template: "正在提交"
         });
@@ -494,55 +566,64 @@ angular.module('starter.controllers')
     };
     //	资金历史隐藏
 	$scope.capital_history_modal_hide = function(){
-		$scope.has_more_money_order = false;
-		$scope.$broadcast('scroll.refreshComplete');
-		$scope.$broadcast('scroll.infiniteScrollComplete');
+		$scope.has_more_money_order.if_has_more_money_order = false;
+		$scope.moneyList = [];
+		$scope.money_page_index = 0;
 		$scope.capital_history_modal.hide();
 	};
     //请求个人资金历史
     $scope.show_money_list = function() {
     	$scope.moneyList = [];
-    	$scope.money_page_index = 1;
-    	$scope.refresh_moneylist_order();
+    	$scope.money_page_index = 0;
+        $scope.load_more_money_order();
+        $timeout(function () {
+            $scope.has_more_money_order.if_has_more_money_order = true;
+        }, 2000);
         $scope.capital_history_modal.show();
     };
     
     //上拉刷新
     $scope.refresh_moneylist_order = function(){
     	$scope.moneyList = [];
-    	$scope.money_page_index = 1;
-        $scope.has_more_money_order = true;
+    	$scope.money_page_index = 0;
+        $scope.has_more_money_order.if_has_more_money_order = true;
         $scope.load_more_money_order();
     };
     //下拉加载
-    $scope.load_more_money_order = function(){
+	$scope.load_more_money_order = function(){
+		
     	CapitalService.request_capital_list(
     		{
     			"startDate":$filter('date')(new Date(),'yyyy-MM-dd'),
     			"overDate":$scope.choseDate.overDate,
-    			"page":$scope.money_page_index,
+    			"page":$scope.money_page_index + 1,
     			"size":10,
     			"success":function(protocol) {
-    				$scope.money_page_index = $scope.money_page_index + 1;
-		            protocol.forEach(function(servicevalue){
-	        			$scope.type_list.filter(function(arr){
-	        				if(servicevalue.type==arr.value){
-	        					$scope.moneyList.push({
-			                        "_id": servicevalue._id,
-			                        "remark": servicevalue.remark,
-			                        "yearTime": $filter('date')(servicevalue.created,'yyyy-MM-dd'),
-			                        "dayTime": $filter('date')(servicevalue.created,'HH:mm:ss'),
-			                        "amount": servicevalue.amount,
-			                        "user": servicevalue.user,
-			                        "balance": servicevalue.balance,
-			                        "type": servicevalue.type,
-			                        "typename":arr.name
-			                    });
-	        				}
-	        			});
-	        		});
+    				if($scope.moneyList != protocol){
+    					$scope.money_page_index = $scope.money_page_index + 1;
+			            protocol.forEach(function(servicevalue){
+		        			$scope.type_list.filter(function(arr){
+		        				if(servicevalue.type==arr.value){
+		        					$scope.moneyList.push({
+				                        "_id": servicevalue._id,
+				                        "remark": servicevalue.remark,
+				                        "yearTime": $filter('date')(servicevalue.created,'yyyy-MM-dd'),
+				                        "dayTime": $filter('date')(servicevalue.created,'HH:mm:ss'),
+				                        "amount": servicevalue.amount,
+				                        "user": servicevalue.user,
+				                        "balance": servicevalue.balance,
+				                        "type": servicevalue.type,
+				                        "typename":arr.name
+				                    });
+		        				}
+		        			});
+		        		});
+    				}else if($scope.moneyList == protocol){
+    					$scope.moneyList = $scope.moneyList;
+    				}
+    				
 		            if(protocol.length === 0) {
-		                $scope.has_more_money_order = false;
+		                $scope.has_more_money_order.if_has_more_money_order = false;
 		            }
 		
 		            $scope.$broadcast('scroll.refreshComplete');
@@ -551,6 +632,7 @@ angular.module('starter.controllers')
     		}); 
     		
     };
+    
     
     $scope.$on('$destroy', function() {
         if ($scope.user_info_modal) {

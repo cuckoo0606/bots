@@ -6,10 +6,10 @@
         </div>
     </div>
     <div class="trade_history_list">
-        <ul>
-    		<ion-scroll style="height: 100%">
-                <ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_order()">
-                </ion-refresher>
+    	<ion-scroll style="height: 100%">
+    		<ion-refresher pulling-text="上拉刷新数据" on-refresh="refresh_order()">
+            </ion-refresher>
+        	<ul>
                 <li ng-repeat="o in trade_order_list" ng-click="show_hold_order_modal(o);">
                 	<section>
                     	<p style="margin: 0">
@@ -25,16 +25,16 @@
                     	<p style="margin: 0">{{o.remaining*1000|date:'00:mm:ss'}}</p>
                 	</section>
                 	<article ng-hide="o.remaining === 0">
-            		<span class="move_width" ng-style="{'animation-duration':o.cycle+'s'}">
+            		<span class="move_width" ng-style="{'animation-duration':o.cycle+'s','-webkit-animation-duration':o.cycle+'s'}">
             		</span>
             		<i>
             			<em></em>
             		</i>
             		</article>
                 </li>
-                <ion-infinite-scroll ng-if="has_more_order" on-infinite="load_more_order()" distance="1%">
-                </ion-infinite-scroll>
-            </ion-scroll>
-    	</ul>
+			</ul>
+    		<ion-infinite-scroll ng-if="has_more_order" on-infinite="load_more_order()" distance="1%">
+            </ion-infinite-scroll>
+        </ion-scroll>
     </div>
 </div>
