@@ -22,7 +22,8 @@ angular.module('starter.controllers')
     	if_has_more_money_order:false,
     };
     $scope.money_page_index = 0;
-    
+    $scope.pay_type_list = AppConfigService.pay_type_list;
+
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
 
@@ -58,7 +59,7 @@ angular.module('starter.controllers')
 		"outamount":"",
 	};
     $scope.deposit = {
-        "pay_type": "ecpss",
+        "pay_type": AppConfigService.default_pay_type,
         "amount": 100,
         "bank": "",
         "body": "WECHAT RECHARGE",
