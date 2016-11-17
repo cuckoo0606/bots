@@ -1,69 +1,55 @@
 <ion-view hide-nav-bar="true" class="signin-view">
 <ion-content class="signup-scroll">
-<div class="signin">
-    <div class="signin-header">
-        <div class="system-logo" ng-show="show_system_logo">
-            <img ng-src="{{ system_logo }}" alt="{{ system_name }}" />
-        </div>
-        <div class="system-name" ng-show="show_system_name">
-            {{ system_name }}
-        </div>
-    </div>
-    <div class="signin-content">
-        <div class="list">
-            <label class="item item-input" style="display: none;">
-                <span class="input-label">
-                    <i class="ion-ios-person-outline"></i>
-                </span>
-                <input type="text" placeholder="用户" ng-model="user.username" required />
-            </label>
-            <label class="item item-input" ng-show="show_signup_code">
-                <span class="input-label">
-                    <i class="ion-ipad"></i>
+<div class="sign_up">
+    <div class="sign_up_content">
+        <ul class="sign_up_list">
+            <li  class="newinput" ng-show="show_signup_code">
+                <span class="input-text">
+                    手机号码:
                 </span>
                 <input type="text" placeholder="手机号码" ng-model="user.phone" required />
-            </label>
-            <div class="item item-input-inset">
-                <span class="input-label">
-                    <i class="ion-ios-chatbubble-outline"></i>
+            </li>
+            <li class="newinput input_iphone_code">
+                <span class="input-text">
+                    验证码:
                 </span>
-                <label class="item-input-wrapper">
-                    <input type="text" placeholder="短信验证码" ng-model="user.code" />
-                </label>
-                <button class="button button-small siup-code-btn" ng-disabled="sms_remaining != 0" ng-click="get_verify()">
+                <input type="text" placeholder="短信验证码" ng-model="user.code" />
+                <button class="code_btn" ng-disabled="sms_remaining != 0" ng-click="get_verify()">
                     {{ sms_btn_text }}
                 </button>
-            </div>
-            <label class="item item-input">
-                <span class="input-label">
-                    <i class="ion-ios-locked-outline"></i>
+            </li>
+            <li class="newinput">
+                <span class="input-text">
+                    密码:
                 </span>
                 <input type="password" placeholder="密码" ng-model="user.passwd" required />
-            </label>
-            <label class="item item-input">
-                <span class="input-label">
-                    <i class="ion-ios-locked-outline"></i>
+            </li>
+            <li class="newinput">
+                <span class="input-text">
+                    确认密码:
                 </span>
                 <input type="password" placeholder="确认密码" ng-model="user.confirm" required />
-            </label>
-            <label class="item item-input">
-                <span class="input-label">
-                    <i class="ion-ios-person-outline"></i>
+            </li>
+            <li class="newinput">
+                <span class="input-text">
+                    推荐码:
                 </span>
                 <input class="sign_code" placeholder="推荐码" ng-model="user.referralcode"  />
-            </label>
-            <label class="signin-tools item item-checkbox">
+            </li>
+            <li class="sign_up_check">
+            	<ion-checkbox ng-model="user.weixinId">
+            		<span></span>
+                    同时绑定当前微信号免登录进入
+               </ion-checkbox>
                 <ion-checkbox ng-model="user.agree">
                     我已阅读《风险提醒》
                 </ion-checkbox>
-            </label>
-        </div>
-        <div class="signin-action">
-            <button class="button button-block signin-button" ng-click="signup()"
-                ng-disabled="!user.phone || !user.code || !user.confirm || !user.agree">
-                注册登陆
-            </button>
-        </div>
+            </li>
+        </ul>
+        <button class="button button-block signin-button" ng-click="signup()"
+            ng-disabled="!user.phone || !user.code || !user.confirm || !user.agree">
+            注册登陆
+        </button>
     </div>
     <div class="signin-footer">
         <a href="#/signin">已有帐户，登陆</a>

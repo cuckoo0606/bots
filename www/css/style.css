@@ -384,22 +384,115 @@ button:disabled{
 }
 
 /* 登陆页CSS */
-
 .signin-view {
     background: url(../img/sign-bg.png) no-repeat;
     background-size:100% 100% ;
 }
 
 .signin {
-    position: absolute;
-    top: 30%;
     width: 80%;
-    height: 500px;
-    margin-top: -120px;
+    height: 100%;
     margin-left: 10%;
     text-align: center;
 }
+.signin-header {
+    margin-top: 0.6rem;
+    margin-bottom:0.2rem;
+}
+.signin-header .system-logo{
+		width: auto;
+		height: auto;
+		margin: 0 auto;
+}
+.signin-header .system-logo img {
+    width: 50%;
+    height: 50%;
+}
+.signin-header .system-name{
+		width: 100%;
+		height: 0.3rem;
+		line-height: 0.3rem;
+		text-align: center;
+		color: #e9b747;
+		font-size: 0.2rem;
+		font-family: "微软雅黑";
+}
+.signin-content > .list {
+    width: 100%;
+    height: 1.5rem;
+}
+.signin-content > .list > p{
+		width: 100%;
+		height: 0.25rem;
+		line-height: 0.25rem;
+		color: #fa2e42;
+		font-size: 0.12rem;
+		position: relative;
+}
+.signin-content > .list > p > span{
+		display: inline-block;
+		vertical-align: top;
+		height: 0.25rem;
+		position: absolute;
+		top:0;
+}
+.signin-content > .list > p > span:nth-of-type(1){
+		width: 73%;
+		text-align: left;
+		left: 0;
+}
+.signin-content > .list > p > span:nth-of-type(2){
+		width: 25%;
+		text-align: right;
+		text-decoration: underline;
+		right: 0;
+}
+.signin-content > .list > .item {
+    height: 0.45rem;
+    line-height: 0.45rem;
+    margin-bottom: 0.1rem;
+    border-width: 0px;
+    border-radius: 0.05rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0;
+}
 
+.signin-content > .list > .item > .input-icon {
+		display:inline-block ;
+		vertical-align: top;
+		font-size: 0.2rem;
+    width: 0.4rem;
+    color: #e9b747;
+    text-align: center;
+    height: 0.45rem;
+}
+
+.signin-content > .list > .item > input {
+    color: white;
+    font-size: 0.14rem;
+    padding: 0rem;
+    border: none;
+    background-color: transparent !important;
+}
+
+.signin-content > .signin-action {
+    padding: 0.05rem 0.1rem;
+}
+
+.signin-action .sign_button{
+	width: 100%;
+}
+
+.signin-footer {
+    text-align: center;
+    margin-top: 0.2rem;
+}
+
+.signin-footer > a {
+    color: #e8af2e;
+    font-size: .14rem;
+    text-decoration: none;
+}
 .signin-tools {
     padding: 0px;
     height: 30px !important;
@@ -455,77 +548,10 @@ button:disabled{
     margin-top: -12px;
 }
 
-.signin-header {
-    padding: 10px;
-    font-size: 30px;
-    color: rgb(236, 181, 64);
-    margin-bottom: 20px;
-}
-.signin-header .system-logo{
-		width: 1.29rem;
-		height: 1.16rem;
-		margin: 0 auto;
-}
-.signin-header .system-logo img {
-    width: 100%;
-    height: 100%;
-}
 
-.signin-content > .list {
-    margin-bottom: 0px;
-}
 
-.signin-content > .list > .item {
-    color: rgb(236, 181, 64);
-    height: 50px;
-    line-height: 50px;
-    margin-bottom: 10px;
-    border-width: 0px;
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.5);
-}
 
-.signin-content > .list > .item > .input-label {
-    width: auto;
-    color: #fdbe19;
-    text-align: left;
-    padding: 5px 20px 0px 0px;
-}
 
-.signin-content > .list > .item > .input-label > i {
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.signin-content > .list > .item > input {
-    color: white;
-    height: 50px;
-    line-height: 50px;
-    font-size: 18px;
-    border: none;
-    background-color: transparent !important;
-}
-
-.signin-content > .signin-action {
-    padding: 5px 10px;
-}
-
-.signin-action .sign_button{
-	width: 100%;
-}
-
-.signin-footer {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.signin-footer > a {
-    color: #337ab7;
-    font-size: 14px;
-    margin-right: 5px;
-    color: rgb(237, 173, 43);
-    text-decoration: none;
-}
 
 .spinner-view {
     position: absolute;
@@ -567,6 +593,98 @@ button:disabled{
     opacity: 100;
 }
 
+/*注册页样式*/
+.sign_up{
+	width: 100%;
+	height: 100%;
+	background: #1b1b1d;
+	padding-top:0.5rem ;
+}
+.newinput{
+	width: 100%;
+	height: 0.51rem;
+	border-bottom:1px solid #343438 ;
+	padding-top:0.2rem ;
+}
+.sign_up_list{
+	width: 80%;
+	margin-left: 10%;
+}
+.input_iphone_code{
+	position: relative;
+}
+.input_iphone_code .code_btn{
+	position: absolute;
+	right: 0;
+	top:0.1rem;
+	height: 0.3rem;
+	width: 0.8rem;
+	color: #abacae;
+	line-height: 0.3rem;
+	text-align: center;
+	font-size: 0.12rem;
+	background: transparent;
+	border-radius:0.05rem ;
+	border: 1px solid #343438;
+	padding: 0;
+}
+.newinput .input-text{
+	display: inline-block;
+	vertical-align: top;
+	width: 0.6rem;
+	height: 0.3rem;
+	text-align: right;
+	font-size: 0.12rem;
+	line-height: 0.3rem;
+	color: #abacae;
+}
+.newinput input{
+	display: inline-block;
+	vertical-align: top;
+	border: none;
+	padding: 0;
+	width: 2rem;
+	height: 0.3rem;
+	color: #fdbe19;
+	background: #1b1b1d;
+	font-size: 0.14rem;
+	line-height: 0.3rem;
+	margin-left:0.1rem ;
+}
+.sign_up_check{
+	width: 100%;
+	height: 1rem;
+	margin-top: 0.2rem;
+}
+.sign_up_check .item{
+	background: #1b1b1d;
+	border: none;
+	padding:0 ;
+	height: 0.3rem;
+	line-height: 0.3rem;
+	color: #FFFFFF;
+	font-size: 0.12rem;
+	position: relative;
+}
+.sign_up_check .item span{
+	display: inline-block;
+	width: 0.2rem;
+	height: 0.2rem;
+	border: 1px solid #343438;
+	border-radius:0.02rem ;
+}
+.sign_up_check .item-checkbox .checkbox{
+	top:0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+}
+.sign_up_check .item-checkbox .checkbox .checkbox-icon{
+	width: 0.2rem;
+	height: 0.2rem;
+	line-height: 0.2rem;
+	text-align: center;
+}
 /* 行情页CSS */
 .qoute-category {
     width: 100%;
@@ -2404,13 +2522,14 @@ button:disabled{
 }
 
 .pay_code {
-	width: 100%;
-	height: 250px;
+		width: 2.5rem;
+		height: 2.5rem;
+		margin: 0 auto;
     margin-top: 20px;
     text-align: center;
 }
 
 .pay_code img {
-	width: 250px;
-	height: 250px;
+	width: 100%;
+	height: 100%;
 }

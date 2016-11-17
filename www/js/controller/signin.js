@@ -6,6 +6,7 @@ angular.module('starter.controllers')
     $scope.passwd = "";
     $scope.message = "";
     $scope.is_signin = false;
+    $scope.show_sign_in_mistake = false;
     $scope.spinner = function(visible) {
         if (visible) {
             angular.element(document.querySelectorAll(".spinner-view")).removeClass("hide");
@@ -48,6 +49,7 @@ angular.module('starter.controllers')
             },
             "fail": function(status, message) {
                 $scope.message = message;
+                $scope.show_sign_in_mistake = true;
                 $timeout(function() {
                     $scope.message = "";
                     $scope.spinner(false);

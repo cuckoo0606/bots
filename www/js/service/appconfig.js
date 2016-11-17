@@ -7,14 +7,13 @@ angular.module('starter.services', [])
     this.wx_auth = {}
     this.wx_user_info = {}
 
-    this.system_name = "交易系统";
+    this.system_name = "BTS 微交易";
     this.company_name = "恒忆微盘";
-    this.show_system_name = false;
-    this.system_logo = "img/newlogo.png";
+    this.show_system_name = true;
+    this.system_logo = "img/logo2.png";
     this.show_system_logo = true;
     this.show_nav_bar = false;
     this.show_signup_code = true;
-
 
     this.api_url ="http://120.24.44.211:4002/";
 	this.qoute_url = "http://120.24.44.211:7794/";
