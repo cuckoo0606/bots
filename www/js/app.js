@@ -26,12 +26,14 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
         AppConfigService.wx_auth.access_token = $cookies.get("wa");
         AppConfigService.wx_auth.refresh_token = $cookies.get("wr");
 
-        var reg = new RegExp("(^|&)show=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) {
-            var state = unescape(r[2]);
-            $state.go(state);
-        }
+        $timeout(function() {
+            var reg = new RegExp("(^|&)show=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                var state = unescape(r[2]);
+                $state.go(state);
+            }
+        }, 1000);
     });
 
 	//设置适配rem
