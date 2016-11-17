@@ -674,7 +674,7 @@ button:disabled{
 	border-radius:0.02rem ;
 }
 .sign_up_check .item-checkbox .checkbox{
-	top:0;
+	top:0.05rem;
 	left: 0;
 	margin: 0;
 	padding: 0;
@@ -685,6 +685,30 @@ button:disabled{
 	line-height: 0.2rem;
 	text-align: center;
 }
+.sign_up_check .checkbox input:before, .checkbox-icon:before{
+	background: transparent !important;
+	border-radius:0 ;
+	border: 1px solid #343438 !important;
+	border-color: #343438 !important;
+}
+.sign_up_btn{
+	width: 70%;
+	margin-left: 15%;
+}
+.sign_up_check .item-content span{
+	display: inline-block;
+	width: 80%;
+	height: 0.3rem;
+	font-size: 0.12rem;
+	border: none;
+	margin-left: 0.3rem;
+}
+.sign_up_check .checkbox input:after, .checkbox-icon:after{
+	border-color: #fdbe19;
+	width: 0.14rem;
+	height: 0.06rem;
+}
+
 /* 行情页CSS */
 .qoute-category {
     width: 100%;
