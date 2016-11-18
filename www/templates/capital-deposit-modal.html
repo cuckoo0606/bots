@@ -148,7 +148,7 @@
 					</ul>
 				</ion-scroll>
 			</div>
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="pay_type_list.join(',').indexOf('swiftpass') != 0">
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="pay_type_list.indexOf('swiftpass') != -1">
 	            <div class="pay_bank_list_header">
 	            	<div class="kuang"></div>
 					<i class="pay_green_bg"></i>
@@ -157,7 +157,7 @@
 					</article>
 				</div>
 	        </ion-radio>
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'wechat'" ng-change="pay_type_change()" ng-show="pay_type_list.join(',').indexOf('wechat') !=0 ">
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'wechat'" ng-change="pay_type_change()" ng-show="pay_type_list.indexOf('wechat') != -1">
 	            <div class="pay_bank_list_header">
 	            	<div class="kuang"></div>
 					<i class="pay_green_bg"></i>
@@ -166,7 +166,7 @@
 					</article>
 				</div>
 	        </ion-radio>
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'alipay'" ng-change="pay_type_change()" ng-show="pay_type_list.join(',').indexOf('alipay') != 0">
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'alipay'" ng-change="pay_type_change()" ng-show="pay_type_list.indexOf('alipay') !=  -1">
 	            <div class="pay_bank_list_header">
 		            <div class="kuang"></div>
 		            <i class="pay_alipay_bg"></i>

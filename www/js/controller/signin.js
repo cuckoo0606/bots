@@ -23,12 +23,13 @@ angular.module('starter.controllers')
     }; 
 
     $scope.signin = function() {
-        $scope.is_signin = true;
-        $scope.spinner(true);
         UserService.signin({
             "phone": $scope.phone,
             "passwd": $scope.passwd,
             "success": function(user) {
+            	$scope.is_signin = true;
+        		$scope.spinner(true);
+        		$scope.message = "加载中...";
                 $rootScope.user_id = user.user_id;
 
                 //获取系统时间用于计算订单时间
@@ -43,24 +44,22 @@ angular.module('starter.controllers')
                     $ionicHistory.clearHistory();
 
 	                QouteService.init(function() {
-	                    $scope.is_signin = false;
-	                    $scope.spinner(false);
-	                    $state.go("tab.qoute");
+	                	$timeout(function() {
+	                		$scope.is_signin = false;
+		                    $scope.spinner(false);
+		                    $state.go("tab.qoute");
+	                	},2000);
 	                });
                 });
             },
             "fail": function(status, message) {
-                $scope.message = message;
                 $scope.show_sign_in_mistake = true;
-                $timeout(function() {
-                    $scope.message = "";
-                    $scope.spinner(false);
-                    $scope.is_signin = false;
-                }, 2000);
             },
             "error": function(status, message) {
                 $scope.message = message;
                 $timeout(function() {
+                	$scope.is_signin = true;
+        			$scope.spinner(true);
                     $scope.message = "";
                     $scope.spinner(false);
                     $scope.is_signin = false;

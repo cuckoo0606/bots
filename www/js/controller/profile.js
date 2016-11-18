@@ -9,6 +9,7 @@ angular.module('starter.controllers')
     $scope.pay_qrcode_url = "";
     $scope.deposit_bank_list = [];
     $scope.money_fee = {
+    	"outmoney_bank_card":"",
     	"outmoney_fee_type":"",
     	"outmoney_fee":"",
     	"outmoneymin":"",
@@ -189,6 +190,16 @@ angular.module('starter.controllers')
 	//出金页面
     $scope.show_withdraw_modal = function() {
         $scope.capital_withdraw_modal.show();
+        if($rootScope.user.bankaccount){
+        	var bank_lengths = [4,10,16,22];
+        	for(var i=0;i<($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);i++){
+        		$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card+'*';
+        		if(bank_lengths.indexOf($scope.money_fee.outmoney_bank_card.length) != -1){
+        			$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card+'  ';
+        		}
+        	};
+        	$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card + $rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);
+        };
         CapitalService.system_config({
         	"type":"pay-handling-type",
 			"success":function(value){
@@ -248,12 +259,7 @@ angular.module('starter.controllers')
                 }, 2000);
 			}
 		});
-    }
-	
-	//修正出金银行卡格式
-	$scope.change_bank_cardname = function(){
-		console.log(event.value);
-	};
+  }
 	//修改密码页面
 	$scope.show_user_modal = function(){
 		$scope.user_change_modal.show();
