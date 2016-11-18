@@ -18,7 +18,7 @@ angular.module('starter.services', [])
     this.api_url ="http://120.24.44.211:4002/";
 	this.qoute_url = "http://120.24.44.211:7794/";
 	this.erweima_url= "http://120.24.44.211:8085/index.html";
-	this.get_erweima_url = "http://120.24.44.211:8085/qrcode?text=";
+	this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
     this.default_pay_type = "ecpss";
     this.pay_type_list = [ "swiftpass", "wechat", "alipay", "ecpss" ];

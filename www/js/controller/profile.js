@@ -23,7 +23,6 @@ angular.module('starter.controllers')
     };
     $scope.money_page_index = 0;
     $scope.pay_type_list = AppConfigService.pay_type_list;
-
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
 
@@ -187,6 +186,7 @@ angular.module('starter.controllers')
 		});
     }
 
+	//出金页面
     $scope.show_withdraw_modal = function() {
         $scope.capital_withdraw_modal.show();
         CapitalService.system_config({
@@ -249,7 +249,12 @@ angular.module('starter.controllers')
 			}
 		});
     }
-
+	
+	//修正出金银行卡格式
+	$scope.change_bank_cardname = function(){
+		console.log(event.value);
+	};
+	//修改密码页面
 	$scope.show_user_modal = function(){
 		$scope.user_change_modal.show();
 	}
