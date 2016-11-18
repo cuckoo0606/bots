@@ -582,6 +582,10 @@ button:disabled{
 }
 
 /*注册页样式*/
+
+input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly]{
+	background: transparent !important;
+}
 .sign_up{
 	width: 100%;
 	height: 100%;
