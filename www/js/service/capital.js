@@ -5,6 +5,36 @@ angular.module('starter.services')
     this.capital_list = [];
     this.init_complete = false;
 
+    this.deposit_wechat = function(params) {
+        var url = "/pay/wechat/order";
+
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "user": params.deposit.user,
+                "amount": params.deposit.amount,
+                "openid": params.deposit.openid,
+            },
+        })
+
+        .success(function(protocol) {
+            if (protocol.return_code === "SUCCESS") {
+                params.success(protocol.return_code, protocol.return_msg, protocol);
+            }
+            else {
+                params.fail(protocol.return_code, protocol.return_msg, protocol);
+            }
+        })
+
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+
     this.deposit_hc = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/hcmobile")
 

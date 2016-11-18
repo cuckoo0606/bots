@@ -34,7 +34,7 @@
 					</article>
 				</div>
 	        </ion-radio>
-	        <div ng-show="deposit.pay_type=='ecpss'" class="pay_bank_list_content">
+	        <div ng-show="deposit.pay_type=='ecpss'" class="pay_bank_list_content" ng-show="'ecpss' in pay_type_list">
 				<ion-scroll style="height: 100%;" scrollbar-y="true" scrollbar-x="false">
 					<ul>
 						<li>
@@ -148,7 +148,7 @@
 					</ul>
 				</ion-scroll>
 			</div>
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="deposit.openid">
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-change="pay_type_change()" ng-show="'swiftpass' in pay_type_list">
 	            <div class="pay_bank_list_header">
 	            	<div class="kuang"></div>
 					<i class="pay_green_bg"></i>
@@ -157,7 +157,16 @@
 					</article>
 				</div>
 	        </ion-radio>
-	        <ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'alipay'" ng-change="pay_type_change()" class="hide">
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'wechat'" ng-change="pay_type_change()" ng-show="'wechat' in pay_type_list">
+	            <div class="pay_bank_list_header">
+	            	<div class="kuang"></div>
+					<i class="pay_green_bg"></i>
+					<article>
+						<p class="pay_green"><span class="iconfont icon-21-01"></span><span>微信支付</span></p>
+					</article>
+				</div>
+	        </ion-radio>
+	        <ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'alipay'" ng-change="pay_type_change()" ng-show="'alipay' in pay_type_list">
 	            <div class="img-box">
 	                <img src="img/alipay.png" alt="支付宝支付" />
 	            </div>

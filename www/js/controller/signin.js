@@ -29,6 +29,8 @@ angular.module('starter.controllers')
             "phone": $scope.phone,
             "passwd": $scope.passwd,
             "success": function(user) {
+                $rootScope.user_id = user.user_id;
+
                 //获取系统时间用于计算订单时间
                 UserService.request_time(function(time) {
                     var now = new Date().getTime();

@@ -20,6 +20,9 @@ angular.module('starter.services', [])
 	this.erweima_url= "http://120.24.44.211:8085/index.html";
 	this.get_erweima_url = "http://120.24.44.211:8085/qrcode?text=";
 
+    this.default_pay_type = "ecpss";
+    this.pay_type_list = [ "swiftpass", "wechat", "alipay", "ecpss" ];
+
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
             { "name": "中国银行", "code": "BOC"},

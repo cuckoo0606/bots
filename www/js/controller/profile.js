@@ -22,7 +22,8 @@ angular.module('starter.controllers')
     	if_has_more_money_order:false,
     };
     $scope.money_page_index = 0;
-    
+    $scope.pay_type_list = AppConfigService.pay_type_list;
+
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
 
@@ -58,11 +59,12 @@ angular.module('starter.controllers')
 		"outamount":"",
 	};
     $scope.deposit = {
-        "pay_type": "ecpss",
+        "pay_type": AppConfigService.default_pay_type,
         "amount": 100,
         "bank": "",
         "body": "WECHAT RECHARGE",
-        "openid": AppConfigService.wx_auth.openid
+        "openid": AppConfigService.wx_auth.openid,
+        "user": $rootScope.user_id,
     };
     $scope.inmoneybank={
     	"bankname":"",
@@ -459,6 +461,38 @@ angular.module('starter.controllers')
                     $scope.capital_deposit_modal.hide();
                     $scope.pay_qrcode_url = AppConfigService.get_erweima_url + url;
                     $scope.pay_qrcode_modal.show();
+                },
+                "fail": fail,
+                "error": error,
+            });
+        }
+        else if($scope.deposit.pay_type == "wechat") {
+            CapitalService.deposit_wechat({
+                "deposit": $scope.deposit,
+                "success": function(code, msg, res) {
+                    $ionicLoading.hide();
+
+                    wx.config({
+                        debug: false,
+                        appId: res.config.appId,
+                        timestamp: res.config.timestamp,
+                        nonceStr: res.config.nonceStr,
+                        signature: res.config.signature,
+                        jsApiList: [ "chooseWXPay" ]
+                    });
+
+                    wx.ready(function(){
+                        wx.chooseWXPay({
+                            timestamp: res.payinfo.timeStamp,
+                            nonceStr: res.payinfo.nonceStr,
+                            package: res.payinfo.package,
+                            signType: res.payinfo.signType,
+                            paySign: res.payinfo.paySign,
+                            success: function () {
+                                $scope.capital_deposit_modal.hide();
+                            }
+                        });
+                    });
                 },
                 "fail": fail,
                 "error": error,
