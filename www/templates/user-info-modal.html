@@ -31,7 +31,7 @@
         </ul>
     </ion-content>
     <div class="button-bar">
-        <a class="button button-balanced" ng-click="update_user()">确定</a>
+        <a class="button button-balanced" ng-disabled="user_info.id_card.length != 18" ng-click="update_user()">确定</a>
         <a class="button button-dark" ng-click="user_info_modal.hide()">关闭</a>
     </div>
 </ion-modal-view>

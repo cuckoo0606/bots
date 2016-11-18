@@ -118,6 +118,7 @@ angular.module('starter.controllers')
         $scope.user_change_modal = modal;
     });
 
+	//入金界面
     $scope.show_deposit_modal = function() {
     	if($scope.user_bank.userbankmes[0].name){
     		$scope.inmoneybank.bankname = $scope.user_bank.userbankmes[0].name;
@@ -264,6 +265,8 @@ angular.module('starter.controllers')
 	$scope.show_user_modal = function(){
 		$scope.user_change_modal.show();
 	}
+	
+	//修改个人银行资料页面
     $scope.show_user_bank_modal = function() {
     	$ionicHistory.clearHistory();
         $scope.user_info.bank = $scope.user_bank.userbankmes[0];
@@ -276,7 +279,7 @@ angular.module('starter.controllers')
         $scope.user_info.bank_card = $rootScope.user.bankaccount;
         $scope.user_info_modal.show();
     }
-
+	
 	$scope.show_money_list_footer = function() {
 		var article_list = document.getElementsByClassName("today_list_footer");
 		var clickshow_list = document.getElementsByClassName("clickshow");
