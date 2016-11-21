@@ -27,26 +27,11 @@
 }
 /*订单历史倒计时动画效果*/
 .move_width{
-	animation-name:animate_width ;
-	animation-timing-function:linear ;
-	-webkit-animation-name:animate_width ;
-	-webkit-animation-timing-function:linear ;
-}
-@-webkit-keyframes animate_width{
-	from{
-		width:95%
-	}
-	to{
-		width: 0%;
-	}
-}
-@keyframes animate_width{
-	from{
-		width: 95%;
-	}
-	to{
-		width: 0%;
-	}
+	transition-property: width;
+	-webkit-transition-property: width;
+	transition-timing-function:linear ;
+	-webkit-transition-timing-function:linear ;
+	width: 0%;
 }
 
 /* 公用CSS */

@@ -41,34 +41,23 @@ angular.module('starter.controllers')
         $scope.order_page_index = 0;
         $scope.load_more_order();
     }
-	var aCss = [];
-	var nCss = [];
-	
+    
     $scope.load_more_order = function() {
         OrderService.request_order_list($scope.order_page_index + 1, 20, function(protocol) {
             $scope.order_page_index = $scope.order_page_index + 1;
-            protocol.data.forEach(function(value) {
-                value.profit = $scope.order_profit(value);
+            protocol.data.forEach(function(value,index) {
+            	value.profit = $scope.order_profit(value);
                 value.qoute = QouteService.qoute(value.mode, value.assets.market, value.assets.code);
                 var expired = new Date(value.expired);
                 var now = new Date();
-
+				
                 var tick = now.getTime() + $rootScope.server_time_tick;
                 var remaining = (expired.getTime() - tick) / 1000;
                 value.remaining = remaining;
                 if (remaining > 0) {
                     $rootScope.trade_order_list.push(value);
                 }
-                console.log($rootScope.trade_order_list);
                 
-                aCss = document.styleSheets[2];
-		        nCss = document.styleSheets[2].cssRules;
-		        for(var i = 0;i<nCss.length;i++){
-		        	if(nCss[i].name==='animate_width'){
-		        		aCss.deleteRule(i);
-		        		aCss.insertRule("@keyframes animate_width{from{width:"+value.remaining/value.cycle+"%;}to{width: 0%;}}",i)
-		        	}
-		        }
             });
 
             if(protocol.data.length == 0) {
