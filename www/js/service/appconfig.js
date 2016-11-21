@@ -7,21 +7,21 @@ angular.module('starter.services', [])
     this.wx_auth = {}
     this.wx_user_info = {}
 
-    this.system_name = "BTS 微交易";
-    this.company_name = "恒忆微盘";
-    this.show_system_name = true;
-    this.system_logo = "img/logo2.png";
+    this.system_name = "瑞达微交易系统";
+    this.company_name = "瑞达国际";
+    this.show_system_name = false;
+    this.system_logo = "img/logo.png";
     this.show_system_logo = true;
-    this.show_nav_bar = false;
+    this.show_nav_bar = true;
     this.show_signup_code = true;
 
-    this.api_url ="http://120.24.44.211:4002/";
-	this.qoute_url = "http://120.24.44.211:7794/";
-	this.erweima_url= "http://120.24.44.211:8085/index.html";
-	this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
+    this.api_url ="http://weixin.buut.cn:8793/";
+    this.qoute_url = "http://weixin.buut.cn:7794/";
+    this.erweima_url= "http://weixin.buut.cn:8081/index.html";
+    this.get_erweima_url = "http://weixin.buut.cn:8081/qrcode?text=";
 
     this.default_pay_type = "ecpss";
-    this.pay_type_list = [ "swiftpass", "wechat", "alipay", "ecpss" ];
+    this.pay_type_list = [ "ecpss" ];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },

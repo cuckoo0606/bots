@@ -61,8 +61,8 @@ button:disabled{
 
 .left-buttons,
 .left-buttons a {
-    height: 35px;
-    line-height: 35px;
+    height: 25px;
+    line-height: 25px;
 }
 
 .back-button {
@@ -396,7 +396,7 @@ button:disabled{
     text-align: center;
 }
 .signin-header {
-    margin-top: 0.6rem;
+    margin-top: 0.8rem;
     margin-bottom:0.2rem;
 }
 .signin-header .system-logo{
