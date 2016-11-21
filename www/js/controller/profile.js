@@ -120,7 +120,7 @@ angular.module('starter.controllers')
 
 	//入金界面
     $scope.show_deposit_modal = function() {
-    	if($scope.user_bank.userbankmes[0].name){
+    	if($scope.user_bank.userbankmes && $scope.user_bank.userbankmes[0].name){
     		$scope.inmoneybank.bankname = $scope.user_bank.userbankmes[0].name;
     	}else{
     		$scope.inmoneybank.bankname = '中国农业银行';
