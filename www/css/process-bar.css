@@ -31,13 +31,11 @@
 	border-top:20px solid green;
 	border-right:20px solid green;
 	right:0;
-	-webkit-animation: circleProgressLoad_right 5s linear infinite;
 }
 .leftcircle{
 	border-bottom:20px solid green;
 	border-left:20px solid green;
 	left:0;
-	-webkit-animation: circleProgressLoad_left 5s linear infinite;
 }
 @-webkit-keyframes circleProgressLoad_right{
 	0%{

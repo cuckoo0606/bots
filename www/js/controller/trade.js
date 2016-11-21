@@ -41,7 +41,9 @@ angular.module('starter.controllers')
         $scope.order_page_index = 0;
         $scope.load_more_order();
     }
-
+	var aCss = [];
+	var nCss = [];
+	
     $scope.load_more_order = function() {
         OrderService.request_order_list($scope.order_page_index + 1, 20, function(protocol) {
             $scope.order_page_index = $scope.order_page_index + 1;
@@ -57,6 +59,16 @@ angular.module('starter.controllers')
                 if (remaining > 0) {
                     $rootScope.trade_order_list.push(value);
                 }
+                console.log($rootScope.trade_order_list);
+                
+                aCss = document.styleSheets[2];
+		        nCss = document.styleSheets[2].cssRules;
+		        for(var i = 0;i<nCss.length;i++){
+		        	if(nCss[i].name==='animate_width'){
+		        		aCss.deleteRule(i);
+		        		aCss.insertRule("@keyframes animate_width{from{width:"+value.remaining/value.cycle+"%;}to{width: 0%;}}",i)
+		        	}
+		        }
             });
 
             if(protocol.data.length == 0) {
@@ -65,7 +77,7 @@ angular.module('starter.controllers')
 
             $scope.$broadcast('scroll.refreshComplete');
             $scope.$broadcast('scroll.infiniteScrollComplete');
-        }); 
+        });
     }
 
     $scope.refresh_order();

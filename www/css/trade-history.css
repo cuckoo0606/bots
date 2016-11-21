@@ -1,29 +1,5 @@
 /*历史记录页面*/
 
-/*订单历史倒计时动画效果*/
-.move_width{
-	animation-name:changewidth ;
-	animation-timing-function:linear ;
-	-webkit-animation-name:changewidth ;
-	-webkit-animation-timing-function:linear ;
-}
-@-webkit-keyframes changewidth{
-	from{
-		width: 3rem;
-	}
-	to{
-		width: 0rem;
-	}
-}
-@keyframes changewidth{
-	from{
-		width: 3rem;
-	}
-	to{
-		width: 0rem;
-	}
-}
-
 .trade_history{
 	background: #323232;
 	color: #737373;

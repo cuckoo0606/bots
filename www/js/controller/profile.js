@@ -138,12 +138,7 @@ angular.module('starter.controllers')
 							$scope.money_fee.inmoney_fee = parseFloat(value);
 						},
 						"error":function(status,message){
-							$ionicLoading.show({
-			                    template: message
-			                });
-			                $timeout(function () {
-			                    $ionicLoading.hide();
-			                }, 2000);
+							$scope.money_fee.inmoney_fee = 0;
 						}
 					})
 				}else if(value == 1){
@@ -153,23 +148,14 @@ angular.module('starter.controllers')
 							$scope.money_fee.inmoney_fee = parseFloat(value);
 						},
 						"error":function(status,message){
-							$ionicLoading.show({
-			                    template: message
-			                });
-			                $timeout(function () {
-			                    $ionicLoading.hide();
-			                }, 2000);
+							$scope.money_fee.inmoney_fee = 0;
 						}
 					})
 				}
 			},
 			"error":function(status,message){
-				$ionicLoading.show({
-                    template: message
-                });
-                $timeout(function () {
-                    $ionicLoading.hide();
-                }, 2000);
+				$scope.money_fee.inmoney_fee = 0;
+				$scope.money_fee.inmoney_fee_type = 0;
 			}
 		});
 		CapitalService.system_config({
@@ -178,12 +164,7 @@ angular.module('starter.controllers')
 				$scope.money_fee.inmoneymin = value;
 			},
 			"error":function(status,message){
-				$ionicLoading.show({
-                    template: message
-                });
-                $timeout(function () {
-                    $ionicLoading.hide();
-                }, 2000);
+				$scope.money_fee.inmoneymin = 0;
 			}
 		});
     }
@@ -212,12 +193,7 @@ angular.module('starter.controllers')
 							$scope.money_fee.outmoney_fee = parseFloat(value);
 						},
 						"error":function(status,message){
-							$ionicLoading.show({
-			                    template: message
-			                });
-			                $timeout(function () {
-			                    $ionicLoading.hide();
-			                }, 2000);
+							$scope.money_fee.outmoney_fee = 0;
 						}
 					})
 				}else if(value == 1){
@@ -227,23 +203,14 @@ angular.module('starter.controllers')
 							$scope.money_fee.outmoney_fee = parseFloat(value);
 						},
 						"error":function(status,message){
-							$ionicLoading.show({
-			                    template: message
-			                });
-			                $timeout(function () {
-			                    $ionicLoading.hide();
-			                }, 2000);
+							$scope.money_fee.outmoney_fee = 0;
 						}
 					})
 				}
 			},
 			"error":function(status,message){
-				$ionicLoading.show({
-                    template: message
-                });
-                $timeout(function () {
-                    $ionicLoading.hide();
-                }, 2000);
+				$scope.money_fee.outmoney_fee = 0;
+				$scope.money_fee.outmoney_fee_type = 0;
 			}
 		});
 		CapitalService.system_config({
@@ -252,12 +219,7 @@ angular.module('starter.controllers')
 				$scope.money_fee.outmoneymin = value;
 			},
 			"error":function(status,message){
-				$ionicLoading.show({
-                    template: message
-                });
-                $timeout(function () {
-                    $ionicLoading.hide();
-                }, 2000);
+				$scope.money_fee.outmoneymin = 0;
 			}
 		});
   }
