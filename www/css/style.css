@@ -346,6 +346,7 @@ button:disabled{
     line-height: 0.3rem;
     color: rgb(236, 181, 64) !important;
     font-size: 0.2rem;
+    font-weight: 600;
 }
 
 .headerbar button {
@@ -598,7 +599,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 .sign_up{
 	width: 100%;
 	height: 100%;
-	padding-top:0.5rem ;
+	padding-top:0.2rem ;
 }
 .newinput{
 	width: 100%;
@@ -636,7 +637,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	text-align: right;
 	font-size: 0.12rem;
 	line-height: 0.3rem;
-	color: #abacae;
+	color: white;
 }
 .newinput input{
 	display: inline-block;
@@ -656,6 +657,21 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	height: 1rem;
 	margin-top: 0.2rem;
 }
+.sign_up_check .item-content p{
+	color: white;
+	font-size: 0.12rem;
+	padding-left:0.35rem;
+}
+.sign_up_check a{
+	vertical-align: top;
+	display: inline-block;
+	height: 0.3rem;
+	line-height: 0.3rem;
+	width: auto;
+	color: white;
+	font-size: 0.14rem;
+	text-decoration: underline;
+}
 .sign_up_check .item{
 	background: transparent;
 	border: none;
@@ -665,6 +681,9 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	color: #FFFFFF;
 	font-size: 0.12rem;
 	position: relative;
+	width: 32%;
+	display: inline-block;
+	vertical-align: top;
 }
 .sign_up_check .item span{
 	display: inline-block;
@@ -708,7 +727,13 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	width: 0.14rem;
 	height: 0.06rem;
 }
-
+.agreement{
+	background: #1b1b1d !important;
+}
+.agreement pre{
+	font-size: 0.14rem;
+	color: white;
+}
 /* 行情页CSS */
 .qoute-category {
     width: 100%;
