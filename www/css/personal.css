@@ -142,6 +142,13 @@
 }
 
 /* 个人中心资金流水样式 */
+.order-modal-header{
+	height: 0.3rem;
+}
+.order-modal-header  .title{
+	height: 0.3rem !important;
+	line-height: 0.3rem !important;
+}
 .in_money{
 	color:#fa2e42;
 }

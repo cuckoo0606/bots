@@ -158,7 +158,7 @@ angular.module('starter.services')
         var capital_listUrl = AppConfigService.build_api_url("v1/books");
         $http.get(capital_listUrl, { 
             "timeout": 3000,
-            "params": { "begin": complete.startDate,"page":complete.page,"size":complete.size }
+            "params": { "begin": complete.startDate,"end":complete.overDate,"page":complete.page,"size":complete.size }
         })
         
         .success(function(protocol) {

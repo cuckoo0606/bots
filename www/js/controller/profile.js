@@ -604,8 +604,8 @@ angular.module('starter.controllers')
 		
     	CapitalService.request_capital_list(
     		{
-    			"startDate":$filter('date')(new Date(),'yyyy-MM-dd'),
-    			"overDate":$scope.choseDate.overDate,
+    			"startDate":$filter('date')(new Date(new Date().getTime() - 2592000000),'yyyy-MM-dd'),
+    			"overDate":$filter('date')(new Date(),'yyyy-MM-dd'),
     			"page":$scope.money_page_index + 1,
     			"size":10,
     			"success":function(protocol) {
