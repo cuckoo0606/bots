@@ -5,7 +5,7 @@ angular.module('starter.controllers')
     $scope.message = "";
     $scope.is_signin = false;
     $scope.show_signup_code = AppConfigService.show_signup_code;
-    $scope.user = { 
+    $scope.users = { 
         "username": "",
         "passwd": "",
         "phone": "",
@@ -15,7 +15,7 @@ angular.module('starter.controllers')
     }
     $scope.sms_remaining = 0;
     $scope.sms_btn_text = "获取验证码";
-    
+    $scope.sign_up_weixin = AppConfigService.if_weixin
     //判断当前页面是否有code，有推荐码输入框则无法修改
     var reg = new RegExp("(^|&)ref=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
@@ -40,55 +40,54 @@ angular.module('starter.controllers')
     }; 
 
     $scope.signup = function() {
-        if ($scope.user.phone == "") {
+        if ($scope.users.phone == "") {
             $ionicLoading.show({ template: "手机号不能为空。" });
             $timeout(function() {
                 $ionicLoading.hide();
             }, 1000);
             return;
         }
-        if ($scope.user.passwd == "") {
+        if ($scope.users.passwd == "") {
             $ionicLoading.show({ template: "密码不能为空。" });
             $timeout(function() {
                 $ionicLoading.hide();
             }, 1000);
             return;
         }
-        if ($scope.user.passwd != $scope.user.confirm) {
+        if ($scope.users.passwd != $scope.users.confirm) {
             $ionicLoading.show({ template: "两次输入密码不一致。" });
             $timeout(function() {
                 $ionicLoading.hide();
             }, 1000);
             return;
         }
-        if (AppConfigService.show_signup_code && $scope.user.code == "") {
+        if (AppConfigService.show_signup_code && $scope.users.code == "") {
             $ionicLoading.show({ template: "请输入短信验证码。" });
             $timeout(function() {
                 $ionicLoading.hide();
             }, 1000);
             return;
         }
-        if ($scope.user.agree == false) {
+        if ($scope.users.agree == false) {
             $ionicLoading.show({ template: "请阅读并同意协议。" });
             $timeout(function() {
                 $ionicLoading.hide();
             }, 1000);
             return;
         }
-
         $ionicScrollDelegate.scrollTop(false);
         $scope.is_signin = true;
         $scope.spinner(true);
         UserService.signup({
-            "phone": $scope.user.phone, 
-            "passwd": $scope.user.passwd ,
-            "referralcode":$scope.user.referralcode,
-            "code":$scope.user.code,
+            "phone": $scope.users.phone, 
+            "passwd": $scope.users.passwd ,
+            "referralcode":$scope.users.referralcode,
+            "code":$scope.users.code,
             "success": function() {
                 UserService.signin({
-		            "phone": $scope.user.phone,
-		            "passwd": $scope.user.passwd,
-		            "success": function(status, message, user) {
+		            "phone": $scope.users.phone,
+		            "passwd": $scope.users.passwd,
+		            "success": function(status, message, mess) {
                         //获取系统时间用于计算订单时间
                         UserService.request_time(function(time) {
                             var now = new Date().getTime();
@@ -96,15 +95,14 @@ angular.module('starter.controllers')
                         });
 
                         UserService.request_user(function(user) {
-                            $window.localStorage.id = $scope.phone;
+                            $window.localStorage.id = user.username;
                             $rootScope.user = user;
                             $ionicHistory.clearHistory();
-
-                            QouteService.init(function() {
-                                $scope.is_signin = false;
-                                $scope.spinner(false);
-                                $state.go("tab.qoute");
-                            });
+                            $timeout(function() {
+		                		$scope.is_signin = false;
+			                    $scope.spinner(false);
+			                    $state.go("signuperweima");
+		                	},2000);
                         });
 		            },
 		            "fail": function(status, message) {
@@ -126,7 +124,7 @@ angular.module('starter.controllers')
 		        });
             },
             "fail": function(status, message) {
-                $scope.message = message;
+                $scope.message = "该用户已注册";
                 $timeout(function() {
                     $scope.message = "";
                     $scope.spinner(false);
@@ -143,10 +141,16 @@ angular.module('starter.controllers')
             },
         });
     }
-
+	
+	$scope.sign_in_trade = function(){
+		QouteService.init(function() {
+            $state.go("tab.qoute");
+        });
+	}
+	
     $scope.get_verify = function() {
         var pattern = /1\d{10}/;
-        if ($scope.user.phone == "" || !pattern.test($scope.user.phone)) {
+        if ($scope.users.phone == "" || !pattern.test($scope.users.phone)) {
             $ionicLoading.show({ template: "无效的手机号码。" });
             $timeout(function() {
                 $ionicLoading.hide();
@@ -157,7 +161,7 @@ angular.module('starter.controllers')
         $ionicLoading.show({ template: "正在获取验证码" });
 
         SMSService.get_verify({
-            "phone": $scope.user.phone,
+            "phone": $scope.users.phone,
             "success": function() {
                 $ionicLoading.hide();
                 $scope.sms_remaining = 60;

@@ -14,6 +14,10 @@ angular.module('starter.services', [])
     this.show_system_logo = true;
     this.show_nav_bar = true;
     this.show_signup_code = true;
+	this.if_weixin = {
+		erweima_img:"",
+		weixin_name:"瑞达国际"
+	}
 
     this.api_url ="http://weixin.buut.cn:8793/";
     this.qoute_url = "http://weixin.buut.cn:7794/";

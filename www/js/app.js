@@ -124,6 +124,13 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
         controller: "SignupCtrl",
         templateUrl: 'templates/signup.html'
     })
+    
+    .state('signuperweima', {
+        cache: false,
+        url: '/signuperweima',
+        controller: "SignupCtrl",
+        templateUrl: 'templates/sign-up-erweima.html'
+    })
 
     .state('trade', {
         cache: false,

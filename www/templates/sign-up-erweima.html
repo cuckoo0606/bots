@@ -1,0 +1,17 @@
+<ion-view class="sign_up_erweima" hide-nav-bar="true">
+    <ion-content>
+    	<header>
+    		<h2>登录账号：<span>{{user.username}}</span></h2>
+    		<p>此账号在各平台通用</p>
+    	</header>
+    	<article>
+    		<section>
+    			<img ng-src="sign_up_weixin.erweima_img" alt="{{ sign_up_weixin.erweima_img }}"/>
+    		</section>
+    		<h3>长按关注<span>{{sign_up_weixin.weixin_name}}公众号</span></h3>
+    		<p>把握最新行情资讯</p>
+    	</article>
+    	<a class="newbutton" ng-click="sign_in_trade()">开始交易</a>
+    	<a class="newbutton" href="#/signup">回去</a>
+    </ion-content>
+</ion-view>

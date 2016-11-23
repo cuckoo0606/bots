@@ -7,13 +7,13 @@
                 <span class="input-text">
                     手机号码:
                 </span>
-                <input type="text" placeholder="手机号码" ng-model="user.phone" required />
+                <input type="text" placeholder="手机号码" ng-model="users.phone" required />
             </li>
             <li class="newinput input_iphone_code">
                 <span class="input-text">
                     验证码:
                 </span>
-                <input type="text" placeholder="短信验证码" ng-model="user.code" />
+                <input type="text" placeholder="短信验证码" ng-model="users.code" />
                 <button class="code_btn" ng-disabled="sms_remaining != 0" ng-click="get_verify()">
                     {{ sms_btn_text }}
                 </button>
@@ -22,32 +22,32 @@
                 <span class="input-text">
                     密码:
                 </span>
-                <input type="password" placeholder="密码" ng-model="user.passwd" required />
+                <input type="password" placeholder="密码" ng-model="users.passwd" required />
             </li>
             <li class="newinput">
                 <span class="input-text">
                     确认密码:
                 </span>
-                <input type="password" placeholder="确认密码" ng-model="user.confirm" required />
+                <input type="password" placeholder="确认密码" ng-model="users.confirm" required />
             </li>
             <li class="newinput">
                 <span class="input-text">
                     推荐码:
                 </span>
-                <input class="sign_code" placeholder="推荐码" ng-model="user.referralcode" />
+                <input class="sign_code" placeholder="推荐码" ng-model="users.referralcode" />
             </li>
             <li class="sign_up_check">
-            	<ion-checkbox ng-model="user.weixinId" style="display: none;">
+            	<ion-checkbox ng-model="users.weixinId" style="display: none;">
                     同时绑定当前微信号免登录进入
                </ion-checkbox>
-                <ion-checkbox ng-model="user.agree">
+                <ion-checkbox ng-model="users.agree">
                     <p>我已阅读</p>
                 </ion-checkbox>
                 <a href="#/cpa">《注册以及交易协议》</a>
             </li>
         </ul>
         <button class="newbutton sign_up_btn" ng-click="signup()"
-            ng-disabled="!user.phone || !user.code || !user.confirm || !user.agree">
+            ng-disabled="!users.phone || !users.code || !users.passwd || !users.confirm || !users.agree || (users.passwd!==users.confirm)">
             注册登陆
         </button>
     </div>
