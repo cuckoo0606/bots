@@ -91,6 +91,7 @@ angular.module('starter.controllers', [])
         $scope.order_params.direction = direction == "lookup" ? "1" : "0";
         $ionicScrollDelegate.resize();
         $scope.trade_boundage();
+	      console.log($rootScope.trade)
     };
 
     $scope.toggle_order_state_panel = function () {
@@ -197,6 +198,7 @@ angular.module('starter.controllers', [])
                     });
                 }
                 $timeout(check_order, 1000);
+                console.log($scope.order_params.cycle.time)
             },
             "fail": function(status, protocol) {
                 $scope.order_result.status = "FAIL";

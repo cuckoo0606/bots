@@ -9,7 +9,7 @@
     </div>
     <div class="panel-body">
         <div class="success" ng-show="order_result.status == 'SUCCESS'">
-        	<div class="circle_wrapper">
+        	<div class="circle_wrapper" ng-show="order_params.cycle.time.indexOf('-') == -1">
         		<div class="right_circle">
 					<img style="-webkit-animation: run {{order_result.order.cycle}}s linear;" src="img/right_circle1.png"/>
 				</div>
@@ -17,12 +17,19 @@
 					<img style=" -webkit-animation: runaway {{order_result.order.cycle}}s linear;" src="img/left_circle1.png"/>
 				</div>
         	</div>
-            <div class="row remaining count_remaining">
+            <div class="row remaining count_remaining" ng-show="order_params.cycle.time.indexOf('-') == -1">
                 <div class="col">
                 		<div>{{ order_result.order.remaining.toFixed(0) }}</div>
                 		<div>现价</div>
                 		<div>{{qoute.value.toFixed(qoute.decimal)}}</div>
                 </div>
+            </div>
+            <div class="pupil_success" ng-show="order_params.cycle.time.indexOf('-') >= 0">
+                <p>交易成功，等待结算</p>
+                <p>
+                    <span>剩余时间：</span>
+                    {{ order_result.order.remaining.toFixed(0)}}天{{ order_result.order.remaining.toFixed(0) }}小时{{ order_result.order.remaining.toFixed(0) }}分{{ order_result.order.remaining.toFixed(0) }}秒
+                </p>
             </div>
             <div class="row info_list">
                 <div class="col col-15 first_info">
@@ -47,7 +54,7 @@
             <div class="row">
                 <div class="col">
                     <i class="ion-paper-airplane"></i>
-                    {{ order_result.message }}
+                    正在交易
                 </div>
             </div>
         </div>

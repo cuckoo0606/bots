@@ -958,6 +958,10 @@ button:disabled{
     padding-right: 5px;
 }
 
+.period-widget-content.active {
+    line-height: 17px;
+}
+
 .period-widget-content > .final_unit {
     font-size: 15px;
     color: #e1ab32;
@@ -1172,6 +1176,40 @@ button:disabled{
 .trade-view .order-state-panel .success {
     color: white;
     border-top: 1px solid #2b2930;
+}
+
+.trade-view .order-state-panel .success .pupil_success {
+    position: relative;
+    height: 150px;
+    text-align: center;
+    padding-left: 0px !important;
+}
+
+.trade-view .order-state-panel .success .pupil_success p:nth-of-type(1) {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin:auto;
+    color: #fdbe19;
+    font-size: 18px;
+    height:20px;
+}
+
+.trade-view .order-state-panel .success .pupil_success p:nth-of-type(2) {
+    position: absolute;
+    top:60%;
+    left:50%;
+    width: 100px;
+    margin-left: -50px;
+    color: #fff;
+    font-size: 12px;
+    height:15px;
+}
+
+.trade-view .order-state-panel .success .pupil_success p:nth-of-type(2) span {
+    color: #6d6d6d;
 }
 
 .trade-view .order-state-panel .success .row {
