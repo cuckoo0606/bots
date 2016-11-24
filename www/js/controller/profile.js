@@ -394,9 +394,9 @@ angular.module('starter.controllers')
             return;
         }
 		
-        $ionicLoading.show({
-            template: "正在提交"
-        });
+	    $ionicLoading.show({
+	      template: "正在提交"
+	    });
         
         var fail = function(status, message) {
             $ionicLoading.show({
@@ -430,18 +430,18 @@ angular.module('starter.controllers')
             });
         }
         else if($scope.deposit.pay_type == "swiftpass") {
-            CapitalService.deposit_swift({
-                "deposit": $scope.deposit,
-                "success": function(url) {
-                    $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_qrcode_url = AppConfigService.get_erweima_url + url;
-                    $scope.pay_qrcode_modal.show();
-                },
-                "fail": fail,
-                "error": error,
-            });
-        }
+	         CapitalService.deposit_swift({
+	            "deposit": $scope.deposit,
+	            "success": function(url) {
+	                $ionicLoading.hide();
+	                $scope.capital_deposit_modal.hide();
+	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + url;
+	                $scope.pay_qrcode_modal.show();
+	            },
+	            "fail": fail,
+	            "error": error,
+	        });
+	    }
         else if($scope.deposit.pay_type == "wechat") {
             CapitalService.deposit_wechat({
                 "deposit": $scope.deposit,

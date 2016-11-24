@@ -45,7 +45,7 @@ angular.module('starter.controllers')
                 var tick = now.getTime() + $rootScope.server_time_tick;
                 var remaining = (expired.getTime() - tick) / 1000;
                 value.remaining = remaining;
-                value.cycle = parseInt(value.cycle);
+                value.alltime = new Date(value.expired).getTime() - new Date(value.created);
                 if (remaining > 0) {
                     $scope.order_list.push(value);
                 }

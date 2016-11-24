@@ -54,6 +54,7 @@ angular.module('starter.controllers')
                 var tick = now.getTime() + $rootScope.server_time_tick;
                 var remaining = (expired.getTime() - tick) / 1000;
                 value.remaining = remaining;
+                value.alltime = new Date(value.expired).getTime() - new Date(value.created);
                 if (remaining > 0) {
                     $rootScope.trade_order_list.push(value);
                 }
