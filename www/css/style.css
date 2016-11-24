@@ -2231,16 +2231,3 @@ button:disabled{
 .person_money_list .scroll .scroll-view .scroll{
     height: auto;
 }
-
-.pay_code {
-		width: 2.5rem;
-		height: 2.5rem;
-		margin: 0 auto;
-    margin-top: 20px;
-    text-align: center;
-}
-
-.pay_code img {
-	width: 100%;
-	height: 100%;
-}

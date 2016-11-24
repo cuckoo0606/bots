@@ -10,12 +10,12 @@ angular.module('starter.services', [])
     this.system_name = "瑞达微交易系统";
     this.company_name = "瑞达国际";
     this.show_system_name = false;
-    this.system_logo = "img/logo.png";
+    this.system_logo = "img/logo/logo.png";
     this.show_system_logo = true;
     this.show_nav_bar = true;
     this.show_signup_code = true;
 	this.if_weixin = {
-		erweima_img:"",
+		erweima_img:"img/logo/yunsof.jpg",
 		weixin_name:"瑞达国际"
 	}
 
