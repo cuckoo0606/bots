@@ -12,7 +12,7 @@
         	<p class="end_time">到期时间</p>
             <ion-scroll direction="x">
                 <div class="period-widget-view">
-                    <div class="period-widget" ng-class="{ 'active' : order_params.cycle == c }" ng-repeat="c in trade.cycle" ng-click="change_cycle(c)">
+                    <div class="period-widget" ng-class="{ 'active' : order_params.cycle == c , 'hover' : c.time.indexOf('-') >= 0}" ng-repeat="c in trade.cycle" ng-click="change_cycle(c)">
                         <div class="period-widget-header">
                             结算时间
                         </div>

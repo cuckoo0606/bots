@@ -890,6 +890,10 @@ button:disabled{
     background-repeat: no-repeat;
 }
 
+.period-widget.hover {
+    width: 100px;
+}
+
 .trade-view .order-confirm-panel .amount {
     width: 100%;
     height: 70px;
@@ -1200,12 +1204,11 @@ button:disabled{
 .trade-view .order-state-panel .success .pupil_success p:nth-of-type(2) {
     position: absolute;
     top:60%;
-    left:50%;
-    width: 100px;
-    margin-left: -50px;
+    width: 100%;
     color: #fff;
     font-size: 12px;
     height:15px;
+    text-align: center;
 }
 
 .trade-view .order-state-panel .success .pupil_success p:nth-of-type(2) span {

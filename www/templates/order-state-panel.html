@@ -28,7 +28,7 @@
                 <p>交易成功，等待结算</p>
                 <p>
                     <span>剩余时间：</span>
-                    {{ order_result.order.remaining.toFixed(0)}}天{{ order_result.order.remaining.toFixed(0) }}小时{{ order_result.order.remaining.toFixed(0) }}分{{ order_result.order.remaining.toFixed(0) }}秒
+                    {{(((order_result.order.remaining*1000-28800000)/86400000|number:0) +'天'+(order_result.order.remaining*1000-28800000|date:'HH小时mm分ss秒'))}}
                 </p>
             </div>
             <div class="row info_list">
