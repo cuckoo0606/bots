@@ -120,13 +120,12 @@ angular.module('starter.controllers')
 
 	//入金界面
     $scope.show_deposit_modal = function() {
+    	$scope.capital_deposit_modal.show();
     	if($scope.user_bank.userbankmes && $scope.user_bank.userbankmes[0].name){
     		$scope.inmoneybank.bankname = $scope.user_bank.userbankmes[0].name;
     	}else{
     		$scope.inmoneybank.bankname = '中国农业银行';
     	}
-    	
-        $scope.capital_deposit_modal.show();
         CapitalService.system_config({
         	"type":"income-handling-type",
 			"success":function(value){
@@ -172,6 +171,7 @@ angular.module('starter.controllers')
 	//出金页面
     $scope.show_withdraw_modal = function() {
         $scope.capital_withdraw_modal.show();
+        $scope.money_fee.outmoney_bank_card = "";
         if($rootScope.user.bankaccount){
         	var bank_lengths = [4,10,16,22];
         	for(var i=0;i<($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);i++){
