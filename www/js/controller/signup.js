@@ -21,7 +21,7 @@ angular.module('starter.controllers')
     var r = window.location.search.substr(1).match(reg);
     if (r != null) {
     	angular.element(document.querySelectorAll(".sign_code"))[0].readOnly = true;
-    	$scope.user.referralcode = unescape(r[2]);
+    	$scope.users.referralcode = unescape(r[2]);
     }
 	
     $scope.spinner = function(visible) {
