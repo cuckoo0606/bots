@@ -17,7 +17,7 @@ angular.module('starter.controllers', [])
     $scope.last_result = [];
     $scope.phase = "";
     $scope.time_unit = "";
-	
+	$scope.trade_money = AppConfigService.trade_money;
 
     $scope.order_params = {
         "cycle": {},

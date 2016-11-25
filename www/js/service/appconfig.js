@@ -7,20 +7,26 @@ angular.module('starter.services', [])
     this.wx_auth = {}
     this.wx_user_info = {}
 
-    this.system_name = "瑞达微交易系统";
-    this.company_name = "瑞达国际";
-    this.show_system_name = false;
-    this.system_logo = "img/logo/logo.png";
+    this.system_name = "微交易系统";
+    this.company_name = "云软微交易";
+    this.show_system_name = true;
+    this.system_logo = "img/logo/logo2.png";
     this.show_system_logo = true;
     this.show_nav_bar = true;
     this.show_signup_code = true;
+    //配置注册跳转二维码
 	this.if_weixin = {
 		erweima_img:"img/logo/yunsof.jpg",
-		weixin_name:"瑞达国际"
+		weixin_name:"云软数据"
+	}
+	//配置交易金额
+	this.trade_money={
+		min_money:20,
+		max_money:5000
 	}
 
-    this.api_url ="http://weixin.buut.cn:8793/";
-    this.qoute_url = "http://weixin.buut.cn:7794/";
+    this.api_url ="http://120.24.44.211:4002/";
+	this.qoute_url = "http://120.24.44.211:7794/";
     this.erweima_url= "http://weixin.buut.cn:8081/index.html";
     this.get_erweima_url = "http://weixin.buut.cn:8081/qrcode?text=";
 
