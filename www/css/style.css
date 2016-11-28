@@ -1032,6 +1032,9 @@ button:disabled{
     padding-left: 10px;
     padding-right: 10px;
     text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #money {
