@@ -65,7 +65,7 @@
                     <div class="col">金额</div>
                 </div>
                 <div class="row">
-                	<div class="col">{{ qoute.name }}</div>
+                	<div class="col qoute_name">{{ qoute.name }}</div>
                     <div class="col"  ng-class="{ 'rise' : order_params.direction == '1', 'fall': order_params.direction == '0' }">{{ order_params.direction == "1" ? "买涨" : "买跌" }}</div>
                     <div class="col" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">{{ qoute.value.toFixed(qoute.decimal) }}</div>
                     <div class="col" id="money"> &yen;{{ (order_params.other_amount == "" || order_params.other_amount == "0") ? order_params.amount : order_params.other_amount }}</div>

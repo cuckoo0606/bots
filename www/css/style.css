@@ -1034,6 +1034,12 @@ button:disabled{
     text-align: center;
 }
 
+.order-detail-view .order-detail .row > .qoute_name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 #money {
 	color: #fdbe19;
 }
