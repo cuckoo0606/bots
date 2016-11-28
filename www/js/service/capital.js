@@ -35,6 +35,7 @@ angular.module('starter.services')
         });
     }
 
+    //汇潮接口
     this.deposit_hc = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/hcmobile")
 
@@ -45,7 +46,7 @@ angular.module('starter.services')
             "data": {
                 "fee": params.deposit.amount,
                 "body": params.deposit.body,
-                "bankcode": params.deposit.bank.code,
+                "bankcode": params.bankcode,
             },
         })
         
@@ -60,6 +61,32 @@ angular.module('starter.services')
         });
     }
 
+	//环迅接口
+    this.deposit_hx = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/ips")
+
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": "入金",
+                "bankcode": params.bankcode,
+            },
+        })
+        
+        .success(function(protocol) {
+            params.success(protocol);
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+    
     this.deposit_swift = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/swiftpass")
 
@@ -128,30 +155,6 @@ angular.module('starter.services')
         });
     }
 
-    this.get_bank_list = function(pay_type, complete) {
-        if (complete) {
-            if (pay_type == "ecpss") {
-                var bank_list = [
-                    { "name": "快捷支付", "code": "NOCARD" },
-                    { "name": "招商银行", "code": "CMB" },
-                    { "name": "工商银行", "code": "ICBC" },
-                    { "name": "农业银行", "code": "ABC" },
-                    { "name": "中国银行", "code": "BOCSH" },
-                    { "name": "建设银行", "code": "CCB" },
-                    { "name": "民生银行", "code": "CMBC" },
-                    { "name": "光大银行", "code": "CEB" },
-                    { "name": "交通银行", "code": "BOCOM" },
-                    { "name": "兴业银行", "code": "CIB" },
-                    { "name": "浦发银行", "code": "HXB" },
-                    { "name": "华夏银行", "code": "HXB" },
-                ];
-                complete(bank_list);
-            }
-            else {
-                complete([]);
-            }
-        }
-    }
 
 	//资金列表历史接口
     this.request_capital_list = function(complete) {
