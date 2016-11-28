@@ -1032,6 +1032,9 @@ button:disabled{
     padding-left: 10px;
     padding-right: 10px;
     text-align: center;
+}
+
+.order-detail-view .order-detail .row > .qoute_name {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
