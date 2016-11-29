@@ -143,7 +143,7 @@ angular.module('starter.services', [])
             	'name': '平安银行', 
             	'code': 'PINGAN',
             	'codenumber':'1121',
-            	'icon':'icon-04100000 orange',
+            	'icon':'icon-pinganyinxing orange',
             },
             {
             	'name': '北京银行', 

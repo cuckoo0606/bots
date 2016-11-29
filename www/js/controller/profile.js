@@ -7,9 +7,9 @@ angular.module('starter.controllers')
     $scope.close_order_list = CloseOrderService.order_list;
     $scope.pay_modal_url = "";
     $scope.pay_qrcode_url = "";
-    $scope.deposit_bank_list = [];
     $scope.money_fee = {
     	"outmoney_bank_card":"",
+    	"outmoney_bank":"",
     	"outmoney_fee_type":"",
     	"outmoney_fee":"",
     	"outmoneymin":"",
@@ -23,10 +23,11 @@ angular.module('starter.controllers')
     	if_has_more_money_order:false,
     };
     $scope.money_page_index = 0;
+    $scope.deposit_bank_list = AppConfigService.deposit_bank_list;
     $scope.pay_type_list = AppConfigService.pay_type_list;
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
-    $scope.pay_bank_list = '';
+    $scope.pay_bank_list = [];
 	$scope.change_userpass={
 		oldpass:"",
 		newpass:"",
@@ -122,13 +123,13 @@ angular.module('starter.controllers')
     	$scope.capital_deposit_modal.show();
     	
 		if($scope.pay_type_list.indexOf("huichao") !=-1 ){
-			$scope.pay_bank_list = AppConfigService.deposit_bank_list.filter(function(value){
+			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
 				if(value.code){
 					return value;
 				}
 			});
 		}else if($scope.pay_type_list.indexOf("huanxun") !=-1 ){
-			$scope.pay_bank_list = AppConfigService.deposit_bank_list.filter(function(value){
+			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
 				if(value.codenumber){
 					return value;
 				}
@@ -137,7 +138,7 @@ angular.module('starter.controllers')
 		
 		if($rootScope.user.bank){
 			
-			var defalutobj = AppConfigService.deposit_bank_list.filter(function(value){
+			var defalutobj = $scope.deposit_bank_list.filter(function(value){
 				if($rootScope.user.bank == value.name || $rootScope.user.bank == value.code){
 					return value;
 				}
@@ -303,6 +304,7 @@ angular.module('starter.controllers')
     $scope.show_withdraw_modal = function() {
         $scope.capital_withdraw_modal.show();
         $scope.money_fee.outmoney_bank_card = "";
+        $scope.money_fee.outmoney_bank_card_icon = "";
         if($rootScope.user.bankaccount){
         	var bank_lengths = [4,10,16,22];
         	for(var i=0;i<($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);i++){
@@ -312,7 +314,14 @@ angular.module('starter.controllers')
         		}
         	};
         	$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card + $rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);
+        	$scope.money_fee.outmoney_bank = $scope.deposit_bank_list.filter(function(value){
+				if([value.name,value.code,value.codenumber].indexOf($rootScope.user.bank)!=-1){
+					return value;
+				}
+			});
+			
         };
+        
         CapitalService.system_config({
         	"type":"pay-handling-type",
 			"success":function(value){
@@ -354,6 +363,11 @@ angular.module('starter.controllers')
 			}
 		});
   }
+    
+    $scope.go_add_bank = function(){
+    	$scope.capital_withdraw_modal.hide();
+    	$scope.user_info_modal.show();
+    }
 	//修改密码页面
 	$scope.show_user_modal = function(){
 		$scope.user_change_modal.show();

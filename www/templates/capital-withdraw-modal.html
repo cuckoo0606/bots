@@ -6,49 +6,19 @@
         </div>
     </ion-header-bar>
     <ion-content class="out_money_content">
-        <header class="coldbg" ng-class="{'hotbg':(user_bank.userbankmes[0].name == '中国银行'||user_bank.userbankmes[0].name == '中国工商银行'||user_bank.userbankmes[0].name == '招商银行'||user_bank.userbankmes[0].name == '中信银行'||user_bank.userbankmes[0].name == '华夏银行'||user_bank.userbankmes[0].name == '长沙银行'||user_bank.userbankmes[0].name == '徽商银行'||user_bank.userbankmes[0].name == '广发银行')}" ng-show="user_bank">
-        	<p>{{user_bank.userbankmes[0].name}}</p>
+        <header class="coldbg" ng-class="{'hotbg':(money_fee.outmoney_bank[0].name == '中国银行'||money_fee.outmoney_bank[0].name == '中国工商银行'||money_fee.outmoney_bank[0].name == '招商银行'||money_fee.outmoney_bank[0].name == '中信银行'||money_fee.outmoney_bank[0].name == '华夏银行'||money_fee.outmoney_bank[0].name == '长沙银行'||money_fee.outmoney_bank[0].name == '徽商银行'||money_fee.outmoney_bank[0].name == '广发银行'||money_fee.outmoney_bank[0].name == '平安银行')}" ng-show="user.bank">
+        	<p>{{money_fee.outmoney_bank[0].name}}</p>
         	<p>{{money_fee.outmoney_bank_card}}</p>
-        	<i class="iconfont" ng-class="{'icon-nongye':user_bank.userbankmes[0].name == '中国农业银行',
-'icon-zhongguo':user_bank.userbankmes[0].name == '中国银行',
-'icon-gongshang':user_bank.userbankmes[0].name == '中国工商银行',
-'icon-jiaotong':user_bank.userbankmes[0].name == '交通银行',
-'icon-jianshe':user_bank.userbankmes[0].name == '中国建设银行',
-'icon-youchu':user_bank.userbankmes[0].name == '中国邮政储蓄银行',
-'icon-zhaoshang':user_bank.userbankmes[0].name == '招商银行',
-'icon-pufa':user_bank.userbankmes[0].name == '浦发银行',
-'icon-gunagda':user_bank.userbankmes[0].name == '中国光大银行',
-'icon-zhongxin':user_bank.userbankmes[0].name == '中信银行',
-'icon-pingan':user_bank.userbankmes[0].name == '平安银行',
-'icon-minsheng':user_bank.userbankmes[0].name == '中国民生银行',
-'icon-huaxia':user_bank.userbankmes[0].name == '华夏银行',
-'icon-35-01':user_bank.userbankmes[0].name == '广发银行',
-'icon-xingye':user_bank.userbankmes[0].name == '兴业银行',
-'icon-huishang':user_bank.userbankmes[0].name == '徽商银行',
-'icon-changsha':user_bank.userbankmes[0].name == '长沙银行',
-'icon-xingyong':user_bank.userbankmes[0].name == '浙江省农村信用社联合社',}" ></i>
-        	<i class="iconfont" ng-class="{'icon-nongye':user_bank.userbankmes[0].name == '中国农业银行',
-'icon-zhongguo':user_bank.userbankmes[0].name == '中国银行',
-'icon-gongshang':user_bank.userbankmes[0].name == '中国工商银行',
-'icon-jiaotong':user_bank.userbankmes[0].name == '交通银行',
-'icon-jianshe':user_bank.userbankmes[0].name == '中国建设银行',
-'icon-youchu':user_bank.userbankmes[0].name == '中国邮政储蓄银行',
-'icon-zhaoshang':user_bank.userbankmes[0].name == '招商银行',
-'icon-pufa':user_bank.userbankmes[0].name == '浦发银行',
-'icon-gunagda':user_bank.userbankmes[0].name == '中国光大银行',
-'icon-zhongxin':user_bank.userbankmes[0].name == '中信银行',
-'icon-pingan':user_bank.userbankmes[0].name == '平安银行',
-'icon-minsheng':user_bank.userbankmes[0].name == '中国民生银行',
-'icon-huaxia':user_bank.userbankmes[0].name == '华夏银行',
-'icon-35-01':user_bank.userbankmes[0].name == '广发银行',
-'icon-xingye':user_bank.userbankmes[0].name == '兴业银行',
-'icon-huishang':user_bank.userbankmes[0].name == '徽商银行',
-'icon-changsha':user_bank.userbankmes[0].name == '长沙银行',
-'icon-xingyong':user_bank.userbankmes[0].name == '浙江省农村信用社联合社',}"></i>
+        	<i class="iconfont {{money_fee.outmoney_bank[0].icon}}"></i>
+        	<i class="iconfont {{money_fee.outmoney_bank[0].icon}}"></i>
+        </header>
+        <header class="ifnone_add_bank" ng-hide="user.bank" ng-click="go_add_bank()">
+        	<p>+</p>
+        	<p>添加银行卡</p>
         </header>
         <article>
         	<span>
-        		<i class="iconfont icon-3-01"></i>
+        		<i class="iconfont icon--4"></i>
         		提现金额：
         	</span>
         	<input type="number" placeholder="请输入出金金额" ng-model="outAmount.outamount" ng-keydown="only_number()" required/>

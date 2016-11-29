@@ -281,7 +281,28 @@
 .out_money_content .hotbg i:nth-of-type(2){
 	color: #ec6678;
 }
-
+.out_money_content .ifnone_add_bank{
+	background: #212124;
+	background-clip:border ;
+	-webkit-background-clip:border ;
+	border: 0.02rem #505050 dashed;
+}
+.out_money_content .ifnone_add_bank p:nth-of-type(1){
+	position: static;
+	text-align: center;
+	width: 100%;
+	font-size: 0.8rem;
+	height: 0.6rem;
+	line-height: 0.6rem;
+	color: #505050 ;
+}
+.out_money_content .ifnone_add_bank p:nth-of-type(2){
+	position: static;
+	text-align: center;
+	width: 100%;
+	font-size: 0.13rem;
+	color: #505050 ;
+}
 .out_money_content header{
 	width: 96%;
 	height: 1rem;
@@ -415,34 +436,34 @@
 /*入金弹框样式*/
 
 .red{
-	color: #cc0011 !important;
+	color: #cc0011 ;
 }
 .blue{
-	color: #1358bd !important;
+	color: #1358bd ;
 }
 .qing{
-	color: #19725d !important;
+	color: #19725d ;
 }
 .green{
-	color: #007e3d !important;
+	color: #007e3d ;
 }
 .orange{
-	color: orangered !important;
+	color: orangered ;
 }
 .pay_blue{
 	color: #159aef !important;
 }
 .pay_green{
-	color: #1fc65b !important;
+	color: #1fc65b ;
 }
 .pay_purple{
-	color: #1d2087 !important;
+	color: #1d2087 ;
 }
 .pay_yellow{
-	color: #fbe900 !important;
+	color: #fbe900 ;
 }
 .pay_qing{
-	color: #00a5d7 !important;
+	color: #00a5d7 ;
 }
 .pay_blue_bg{
 	background: #159aef;
@@ -585,8 +606,10 @@
 	line-height: 0.3rem;
 	vertical-align: top;
 	font-size: 0.13rem;
-	color: #aaaaaa;
 	width: 2rem;
+}
+#in_money_content .pay_bank_list_content ul li p span:nth-of-type{
+	color: #aaaaaa;
 }
 #in_money_content .pay_bank_list_content ul li p .bankicon{
 	width: 0.4rem;
