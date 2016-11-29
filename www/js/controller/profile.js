@@ -254,7 +254,20 @@ angular.module('starter.controllers')
 	            "error": error,
 	        });
 	    }
-        else if($scope.deposit.pay_type == "swiftpass") {
+        else if($scope.deposit.pay_type == "huanxun_wecat") {
+	         CapitalService.deposit_hxwecat({
+	            "deposit": $scope.deposit,
+	            "success": function(url) {
+	                $ionicLoading.hide();
+	                $scope.capital_deposit_modal.hide();
+	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
+	                $scope.pay_qrcode_modal.show();
+	            },
+	            "fail": fail,
+	            "error": error,
+	        });
+	    }
+        else if($scope.deposit.pay_type == "weifutong") {
 	         CapitalService.deposit_swift({
 	            "deposit": $scope.deposit,
 	            "success": function(url) {

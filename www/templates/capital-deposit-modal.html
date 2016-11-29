@@ -39,15 +39,7 @@
 					</ul>
 				</ion-scroll>
 			</div>
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'swiftpass'" ng-show="pay_type_list.indexOf('swiftpass') != -1">
-	            <div class="pay_bank_list_header">
-	            	<div class="kuang"></div>
-					<i class="pay_green_bg"></i>
-					<article>
-						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
-					</article>
-				</div>
-	        </ion-radio>
+	        
 	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'wechat'" ng-show="pay_type_list.indexOf('wechat') != -1">
 	            <div class="pay_bank_list_header">
 	            	<div class="kuang"></div>
@@ -57,6 +49,28 @@
 					</article>
 				</div>
 	        </ion-radio>
+	        
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'weifutong'" ng-show="pay_type_list.indexOf('weifutong') != -1">
+	            <div class="pay_bank_list_header">
+	            	<div class="kuang"></div>
+					<i class="pay_green_bg"></i>
+					<article>
+						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
+					</article>
+				</div>
+	        </ion-radio>
+
+	        
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'huanxun_wecat'" ng-show="pay_type_list.indexOf('huanxun_wecat') != -1">
+	            <div class="pay_bank_list_header">
+	            	<div class="kuang"></div>
+					<i class="pay_green_bg"></i>
+					<article>
+						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
+					</article>
+				</div>
+	        </ion-radio>
+	        
 	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'alipay'" ng-show="pay_type_list.indexOf('alipay') !=  -1">
 	            <div class="pay_bank_list_header">
 		            <div class="kuang"></div>

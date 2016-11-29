@@ -454,7 +454,7 @@
 	color: #159aef !important;
 }
 .pay_green{
-	color: #1fc65b ;
+	color: #1fc65b !important;
 }
 .pay_purple{
 	color: #1d2087 ;
@@ -706,4 +706,12 @@
 	margin-top:1.5rem;
 	color: #969696;
 	font-size: 0.12rem;
+}
+
+/*快捷支付页面*/
+iframe{
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+	-webkit-overflow-scrolling:touch;
 }
