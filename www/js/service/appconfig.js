@@ -21,7 +21,7 @@ angular.module('starter.services', [])
 	}
 	//配置交易金额
 	this.trade_money={
-		min_money:20,
+		min_money:10,
 		max_money:5000
 	}
 
