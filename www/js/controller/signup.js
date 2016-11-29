@@ -99,9 +99,15 @@ angular.module('starter.controllers')
                             $rootScope.user = user;
                             $ionicHistory.clearHistory();
                             $timeout(function() {
-		                		$scope.is_signin = false;
-			                    $scope.spinner(false);
-			                    $state.go("signuperweima");
+                            	if(ionic.Platform.isAndroid()||ionic.Platform.isIOS()){
+                            		$scope.is_signin = false;
+				                    $scope.spinner(false);
+				                    $scope.sign_in_trade();
+                            	}else{
+                            		$scope.is_signin = false;
+				                    $scope.spinner(false);
+				                    $state.go("signuperweima");
+                            	}
 		                	},2000);
                         });
 		            },

@@ -27,8 +27,8 @@ angular.module('starter.services', [])
 
     this.api_url ="http://120.24.44.211:4002/";
 	this.qoute_url = "http://120.24.44.211:7794/";
-    this.erweima_url= "http://weixin.buut.cn:8081/index.html";
-    this.get_erweima_url = "http://weixin.buut.cn:8081/qrcode?text=";
+    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
+    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
     this.default_pay_type = "huichao";
     this.pay_type_list = ["huichao"];

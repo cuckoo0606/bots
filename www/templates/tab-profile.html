@@ -1,11 +1,11 @@
 <ion-view view-title="个人中心" hide-nav-bar="{{ !show_nav_bar }}">
     <ion-content class="personalbg" scroll="false">
 		<header>
-			<i ng-click="app_exit()" class="iconfont icon-11-01"></i>
+			<i ng-click="app_exit()" class="iconfont icon--9"></i>
 			<article>
 				<img src="img/logobg.jpg" />
 			</article>
-			<p>{{ user.username }}<span class="iconfont icon-31-01" ng-click="show_user_modal()"></span></p>
+			<p>{{ user.username }}<span class="iconfont icon--3" ng-click="show_user_modal()"></span></p>
 			<p>¥{{user.amount.toFixed(0)}}</p>
 		</header>
 		<ul>
