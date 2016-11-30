@@ -94,7 +94,7 @@
 	        	余额：<span>{{user.amount.toFixed(0)}}</span>
 	        	手续费：<span ng-show="money_fee.inmoney_fee_type == 0">{{money_fee.inmoney_fee}}%</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">¥{{money_fee.inmoney_fee}}</span>
-	        	实际支付：<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?deposit.amount*(money_fee.inmoney_fee/100+1):0}}</span>
+	        	实际支付：<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?(deposit.amount*(money_fee.inmoney_fee/100+1)).toFixed(2):0}}</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{deposit.amount>0?deposit.amount+money_fee.inmoney_fee:0}}</span>
 	        </footer>
 	        <button class="newbutton outmoneybtn" ng-disabled="deposit.amount==''||deposit.amount==undefined||(deposit.amount<money_fee.inmoneymin)" ng-click="submit_deposit()">确认充值</button>

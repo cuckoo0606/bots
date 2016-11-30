@@ -8,7 +8,7 @@
     <ion-content class="pay_weixin_code">
         <header >
         	<p>支付金额：
-        		<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?deposit.amount*(money_fee.inmoney_fee/100+1):0}}</span>
+        		<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?(deposit.amount*(money_fee.inmoney_fee/100+1)).toFixed(2):0}}</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{deposit.amount>0?deposit.amount+money_fee.inmoney_fee:0}}</span>
         	</p>
         	<article>
