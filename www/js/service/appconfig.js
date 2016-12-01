@@ -25,13 +25,13 @@ angular.module('starter.services', [])
 		max_money:5000
 	}
 
-    this.api_url = "http://pay.longlix.cn/";
-	this.qoute_url = "http://pay.longlix.cn:7794/";
-    this.erweima_url= "http://pay.longlix.cn:8080/index.html";
-    this.get_erweima_url = "http://pay.longlix.cn:8080/qrcode?text=";
+    this.api_url = "http://weixin.leather-boss.com:8793/";
+	this.qoute_url = "http://weixin.leather-boss.com:7794/";
+    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
+    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
-    this.default_pay_type = "huanxun";
-    this.pay_type_list = ["huanxun","huanxun_wecat"];
+    this.default_pay_type = "huichao";
+    this.pay_type_list = ["huichao","weifutong"];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
