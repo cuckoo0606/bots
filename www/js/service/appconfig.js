@@ -10,12 +10,12 @@ angular.module('starter.services', [])
     this.system_name = "微交易系统";
     this.company_name = "云软微交易";
     this.show_system_name = true;
-    this.system_logo = "img/logo/logo2.png";
+    this.system_logo = "img/logo/logo.png";
     this.show_system_logo = true;
     this.show_signup_code = true;
     //配置注册跳转二维码
 	this.if_weixin = {
-		erweima_img:"img/logo/yunsof.jpg",
+		erweima_img:"img/logo/qcode.jpg",
 		weixin_name:"云软数据"
 	}
 	//配置交易金额
