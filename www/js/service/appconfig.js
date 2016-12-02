@@ -12,7 +12,6 @@ angular.module('starter.services', [])
     this.show_system_name = true;
     this.system_logo = "img/logo/logo2.png";
     this.show_system_logo = true;
-    this.show_nav_bar = true;
     this.show_signup_code = true;
     //配置注册跳转二维码
 	this.if_weixin = {

@@ -482,6 +482,7 @@
 }
 #in_money_content header{
 	margin-bottom:0.1rem ;
+	margin-top: 0.1rem;
 }
 #in_money_content article span i{
 	color: #eb3445;
