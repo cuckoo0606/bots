@@ -1376,6 +1376,18 @@ button:disabled{
     left: 0;
  }
 
+ /*毛玻璃效果*/
+.glass_mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: -webkit-linear-gradient(left top, rgba(255, 177, 0, 0.49), rgba(0, 161, 255, 0.76));
+    background: -moz-linear-gradient(left top, rgba(255, 177, 0, 0.49), rgba(0, 161, 255, 0.76));
+    background: linear-gradient(left top, rgba(255, 177, 0, 0.49), rgba(0, 161, 255, 0.76));
+    z-index: 20;
+    display: block;
+}
+
 .trade-view .order-state-panel.open {
     display: block;
 }
