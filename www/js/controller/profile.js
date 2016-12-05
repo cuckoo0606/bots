@@ -225,118 +225,17 @@ angular.module('starter.controllers')
             }, 2000);
         }
        
-        if ($scope.deposit.pay_type == "huichao") { 
-            CapitalService.deposit_hc({
-                "deposit": $scope.deposit,
-                "bankcode":$scope.inmoneybank.bankmes.code,
-                "success": function(url) {
-                    $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
-                    $scope.pay_webview_modal.show();
-                },
-                "fail": fail,
-                "error": error,
-            });
-        }
-        else if($scope.deposit.pay_type == "zhongyun") {
-	         CapitalService.deposit_zhongyun({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
-	                $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
-                    $scope.pay_webview_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "zhongyun_wecat") {
-	         CapitalService.deposit_zhongyun_wecat({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
-	            	$ionicLoading.hide();
-	                $scope.capital_deposit_modal.hide();
-	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
-	                $scope.pay_qrcode_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "huanxun") {
-	         CapitalService.deposit_hx({
-	            "deposit": $scope.deposit,
-	            "bankcode":$scope.inmoneybank.bankmes.codenumber,
-	            "success": function(url) {
-	                $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
-                    $scope.pay_webview_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "huanxun_wecat") {
-	         CapitalService.deposit_hxwecat({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
-	                $ionicLoading.hide();
-	                $scope.capital_deposit_modal.hide();
-	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
-	                $scope.pay_qrcode_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "weifutong") {
-	         CapitalService.deposit_swift({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
-	                $ionicLoading.hide();
-	                $scope.capital_deposit_modal.hide();
-	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
-	                $scope.pay_qrcode_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "wechat") {
-            CapitalService.deposit_wechat({
-                "deposit": $scope.deposit,
-                "success": function(code, msg, res) {
-                    $ionicLoading.hide();
-
-                    wx.config({
-                        debug: false,
-                        appId: res.config.appId,
-                        timestamp: res.config.timestamp,
-                        nonceStr: res.config.nonceStr,
-                        signature: res.config.signature,
-                        jsApiList: [ "chooseWXPay" ]
-                    });
-
-                    wx.ready(function(){
-                        wx.chooseWXPay({
-                            timestamp: res.payinfo.timeStamp,
-                            nonceStr: res.payinfo.nonceStr,
-                            package: res.payinfo.package,
-                            signType: res.payinfo.signType,
-                            paySign: res.payinfo.paySign,
-                            success: function () {
-                                $scope.capital_deposit_modal.hide();
-                            }
-                        });
-                    });
-                },
-                "fail": fail,
-                "error": error,
-            });
-        }
+         CapitalService.deposit_zhongyun({
+            "deposit": $scope.deposit,
+            "success": function(url) {
+                $ionicLoading.hide();
+                $scope.capital_deposit_modal.hide();
+                $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
+                $scope.pay_webview_modal.show();
+            },
+            "fail": fail,
+            "error": error,
+        });
     }
 	//出金页面
     $scope.show_withdraw_modal = function() {
