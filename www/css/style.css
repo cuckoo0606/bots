@@ -1962,21 +1962,21 @@ button:disabled{
     width: 100%;
     height: 100%;
 }
-.webview-modal .bar-header{
-	position: absolute;
-	top:0;
-	left: 0;
-	z-index: 10001;
+.pay_model{
+	width: 100%;
+	height: 100%;
 }
-.webview-modal iframe {
-    width: 100%;
-    height:6rem;
-    position: absolute;
-    top: -0.75rem;
-    left: 0;
-    z-index: 10000;
+.webview-modal .iframe_scroll{
+	width:100%;
+	height:100%;
+	-webkit-overflow-scrolling:touch; 
+	overflow: scroll;
 }
 
+.webview-modal iframe {
+    width: 100%;
+		height: 100%;
+}
 .bank-info-modal ul {
     height: 100%;
 }
