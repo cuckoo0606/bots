@@ -7,30 +7,30 @@ angular.module('starter.services', [])
     this.wx_auth = {}
     this.wx_user_info = {}
 
-    this.system_name = "微交易系统";
-    this.company_name = "云软微交易";
-    this.show_system_name = true;
+    this.system_name = "瑞达微交易系统";
+    this.company_name = "瑞达微交易系统";
+    this.show_system_name = false;
     this.system_logo = "img/logo/logo.png";
     this.show_system_logo = true;
     this.show_signup_code = true;
     //配置注册跳转二维码
 	this.if_weixin = {
 		erweima_img:"img/logo/qcode.jpg",
-		weixin_name:"云软数据"
+		weixin_name:"瑞达微交易"
 	}
 	//配置交易金额
 	this.trade_money={
-		min_money:10,
+		min_money:20,
 		max_money:5000
 	}
 
-    this.api_url = "http://47.90.45.173:8793/";
-	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
-    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
+    this.api_url = "http://weixin.buut.cn:8793/";
+	this.qoute_url = "http://weixin.buut.cn:7794/";
+    this.erweima_url= "http://weixin.buut.cn/index.html";
+    this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
 
     this.default_pay_type = "zhongyun";
-    this.pay_type_list = ["zhongyun","zhongyun_wecat"];
+    this.pay_type_list = ["zhongyun", "zhongyun_wecat"];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
