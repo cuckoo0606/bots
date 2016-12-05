@@ -60,6 +60,60 @@ angular.module('starter.services')
             }
         });
     }
+    
+    //中云接口
+    this.deposit_zhongyun = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/yz")
+
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": "入金",
+                "bankcode": "yjzf",
+                "tongdao" : "YeePayYjzf",
+            },
+        })
+        
+        .success(function(protocol) {
+            params.success(protocol);
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+    
+    //中云微信接口
+    this.deposit_zhongyun_wecat = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/yz")
+
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": "入金",
+                "bankcode": "WXZF",
+                "tongdao" : "ShaoBeiGzh",
+            },
+        })
+        
+        .success(function(protocol) {
+            params.success(protocol);
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
 
 	//环迅接口
     this.deposit_hx = function(params) {

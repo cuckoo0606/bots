@@ -24,13 +24,13 @@ angular.module('starter.services', [])
 		max_money:5000
 	}
 
-    this.api_url = "http://weixin.leather-boss.com:8793/";
+    this.api_url = "http://47.90.45.173:8793/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
     this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
     this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
-    this.default_pay_type = "huichao";
-    this.pay_type_list = ["huichao","weifutong"];
+    this.default_pay_type = "zhongyun";
+    this.pay_type_list = ["zhongyun","zhongyun_wecat"];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },

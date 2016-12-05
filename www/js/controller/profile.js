@@ -135,7 +135,6 @@ angular.module('starter.controllers')
 				}
 			});
 		};
-		
 		if($rootScope.user.bank){
 			
 			var defalutobj = $scope.deposit_bank_list.filter(function(value){
@@ -240,6 +239,32 @@ angular.module('starter.controllers')
                 "error": error,
             });
         }
+        else if($scope.deposit.pay_type == "zhongyun") {
+	         CapitalService.deposit_zhongyun({
+	            "deposit": $scope.deposit,
+	            "success": function(url) {
+	                $ionicLoading.hide();
+                    $scope.capital_deposit_modal.hide();
+                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
+                    $scope.pay_webview_modal.show();
+	            },
+	            "fail": fail,
+	            "error": error,
+	        });
+	    }
+        else if($scope.deposit.pay_type == "zhongyun_wecat") {
+	         CapitalService.deposit_zhongyun_wecat({
+	            "deposit": $scope.deposit,
+	            "success": function(url) {
+	            	$ionicLoading.hide();
+	                $scope.capital_deposit_modal.hide();
+	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
+	                $scope.pay_qrcode_modal.show();
+	            },
+	            "fail": fail,
+	            "error": error,
+	        });
+	    }
         else if($scope.deposit.pay_type == "huanxun") {
 	         CapitalService.deposit_hx({
 	            "deposit": $scope.deposit,
