@@ -135,8 +135,8 @@ angular.module('starter.controllers')
 				}
 			});
 		};
+		
 		if($rootScope.user.bank){
-			
 			var defalutobj = $scope.deposit_bank_list.filter(function(value){
 				if($rootScope.user.bank == value.name || $rootScope.user.bank == value.code){
 					return value;
