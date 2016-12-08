@@ -143,7 +143,6 @@ angular.module('starter.services')
     
     //环迅微信接口
     this.deposit_hxwecat = function(params) {
-    	console.log(params);
         var url = AppConfigService.build_api_url("v1/pay/ipswx")
 
         $http({
@@ -153,6 +152,34 @@ angular.module('starter.services')
             "data": {
                 "fee": params.deposit.amount,
                 "body": "入金"
+            },
+        })
+        
+        .success(function(protocol) {
+            params.success(protocol);
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+    
+    //智慧微信接口
+    this.deposit_zhihuiwecat = function(params) {
+    	console.log("123");
+        var url = AppConfigService.build_api_url("v1/pay/chinag")
+
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": "入金",
+                "txnType" : "",
+                
             },
         })
         

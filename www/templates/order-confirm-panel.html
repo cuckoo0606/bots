@@ -37,7 +37,7 @@
                 <p class="invest_account">
                     投资金额
                     <span ng-show="((order_params.other_amount == '' || order_params.other_amount == '0') ? order_params.amount : order_params.other_amount) > user.amount" >投资金额余额不足，请充值！</span>
-                    <span ng-show="order_params.other_amount > trade_money.max_money/10 && user.amount > trade_money.max_money" >单笔投资金额不超过{{trade_money.max_money}}</span>
+                    <span ng-show="(order_params.other_amount > trade_money.max_money) && (user.amount > order_params.other_amount)" >单笔投资金额不超过{{trade_money.max_money}}</span>
                     <span ng-show="order_params.other_amount < trade_money.min_money && order_params.other_amount != ''" >单笔投资金额不少于{{trade_money.min_money}}</span>
                 </p>
                 <ion-scroll direction="x">
@@ -73,7 +73,9 @@
                     </div>
                     <div class="row btn_confirm">
                         <div class="col">
-                            <button class="button" ng-click="order()" ng-disabled="((order_params.other_amount == '' || order_params.other_amount == '0') ? order_params.amount : order_params.other_amount) < trade_money.min_money||((order_params.other_amount == '' || order_params.other_amount == '0') ? order_params.amount : order_params.other_amount) > user.amount">确认下单</button>
+                            <button class="button" ng-click="order()" ng-disabled="((order_params.other_amount == '' || order_params.other_amount == 0) ? order_params.amount : order_params.other_amount) < trade_money.min_money || ((order_params.other_amount == '' || order_params.other_amount == 0) ? order_params.amount : order_params.other_amount) > trade_money.max_money || ((order_params.other_amount == '' || order_params.other_amount == 0) ? order_params.amount : order_params.other_amount) > user.amount">
+                            	确认下单
+                            </button>
                         </div>
                     </div>
                     <p class="expect_profit">

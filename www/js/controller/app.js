@@ -146,7 +146,7 @@ angular.module('starter.controllers', [])
     };
     
     $scope.min_money = function() {
-	   if(($scope.order_params.other_amount>500)&&(event.keyCode!=8)) {
+	   if(($scope.order_params.other_amount > $scope.trade_money.max_money)&&(event.keyCode!=8)) {
 	   		event.preventDefault()
 	   }
     }

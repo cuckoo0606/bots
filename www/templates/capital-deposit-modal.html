@@ -90,6 +90,16 @@
 				</div>
 	        </ion-radio>
 	        
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'zhihui_wecat'" ng-show="(pay_type_list.indexOf('zhihui_wecat') != -1)&&iswecat">
+	            <div class="pay_bank_list_header">
+	            	<div class="kuang"></div>
+					<i class="pay_green_bg"></i>
+					<article>
+						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
+					</article>
+				</div>
+	        </ion-radio>
+	        
 	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'alipay'" ng-show="pay_type_list.indexOf('alipay') !=  -1">
 	            <div class="pay_bank_list_header">
 		            <div class="kuang"></div>
