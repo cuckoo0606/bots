@@ -440,7 +440,12 @@ angular.module('starter.controllers')
             "verifyCode" :pay_shangyinxin_pay.surecode,
             "success": function(url) {
                 console.log(url);
-                $scope.pay_shangyinxin_mes.success = false;
+	            $ionicLoading.show({
+	                template: "入金成功"
+	            });
+	            $timeout(function () {
+	                $ionicLoading.hide();
+	            }, 2000);
             },
             "fail": function(status, message) {
 	            $ionicLoading.show({
