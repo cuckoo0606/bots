@@ -35,6 +35,28 @@ angular.module('starter.services')
         });
     }
 
+    //一麻袋接口
+    this.deposit_ymd = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/yemadaikj");
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": params.deposit.body,
+            },
+        })
+        .success(function(protocol) {
+            params.success(protocol);
+        })
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+
     //汇潮接口
     this.deposit_hc = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/hcmobile")

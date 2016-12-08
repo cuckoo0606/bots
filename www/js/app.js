@@ -73,7 +73,13 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider) {
+    //解决缓存问题
+    if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {}; 
+    }
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
 
     $ionicConfigProvider.platform.ios.tabs.style('standard'); 
     $ionicConfigProvider.platform.ios.tabs.position('bottom');

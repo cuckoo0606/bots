@@ -34,11 +34,6 @@ angular.module('starter.controllers', [])
         "message": "正在提交订单",
     }
 
-    $scope.check_update = AppConfigService.check_update;
-    $ionicPlatform.ready(function() {    
-        $scope.check_update();
-    });
-
     $scope.app_exit = function() {
         if (ionic.Platform.isWebView) {
             $rootScope.user = "";

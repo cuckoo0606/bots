@@ -16,6 +16,14 @@
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.rd.weitrade2"
         },
+        "cordova-plugin-crosswalk-webview": {
+            "XWALK_VERSION": "21+",
+            "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
+            "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
+            "XWALK_MODE": "embedded",
+            "XWALK_MULTIPLEAPK": "true",
+            "PACKAGE_NAME": "com.rd.weitrade2"
+        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.rd.weitrade2"
         },
@@ -38,14 +46,6 @@
             "PACKAGE_NAME": "com.rd.weitrade2"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.rd.weitrade2"
-        },
-        "cordova-plugin-crosswalk-webview": {
-            "XWALK_VERSION": "21+",
-            "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
-            "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
-            "XWALK_MODE": "embedded",
-            "XWALK_MULTIPLEAPK": "true",
             "PACKAGE_NAME": "com.rd.weitrade2"
         }
     },

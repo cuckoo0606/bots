@@ -7,8 +7,8 @@ angular.module('starter.services', [])
     this.wx_auth = {}
     this.wx_user_info = {}
 
-    this.system_name = "隆福安微交易";
-    this.company_name = "隆福安微交易";
+    this.system_name = "瑞达财富通";
+    this.company_name = "瑞达财富通";
     this.show_system_name = false;
     this.system_logo = "img/logo/logo.png";
     this.show_system_logo = true;
@@ -16,21 +16,21 @@ angular.module('starter.services', [])
     //配置注册跳转二维码
 	this.if_weixin = {
 		erweima_img:"img/logo/qcode.jpg",
-		weixin_name:"隆福安微交易"
+		weixin_name:"瑞达财富通"
 	}
 	//配置交易金额
 	this.trade_money={
-		min_money:10,
-		max_money:10000
+		min_money:20,
+		max_money:5000
 	}
 
-    this.api_url = "http://pay.buut.cn:8793/";
-	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
-    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
+    this.api_url = "http://weixin.buut.cn:8793/";
+	this.qoute_url = "http://weixin.buut.cn:7794/";
+    this.erweima_url= "http://weixin.buut.cn/index.html";
+    this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
 
     this.default_pay_type = "zhongyun";
-    this.pay_type_list = ["zhongyun","zhongyun_wecat"];
+    this.pay_type_list = [ "zhongyun", "zhongyun_wecat" ];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
@@ -243,71 +243,5 @@ angular.module('starter.services', [])
         
     }
     
-    
-
-    this.update = function (url) {
-        if (!ionic.Platform.isAndroid()) {
-            return false;
-        }
-
-        var path = cordova.file.externalCacheDirectory + "update.apk";
-        var ft = new FileTransfer();
-
-        ft.onprogress = function(progress) {
-            var p = (progress.loaded / progress.total) * 100;    
-            $ionicLoading.show({
-                template: "正在下载更新文件<br/>已经下载：" + Math.floor(p) + "%"    
-            });
-
-            if (p > 99) {
-                $ionicLoading.hide(); 
-            }
-        };
-
-        ft.download(url, path,
-            function(result) {
-                cordova.plugins.fileOpener2.open(path, 'application/vnd.android.package-archive');    
-                $ionicLoading.hide();    
-            }, 
-            function (err) {
-                ionicToast.show('下载更新失败', 'short', 'bottom');
-            },
-            true,
-            {}
-        );
-    }
-
-    this.check_update = function (show_notify) {
-        if (!ionic.Platform.isAndroid()) {
-            return false;
-        }
-        
-        $http.get(service.api_url + 'content/app_version.json')
-        .then(function(resp){
-            var server_version = resp.data.version;
-            cordova.getAppVersion.getVersionNumber().then(function(version) {
-                if (version != server_version) {
-                    var popup = $ionicPopup.confirm({
-                        title: '版本升级',
-                        template: resp.data.release_note,
-                        cancelText: '取消',
-                        okText: '升级'
-                    });
-
-                    popup.then(function (res) {
-                        if(res) {
-                            service.update(resp.data.url);
-                        }
-                    });
-                }
-                else {
-                    if (show_notify) {
-                        ionicToast.show('已是最新版本', 'short', 'bottom');
-                    }
-                }
-            });
-        });
-    }
-
     return this;
 });

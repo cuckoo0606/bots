@@ -694,16 +694,20 @@
 	line-height: 0.2rem;
 }
 .pay_weixin_code footer{
-	margin-top:1.5rem;
-	color: #969696;
-	font-size: 0.12rem;
+    position: absolute;
+    bottom: -20px;
+    width: 100%;
+    text-align: center;                                                                                                                                                                                       
+    color: #969696;
+    font-size: 0.12rem;
 }
 .qrcode-modal article{
 	position: absolute;
 	width:1.8rem;
 	height: 1.8rem;
 	top:1.3rem;
-	left: 0.95rem;
+    left: 50%;
+    margin-left: -0.9rem;
 	z-index: 10000;
 }
 .qrcode-modal article img{

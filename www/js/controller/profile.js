@@ -283,6 +283,19 @@ angular.module('starter.controllers')
 	            "error": error,
 	        });
 	    }
+        else if($scope.deposit.pay_type == "ymd") {
+	         CapitalService.deposit_ymd({
+	            "deposit": $scope.deposit,
+	            "success": function(url) {
+	                $ionicLoading.hide();
+                    $scope.capital_deposit_modal.hide();
+                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
+                    $scope.pay_webview_modal.show();
+	            },
+	            "fail": fail,
+	            "error": error,
+	        });
+	    }
         else if($scope.deposit.pay_type == "zhongyun_wecat") {
 	         CapitalService.deposit_zhongyun_wecat({
 	            "deposit": $scope.deposit,
