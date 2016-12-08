@@ -118,19 +118,32 @@ angular.module('starter.controllers')
         $scope.user_change_modal = modal;
     });
 
+    $ionicModal.fromTemplateUrl('templates/pay-money-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.pay_money_modal = modal;
+    });
+    
 	//入金界面
     $scope.show_deposit_modal = function() {
     	$scope.capital_deposit_modal.show();
     	
 		if($scope.pay_type_list.indexOf("huichao") !=-1 ){
 			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
-				if(value.code){
+				if(value.HCcode){
 					return value;
 				}
 			});
 		}else if($scope.pay_type_list.indexOf("huanxun") !=-1 ){
 			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
-				if(value.codenumber){
+				if(value.HYcode){
+					return value;
+				}
+			});
+		}else if($scope.pay_type_list.indexOf("shangxin") !=-1 ){
+			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
+				if(value.SXcode){
 					return value;
 				}
 			});
@@ -227,7 +240,7 @@ angular.module('starter.controllers')
         if ($scope.deposit.pay_type == "huichao") { 
             CapitalService.deposit_hc({
                 "deposit": $scope.deposit,
-                "bankcode":$scope.inmoneybank.bankmes.code,
+                "bankcode":$scope.inmoneybank.bankmes.HCcode,
                 "success": function(url) {
                     $ionicLoading.hide();
                     $scope.capital_deposit_modal.hide();
@@ -238,6 +251,13 @@ angular.module('starter.controllers')
                 "error": error,
             });
         }
+        else if($scope.deposit.pay_type == "shangxin") {
+        	$timeout(function () {
+	        	$ionicLoading.hide();
+	        	$scope.capital_deposit_modal.hide();
+		        $scope.pay_money_modal.show();
+            }, 1000);
+	    }
         else if($scope.deposit.pay_type == "zhongyun") {
 	         CapitalService.deposit_zhongyun({
 	            "deposit": $scope.deposit,
@@ -267,7 +287,7 @@ angular.module('starter.controllers')
         else if($scope.deposit.pay_type == "huanxun") {
 	         CapitalService.deposit_hx({
 	            "deposit": $scope.deposit,
-	            "bankcode":$scope.inmoneybank.bankmes.codenumber,
+	            "bankcode":$scope.inmoneybank.bankmes.HYcode,
 	            "success": function(url) {
 	                $ionicLoading.hide();
                     $scope.capital_deposit_modal.hide();
@@ -291,9 +311,27 @@ angular.module('starter.controllers')
 	            "error": error,
 	        });
 	    }
-        else if($scope.deposit.pay_type == "zhihui_wecat") {
-	         CapitalService.deposit_hxwecat({
+        else if($scope.deposit.pay_type == "zhihui") {
+	         CapitalService.deposit_zhihui({
 	            "deposit": $scope.deposit,
+	            "txnType":"",
+	            "payType":"",
+	            "bankcode":$scope.inmoneybank.bankmes.ZHcode,
+	            "success": function(url) {
+	                $ionicLoading.hide();
+                    $scope.capital_deposit_modal.hide();
+                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
+                    $scope.pay_webview_modal.show();
+	            },
+	            "fail": fail,
+	            "error": error,
+	        });
+	    }
+        else if($scope.deposit.pay_type == "zhihui_wecat") {
+	         CapitalService.deposit_zhihui({
+	            "deposit": $scope.deposit,
+	            "txnType":"",
+	            "payType":"",
 	            "success": function(url) {
 	                $ionicLoading.hide();
 	                $scope.capital_deposit_modal.hide();
@@ -349,6 +387,38 @@ angular.module('starter.controllers')
                 "error": error,
             });
         }
+    }
+    $scope.pay_shangyinxin_mes = {
+    	
+    }
+    $scope.pay_shangyinxin = function(){
+         CapitalService.deposit_shangyin_mes({
+            "deposit": $scope.deposit,
+            "bankCard" :$scope.pay_shangyinxin_mes.bankID,
+			"cardId":$scope.pay_shangyinxin_mes.ID,
+			"phone":$scope.pay_shangyinxin_mes.phone,
+			"realName":$scope.pay_shangyinxin_mes.name,
+            "bankID":$scope.inmoneybank.bankmes.SHcode,
+            "success": function(url) {
+                console.log(url);
+            },
+            "fail": function(status, message) {
+	            $ionicLoading.show({
+	                template: "提交失败"
+	            });
+	            $timeout(function () {
+	                $ionicLoading.hide();
+	            }, 2000);
+	        },
+            "error": function(status, message) {
+	            $ionicLoading.show({
+	                template: message
+	            });
+	            $timeout(function () {
+	                $ionicLoading.hide();
+	            }, 2000);
+	        },
+        });
     }
 	//出金页面
     $scope.show_withdraw_modal = function() {

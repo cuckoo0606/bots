@@ -57,12 +57,6 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
             event.preventDefault();
         }
     });
-    //禁止缓存模板
-	$rootScope.$on('$routeChangeStart', function(event, next, current) {  
-        if (typeof(current) !== 'undefined'){  
-            $templateCache.remove(current.templateUrl);  
-        }  
-    });
     //刷新微信标题
     $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams, options) {
         var views = [ "tab.qoute", "tab.history", "tab.profile", "tab.trade", "trade" ];

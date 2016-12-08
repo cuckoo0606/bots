@@ -166,9 +166,8 @@ angular.module('starter.services')
         });
     }
     
-    //智慧微信接口
-    this.deposit_zhihuiwecat = function(params) {
-    	console.log("123");
+    //智慧接口
+    this.deposit_zhihui = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/chinag")
 
         $http({
@@ -178,7 +177,8 @@ angular.module('starter.services')
             "data": {
                 "fee": params.deposit.amount,
                 "body": "入金",
-                "txnType" : "",
+                "txnType" :"",
+                "payType":""
                 
             },
         })
@@ -194,6 +194,36 @@ angular.module('starter.services')
         });
     }
     
+    //商银快捷短信下发接口
+    this.deposit_shangyin_mes = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/allscore/fastsms")
+
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": "income",
+                "bankCardNo" :params.bankCard,
+                "bankId":params.bankId,
+				"cardId":params.cardId,
+				"phone":params.phone,
+				"realName":params.realName
+            },
+        })
+        
+        .success(function(protocol) {
+        	console.log(params);
+            params.success(protocol);
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
     //威富通公众号接口
     this.deposit_swift = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/swiftpass")

@@ -709,4 +709,24 @@
 	font-size: 0.12rem;
 }
 
-/*快捷支付页面*/
+/*商信快捷支付页面*/
+.pay_shangxin{
+	background: #1b1b11b;
+}
+.pay_shangxin h3{
+	text-align: center;
+	height: 0.3rem;
+	line-height: 0.3rem;
+	color: white;
+	font-size: 0.14rem;
+	margin: 0.2rem 0 0.1rem 0;
+}
+.pay_shangxin h3 span{
+	color: #e9b747;
+	font-size: 0.18rem;
+}
+.pay_shangxin button{
+	width: 70%;
+	margin-left: 15%;
+	margin-top: 0.4rem;
+}
