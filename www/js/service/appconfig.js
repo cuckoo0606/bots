@@ -29,8 +29,8 @@ angular.module('starter.services', [])
     this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
     this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
-    this.default_pay_type = "zhongyun_wecat";
-    this.pay_type_list = ["zhongyun","zhongyun_wecat"];
+    this.default_pay_type = "zhihui_wecat";
+    this.pay_type_list = ["zhihui_wecat","zhihui","shangxin"];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
@@ -72,7 +72,6 @@ angular.module('starter.services', [])
             	'name': '招商银行', 
             	'HCcode': 'CMBC',
             	'HYcode':'1102',
-            	'SXcode':'CMB',
             	'icon':'icon-zhaoshangyinhang red',
             },
             {
@@ -86,7 +85,6 @@ angular.module('starter.services', [])
             	'name': '中信银行', 
             	'HCcode': 'ECITIC',
             	'HYcode':'1104',
-            	'SXcode':'CITIC',
             	'icon':'icon-zhongxinyinhang red',
             },
             {
@@ -107,7 +105,6 @@ angular.module('starter.services', [])
             	'name': '交通银行', 
             	'HCcode': 'BOCOM',
             	'HYcode':'1108',
-            	'SXcode':'COMM',
             	'icon':'icon-jiaotongyinhang pay_purple',
             },
             {
@@ -121,14 +118,12 @@ angular.module('starter.services', [])
             	'name': '民生银行', 
             	'HCcode': 'CMBCS',
             	'HYcode':'1110',
-            	'SXcode':'CMBC',
             	'icon':'icon-minshengyinhang pay_blue',
             },
             {
             	'name': '华夏银行', 
             	'HCcode': 'HXB',
             	'HYcode':'1111',
-            	'SXcode':'HXBANK',
             	'icon':'icon-huaxiayinhang red',
             },
             {
@@ -142,14 +137,12 @@ angular.module('starter.services', [])
             	'name': '广发银行', 
             	'HCcode': 'CGB',
             	'HYcode':'1114',
-            	'SXcode':'GDB',
             	'icon':'icon-guangfayinxing red',
             },
             {
             	'name': '邮政储蓄银行', 
             	'HCcode': 'PSBC',
             	'HYcode':'1119',
-            	'SXcode':'PSBC',
             	'icon':'icon-youzhengyinhang green',
             },
             {
@@ -162,13 +155,11 @@ angular.module('starter.services', [])
             {
             	'name': '北京银行', 
             	'HYcode':'1113',
-            	'SXcode':'BJBANK',
             	'icon':'icon-beijingyinhang red',
             },
             {
             	'name': '南京银行', 
             	'HYcode':'1115',
-            	'SXcode':'NJCB',
             	'icon':'icon-nanjingyinhang red',
             },
             {
@@ -179,13 +170,11 @@ angular.module('starter.services', [])
             {
             	'name': '杭州银行', 
             	'HYcode':'1117',
-            	'SXcode':'HZCB',
             	'icon':'icon-hangzhouyinhang pay_qing',
             },
             {
             	'name': '宁波银行', 
             	'HYcode':'1118',
-            	'SXcode':'NBBANK',
             	'icon':'icon-ningboyinxing orange',
             },
             {

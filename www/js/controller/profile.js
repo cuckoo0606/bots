@@ -69,6 +69,17 @@ angular.module('starter.controllers')
     $scope.inmoneybank={
     	'bankmes' : ''
     };
+    $scope.pay_shangyinxin_mes = {
+		'bankcard':'4367423328020566868',
+		'usercard':'445221198606285617',
+		'phone':'13430253813',
+		'name':'林博',
+		'success':true
+    };
+    $scope.pay_shangyinxin_pay = {
+    	'surecode':"",
+    	'surelistid':'',
+    };
     $ionicModal.fromTemplateUrl('templates/capital-history-modal.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -256,6 +267,7 @@ angular.module('starter.controllers')
 	        	$ionicLoading.hide();
 	        	$scope.capital_deposit_modal.hide();
 		        $scope.pay_money_modal.show();
+		        $scope.pay_shangyinxin_mes.success = true;
             }, 1000);
 	    }
         else if($scope.deposit.pay_type == "zhongyun") {
@@ -388,19 +400,47 @@ angular.module('starter.controllers')
             });
         }
     }
-    $scope.pay_shangyinxin_mes = {
-    	
-    }
+	//商信第一步
     $scope.pay_shangyinxin = function(){
          CapitalService.deposit_shangyin_mes({
             "deposit": $scope.deposit,
-            "bankCard" :$scope.pay_shangyinxin_mes.bankID,
-			"cardId":$scope.pay_shangyinxin_mes.ID,
+            "bankCard" :$scope.pay_shangyinxin_mes.bankcard,
+			"cardId":$scope.pay_shangyinxin_mes.usercard,
 			"phone":$scope.pay_shangyinxin_mes.phone,
 			"realName":$scope.pay_shangyinxin_mes.name,
-            "bankID":$scope.inmoneybank.bankmes.SHcode,
+            "bankId":$scope.inmoneybank.bankmes.SXcode,
+            "success": function(mes) {
+                console.log(mes);
+                $scope.pay_shangyinxin_pay.surelistid = mes.no;
+                $scope.pay_shangyinxin_mes.success = false;
+            },
+            "fail": function(status, message) {
+	            $ionicLoading.show({
+	                template: "银行信息错误"
+	            });
+	            $timeout(function () {
+	                $ionicLoading.hide();
+	            }, 2000);
+	        },
+            "error": function(status, message) {
+	            $ionicLoading.show({
+	                template: message
+	            });
+	            $timeout(function () {
+	                $ionicLoading.hide();
+	                $scope.pay_shangyinxin_mes.success = false;
+	            }, 2000);
+	        },
+        });
+    }
+    //商信第二步
+    $scope.sure_pay_shangyinxin = function(){
+         CapitalService.deposit_shangyin_sure({
+            "no": $scope.pay_shangyinxin_pay.surelistid,
+            "verifyCode" :pay_shangyinxin_pay.surecode,
             "success": function(url) {
                 console.log(url);
+                $scope.pay_shangyinxin_mes.success = false;
             },
             "fail": function(status, message) {
 	            $ionicLoading.show({
@@ -416,6 +456,7 @@ angular.module('starter.controllers')
 	            });
 	            $timeout(function () {
 	                $ionicLoading.hide();
+	                $scope.pay_shangyinxin_mes.success = false;
 	            }, 2000);
 	        },
         });

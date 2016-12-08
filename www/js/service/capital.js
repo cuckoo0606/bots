@@ -197,7 +197,7 @@ angular.module('starter.services')
     //商银快捷短信下发接口
     this.deposit_shangyin_mes = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/allscore/fastsms")
-
+		console.log(url);
         $http({
             "url": url,
             "method": "POST",
@@ -214,8 +214,36 @@ angular.module('starter.services')
         })
         
         .success(function(protocol) {
-        	console.log(params);
+        	console.log(protocol);
             params.success(protocol);
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+    
+    //商银验证码接口
+    this.deposit_shangyin_sure = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/allscore/fastpay")
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "no": params.no,
+                "verifyCode": params.verifyCode,
+            },
+        })
+        
+        .success(function(protocol) {
+        	if(protocol.status == 0){
+        		params.fail();
+        	}else if(protocol.status == 1){
+        		params.success(protocol);
+        	}
         })
             
         .error(function(protocol) {
