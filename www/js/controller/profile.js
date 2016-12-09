@@ -161,15 +161,18 @@ angular.module('starter.controllers')
 		};
 		if($rootScope.user.bank){
 			var defalutobj = $scope.deposit_bank_list.filter(function(value){
-				if($rootScope.user.bank == value.name || $rootScope.user.bank == value.code){
+				if($rootScope.user.bank == value.name || $rootScope.user.bank == value.HCcode){
 					return value;
 				}
 			});
-			$scope.inmoneybank.bankmes = defalutobj[0];
+			if($scope.pay_bank_list.indexOf(defalutobj[0])!=-1){
+				$scope.inmoneybank.bankmes = defalutobj[0];
+			}else{
+				$scope.inmoneybank.bankmes = $scope.pay_bank_list[0];
+			}
 		}else if($rootScope.user.bank==''||!$rootScope.user.bank){
 			$scope.inmoneybank.bankmes = $scope.pay_bank_list[0];
 		}
-		
         CapitalService.system_config({
         	"type":"income-handling-type",
 			"success":function(value){
@@ -263,6 +266,15 @@ angular.module('starter.controllers')
             });
         }
         else if($scope.deposit.pay_type == "shangxin") {
+        	if($scope.inmoneybank.bankmes.SXcode){
+        		$scope.pay_shangyinxin_mes = {
+					'bankcard':$rootScope.user.bankaccount,
+					'usercard':$rootScope.user.idcard,
+					'phone':$rootScope.user.phone,
+					'name':$rootScope.user.bankholder,
+					'success':true
+			    };
+        	};
         	$timeout(function () {
 	        	$ionicLoading.hide();
 	        	$scope.capital_deposit_modal.hide();
@@ -422,8 +434,18 @@ angular.module('starter.controllers')
 			"realName":$scope.pay_shangyinxin_mes.name,
             "bankId":$scope.inmoneybank.bankmes.SXcode,
             "success": function(mes) {
+            	if(mes.status == 1){
                 $scope.pay_shangyinxin_pay.surelistid = mes.no;
                 $scope.pay_shangyinxin_mes.success = false;
+            	}else{
+	            $ionicLoading.show({
+	                template: "输入信息有误,请重新输入"
+	            });
+	            $timeout(function () {
+	                $ionicLoading.hide();
+	            }, 2000);
+            	}
+
             },
             "fail": function(status, message) {
 	            $ionicLoading.show({
@@ -448,14 +470,24 @@ angular.module('starter.controllers')
          CapitalService.deposit_shangyin_sure({
             "no": $scope.pay_shangyinxin_pay.surelistid,
             "verifyCode" :$scope.pay_shangyinxin_pay.surecode,
-            "success": function(url) {
-	            $ionicLoading.show({
-	                template: "入金成功"
-	            });
-	            $timeout(function () {
-	                $ionicLoading.hide();
-	                $scope.pay_money_modal.hide();
-	            }, 2000);
+            "success": function(mes) {
+            	if(mes.status==1){
+		            $ionicLoading.show({
+		                template: "入金成功"
+		            });
+		            $timeout(function () {
+		                $ionicLoading.hide();
+		                $scope.pay_money_modal.hide();
+		            }, 2000);
+            	}else{
+		            $ionicLoading.show({
+		                template: "验证码错误"
+		            });
+		            $timeout(function () {
+		                $ionicLoading.hide();
+		            }, 2000);
+            	}
+
             },
             "fail": function(status, message) {
 	            $ionicLoading.show({
