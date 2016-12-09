@@ -16,6 +16,9 @@
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.rd.weitrade2"
         },
+        "cordova-plugin-crosswalk-webview": {
+            "PACKAGE_NAME": "com.rd.weitrade2"
+        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.rd.weitrade2"
         },
@@ -38,9 +41,6 @@
             "PACKAGE_NAME": "com.rd.weitrade2"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.rd.weitrade2"
-        },
-        "cordova-plugin-crosswalk-webview": {
             "PACKAGE_NAME": "com.rd.weitrade2"
         }
     },

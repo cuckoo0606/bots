@@ -11,13 +11,14 @@
         		<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?(deposit.amount*(money_fee.inmoney_fee/100+1)).toFixed(2):0}}</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{deposit.amount>0?deposit.amount+money_fee.inmoney_fee:0}}</span>
         	</p>
-        	<article>
-        		<img ng-src="{{ pay_qrcode_url }}" >
-        	</article>
+
         </header>
         <section>长按识别</section>
         <footer>
         	使用其他手机，打开微信，扫一扫也可以支付
         </footer>
     </ion-content>
+   	<article>
+		<img ng-src="{{ pay_qrcode_url }}" >
+	</article>
 </ion-modal-view>

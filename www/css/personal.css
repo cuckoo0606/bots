@@ -687,16 +687,6 @@
 	font-size: 0.18rem;
 	line-height: 0.37rem;
 }
-.pay_weixin_code header article{
-	margin: 0.2rem auto 0 auto;
-	width: 1.8rem;
-	height: 1.8rem;
-	background: #FFFFFF;
-}
-.pay_weixin_code header article img{
-	width: 100%;
-	height: 100%;
-}
 .pay_weixin_code section{
 	font-size: 0.13rem;
 	color: white;
@@ -704,9 +694,44 @@
 	line-height: 0.2rem;
 }
 .pay_weixin_code footer{
-	margin-top:1.5rem;
-	color: #969696;
-	font-size: 0.12rem;
+    position: absolute;
+    bottom: -20px;
+    width: 100%;
+    text-align: center;                                                                                                                                                                                       
+    color: #969696;
+    font-size: 0.12rem;
 }
-
-/*快捷支付页面*/
+.qrcode-modal article{
+	position: absolute;
+	width:1.8rem;
+	height: 1.8rem;
+	top:1.3rem;
+    left: 50%;
+    margin-left: -0.9rem;
+	z-index: 10000;
+}
+.qrcode-modal article img{
+	width: 100%;
+	height: 100%;
+}
+/*商信快捷支付页面*/
+.pay_shangxin{
+	background: #1b1b11b;
+}
+.pay_shangxin h3{
+	text-align: center;
+	height: 0.3rem;
+	line-height: 0.3rem;
+	color: white;
+	font-size: 0.14rem;
+	margin: 0.2rem 0 0.1rem 0;
+}
+.pay_shangxin h3 span{
+	color: #e9b747;
+	font-size: 0.18rem;
+}
+.pay_shangxin button{
+	width: 70%;
+	margin-left: 15%;
+	margin-top: 0.4rem;
+}

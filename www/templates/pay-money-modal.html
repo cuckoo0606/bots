@@ -1,0 +1,47 @@
+<ion-modal-view class="order-modal bank-info-modal">
+    <ion-header-bar class="order-modal-header">
+        <h1 class="title">快捷支付</h1>
+        <div class="close" ng-click="pay_money_modal.hide()">
+            <i class="icon ion-ios-close-empty"></i>
+        </div>
+    </ion-header-bar>
+    <ion-content class="pay_shangxin">
+    	<h3>付款金额：<span>{{deposit.amount}}</span></h3>
+        <ul class="sign_up_list" ng-show="pay_shangyinxin_mes.success">
+            <li  class="newinput">
+                <span class="input-text">
+                    持卡人:
+                </span>
+                <input type="text" placeholder="姓名" ng-model="pay_shangyinxin_mes.name" required />
+            </li>
+            <li class="newinput input_iphone_code">
+                <span class="input-text">
+                    卡号:
+                </span>
+                <input type="text" placeholder="银行卡号" ng-model="pay_shangyinxin_mes.bankcard" required/>
+            </li>
+            <li class="newinput">
+                <span class="input-text">
+                    身份证:
+                </span>
+                <input type="text" placeholder="身份证号码" ng-model="pay_shangyinxin_mes.usercard" required />
+            </li>
+            <li class="newinput">
+                <span class="input-text">
+                    手机:
+                </span>
+                <input type="text" placeholder="手机号码" ng-model="pay_shangyinxin_mes.phone" required />
+            </li>
+        </ul>
+        <ul class="sign_up_list" ng-hide="pay_shangyinxin_mes.success">
+            <li  class="newinput">
+                <span class="input-text">
+                    验证码:
+                </span>
+                <input type="text" placeholder="手机验证码" ng-model="pay_shangyinxin_pay.surecode" />
+            </li>
+        </ul>
+    <button ng-show="pay_shangyinxin_mes.success" class="newbutton " ng-click="pay_shangyinxin()" ng-disabled="!pay_shangyinxin_mes.name || !pay_shangyinxin_mes.bankcard || !pay_shangyinxin_mes.usercard || !pay_shangyinxin_mes.phone" >下一步</button>
+    <button ng-hide="pay_shangyinxin_mes.success" class="newbutton " ng-click="sure_pay_shangyinxin()" ng-disabled="!pay_shangyinxin_pay.surecode" >确认充值</button>
+    </ion-content>
+</ion-modal-view>

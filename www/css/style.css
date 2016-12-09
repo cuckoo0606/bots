@@ -1992,7 +1992,7 @@ button:disabled{
 }
 
 .modal {
-    background-color: rgb(30, 30, 40);
+    background-color: #1b1b1b;
 }
 
 .order-modal .item-select select {

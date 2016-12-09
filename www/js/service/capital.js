@@ -35,6 +35,28 @@ angular.module('starter.services')
         });
     }
 
+    //一麻袋接口
+    this.deposit_ymd = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/yemadaikj");
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": params.deposit.body,
+            },
+        })
+        .success(function(protocol) {
+            params.success(protocol);
+        })
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+
     //汇潮接口
     this.deposit_hc = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/hcmobile")
@@ -166,9 +188,8 @@ angular.module('starter.services')
         });
     }
     
-    //智慧微信接口
-    this.deposit_zhihuiwecat = function(params) {
-    	console.log("123");
+    //智慧接口
+    this.deposit_zhihui = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/chinag")
 
         $http({
@@ -178,7 +199,8 @@ angular.module('starter.services')
             "data": {
                 "fee": params.deposit.amount,
                 "body": "入金",
-                "txnType" : "",
+                "txnType" :"",
+                "payType":""
                 
             },
         })
@@ -194,6 +216,64 @@ angular.module('starter.services')
         });
     }
     
+    //商银快捷短信下发接口
+    this.deposit_shangyin_mes = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/allscore/fastsms")
+		console.log(url);
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "fee": params.deposit.amount,
+                "body": "income",
+                "bankCardNo" :params.bankCard,
+                "bankId":params.bankId,
+				"cardId":params.cardId,
+				"phone":params.phone,
+				"realName":params.realName
+            },
+        })
+        
+        .success(function(protocol) {
+        	console.log(protocol);
+            params.success(protocol);
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
+    
+    //商银验证码接口
+    this.deposit_shangyin_sure = function(params) {
+        var url = AppConfigService.build_api_url("v1/pay/allscore/fastpay")
+        $http({
+            "url": url,
+            "method": "POST",
+            "timeout": 30000,
+            "data": {
+                "no": params.no,
+                "verifyCode": params.verifyCode,
+            },
+        })
+        
+        .success(function(protocol) {
+        	if(protocol.status == 0){
+        		params.fail();
+        	}else if(protocol.status == 1){
+        		params.success(protocol);
+        	}
+        })
+            
+        .error(function(protocol) {
+            if (params.error) {
+                params.error("ERROR", "网络错误");
+            }
+        });
+    }
     //威富通公众号接口
     this.deposit_swift = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/swiftpass")

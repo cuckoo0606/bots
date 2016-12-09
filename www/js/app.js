@@ -57,12 +57,6 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
             event.preventDefault();
         }
     });
-    //禁止缓存模板
-	$rootScope.$on('$routeChangeStart', function(event, next, current) {  
-        if (typeof(current) !== 'undefined'){  
-            $templateCache.remove(current.templateUrl);  
-        }  
-    });
     //刷新微信标题
     $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams, options) {
         var views = [ "tab.qoute", "tab.history", "tab.profile", "tab.trade", "trade" ];
@@ -79,7 +73,13 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider) {
+    //解决缓存问题
+    if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {}; 
+    }
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
 
     $ionicConfigProvider.platform.ios.tabs.style('standard'); 
     $ionicConfigProvider.platform.ios.tabs.position('bottom');
