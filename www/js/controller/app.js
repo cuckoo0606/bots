@@ -89,8 +89,11 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
 	      angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
         $scope.order_params.direction = direction == "lookup" ? "1" : "0";
-        $ionicScrollDelegate.resize();
         $scope.trade_boundage();
+        
+        $timeout(function() {
+            $ionicScrollDelegate.resize();
+        }, 500);
     };
 
     $scope.toggle_order_state_panel = function () {
@@ -205,7 +208,6 @@ angular.module('starter.controllers', [])
             "status": "POST",
             "message": "正在交易",
         }
-
 
         $scope.toggle_order_confirm_panel();
         $scope.toggle_order_state_panel();
