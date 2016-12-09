@@ -91,9 +91,9 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".history-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
-	      angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
+	    angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
         $scope.order_params.direction = direction == "lookup" ? "1" : "0";
-        $ionicScrollDelegate.resize();
+		$ionicScrollDelegate.resize();
         $scope.trade_boundage();
     };
 
