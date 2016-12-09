@@ -22,6 +22,12 @@ angular.module('starter.controllers')
         }
     }; 
 
+	$scope.go_signin = function(){
+		if(event.keyCode === 13) {
+	   		$scope.signin();
+	   }
+	}
+	
     $scope.signin = function() {
         UserService.signin({
             "phone": $scope.phone,

@@ -35,42 +35,7 @@ angular.module('starter.controllers')
         $scope.order_params.other_amount = "";
     }
 
-    $scope.refresh_order = function() {
-        $rootScope.trade_order_list = [];
-        $scope.has_more_order = true;
-        $scope.order_page_index = 0;
-        $scope.load_more_order();
-    }
-    
-    $scope.load_more_order = function() {
-        OrderService.request_order_list($scope.order_page_index + 1, 20, function(protocol) {
-            $scope.order_page_index = $scope.order_page_index + 1;
-            protocol.data.forEach(function(value,index) {
-            	value.profit = $scope.order_profit(value);
-                value.qoute = QouteService.qoute(value.mode, value.assets.market, value.assets.code);
-                var expired = new Date(value.expired);
-                var now = new Date();
-				
-                var tick = now.getTime() + $rootScope.server_time_tick;
-                var remaining = (expired.getTime() - tick) / 1000;
-                value.remaining = remaining;
-                value.alltime = new Date(value.expired).getTime() - new Date(value.created);
-                if (remaining > 0) {
-                    $rootScope.trade_order_list.push(value);
-                }
-                
-            });
 
-            if(protocol.data.length == 0) {
-                $scope.has_more_order = false;
-            }
-
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-        });
-    }
-
-    $scope.refresh_order();
 
     var has_new_history = function(dt_now, dt_chart, period) {
         var sub = dt_now.getTime() - dt_chart.getTime();
