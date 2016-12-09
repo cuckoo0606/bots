@@ -522,7 +522,7 @@ angular.module('starter.controllers')
         	};
         	$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card + $rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);
         	$scope.money_fee.outmoney_bank = $scope.deposit_bank_list.filter(function(value){
-				if([value.name,value.code,value.codenumber].indexOf($rootScope.user.bank)!=-1){
+				if([value.name,value.HCcode,value.HXcode,value.SXcode].indexOf($rootScope.user.bank)!=-1){
 					return value;
 				}
 			});
