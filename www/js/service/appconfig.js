@@ -24,10 +24,10 @@ angular.module('starter.services', [])
 		max_money:5000
 	}
 
-    this.api_url = "http://139.196.114.14:8793/";
-	this.qoute_url = "http://weixin.buut.cn:7794/";
-    this.erweima_url= "http://weixin.buut.cn/index.html";
-    this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
+    this.api_url = "http://weixin.leather-boss.com:8793/";
+	this.qoute_url = "http://weixin.leather-boss.com:7794/";
+    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
+    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
     this.default_pay_type = "shangxin";
     this.pay_type_list = [ "shangxin" ];
