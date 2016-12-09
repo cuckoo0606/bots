@@ -155,7 +155,7 @@
 	        	实际支付：<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?(deposit.amount*(money_fee.inmoney_fee/100+1)).toFixed(2):0}}</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{deposit.amount>0?deposit.amount+money_fee.inmoney_fee:0}}</span>
 	        </footer>
-	        <button class="newbutton outmoneybtn" ng-disabled="deposit.amount==''||deposit.amount==undefined||(deposit.amount<money_fee.inmoneymin)" ng-click="submit_deposit()">确认充值</button>
+	        <button class="newbutton outmoneybtn" ng-disabled="deposit.amount==''||deposit.amount==undefined||(deposit.amount<money_fee.inmoneymin)||(deposit.pay_type=='shangxin'&&!inmoneybank.bankmes)" ng-click="submit_deposit()">确认充值</button>
     	</div>
 	</ion-content>
 </ion-modal-view>

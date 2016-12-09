@@ -70,10 +70,10 @@ angular.module('starter.controllers')
     	'bankmes' : ''
     };
     $scope.pay_shangyinxin_mes = {
-		'bankcard':'4367423328020566868',
-		'usercard':'445221198606285617',
-		'phone':'13430253813',
-		'name':'林博',
+		'bankcard':'',
+		'usercard':'',
+		'phone':'',
+		'name':'',
 		'success':true
     };
     $scope.pay_shangyinxin_pay = {
