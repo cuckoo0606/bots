@@ -339,9 +339,8 @@ angular.module('starter.controllers')
         else if($scope.deposit.pay_type == "zhihui") {
 	         CapitalService.deposit_zhihui({
 	            "deposit": $scope.deposit,
-	            "txnType":"",
-	            "payType":"",
-	            "bankcode":$scope.inmoneybank.bankmes.ZHcode,
+	            "txnType":"01",
+	            "payType":"0002",
 	            "success": function(url) {
 	                $ionicLoading.hide();
                     $scope.capital_deposit_modal.hide();
@@ -355,8 +354,8 @@ angular.module('starter.controllers')
         else if($scope.deposit.pay_type == "zhihui_wecat") {
 	         CapitalService.deposit_zhihui({
 	            "deposit": $scope.deposit,
-	            "txnType":"",
-	            "payType":"",
+	            "txnType":"41",
+	            "payType":"0701",
 	            "success": function(url) {
 	                $ionicLoading.hide();
 	                $scope.capital_deposit_modal.hide();

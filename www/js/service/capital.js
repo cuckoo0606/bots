@@ -199,9 +199,8 @@ angular.module('starter.services')
             "data": {
                 "fee": params.deposit.amount,
                 "body": "入金",
-                "txnType" :"",
-                "payType":""
-                
+                "txnType" :params.txnType,
+                "payType":params.payType,
             },
         })
         
