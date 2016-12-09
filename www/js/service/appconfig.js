@@ -53,6 +53,7 @@ angular.module('starter.services', [])
 			{ "name": "浙江省农村信用社联合社", "code": "ZJRCC" }
         ];
         
+        
     this.deposit_bank_list = [ 
             {
             	'name': '工商银行', 
