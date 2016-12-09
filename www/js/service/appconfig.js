@@ -24,13 +24,13 @@ angular.module('starter.services', [])
 		max_money:5000
 	}
 
-    this.api_url = "http://112.126.94.196:8793/";
+    this.api_url = "http://139.196.114.14:8793/";
 	this.qoute_url = "http://weixin.buut.cn:7794/";
     this.erweima_url= "http://weixin.buut.cn/index.html";
     this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
 
-    this.default_pay_type = "zhihui";
-    this.pay_type_list = [ "zhihui", "zhihui_wecat" ];
+    this.default_pay_type = "shangxin";
+    this.pay_type_list = [ "shangxin" ];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
