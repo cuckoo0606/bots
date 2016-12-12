@@ -912,5 +912,8 @@ angular.module('starter.controllers')
         if($scope.user_change_modal) {
             $scope.user_change_modal.hide();
         }
+        if($scope.pay_money_modal){
+        	$scope.pay_money_modal.hide();
+        }
     });
 });
