@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
         "other_amount" : "",
         "direction": "1",
     }
-
+	$rootScope.currency_symbol = AppConfigService.currency_symbol;
     $scope.order_result = {
         "status": "POST",
         "message": "正在提交订单",

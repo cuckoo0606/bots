@@ -17,13 +17,15 @@ angular.module('starter.services', [])
 	this.if_weixin = {
 		erweima_img:"img/logo/qcode.jpg",
 		weixin_name:"瑞达财富通"
-	}
+	};
 	//配置交易金额
 	this.trade_money={
 		min_money:20,
 		max_money:5000
-	}
-
+	};
+	//配置货币符号
+	this.currency_symbol = '$';
+	//配置接口地址
     this.api_url = "http://weixin.leather-boss.com:8793/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
     this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";

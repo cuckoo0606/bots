@@ -147,11 +147,11 @@
 	        	</span>
 	        	<input type="number" placeholder="请输入金额" ng-model="deposit.amount" ng-keydown="only_number()" required/>
 	        </article>
-	        <section>单次充值至少¥{{money_fee.inmoneymin}}起</section>
+	        <section>单次充值至少{{currency_symbol}}{{money_fee.inmoneymin}}起</section>
 	        <footer>
 	        	余额：<span>{{user.amount.toFixed(0)}}</span>
 	        	手续费：<span ng-show="money_fee.inmoney_fee_type == 0">{{money_fee.inmoney_fee}}%</span>
-	        	<span ng-show="money_fee.inmoney_fee_type == 1">¥{{money_fee.inmoney_fee}}</span>
+	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{currency_symbol}}{{money_fee.inmoney_fee}}</span>
 	        	实际支付：<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?(deposit.amount*(money_fee.inmoney_fee/100+1)).toFixed(2):0}}</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{deposit.amount>0?deposit.amount+money_fee.inmoney_fee:0}}</span>
 	        </footer>
