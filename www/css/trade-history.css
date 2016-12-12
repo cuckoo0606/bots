@@ -97,9 +97,13 @@
 }
 .trade_history_list ul li section:nth-of-type(1){
 	width: 60%;
-	margin-left: 3%;
+	padding-left:2%;
+	float: left;
 }
 .trade_history_list ul li section:nth-of-type(2){
+	width: 40%;
+	padding-right: 2%;
+	float:right;
 }
 .trade_history_list ul li section:nth-of-type(1) p{
 	height: 0.16rem;

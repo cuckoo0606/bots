@@ -199,9 +199,8 @@ angular.module('starter.services')
             "data": {
                 "fee": params.deposit.amount,
                 "body": "入金",
-                "txnType" :"",
-                "payType":""
-                
+                "txnType" :params.txnType,
+                "payType":params.payType,
             },
         })
         
@@ -219,7 +218,6 @@ angular.module('starter.services')
     //商银快捷短信下发接口
     this.deposit_shangyin_mes = function(params) {
         var url = AppConfigService.build_api_url("v1/pay/allscore/fastsms")
-		console.log(url);
         $http({
             "url": url,
             "method": "POST",
@@ -230,13 +228,12 @@ angular.module('starter.services')
                 "bankCardNo" :params.bankCard,
                 "bankId":params.bankId,
 				"cardId":params.cardId,
-				"phone":params.phone,
+				"phoneNo":params.phone,
 				"realName":params.realName
             },
         })
         
         .success(function(protocol) {
-        	console.log(protocol);
             params.success(protocol);
         })
             

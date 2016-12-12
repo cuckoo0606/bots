@@ -24,13 +24,13 @@ angular.module('starter.services', [])
 		max_money:5000
 	}
 
-    this.api_url = "http://weixin.buut.cn:8793/";
-	this.qoute_url = "http://weixin.buut.cn:7794/";
-    this.erweima_url= "http://weixin.buut.cn/index.html";
-    this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
+    this.api_url = "http://weixin.leather-boss.com:8793/";
+	this.qoute_url = "http://weixin.leather-boss.com:7794/";
+    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
+    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
-    this.default_pay_type = "zhongyun";
-    this.pay_type_list = [ "zhongyun", "zhongyun_wecat" ];
+    this.default_pay_type = "shangxin";
+    this.pay_type_list = [ "shangxin" ];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
@@ -52,6 +52,7 @@ angular.module('starter.services', [])
             { "name": "长沙银行", "code": "CSCB" },
 			{ "name": "浙江省农村信用社联合社", "code": "ZJRCC" }
         ];
+        
         
     this.deposit_bank_list = [ 
             {

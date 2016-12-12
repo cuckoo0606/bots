@@ -55,7 +55,7 @@ button:disabled{
 }
 
 .has-header {
-    top: 0.4rem;
+    top: 40px;
 }
 
 .row {
@@ -859,7 +859,9 @@ button:disabled{
     overflow: hidden;
     border-top: 1px solid #2b2930;
 }
-
+.trade-view .order-confirm-panel .period .scroll-view{
+		height: 85px;
+}
 .trade-view .order-confirm-panel .period .scroll {
     width: 100%;
     height: 100%;
@@ -1690,27 +1692,28 @@ button:disabled{
     border: none;
     background-image: none;
     background-color: black;
-    height: 0.4rem;
-    line-height: 0.4rem;
+    height: 40px;
+    line-height: 40px;
 }
 
 .order-modal-header h1 {
     color: white;
-    font-size: 0.14rem !important;
+    font-size: 14px !important;
 }
 .order-modal-header  .title{
-		height:0.4rem !important;
-		line-height: 0.4rem !important;
+		height:40px !important;
+		line-height:40px !important;
 }
 .order-modal-header .close {
     position: absolute;
     top: 0px;
     left: 0px;
     bottom: 0px;
+    height: 40px;
     width: 0.4rem;
-    font-size: 0.2rem;
+    font-size: 25px;
     cursor: pointer;
-    line-height: 0.4rem;
+    line-height: 40px;
     text-align: center;
     color: white;
 }

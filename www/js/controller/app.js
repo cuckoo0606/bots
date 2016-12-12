@@ -21,7 +21,7 @@ angular.module('starter.controllers', [])
     $scope.phase = "";
     $scope.time_unit = "";
 	$scope.trade_money = AppConfigService.trade_money;
-
+	$scope.has_more_order = true;
     $scope.order_params = {
         "cycle": {},
         "amount": "",
@@ -77,8 +77,8 @@ angular.module('starter.controllers', [])
      $scope.toggle_history_order_panel = function() {
         $scope.hold_order_modal.hide();
         angular.element(document.querySelectorAll(".order-confirm-panel")).removeClass("open");
-        angular.element(document.querySelectorAll(".order-confirm-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".history-panel")).toggleClass("open");
+        $scope.refresh_order();
     };
 
     $scope.toggle_order_confirm_panel = function(direction) {
@@ -86,10 +86,13 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".history-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
-	    angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
+	      angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
         $scope.order_params.direction = direction == "lookup" ? "1" : "0";
-		$ionicScrollDelegate.resize();
         $scope.trade_boundage();
+        
+        $timeout(function() {
+            $ionicScrollDelegate.resize();
+        }, 500);
     };
 
     $scope.toggle_order_state_panel = function () {
@@ -106,6 +109,41 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".order-state-panel")).parent().removeClass("glass_mask");
         angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
         $scope.order_params.direction = $scope.order_result.order.direction;
+    }
+
+    $scope.refresh_order = function() {
+        $rootScope.trade_order_list = [];
+        $scope.has_more_order = true;
+        $scope.order_page_index = 0;
+        $scope.load_more_order();
+    }
+    
+    $scope.load_more_order = function() {
+        OrderService.request_order_list($scope.order_page_index + 1, 20, function(protocol) {
+            $scope.order_page_index = $scope.order_page_index + 1;
+            protocol.data.forEach(function(value,index) {
+            	value.profit = $scope.order_profit(value);
+                value.qoute = QouteService.qoute(value.mode, value.assets.market, value.assets.code);
+                var expired = new Date(value.expired);
+                var now = new Date();
+				
+                var tick = now.getTime() + $rootScope.server_time_tick;
+                var remaining = (expired.getTime() - tick) / 1000;
+                value.remaining = remaining;
+                value.alltime = new Date(value.expired).getTime() - new Date(value.created);
+                if (remaining > 0) {
+                    $rootScope.trade_order_list.push(value);
+                }
+                
+            });
+
+            if(protocol.data.length == 0) {
+                $scope.has_more_order = false;
+            }
+
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        });
     }
 
     $scope.close_order = function() {
@@ -170,7 +208,6 @@ angular.module('starter.controllers', [])
             "message": "正在交易",
         }
 
-
         $scope.toggle_order_confirm_panel();
         $scope.toggle_order_state_panel();
 
@@ -223,3 +260,4 @@ angular.module('starter.controllers', [])
    		$interval($scope.remain_interval);
    	});
 });
+

@@ -38,7 +38,7 @@
                 <span class="input-text">
                     验证码:
                 </span>
-                <input type="text" placeholder="手机验证码" ng-model="pay_shangyinxin_pay.surecode" />
+                <input type="text" placeholder="手机验证码" ng-model="pay_shangyinxin_pay.surecode" required/>
             </li>
         </ul>
     <button ng-show="pay_shangyinxin_mes.success" class="newbutton " ng-click="pay_shangyinxin()" ng-disabled="!pay_shangyinxin_mes.name || !pay_shangyinxin_mes.bankcard || !pay_shangyinxin_mes.usercard || !pay_shangyinxin_mes.phone" >下一步</button>

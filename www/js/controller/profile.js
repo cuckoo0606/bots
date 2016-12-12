@@ -70,10 +70,10 @@ angular.module('starter.controllers')
     	'bankmes' : ''
     };
     $scope.pay_shangyinxin_mes = {
-		'bankcard':'4367423328020566868',
-		'usercard':'445221198606285617',
-		'phone':'13430253813',
-		'name':'林博',
+		'bankcard':'',
+		'usercard':'',
+		'phone':'',
+		'name':'',
 		'success':true
     };
     $scope.pay_shangyinxin_pay = {
@@ -161,15 +161,18 @@ angular.module('starter.controllers')
 		};
 		if($rootScope.user.bank){
 			var defalutobj = $scope.deposit_bank_list.filter(function(value){
-				if($rootScope.user.bank == value.name || $rootScope.user.bank == value.code){
+				if($rootScope.user.bank == value.name || $rootScope.user.bank == value.HCcode){
 					return value;
 				}
 			});
-			$scope.inmoneybank.bankmes = defalutobj[0];
+			if($scope.pay_bank_list.indexOf(defalutobj[0])!=-1){
+				$scope.inmoneybank.bankmes = defalutobj[0];
+			}else{
+				$scope.inmoneybank.bankmes = $scope.pay_bank_list[0];
+			}
 		}else if($rootScope.user.bank==''||!$rootScope.user.bank){
 			$scope.inmoneybank.bankmes = $scope.pay_bank_list[0];
 		}
-		
         CapitalService.system_config({
         	"type":"income-handling-type",
 			"success":function(value){
@@ -263,6 +266,15 @@ angular.module('starter.controllers')
             });
         }
         else if($scope.deposit.pay_type == "shangxin") {
+        	if($scope.inmoneybank.bankmes.SXcode){
+        		$scope.pay_shangyinxin_mes = {
+					'bankcard':$rootScope.user.bankaccount,
+					'usercard':$rootScope.user.idcard,
+					'phone':$rootScope.user.phone,
+					'name':$rootScope.user.bankholder,
+					'success':true
+			    };
+        	};
         	$timeout(function () {
 	        	$ionicLoading.hide();
 	        	$scope.capital_deposit_modal.hide();
@@ -339,9 +351,8 @@ angular.module('starter.controllers')
         else if($scope.deposit.pay_type == "zhihui") {
 	         CapitalService.deposit_zhihui({
 	            "deposit": $scope.deposit,
-	            "txnType":"",
-	            "payType":"",
-	            "bankcode":$scope.inmoneybank.bankmes.ZHcode,
+	            "txnType":"01",
+	            "payType":"0002",
 	            "success": function(url) {
 	                $ionicLoading.hide();
                     $scope.capital_deposit_modal.hide();
@@ -355,8 +366,8 @@ angular.module('starter.controllers')
         else if($scope.deposit.pay_type == "zhihui_wecat") {
 	         CapitalService.deposit_zhihui({
 	            "deposit": $scope.deposit,
-	            "txnType":"",
-	            "payType":"",
+	            "txnType":"41",
+	            "payType":"0701",
 	            "success": function(url) {
 	                $ionicLoading.hide();
 	                $scope.capital_deposit_modal.hide();
@@ -423,9 +434,18 @@ angular.module('starter.controllers')
 			"realName":$scope.pay_shangyinxin_mes.name,
             "bankId":$scope.inmoneybank.bankmes.SXcode,
             "success": function(mes) {
-                console.log(mes);
+            	if(mes.status == 1){
                 $scope.pay_shangyinxin_pay.surelistid = mes.no;
                 $scope.pay_shangyinxin_mes.success = false;
+            	}else{
+	            $ionicLoading.show({
+	                template: "输入信息有误,请重新输入"
+	            });
+	            $timeout(function () {
+	                $ionicLoading.hide();
+	            }, 2000);
+            	}
+
             },
             "fail": function(status, message) {
 	            $ionicLoading.show({
@@ -441,7 +461,6 @@ angular.module('starter.controllers')
 	            });
 	            $timeout(function () {
 	                $ionicLoading.hide();
-	                $scope.pay_shangyinxin_mes.success = false;
 	            }, 2000);
 	        },
         });
@@ -450,19 +469,29 @@ angular.module('starter.controllers')
     $scope.sure_pay_shangyinxin = function(){
          CapitalService.deposit_shangyin_sure({
             "no": $scope.pay_shangyinxin_pay.surelistid,
-            "verifyCode" :pay_shangyinxin_pay.surecode,
-            "success": function(url) {
-                console.log(url);
-	            $ionicLoading.show({
-	                template: "入金成功"
-	            });
-	            $timeout(function () {
-	                $ionicLoading.hide();
-	            }, 2000);
+            "verifyCode" :$scope.pay_shangyinxin_pay.surecode,
+            "success": function(mes) {
+            	if(mes.status==1){
+		            $ionicLoading.show({
+		                template: "入金成功"
+		            });
+		            $timeout(function () {
+		                $ionicLoading.hide();
+		                $scope.pay_money_modal.hide();
+		            }, 2000);
+            	}else{
+		            $ionicLoading.show({
+		                template: "验证码错误"
+		            });
+		            $timeout(function () {
+		                $ionicLoading.hide();
+		            }, 2000);
+            	}
+
             },
             "fail": function(status, message) {
 	            $ionicLoading.show({
-	                template: "提交失败"
+	                template: "验证码错误"
 	            });
 	            $timeout(function () {
 	                $ionicLoading.hide();
@@ -474,7 +503,6 @@ angular.module('starter.controllers')
 	            });
 	            $timeout(function () {
 	                $ionicLoading.hide();
-	                $scope.pay_shangyinxin_mes.success = false;
 	            }, 2000);
 	        },
         });
@@ -494,7 +522,7 @@ angular.module('starter.controllers')
         	};
         	$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card + $rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);
         	$scope.money_fee.outmoney_bank = $scope.deposit_bank_list.filter(function(value){
-				if([value.name,value.code,value.codenumber].indexOf($rootScope.user.bank)!=-1){
+				if([value.name,value.HCcode,value.HXcode,value.SXcode].indexOf($rootScope.user.bank)!=-1){
 					return value;
 				}
 			});
@@ -883,6 +911,9 @@ angular.module('starter.controllers')
         }
         if($scope.user_change_modal) {
             $scope.user_change_modal.hide();
+        }
+        if($scope.pay_money_modal){
+        	$scope.pay_money_modal.hide();
         }
     });
 });
