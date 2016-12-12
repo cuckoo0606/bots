@@ -6,7 +6,7 @@
 				<img src="img/logobg.jpg" />
 			</article>
 			<p>{{ user.username }}<span class="iconfont icon--3" ng-click="show_user_modal()"></span></p>
-			<p>¥{{user.amount.toFixed(2)}}</p>
+			<p>{{currency_symbol}}{{user.amount.toFixed(2)}}</p>
 		</header>
 		<ul>
 			<li>

@@ -14,7 +14,7 @@
                 	<section>
                     	<p style="margin: 0">
                     		<span>{{o.assets.name}}</span>
-                    		<span ng-class="{'in_money':o.direction === 1,'out_money':o.direction === 0}"><i ng-class="{'buytop':o.direction === 1,'buydown':o.direction === 0}"></i>{{o.direction === 1 ?"买涨":"买跌"}}（¥{{o.money}}）</span>
+                    		<span ng-class="{'in_money':o.direction === 1,'out_money':o.direction === 0}"><i ng-class="{'buytop':o.direction === 1,'buydown':o.direction === 0}"></i>{{o.direction === 1 ?"买涨":"买跌"}}（{{currency_symbol}}{{o.money}}）</span>
                     	</p>
                     	<p style="margin: 0">
                     		{{o.buyQoute}}-<span ng-class="{'in_money':o.direction === 1,'out_money':o.direction === 0}">{{ o.qoute.value.toFixed(o.qoute.decimal) }}</span>

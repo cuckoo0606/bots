@@ -337,25 +337,24 @@ button:disabled{
 /* 页头CSS */
 .headerbar {
     border: none !important;
-    height: 0.4rem;
-    line-height: 0.4rem;
+    height: 40px;
+    line-height: 40px;
     background-color: black !important;
     padding: 0;
 }
 
 .headerbar .header-item {
-    height: 0.4rem;
-    line-height: 0.4rem;
+    height: 40px;
+    line-height: 40px;
     color: white !important;
-    font-size: 0.15rem;
+    font-size: 15px;
     font-weight: 600;
 }
 
 .headerbar button {
     border: none;
-    height: 0.4rem;
-    line-height: 0.4rem;
-    padding-top: 0.02rem !important;
+    height: 40px;
+    line-height: 40px;
     color: rgb(236, 181, 64) !important;
     background-color: rgb(46, 49, 58) !important;
 }
