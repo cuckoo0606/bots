@@ -17,10 +17,11 @@
                 		</section><section>
                 			<p ng-class="{'in_money':c.type===1,'out_money':c.type===3,'other_money':c.type!=1&&c.type!=3}">{{c.typename}}</p>
                 			<p>
-                				<i><img src="img/rmb_logo.png"/></i>
+                				<i class="iconfont icon--1" ng-show="currency_symbol == '¥'"></i>
+                				<i class="iconfont icon-30" ng-show="currency_symbol == '$'"></i>
                 				<span>{{ c.balance.toFixed(2) }}</span></p>
                 			<p>
-                				<i><img src="img/time_logo.png"/></i>
+                				<i class="iconfont icon--2 pay_blue"></i>
                 				<span>{{c.yearTime}}</span>
                 				<span>{{c.dayTime}}</span>
                 			</p>
