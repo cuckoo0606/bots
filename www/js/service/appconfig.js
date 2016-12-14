@@ -13,6 +13,8 @@ angular.module('starter.services', [])
     this.system_logo = "img/logo/logo.png";
     this.show_system_logo = true;
     this.show_signup_code = true;
+    //配置是否具有注册功能
+    this.ifsignup = false;
     //配置注册跳转二维码
 	this.if_weixin = {
 		erweima_img:"img/logo/qcode.jpg",
