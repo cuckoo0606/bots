@@ -2,6 +2,11 @@ angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
+	$scope.updateUser = function(){
+		UserService.request_user(function(newuser){
+			$rootScope.user = newuser;
+		})
+	};
     $scope.qrcode_url = AppConfigService.get_erweima_url + escape(AppConfigService.erweima_url + "?show=signup&ref=" + $rootScope.user.referee + "#/signup");
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
@@ -513,14 +518,7 @@ angular.module('starter.controllers')
         $scope.money_fee.outmoney_bank_card = "";
         $scope.money_fee.outmoney_bank_card_icon = "";
         if($rootScope.user.bankaccount){
-        	var bank_lengths = [4,10,16,22];
-        	for(var i=0;i<($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);i++){
-        		$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card+'*';
-        		if(bank_lengths.indexOf($scope.money_fee.outmoney_bank_card.length) != -1){
-        			$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card+'  ';
-        		}
-        	};
-        	$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card + $rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);
+        	$scope.money_fee.outmoney_bank_card = '**** **** **** '+$rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length-4);
         	$scope.money_fee.outmoney_bank = $scope.deposit_bank_list.filter(function(value){
 				if([value.name,value.HCcode,value.HXcode,value.SXcode].indexOf($rootScope.user.bank)!=-1){
 					return value;
@@ -765,15 +763,17 @@ angular.module('starter.controllers')
 	                    }, 3000);
 	                }
 	                else {
-							
-	                    $rootScope.user.amount -= ($scope.money_fee.outmoney_fee_type == 0?$scope.outAmount.outamount*($scope.money_fee.outmoney_fee+1):$scope.outAmount.outamount+$scope.money_fee.outmoney_fee);
-	                    $ionicLoading.show({
-	                        template: "提交成功"
-	                    });
+	                	$timeout(function(){
+							$scope.updateUser();
+		                    $ionicLoading.show({
+		                        template: "提交成功"
+		                    });
+	                	},1000)
+
 	                    $timeout(function() {
-	                    $ionicLoading.hide();
-	                    $scope.capital_withdraw_modal.hide();
-	                	}, 1000);
+		                    $ionicLoading.hide();
+		                    $scope.capital_withdraw_modal.hide();
+	                	}, 2000);
 	                }
 	          	},
 	        	"fail": function(message) {
