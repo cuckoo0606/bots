@@ -17,7 +17,6 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
-
         //从Cookie读取微信信息
         AppConfigService.wx_auth.scope = $cookies.get("ws");
         AppConfigService.wx_auth.openid = $cookies.get("wo");
@@ -37,7 +36,7 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
     });
 
 	//设置适配rem
-    var change_rem = ((window.screen.width > 640) ? 640 : window.screen.width)/375*100;
+    var change_rem = ((window.screen.width > 450) ? 450 : window.screen.width)/375*100;
     document.getElementsByTagName("html")[0].style.fontSize=change_rem+"px";
 
     //判断登陆状态

@@ -23,7 +23,7 @@
         	</span>
         	<input type="number" placeholder="请输入出金金额" ng-model="outAmount.outamount" ng-keydown="only_number()" required/>
         </article>
-        <section>单次提现金额至少{{currency_symbol}}{{money_fee.outmoneymin}}</section>
+        <section ng-show="money_fee.outmoneymin != '0'">单次提现金额至少{{currency_symbol}}{{money_fee.outmoneymin}}</section>
         <footer>
         	余额：<span>{{user.amount.toFixed(0)}}</span>
         	手续费：<span ng-show="money_fee.outmoney_fee_type == 0">{{money_fee.outmoney_fee}}%</span>

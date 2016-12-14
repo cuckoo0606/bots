@@ -4,6 +4,8 @@
 @import url("trade-history.css");
 /*sign样式*/
 @import url("sign.css");
+/*交易页面样式*/
+@import url("trade.css");
 /*图标库*/
 @import url("../lib/iconfont/iconfont.css");
 @font-face {
@@ -85,11 +87,11 @@ button:disabled{
 }
 
 .rise {
-    color: red !important;
+    color: #fa2e42 !important;
 }
 
 .fall {
-    color: green !important;
+    color: #1fc65b !important;
 }
 
 .rise-value {
@@ -119,7 +121,7 @@ button:disabled{
 }
 
 .content-background {
-    background-color: rgb(25, 25, 26);
+    background-color: #1B1B1B;
 }
 
 
@@ -646,168 +648,6 @@ button:disabled{
     color: #fff;
 }
 
-.trade-chart .trade-chart-bar {
-    padding: 0px;
-    height: 35px;
-    line-height: 35px;
-    margin-top: 0px !important;
-    background-color: rgb(29, 29, 33);
-}
-
-.trade-chart .trade-chart-bar .row,
-.trade-chart .trade-chart-bar .col {
-    height: 35px;
-    line-height: 35px;
-}
-
-.trade-chart .trade-chart-bar .trade-chart-type {
-    margin-top: 3px;
-    height: 29px;
-    line-height: 29px;
-    font-size: 14px;
-    text-align: center;
-    color: rgb(203, 204, 211);
-    display: block;
-    width: 100%;
-}
-
-.trade-chart .trade-chart-bar .trade-chart-type.active {
-    font-weight: bold;
-    border-radius: 6px;
-    color: rgb(230, 176, 63);
-    background-color: rgb(44, 44, 50);
-}
-
-.trade-chart .trade-chart-bar .trade-chart-period {
-    margin-top: 3px;
-    height: 29px;
-    line-height: 29px;
-    font-size: 14px;
-    text-align: center;
-    color: rgb(203, 204, 211);
-    display: block;
-    width: 100%;
-}
-
-.trade-chart .trade-chart-bar .trade-chart-period.active {
-    font-weight: bold;
-    color: rgb(230, 176, 63);
-    border-bottom: 1px solid rgb(230, 176, 63);
-}
-
-.trade-chart {
-    width: 100%;
-    height: 440px;
-    position: relative;
-}
-
-.trade-chart .history-chart {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    height: 440px;
-}
-
-.trade-chart .chart-tip {
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    color: white;
-}
-
-.trade-chart .func-tip {
-    position: absolute;
-    left: 5px;
-    top: 340px;
-    color: white;
-}
-
-.trade-chart .chart-tip > ul > li {
-    float: left;
-    margin-right: 5px;
-    font-size: 12px;
-}
-
-.trade-chart .func-tip > ul > li {
-    float: left;
-    margin-right: 5px;
-    font-size: 12px;
-}
-
-.trade-chart .history-open {
-    color: red;
-}
-
-.trade-chart .history-close {
-    color: blue;
-}
-
-.trade-chart .history-high {
-    color: green;
-}
-
-.trade-chart .history-low {
-    color: yellow;
-}
-
-.trade-footer {
-    padding: 0px;
-    border: none;
-    height: 60px;
-    background-image: none;
-    background-color: rgb(46, 49, 58);
-}
-
-.trade-footer .row {
-    height: 60px;
-    padding: 0px;
-    margin: 0px;
-}
-
-.trade-footer .row .col {
-    padding: 0px;
-    margin: 0px;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-}
-
-.trade-footer .row .col .button {
-    width: 100%;
-    height: 60px;
-    border:none;
-    font-size: 12px;
-    border-radius: 0px;
-    padding-top: 5px;
-    color: rgb(203, 204, 211);
-    background-color: rgb(46, 49, 58);
-    border-right: 1px solid rgba(15, 15, 30, 0.3) !important;
-}
-
-.trade-footer .row .col .button i {
-    display: block;
-    font-size: 23px;
-    height: 23px;
-}
-
-.trade-footer .row .col .button .nav-name {
-    font-size: 16px;
-}
-
-.trade-footer .trade-lookup-button {
-		font-family: "微软雅黑" !important;
-    background: #d8404f !important;
-    color: #242424 !important;
-    font-size: 12px !important;
-}
-
-.trade-footer .trade-lookdown-button {
-		font-family: "微软雅黑" !important;
-    background: #1ec55b !important;
-    color: #242424 !important;
-    font-size: 12px !important;
-}
 
 .trade-view .history-panel {
     position: absolute;
@@ -823,8 +663,8 @@ button:disabled{
 }
 
 .trade-view .history-panel.open {
-    top: 250px;
-    bottom: 44px;
+    top: 2.5rem;
+    bottom: 0.5rem;
     -webkit-transition: top 300ms ease-out; 
     -moz-transition: top 300ms ease-out;
     -ms-transition: top 300ms ease-out;

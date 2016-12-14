@@ -16,18 +16,18 @@ angular.module('starter.controllers', [])
     $scope.system_logo = AppConfigService.system_logo;
     $scope.show_system_logo = AppConfigService.show_system_logo;
     $scope.boundage = "";
-    $scope.order_profit = OrderService.order_profit;
     $scope.last_result = [];
     $scope.phase = "";
     $scope.time_unit = "";
 	$scope.trade_money = AppConfigService.trade_money;
-	$scope.has_more_order = true;
+	$rootScope.has_more_order = false;
     $scope.order_params = {
         "cycle": {},
         "amount": "",
         "other_amount" : "",
         "direction": "1",
     }
+    $scope.Issamemes = [];
 	$rootScope.currency_symbol = AppConfigService.currency_symbol;
     $scope.order_result = {
         "status": "POST",
@@ -74,12 +74,7 @@ angular.module('starter.controllers', [])
         $scope.close_order_modal.show();
     };
 
-     $scope.toggle_history_order_panel = function() {
-        $scope.hold_order_modal.hide();
-        angular.element(document.querySelectorAll(".order-confirm-panel")).removeClass("open");
-        angular.element(document.querySelectorAll(".history-panel")).toggleClass("open");
-        $scope.refresh_order();
-    };
+
 
     $scope.toggle_order_confirm_panel = function(direction) {
         $scope.hold_order_modal.hide();
@@ -110,42 +105,58 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
         $scope.order_params.direction = $scope.order_result.order.direction;
     }
-
-    $scope.refresh_order = function() {
+    
+	//请求持仓上拉刷新
+    $rootScope.refresh_order = function() {
         $rootScope.trade_order_list = [];
-        $scope.has_more_order = true;
-        $scope.order_page_index = 0;
-        $scope.load_more_order();
+        $rootScope.order_page_index = 0;
+        $rootScope.load_more_order();
+    	$rootScope.has_more_order = true;
     }
     
-    $scope.load_more_order = function() {
-        OrderService.request_order_list($scope.order_page_index + 1, 20, function(protocol) {
-            $scope.order_page_index = $scope.order_page_index + 1;
-            protocol.data.forEach(function(value,index) {
-            	value.profit = $scope.order_profit(value);
-                value.qoute = QouteService.qoute(value.mode, value.assets.market, value.assets.code);
-                var expired = new Date(value.expired);
-                var now = new Date();
-				
-                var tick = now.getTime() + $rootScope.server_time_tick;
-                var remaining = (expired.getTime() - tick) / 1000;
-                value.remaining = remaining;
-                value.alltime = new Date(value.expired).getTime() - new Date(value.created);
-                if (remaining > 0) {
-                    $rootScope.trade_order_list.push(value);
-                }
-                
-            });
+    $rootScope.load_more_order = function() {
+        OrderService.request_order_list($rootScope.order_page_index + 1, 20, function(protocol) {
+        	if((protocol.data.length != 0&&$rootScope.trade_order_list.length != 0&&protocol.data[0].created != $rootScope.trade_order_list[0].created)||$rootScope.trade_order_list.length == 0 || protocol.data.length == 0){
+        		$rootScope.order_page_index = $rootScope.order_page_index + 1;
+        		$scope.Issamemes = protocol.data;
+	            protocol.data.forEach(function(value,index) {
+	            	value.profit = OrderService.order_profit(value);
+	                value.qoute = QouteService.qoute(value.mode, value.assets.market, value.assets.code);
+	                var expired = new Date(value.expired);
+	                var now = new Date();
+					
+	                var tick = now.getTime() + $rootScope.server_time_tick;
+	                var remaining = (expired.getTime() - tick) / 1000;
+	                value.remaining = remaining;
+	                value.alltime = new Date(value.expired).getTime() - new Date(value.created);
+	                if (remaining > 0) {
+	                    $rootScope.trade_order_list.push(value);
+	                }
+	            });
+	
+	            if(protocol.data.length == 0) {
+	                $rootScope.has_more_order = false;
+	            }
+	
+	            $scope.$broadcast('scroll.refreshComplete');
+	            $scope.$broadcast('scroll.infiniteScrollComplete');
+        	}else{
+        		$rootScope.trade_order_list = $rootScope.trade_order_list;
+        	}
 
-            if(protocol.data.length == 0) {
-                $scope.has_more_order = false;
-            }
-
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.$broadcast('scroll.infiniteScrollComplete');
         });
     }
-
+    //弹出持仓框
+    $scope.toggle_history_order_panel = function() {
+        $scope.hold_order_modal.hide();
+        $rootScope.trade_order_list = [];
+        $rootScope.order_page_index = 0;
+        $rootScope.has_more_order = true;
+        $rootScope.load_more_order();
+        angular.element(document.querySelectorAll(".order-confirm-panel")).removeClass("open");
+        angular.element(document.querySelectorAll(".history-panel")).toggleClass("open");
+    };
+    
     $scope.close_order = function() {
         var order = {
             "quantity": $scope.modal_hold_order.Quantity,
@@ -221,14 +232,16 @@ angular.module('starter.controllers', [])
                             $scope.order_result.message = "交易成功";
                             $scope.order_result.order = protocol;
                             protocol.qoute = QouteService.qoute(protocol.mode, protocol.assets.market, protocol.assets.code);
-                            
                             var expired = new Date(protocol.expired);
 			                var now = new Date();
 			
 			                var tick = now.getTime() + $rootScope.server_time_tick;
 			                var remaining = (expired.getTime() - tick) / 1000;
 			                protocol.remaining = remaining;
-                            $rootScope.trade_order_list.push(protocol);
+			                protocol.alltime = new Date(protocol.expired).getTime() - new Date(protocol.created);
+			                if(remaining > 0){
+			                	$rootScope.trade_order_list.push(protocol);
+			                }
                         }
                         else {
                             $timeout(check_order, 1000);                

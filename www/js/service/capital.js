@@ -281,7 +281,7 @@ angular.module('starter.services')
             "timeout": 30000,
             "data": {
                 "fee": params.deposit.amount,
-                "body": params.deposit.body,
+                "body": '入金',
                 "openid": params.deposit.openid,
             },
         })
