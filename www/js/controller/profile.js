@@ -143,19 +143,20 @@ angular.module('starter.controllers')
 		if($scope.pay_type_list.indexOf("huichao") !=-1 ){
 			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
 				if(value.HCcode){
-					return value;
+					return value;console.log(value)
 				}
 			});
 		}else if($scope.pay_type_list.indexOf("huanxun") !=-1 ){
 			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
 				if(value.HYcode){
-					return value;
+					return value;console.log(value)
 				}
 			});
 		}else if($scope.pay_type_list.indexOf("shangxin") !=-1 ){
 			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
 				if(value.SXcode){
 					return value;
+					console.log(value)
 				}
 			});
 		};
