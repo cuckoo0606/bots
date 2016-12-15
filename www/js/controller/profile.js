@@ -816,7 +816,7 @@ angular.module('starter.controllers')
     
     //用户输入银行卡号必须为数字
     $scope.only_number = function(){
-    	if((event.keyCode<48||event.keyCode>57)&&(event.keyCode<96||event.keyCode>105)&&(event.keyCode!=8)&&(event.keyCode!=110)){
+    	if((event.keyCode<48||event.keyCode>57)&&(event.keyCode<96||event.keyCode>105)&&(event.keyCode!=8)){
     		event.preventDefault();
     	}
     };
