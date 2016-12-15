@@ -31,6 +31,6 @@
         	实际支付：<span ng-show="money_fee.outmoney_fee_type == 0">{{outAmount.outamount>0?(outAmount.outamount*(money_fee.outmoney_fee/100+1)).toFixed(2):0}}</span>
         	<span ng-show="money_fee.outmoney_fee_type == 1">{{outAmount.outamount>0?outAmount.outamount+money_fee.outmoney_fee:0}}</span>
         </footer>
-        <button class="newbutton outmoneybtn" ng-disabled="outAmount.outamount==''||outAmount.outamount==undefined||(outAmount.outamount<money_fee.outmoneymin)||(user.amount <= (money_fee.outmoney_fee_type == 0?outAmount.outamount*(money_fee.outmoney_fee/100+1):outAmount.outamount+money_fee.outmoney_fee))" ng-click="out_withdraw()">确认出金</button>
+        <button class="newbutton outmoneybtn" ng-disabled="outAmount.outamount==''||outAmount.outamount==undefined||(outAmount.outamount<money_fee.outmoneymin)||(user.amount < (money_fee.outmoney_fee_type == 0?outAmount.outamount*(money_fee.outmoney_fee/100+1):outAmount.outamount+money_fee.outmoney_fee))" ng-click="out_withdraw()">确认出金</button>
     </ion-content>
 </ion-modal-view>
