@@ -25,7 +25,7 @@
         </article>
         <section ng-show="money_fee.outmoneymin != '0'">单次提现金额至少{{currency_symbol}}{{money_fee.outmoneymin}}</section>
         <footer>
-        	余额：<span>{{user.amount.toFixed(0)}}</span>
+        	余额：<span>{{user.amount.toFixed(2)}}</span>
         	手续费：<span ng-show="money_fee.outmoney_fee_type == 0">{{money_fee.outmoney_fee}}%</span>
         	<span ng-show="money_fee.outmoney_fee_type == 1">{{currency_symbol}}{{money_fee.outmoney_fee}}</span>
         	实际支付：<span ng-show="money_fee.outmoney_fee_type == 0">{{outAmount.outamount>0?(outAmount.outamount*(money_fee.outmoney_fee/100+1)).toFixed(2):0}}</span>

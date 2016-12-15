@@ -27,7 +27,7 @@
 					</article>
 				</div>
 	       	</ion-radio>
-	        <ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'ymd'"  ng-show="pay_type_list.indexOf('ymd') != -1">
+	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'ymd'"  ng-show="pay_type_list.indexOf('ymd') != -1">
 				<div class="pay_bank_list_header">
 					<div class="kuang"></div>
 					<i class="pay_blue_bg"></i>
@@ -149,7 +149,7 @@
 	        </article>
 	        <section ng-show="money_fee.inmoneymin !='0'">单次充值至少{{currency_symbol}}{{money_fee.inmoneymin}}起</section>
 	        <footer>
-	        	余额：<span>{{user.amount.toFixed(0)}}</span>
+	        	余额：<span>{{user.amount.toFixed(2)}}</span>
 	        	手续费：<span ng-show="money_fee.inmoney_fee_type == 0">{{money_fee.inmoney_fee}}%</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{currency_symbol}}{{money_fee.inmoney_fee}}</span>
 	        	实际支付：<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?(deposit.amount*(money_fee.inmoney_fee/100+1)).toFixed(2):0}}</span>
