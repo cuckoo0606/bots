@@ -1,11 +1,10 @@
 angular.module('starter.controllers')
 
 .controller('HistoryCtrl', function($scope, $rootScope, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $interval, $filter, OrderService, CloseOrderService, QouteService) {
-    $scope.order_page_index = 0;
     $scope.close_order_page_index = 0;
-
-    $scope.order_list = [];
-    $scope.has_more_order = true;
+    $rootScope.trade_order_list = [];
+    $rootScope.order_page_index = 0;
+    $rootScope.has_more_order = true;
     $scope.close_order_list = [];
     $scope.has_more_close_order = true;
     $scope.category_index = parseInt($stateParams.index);
@@ -26,37 +25,37 @@ angular.module('starter.controllers')
         }
     };
 
-    $scope.refresh_order = function() {
-        $scope.order_list = [];
-        $scope.has_more_order = true;
-        $scope.order_page_index = 0;
-        $scope.load_more_order();
-    }
-
-    $scope.load_more_order = function() {
-        OrderService.request_order_list($scope.order_page_index + 1, 20, function(protocol) {
-            $scope.order_page_index = $scope.order_page_index + 1;
-            protocol.data.forEach(function(value) {
-                value.profit = $scope.order_profit(value);
-                value.qoute = QouteService.qoute(value.mode, value.assets.market, value.assets.code);
-                var expired = new Date(value.expired);
-                var now = new Date();
-
-                var tick = now.getTime() + $rootScope.server_time_tick;
-                var remaining = (expired.getTime() - tick) / 1000;
-                value.remaining = remaining;
-                value.alltime = new Date(value.expired).getTime() - new Date(value.created);
-                if (remaining > 0) {
-                    $scope.order_list.push(value);
-                }
-            });
-            if(protocol.data.length === 0) {
-                $scope.has_more_order = false;
-            }
-            $scope.$broadcast('scroll.refreshComplete');
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-        }); 
-    }
+//  $scope.refresh_order = function() {
+//      $rootScope.trade_order_list = [];
+//      $scope.has_more_order = true;
+//      $scope.order_page_index = 0;
+//      $scope.load_more_order();
+//  }
+//
+//  $scope.load_more_order = function() {
+//      OrderService.request_order_list($scope.order_page_index + 1, 20, function(protocol) {
+//          $scope.order_page_index = $scope.order_page_index + 1;
+//          protocol.data.forEach(function(value) {
+//              value.profit = $scope.order_profit(value);
+//              value.qoute = QouteService.qoute(value.mode, value.assets.market, value.assets.code);
+//              var expired = new Date(value.expired);
+//              var now = new Date();
+//
+//              var tick = now.getTime() + $rootScope.server_time_tick;
+//              var remaining = (expired.getTime() - tick) / 1000;
+//              value.remaining = remaining;
+//              value.alltime = new Date(value.expired).getTime() - new Date(value.created);
+//              if (remaining > 0) {
+//                  $rootScope.trade_order_list.push(value);
+//              }
+//          });
+//          if(protocol.data.length === 0) {
+//              $scope.has_more_order = false;
+//          }
+//          $scope.$broadcast('scroll.refreshComplete');
+//          $scope.$broadcast('scroll.infiniteScrollComplete');
+//      }); 
+//  }
 
     $scope.refresh_close_order = function() {
         $scope.close_order_list = [];
@@ -80,10 +79,10 @@ angular.module('starter.controllers')
         }); 
     }
     var order_interval = $interval(function() {
-        if ($scope.order_list.length > 0) {
-            for (var i = 0; i < $scope.order_list.length; i++) {
-                var o = $scope.order_list[i];
-                o.profit = $scope.order_profit(o);
+        if ($rootScope.trade_order_list.length > 0) {
+            for (var i = 0; i < $rootScope.trade_order_list.length; i++) {
+                var o = $rootScope.trade_order_list[i];
+                o.profit = OrderService.order_profit(o);
                 var expired = new Date(o.expired);
                 var now = new Date();
 
@@ -91,7 +90,7 @@ angular.module('starter.controllers')
                 var remaining = (expired.getTime() - tick) / 1000;
                 o.remaining = remaining;
                 if(o.remaining <= 0) {
-                    $scope.order_list.splice(i, 1);
+                    $rootScope.trade_order_list.splice(i, 1);
                 }
             }
         }

@@ -118,18 +118,20 @@ angular.module('starter.controllers')
             },
             grid: [
                 {
-                    top: 20,
-                    bottom: 5,
-                    left: 5,
-                    right: 60,
-                    height: 300,
+                    top: 5+'%',
+                    bottom: 30+'%',
+                    left: 4+'%',
+                    right: 0+'%',
+                    height: 65+'%',
+                    containLabel:true,
                 },
                 {
-                    top: 355,
-                    bottom: 5,
-                    left: 5,
-                    right: 60,
-                    height: 100,
+                    top: 75+'%',
+                    bottom: 0+'%',
+                    left: 2+'%',
+                    right: 0+'%',
+                    height: 25+'%',
+                    containLabel:true,
                 },
             ],
             xAxis: [
@@ -252,9 +254,9 @@ angular.module('starter.controllers')
                     },
                     markPoint: {
                         symbol: "rect",
-                        animation: false,
+                        animation: true,
                         symbolSize: [60, 18],
-                        symbolOffset: [-21, 0],
+                        symbolOffset: [-20, 0],
                         data: [
                         { 
                             name: '最新价', 
@@ -263,7 +265,8 @@ angular.module('starter.controllers')
                             value: line_data[line_data.length - 1],
                             label: {
                                 normal: {
-                                    position: [ 0, 2 ],
+                                	show:true,
+                                    position: [ 0, 1 ],
                                     textStyle: {
                                         color: "#FFFFFF",
                                     },
@@ -430,7 +433,7 @@ angular.module('starter.controllers')
         if ($rootScope.trade_order_list.length > 0) {
             for (var i = 0; i < $rootScope.trade_order_list.length; i++) {
                 var o = $rootScope.trade_order_list[i];
-                o.profit = $scope.order_profit(o);
+                o.profit = OrderService.order_profit(o);
                 var expired = new Date(o.expired);
                 var now = new Date();
 
@@ -491,14 +494,15 @@ angular.module('starter.controllers')
             line_chart.data[line_chart.data.length - 1] = qoute.value;
 
             var stock = $scope.chart_option.series[1];
-            stock.data[stock.data.length - 1][1] = qoute.value;
-            if (qoute.value > stock.data[stock.data.length - 1][3]) {
-                stock.data[stock.data.length - 1][3] = qoute.value;
+            if($scope.chart_type == "stock"){
+	            stock.data[stock.data.length - 1][1] = qoute.value;
+	            if (qoute.value > stock.data[stock.data.length - 1][3]) {
+	                stock.data[stock.data.length - 1][3] = qoute.value;
+	            }
+	            if (qoute.value < stock.data[stock.data.length - 1][2]) {
+	                stock.data[stock.data.length - 1][2] = qoute.value;
+	            }
             }
-            if (qoute.value < stock.data[stock.data.length - 1][2]) {
-                stock.data[stock.data.length - 1][2] = qoute.value;
-            }
-
             var mark_point = $scope.chart_option.series[0].markPoint;
             mark_point.data[0].value = qoute.value;
             mark_point.data[0].yAxis = qoute.value;

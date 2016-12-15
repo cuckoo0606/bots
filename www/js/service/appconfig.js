@@ -13,6 +13,8 @@ angular.module('starter.services', [])
     this.system_logo = "img/logo/logo.png";
     this.show_system_logo = true;
     this.show_signup_code = true;
+    //配置是否具有注册功能
+    this.ifsignup = true;
     //配置注册跳转二维码
 	this.if_weixin = {
 		erweima_img:"img/logo/qcode.jpg",
@@ -31,8 +33,8 @@ angular.module('starter.services', [])
     this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
     this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
-    this.default_pay_type = "shangxin";
-    this.pay_type_list = [ "shangxin" ];
+    this.default_pay_type = "ymd";
+    this.pay_type_list = [ "ymd","weifutong" ];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },

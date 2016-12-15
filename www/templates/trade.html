@@ -5,73 +5,37 @@
         </a>
     </ion-nav-buttons>
     <ion-content class="trade-content content-background" scroll="true">
-        <div class="trade-qoute-header">
-            <div class="row">
-                <div class="col col-40">
-                    <div class="row">
-                        <div class="col">
-                            <h1 class="main-qoute" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.value.toFixed(qoute.decimal) }}
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-60">
-                    <div class="row">
-                        <div class="col qoute-widget">
-                            <span class="qoute-widget-title">最低</span>
-                            <span class="qoute-widget-value" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.low.toFixed(qoute.decimal) }}
-                            </span>
-                        </div>
-                        <div class="col qoute-widget">
-                            <span class="qoute-widget-title">最高</span>
-                            <span class="qoute-widget-value" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.high.toFixed(qoute.decimal) }}
-                            </span>
-                        </div>
-                        <div class="col qoute-widget">
-                            <span class="qoute-widget-title">开盘</span>
-                            <span class="qoute-widget-value" ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
-                                {{ qoute.open.toFixed(qoute.decimal) }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="trade-chart">
-            <div class="trade-chart-bar">
-                <div class="row">
-                    <div class="col">
-                        <span class="trade-chart-type stock active" ng-click="change_chart_type('stock')">K线</span>
-                    </div>
-                    <div class="col">
-                        <span class="trade-chart-type line" ng-click="change_chart_type('line')">走势</span>
-                    </div>
-                    <div class="col">
-                        <span class="trade-chart-period m1 active" ng-click="change_chart_period('m1')">M1</span>
-                    </div>
-                    <div class="col">
-                        <span class="trade-chart-period m5" ng-click="change_chart_period('m5')">M5</span>
-                    </div>
-                    <div class="col">
-                        <span class="trade-chart-period m15" ng-click="change_chart_period('m15')">M15</span>
-                    </div>
-                    <div class="col">
-                        <span class="trade-chart-period m30" ng-click="change_chart_period('m30')">M30</span>
-                    </div>
-                    <div class="col">
-                        <span class="trade-chart-period h1" ng-click="change_chart_period('h1')">H1</span>
-                    </div>
-                    <div class="col">
-                        <span class="trade-chart-period d1" ng-click="change_chart_period('d1')">D1</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="trade-chart">
-                <ng-echarts ec-config="chart_config"  ec-option="chart_option" class="history-chart"></ng-echarts>
+		<header>
+			<section ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">
+				{{ qoute.value.toFixed(qoute.decimal) }}
+			</section>
+			<section>
+				<p>开盘</p>
+				<p ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">{{ qoute.open.toFixed(qoute.decimal) }}</p>
+			</section>
+			<section >
+				<p>最低</p>
+				<p ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">{{ qoute.low.toFixed(qoute.decimal) }}</p>
+			</section>
+			<section>
+				<p>最高</p>
+				<p ng-class="{ 'rise' : qoute.state == 'up', 'fall' : qoute.state == 'down' }">{{ qoute.high.toFixed(qoute.decimal) }}</p>
+			</section>
+		</header>
+		<nav>
+			<article>
+				<span class="trade-chart-type stock active" ng-click="change_chart_type('stock')">k线</span>
+				<span class="trade-chart-type line" ng-click="change_chart_type('line')">走势</span>
+			</article>
+			<section class="trade-chart-period m1" ng-click="change_chart_period('m1')">1M</section>
+			<section class="trade-chart-period m5 active" ng-click="change_chart_period('m5')">5M</section>
+			<section class="trade-chart-period m15" ng-click="change_chart_period('m15')">15M</section>
+			<section class="trade-chart-period m30" ng-click="change_chart_period('m30')">30M</section>
+			<section class="trade-chart-period h1" ng-click="change_chart_period('h1')">1H</section>
+			<section class="trade-chart-period d1" ng-click="change_chart_period('d1')">1D</section>
+		</nav>
+		<footer>
+			<ng-echarts ec-config="chart_config"  ec-option="chart_option" class="history_chart"></ng-echarts>
                 <div class="chart-tip">
                     <ul>
                         <li class="history-time">{{ history_qoute.datetime.split(" ")[1] }}</li>
@@ -88,31 +52,22 @@
                         <li class="history-close">MACD:{{ macd[macd.length - 1].toFixed(4) }}</li>
                     </ul>
                 </div>
-            </div>
-        </div>
+		</footer>
     </ion-content>
-    <div class="bar bar-footer trade-footer">
-        <div class="row">
-            <div class="col">
-                <button class="button trade-panel-button" ng-click="toggle_history_order_panel()">
-                    <i class="icon--14 iconfont"></i>
-                    <span class="nav-name">持仓</span>
-                    <span class="badge badge-assertive">{{ order_list.length }}</span>
-                </button>
-            </div>
-            <div class="col">
-                <button class="button trade-lookup-button" ng-click="toggle_order_confirm_panel('lookup')">
-                    <i class="iconfont icon--18"></i>
-                    <span class="nav-name">买涨</span>
-                </button>
-            </div>
-            <div class="col">
-                <button class="button trade-lookdown-button" ng-click="toggle_order_confirm_panel('lookdown')">
-                    <i class="iconfont icon--17"></i>
-                    <span class="nav-name">买跌</span>
-                </button>
-            </div>
-        </div>
+	<div class="trade_bar">
+		<section ng-click="toggle_history_order_panel()">
+			<i class="icon--14 iconfont"></i>
+            <p>持仓<span ng-show="order_list">({{ trade_order_list.length }})</span></p>
+		</section>
+		<section ng-click="toggle_order_confirm_panel('lookup')">
+			<i class="iconfont icon--18"></i>
+            <p>买涨</p>
+		</section>
+		<section ng-click="toggle_order_confirm_panel('lookdown')">
+			<i class="iconfont icon--17"></i>
+            <p>买跌</p>
+		</section>
+	</div>
     </div>
     <div ng-include="'templates/order-confirm-panel.html'"></div>
     <div ng-include="'templates/order-state-panel.html'"></div>
