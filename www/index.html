@@ -20,6 +20,17 @@
 
     <title>瑞达财富通</title>
 
+		<script type="text/javascript">
+			window.onload=function(){
+					//设置适配rem
+				var change_rem = ((window.screen.width > 450) ? 450 : window.screen.width)/375*100;
+		    document.getElementsByTagName("html")[0].style.fontSize=change_rem+"px";
+		    window.onresize = function(){
+		    	change_rem = ((window.screen.width > 450) ? 450 : window.screen.width)/375*100;
+		    	document.getElementsByTagName("html")[0].style.fontSize=change_rem+"px";
+		    }
+			}
+		</script>
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <!--<link rel="stylesheet" href="css/process-bar.css" />-->

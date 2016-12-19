@@ -3,7 +3,8 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function($scope, $rootScope, $ionicModal, $ionicSideMenuDelegate, $ionicScrollDelegate,
             $interval, $timeout, $filter, $ionicPlatform, $ionicHistory, $state, $http, $ionicLoading,
             AppConfigService, CloseOrderService, UserService, OrderService, QouteService) {
-	$rootScope.iswecat = true;
+
+	$rootScope.iswecat = false;
 	if(navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger"){
 		$rootScope.iswecat = true;
 	};
@@ -273,4 +274,4 @@ angular.module('starter.controllers', [])
    		$interval($scope.remain_interval);
    	});
 });
-
+>>>>>>> 12fd8bb515838d2cd6287d5bffff47ccdd150c98
