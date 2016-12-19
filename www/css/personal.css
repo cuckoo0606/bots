@@ -150,10 +150,10 @@
 	line-height: 0.3rem !important;
 }
 .in_money{
-	color:#fa2e42;
+	color:#fa2e42 !important;
 }
 .out_money{
-	color:#1fc65b;
+	color:#1fc65b !important;
 }
 .other_money{
 	color:#159aef;
