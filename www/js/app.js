@@ -34,10 +34,8 @@ angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 's
             }
         }, 1000);
     });
+            
 
-	//设置适配rem
-    var change_rem = ((window.screen.width > 450) ? 450 : window.screen.width)/375*100;
-    document.getElementsByTagName("html")[0].style.fontSize=change_rem+"px";
 
     //判断登陆状态
     $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams, options) {
