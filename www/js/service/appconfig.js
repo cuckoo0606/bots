@@ -33,8 +33,8 @@ angular.module('starter.services', [])
     this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
     this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
 
-    this.default_pay_type = "ymd";
-    this.pay_type_list = [ "ymd","weifutong" ];
+    this.default_pay_type = "huichao";
+    this.pay_type_list = [ "huichao","wechat","alipay" ];
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC" },
