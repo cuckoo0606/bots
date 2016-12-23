@@ -7,7 +7,7 @@ angular.module('starter.services')
 
     //获取支付通道列表接口
     this.get_pay_channel = function(params){
-        var url = 'http://112.126.94.196:8989/v2/payment-channel?access_token='+AppConfigService.token;
+        var url = AppConfigService.pay_url+'v2/payment-channel?access_token='+AppConfigService.token;
         $http.get(url, {
             "timeout": 10000,
             "params": {"client_type": params.client_type}
@@ -34,7 +34,7 @@ angular.module('starter.services')
 
     //入金接口
     this.payment = function(params){
-        var url = 'http://112.126.94.196:8989/v2/payment?access_token='+AppConfigService.token;
+        var url = AppConfigService.pay_url+'v2/payment?access_token='+AppConfigService.token;
         $http({
             "url": url,
             "method": "POST", 
