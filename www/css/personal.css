@@ -490,6 +490,9 @@
 	margin-bottom:0.1rem ;
 	margin-top: 0.1rem;
 }
+#in_money_content header .pay_channel{
+	margin-top:0.1rem ;
+}
 #in_money_content article span i{
 	color: #eb3445;
 }
@@ -622,9 +625,6 @@
 	width: 0.4rem;
 	text-align: center;
 }
-#in_money_content .pay_weixin{
-	margin-top:0.1rem ;
-}
 #in_money_content .pay_weixin  article p{
 	height: 0.7rem !important;
 	line-height: 0.7rem !important;
@@ -711,7 +711,7 @@
 	position: absolute;
 	width:1.8rem;
 	height: 1.8rem;
-	top:1.3rem;
+	top:22%;
     left: 50%;
     margin-left: -0.9rem;
 	z-index: 10000;

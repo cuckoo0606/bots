@@ -7,8 +7,8 @@ angular.module('starter.services', [])
     this.wx_auth = {}
     this.wx_user_info = {}
 
-    this.system_name = "瑞达财富通";
-    this.company_name = "瑞达财富通";
+    this.system_name = "瑞盈财富通";
+    this.company_name = "瑞盈财富通";
     this.show_system_name = false;
     this.system_logo = "img/logo/logo.png";
     this.show_system_logo = true;
@@ -18,7 +18,7 @@ angular.module('starter.services', [])
     //配置注册跳转二维码
 	this.if_weixin = {
 		erweima_img:"img/logo/qcode.jpg",
-		weixin_name:"瑞达财富通"
+		weixin_name:"瑞盈财富通"
 	};
 	//配置交易金额
 	this.trade_money={
@@ -26,203 +26,77 @@ angular.module('starter.services', [])
 		max_money:5000
 	};
 	//配置货币符号
-	this.currency_symbol = '$';
+	this.currency_symbol = '￥';
 	//配置接口地址
-    this.api_url = "http://weixin.leather-boss.com:8793/";
-	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
-    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
+    this.api_url = "http://weixin.buut.cn:8793/";
+    this.qoute_url = "http://weixin.buut.cn:7794/";
+    this.erweima_url= "http://weixin.buut.cn/index.html";
+    this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
 
     this.default_pay_type = "ymd";
     this.pay_type_list = [ "ymd","weifutong" ];
 
     this.bank_list = [ 
-            { "name": "中国农业银行", "code": "ABC" },
-            { "name": "中国银行", "code": "BOC"},
-            { "name": "中国工商银行", "code": "ICBC"},
-            { "name": "交通银行", "code": "BOCOM"},
-            { "name": "中国建设银行", "code": "CCB" },
-            { "name": "中国邮政储蓄银行", "code": "PSBC" },
-            { "name": "招商银行", "code": "CMBC" },
-            { "name": "浦发银行", "code": "SPDB" },
-            { "name": "中国光大银行", "code": "CEEBBANK" },
-            { "name": "中信银行", "code": "ECITIC" },
-            { "name": "平安银行", "code": "PINGAN" },
-            { "name": "中国民生银行", "code": "CMBCS" },
-            { "name": "华夏银行", "code": "HXB" },
-            { "name": "广发银行", "code": "CGB" },
-            { "name": "兴业银行", "code": "CIB" },
-            { "name": "徽商银行", "code": "HSB" },
-            { "name": "长沙银行", "code": "CSCB" },
-			{ "name": "浙江省农村信用社联合社", "code": "ZJRCC" }
+            { "name": "中国农业银行", "code": "ABC", 'icon':'icon-nongyeyinxing1 green'},
+            { "name": "中国银行", "code": "BOC", 'icon':'icon-zhongguoyinhang red'},
+            { "name": "中国工商银行", "code": "ICBC", 'icon':'icon-gongshangyinhang red'},
+            { "name": "交通银行", "code": "BOCOM", 'icon':'icon-jiaotongyinhang pay_purple'},
+            { "name": "中国建设银行", "code": "CCB", 'icon':'icon-jiansheyinhang blue' },
+            { "name": "中国邮政储蓄银行", "code": "PSBC", 'icon':'icon-youzhengyinhang green' },
+            { "name": "招商银行", "code": "CMBC", 'icon':'icon-zhaoshangyinhang red' },
+            { "name": "浦发银行", "code": "SPDB", 'icon':'icon-pufayinhang pay_blue' },
+            { "name": "中国光大银行", "code": "CEEBBANK", 'icon':'icon-guangdayinhang pay_yellow' },
+            { "name": "中信银行", "code": "ECITIC", 'icon':'icon-zhongxinyinhang red' },
+            { "name": "平安银行", "code": "PINGAN", 'icon':'icon-pinganyinxing orange' },
+            { "name": "中国民生银行", "code": "CMBCS", 'icon':'icon-minshengyinhang pay_blue' },
+            { "name": "华夏银行", "code": "HXB", 'icon':'icon-huaxiayinhang red' },
+            { "name": "广发银行", "code": "CGB", 'icon':'icon-guangfayinxing red' },
+            { "name": "兴业银行", "code": "CIB", 'icon':'icon-xingyeyinhang blue' },
+            { "name": "徽商银行", "code": "HSB", 'icon':'icon-04403600 red' },
+            { "name": "长沙银行", "code": "CSCB", 'icon':'icon-04615510 red' },
+			{ "name": "浙江省农村信用社联合社", "code": "ZJRCC", 'icon':'icon-xinyonghezuoshe3 green' }
         ];
         
-        
-    this.deposit_bank_list = [ 
-            {
-            	'name': '工商银行', 
-            	'HCcode': 'ICBC',
-            	'HYcode':'1100',
-            	'SXcode':'ICBC',
-            	'icon':'icon-gongshangyinhang red',
-            },
-            {
-            	'name': '农业银行', 
-            	'HCcode': 'ABC',
-            	'HYcode':'1101',
-            	'SXcode':'ABC',
-            	'icon':'icon-nongyeyinxing1 green',
-            },
-            {
-            	'name': '招商银行', 
-            	'HCcode': 'CMBC',
-            	'HYcode':'1102',
-            	'icon':'icon-zhaoshangyinhang red',
-            },
-            {
-            	'name': '兴业银行', 
-            	'HCcode': 'CIB',
-            	'HYcode':'1103',
-            	'SXcode':'CIB',
-            	'icon':'icon-xingyeyinhang blue',
-            },
-            {
-            	'name': '中信银行', 
-            	'HCcode': 'ECITIC',
-            	'HYcode':'1104',
-            	'icon':'icon-zhongxinyinhang red',
-            },
-            {
-            	'name': '建设银行', 
-            	'HCcode': 'CCB',
-            	'HYcode':'1106',
-            	'SXcode':'CCB',
-            	'icon':'icon-jiansheyinhang blue',
-            },
-            {
-            	'name': '中国银行', 
-            	'HCcode': 'BOC',
-            	'HYcode':'1107',
-            	'SXcode':'BOC',
-            	'icon':'icon-zhongguoyinhang red',
-            },
-            {
-            	'name': '交通银行', 
-            	'HCcode': 'BOCOM',
-            	'HYcode':'1108',
-            	'icon':'icon-jiaotongyinhang pay_purple',
-            },
-            {
-            	'name': '浦发银行', 
-            	'HCcode': 'SPDB',
-            	'HYcode':'1109',
-            	'SXcode':'SPDB',
-            	'icon':'icon-pufayinhang pay_blue',
-            },
-            {
-            	'name': '民生银行', 
-            	'HCcode': 'CMBCS',
-            	'HYcode':'1110',
-            	'icon':'icon-minshengyinhang pay_blue',
-            },
-            {
-            	'name': '华夏银行', 
-            	'HCcode': 'HXB',
-            	'HYcode':'1111',
-            	'icon':'icon-huaxiayinhang red',
-            },
-            {
-            	'name': '光大银行', 
-            	'HCcode': 'CEEBBANK',
-            	'HYcode':'1112',
-            	'SXcode':'CEB',
-            	'icon':'icon-guangdayinhang pay_yellow',
-            },
-            {
-            	'name': '广发银行', 
-            	'HCcode': 'CGB',
-            	'HYcode':'1114',
-            	'icon':'icon-guangfayinxing red',
-            },
-            {
-            	'name': '邮政储蓄银行', 
-            	'HCcode': 'PSBC',
-            	'HYcode':'1119',
-            	'icon':'icon-youzhengyinhang green',
-            },
-            {
-            	'name': '平安银行', 
-            	'HCcode': 'PINGAN',
-            	'HYcode':'1121',
-            	'SXcode':'SPABANK',
-            	'icon':'icon-pinganyinxing orange',
-            },
-            {
-            	'name': '北京银行', 
-            	'HYcode':'1113',
-            	'icon':'icon-beijingyinhang red',
-            },
-            {
-            	'name': '南京银行', 
-            	'HYcode':'1115',
-            	'icon':'icon-nanjingyinhang red',
-            },
-            {
-            	'name': '上海银行', 
-            	'HYcode':'1116',
-            	'icon':'icon-shanghaiyinhang orange',
-            },
-            {
-            	'name': '杭州银行', 
-            	'HYcode':'1117',
-            	'icon':'icon-hangzhouyinhang pay_qing',
-            },
-            {
-            	'name': '宁波银行', 
-            	'HYcode':'1118',
-            	'icon':'icon-ningboyinxing orange',
-            },
-            {
-            	'name': '浙商银行', 
-            	'HYcode':'1120',
-            	'icon':'icon-zheshangyinhang pay_yellow',
-            },
-            {
-            	'name': '东亚银行', 
-            	'HYcode':'1122',
-            	'icon':'icon-dongyayinhang red',
-            },
-            {
-            	'name': '渤海银行', 
-            	'HYcode':'1123',
-            	'icon':'icon-bohaiyinhang blue',
-            },
-            {
-            	'name': '北京农商行', 
-            	'HYcode':'1124',
-            	'icon':'icon-beijingnongshangyinhang red',
-            },
-            {
-            	'name': '浙江泰隆商业银行', 
-            	'HYcode':'1127',
-            	'icon':'icon-zhejiangtailongshangyeyinhang orange',
-            },
-            {
-            	'name': '徽商银行', 
-            	'HCcode':'HSB',
-            	'icon':'icon-04403600 red',
-            },
-            {
-            	'name': '长沙银行', 
-            	'HCcode':'CSCB',
-            	'icon':'icon-04615510 red',
-            },
-            {
-            	'name': '浙江省农村信用社联合社', 
-            	'HCcode':'ZJRCC',
-            	'icon':'icon-xinyonghezuoshe3 green',
-            },
-        ];
+    this.pay_banklists = [
+           {bank_title: "不选择银行", bank_code: "0000"},
+           {bank_title: "中国银行", bank_code: "0001", 'icon':'icon-zhongguoyinhang red'},
+	       {bank_title: "浦发银行", bank_code: "0002", 'icon':'icon-pufayinhang pay_blue'},
+	       {bank_title: "中国民生银行", bank_code: "0003", 'icon':'icon-minshengyinhang pay_blue'},
+	       {bank_title: "深圳发展银行", bank_code: "0004", 'icon':'icon-shenzhenfazhanyinhang pay_qing'},
+	       {bank_title: "招商银行", bank_code: "0005", 'icon':'icon-zhaoshangyinhang red'},
+	       {bank_title: "中国建设银行", bank_code: "0006", 'icon':'icon-jiansheyinhang blue'},
+	       {bank_title: "中国农业银行", bank_code: "0007", 'icon':'icon-nongyeyinxing1 green'},
+	       {bank_title: "中国邮政储蓄银行", bank_code: "0008", 'icon':'icon-youzhengyinhang green'},
+	       {bank_title: "中国工商银行", bank_code: "0009", 'icon':'icon-gongshangyinhang red'},
+	       {bank_title: "交通银行", bank_code: "0010", 'icon':'icon-jiaotongyinhang pay_purple'},
+	       {bank_title: "华夏银行", bank_code: "0011", 'icon':'icon-huaxiayinhang red'},
+	       {bank_title: "徽商银行", bank_code: "0012", 'icon':'icon-04403600 red'},
+	       {bank_title: "中国光大银行", bank_code: "0013", 'icon':'icon-guangdayinhang pay_yellow'},
+	       {bank_title: "中信银行", bank_code: "0014", 'icon':'icon-zhongxinyinhang red'},
+	       {bank_title: "平安银行", bank_code: "0015", 'icon':'icon-pinganyinxing orange'},
+	       {bank_title: "宁波银行", bank_code: "1001", 'icon':'icon-ningboyinxing orange'},
+	       {bank_title: "南京银行", bank_code: "1002", 'icon':'icon-nanjingyinhang red'},
+	       {bank_title: "杭州银行", bank_code: "1003", 'icon':'icon-hangzhouyinhang pay_qing'},
+	       {bank_title: "北京银行", bank_code: "1004", 'icon':'icon-beijingyinhang red'},
+	       {bank_title: "东亚银行", bank_code: "1005", 'icon':'icon-dongyayinhang red'},
+	       {bank_title: "浙商银行", bank_code: "1006", 'icon':'icon-zheshangyinhang pay_yellow'},
+	       {bank_title: "上海银行" ,bank_code: "1007", 'icon':'icon-shanghaiyinhang orange'},
+	       {bank_title: "北京农村商业银行", bank_code: "2001", 'icon':'icon-beijingnongshangyinhang red'},
+	       {bank_title: "上海农村商业银行", bank_code: "2002", 'icon':'icon-shanghainongshangyinhang-yy blue'},
+	       {bank_title: "顺德农村信用合作社", bank_code: "2003", 'icon':'icon-xinyonghezuoshe3 pay_qing'},
+	       {bank_title: "汉口银行", bank_code: "2004", 'icon':'icon-hankouyinhang blue'},
+	       {bank_title: "广州市商业银行", bank_code: "2005", 'icon':'icon-guangzhoushishangyeyinhang pay_blue'},
+	       {bank_title: "广州市农村信用合作社", bank_code: "2006", 'icon':'icon-xinyonghezuoshe3 green'},
+	       {bank_title: "珠海市农村信用合作社", bank_code: "2007", 'icon':'icon-xinyonghezuoshe3 green'},
+	       {bank_title: "尧都信用合作联社", bank_code: "2008", 'icon':'icon-xinyonghezuoshe3 green'},
+	       {bank_title: "晋城市商业银行", bank_code: "2009", 'icon':'icon-guangzhoushishangyeyinhang pay_blue'},
+	       {bank_title: "温州市商业银行", bank_code: "2010", 'icon':'icon-guangzhoushishangyeyinhang pay_blue'},
+	       {bank_title: "兴业银行", bank_code: "2011", 'icon':'icon-xingyeyinhang blue'},
+	       {bank_title: "渤海银行", bank_code: "2012", 'icon':'icon-bohaiyinhang blue'},
+	       {bank_title: "广东发展银行", bank_code: "2013", 'icon':'icon-guangfayinxing red'},
+	       {bank_title: "浙江泰隆商业银行", bank_code: "2014", 'icon':'icon-zhejiangtailongshangyeyinhang orange'},
+
+     ]
 	this.type_list = [
 			{ "value": 0, "name": "初始化" },
             { "value": 1, "name": "入金" },

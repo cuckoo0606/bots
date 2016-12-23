@@ -7,6 +7,7 @@ angular.module('starter.controllers')
 			$rootScope.user = newuser;
 		})
 	};
+	$scope.pay_channel_lists = {};
     $scope.qrcode_url = AppConfigService.get_erweima_url + escape(AppConfigService.erweima_url + "?show=signup&ref=" + $rootScope.user.referee + "#/signup");
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
@@ -28,7 +29,7 @@ angular.module('starter.controllers')
     	if_has_more_money_order:false,
     };
     $scope.money_page_index = 0;
-    $scope.deposit_bank_list = AppConfigService.deposit_bank_list;
+    $scope.pay_banklists = AppConfigService.pay_banklists;
     $scope.pay_type_list = AppConfigService.pay_type_list;
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
@@ -62,14 +63,11 @@ angular.module('starter.controllers')
 		"endDate":""
 	};
 	$scope.outAmount={
-		"outamount":"",
+		"outamount":100,
 	};
     $scope.deposit = {
-        "pay_type": AppConfigService.default_pay_type,
+    	"pay_type":'',
         "amount": 100,
-        "body": "WECHAT RECHARGE",
-        "openid": AppConfigService.wx_auth.openid,
-        "user": $rootScope.user_id,
     };
     $scope.inmoneybank={
     	'bankmes' : ''
@@ -143,41 +141,44 @@ angular.module('starter.controllers')
     
 	//入金界面
     $scope.show_deposit_modal = function() {
-    	$scope.capital_deposit_modal.show();
-    	
-		if($scope.pay_type_list.indexOf("huichao") !=-1 ){
-			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
-				if(value.HCcode){
+    	CapitalService.get_pay_channel({
+    		"client_type":$rootScope.iswecat == true ? 'wecaht':'app',
+			"success":function(data){
+				$scope.pay_channel_lists = data.map(function(value){
+					if(value.payment_channel_style == 'wechat'){
+						value.pay_color = 'pay_green';
+						value.pay_bg = 'pay_green_bg';
+						value.pay_icon = 'iconfont icon-weixin';
+					}else{
+						value.pay_color = 'pay_blue';
+						value.pay_bg = 'pay_blue_bg';
+						value.pay_icon = 'iconfont icon--19';
+					};
+					if(value.bank_list.length == 0){
+						value.pay_height = 'pay_weixin';
+					}else{
+						value.pay_height = '';
+					};
+					if(value.bank_list.length > 0){
+						value.bank_list_str = JSON.stringify(value.bank_list)
+						value.pay_bank_list = $scope.pay_banklists.filter(function(mes){
+							if(value.bank_list_str.indexOf(mes.bank_code)!=-1){
+								return mes;
+							}
+						})
+					};
 					return value;
-				}
-			});
-		}else if($scope.pay_type_list.indexOf("huanxun") !=-1 ){
-			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
-				if(value.HYcode){
-					return value;
-				}
-			});
-		}else if($scope.pay_type_list.indexOf("shangxin") !=-1 ){
-			$scope.pay_bank_list = $scope.deposit_bank_list.filter(function(value){
-				if(value.SXcode){
-					return value;
-				}
-			});
-		};
-		if($rootScope.user.bank){
-			var defalutobj = $scope.deposit_bank_list.filter(function(value){
-				if($rootScope.user.bank == value.name || $rootScope.user.bank == value.HCcode){
-					return value;
-				}
-			});
-			if($scope.pay_bank_list.indexOf(defalutobj[0])!=-1){
-				$scope.inmoneybank.bankmes = defalutobj[0];
-			}else{
-				$scope.inmoneybank.bankmes = $scope.pay_bank_list[0];
+				});
+				$scope.deposit.pay_type = $scope.pay_channel_lists[0]._id;
+			},
+			'fail':function(message) {
+				$scope.pay_channel_lists = {};
+	        },
+			"error":function(status,message){
+				$scope.pay_channel_lists = {};
 			}
-		}else if($rootScope.user.bank==''||!$rootScope.user.bank){
-			$scope.inmoneybank.bankmes = $scope.pay_bank_list[0];
-		}
+		});
+
         CapitalService.system_config({
         	"type":"income-handling-type",
 			"success":function(value){
@@ -218,8 +219,35 @@ angular.module('starter.controllers')
 				$scope.money_fee.inmoneymin = 0;
 			}
 		});
+		
+		$scope.capital_deposit_modal.show();
     }
 
+    //银行列表默认显示
+    $scope.changeuserbank = function(mes){
+    	if(mes.bank_list.length > 0){
+    		if($rootScope.user.bank){
+    			var bankmes = $scope.bank_list.filter(function(obj){
+    				if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
+    					return obj;
+    				}
+    			});
+    			var userbankmes = mes.pay_bank_list.filter(function(userbank){
+    				if(userbank.icon == bankmes[0].icon){
+    					return userbank;
+    				}
+    			});
+    			if(userbankmes.length > 0){
+    				$scope.inmoneybank.bankmes = userbankmes[0];
+    			}else{
+    				$scope.inmoneybank.bankmes = mes.pay_bank_list[0];
+    			}
+    		}else{
+    			$scope.inmoneybank.bankmes = mes.pay_bank_list[0];
+    		}
+    	}
+    }
+    
 	//入金接口
     $scope.submit_deposit = function() {
         if ($scope.deposit.amount == "" || $scope.deposit.amount == "0"||$scope.deposit.amount == "undefined")  {
@@ -237,7 +265,7 @@ angular.module('starter.controllers')
 	    $ionicLoading.show({
 	      template: "正在提交"
 	    });
-        
+
         var fail = function(status, message) {
             $ionicLoading.show({
                 template: message
@@ -247,7 +275,7 @@ angular.module('starter.controllers')
             }, 2000);
         }
 
-        var error = function(status, message) {
+        var error = function(message) {
             $ionicLoading.show({
                 template: message
             });
@@ -255,263 +283,30 @@ angular.module('starter.controllers')
                 $ionicLoading.hide();
             }, 2000);
         }
-       
-        if ($scope.deposit.pay_type == "huichao") { 
-            CapitalService.deposit_hc({
-                "deposit": $scope.deposit,
-                "bankcode":$scope.inmoneybank.bankmes.HCcode,
-                "success": function(url) {
-                    $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
-                    $scope.pay_webview_modal.show();
-                },
-                "fail": fail,
-                "error": error,
-            });
-        }
-        else if($scope.deposit.pay_type == "shangxin") {
-        	if($scope.inmoneybank.bankmes.SXcode){
-        		$scope.pay_shangyinxin_mes = {
-					'bankcard':$rootScope.user.bankaccount,
-					'usercard':$rootScope.user.idcard,
-					'phone':$rootScope.user.phone,
-					'name':$rootScope.user.bankholder,
-					'success':true
-			    };
-        	};
-        	$timeout(function () {
-	        	$ionicLoading.hide();
-	        	$scope.capital_deposit_modal.hide();
-		        $scope.pay_money_modal.show();
-		        $scope.pay_shangyinxin_mes.success = true;
-            }, 1000);
-	    }
-        else if($scope.deposit.pay_type == "zhongyun") {
-	         CapitalService.deposit_zhongyun({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
-	                $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
-                    $scope.pay_webview_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "ymd") {
-	         CapitalService.deposit_ymd({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
-	                $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
-                    $scope.pay_webview_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "zhongyun_wecat") {
-	         CapitalService.deposit_zhongyun_wecat({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
+        CapitalService.payment({
+        	'fee':$scope.deposit.amount,
+        	'payment_channel':$scope.deposit.pay_type,
+        	'bank_code':$scope.inmoneybank.bankmes.bank_code,
+        	'success':function(mes){
+        		if(mes.data.action == 'qrcode'){
 	            	$ionicLoading.hide();
 	                $scope.capital_deposit_modal.hide();
-	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
+	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
 	                $scope.pay_qrcode_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "huanxun") {
-	         CapitalService.deposit_hx({
-	            "deposit": $scope.deposit,
-	            "bankcode":$scope.inmoneybank.bankmes.HYcode,
-	            "success": function(url) {
+        		}else if(mes.data.action == 'redirect'){
 	                $ionicLoading.hide();
                     $scope.capital_deposit_modal.hide();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
                     $scope.pay_webview_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "huanxun_wecat") {
-	         CapitalService.deposit_hxwecat({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
-	                $ionicLoading.hide();
-	                $scope.capital_deposit_modal.hide();
-	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
-	                $scope.pay_qrcode_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "zhihui") {
-	         CapitalService.deposit_zhihui({
-	            "deposit": $scope.deposit,
-	            "txnType":"01",
-	            "payType":"0002",
-	            "success": function(url) {
-	                $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(url);
-                    $scope.pay_webview_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "zhihui_wecat") {
-	         CapitalService.deposit_zhihui({
-	            "deposit": $scope.deposit,
-	            "txnType":"41",
-	            "payType":"0701",
-	            "success": function(url) {
-	                $ionicLoading.hide();
-	                $scope.capital_deposit_modal.hide();
-	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
-	                $scope.pay_qrcode_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "weifutong") {
-	         CapitalService.deposit_swift({
-	            "deposit": $scope.deposit,
-	            "success": function(url) {
-	                $ionicLoading.hide();
-	                $scope.capital_deposit_modal.hide();
-	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(url);
-	                $scope.pay_qrcode_modal.show();
-	            },
-	            "fail": fail,
-	            "error": error,
-	        });
-	    }
-        else if($scope.deposit.pay_type == "wechat") {
-            CapitalService.deposit_wechat({
-                "deposit": $scope.deposit,
-                "success": function(code, msg, res) {
-                    $ionicLoading.hide();
-
-                    wx.config({
-                        debug: false,
-                        appId: res.config.appId,
-                        timestamp: res.config.timestamp,
-                        nonceStr: res.config.nonceStr,
-                        signature: res.config.signature,
-                        jsApiList: [ "chooseWXPay" ]
-                    });
-
-                    wx.ready(function(){
-                        wx.chooseWXPay({
-                            timestamp: res.payinfo.timeStamp,
-                            nonceStr: res.payinfo.nonceStr,
-                            package: res.payinfo.package,
-                            signType: res.payinfo.signType,
-                            paySign: res.payinfo.paySign,
-                            success: function () {
-                                $scope.capital_deposit_modal.hide();
-                            }
-                        });
-                    });
-                },
-                "fail": fail,
-                "error": error,
-            });
-        }
-    }
-	//商信第一步
-    $scope.pay_shangyinxin = function(){
-         CapitalService.deposit_shangyin_mes({
-            "deposit": $scope.deposit,
-            "bankCard" :$scope.pay_shangyinxin_mes.bankcard,
-			"cardId":$scope.pay_shangyinxin_mes.usercard,
-			"phone":$scope.pay_shangyinxin_mes.phone,
-			"realName":$scope.pay_shangyinxin_mes.name,
-            "bankId":$scope.inmoneybank.bankmes.SXcode,
-            "success": function(mes) {
-            	if(mes.status == 1){
-                $scope.pay_shangyinxin_pay.surelistid = mes.no;
-                $scope.pay_shangyinxin_mes.success = false;
-            	}else{
-	            $ionicLoading.show({
-	                template: "输入信息有误,请重新输入"
-	            });
-	            $timeout(function () {
-	                $ionicLoading.hide();
-	            }, 2000);
-            	}
-
-            },
-            "fail": function(status, message) {
-	            $ionicLoading.show({
-	                template: "银行信息错误"
-	            });
-	            $timeout(function () {
-	                $ionicLoading.hide();
-	            }, 2000);
-	        },
-            "error": function(status, message) {
-	            $ionicLoading.show({
-	                template: message
-	            });
-	            $timeout(function () {
-	                $ionicLoading.hide();
-	            }, 2000);
-	        },
+                    $scope.pay_modal_url = $sce.trustAsResourceUrl(mes.data.url);
+        		}else{
+        			$ionicLoading.hide();
+        		}
+        	},
+            "fail": fail,
+            "error": error
         });
     }
-    //商信第二步
-    $scope.sure_pay_shangyinxin = function(){
-         CapitalService.deposit_shangyin_sure({
-            "no": $scope.pay_shangyinxin_pay.surelistid,
-            "verifyCode" :$scope.pay_shangyinxin_pay.surecode,
-            "success": function(mes) {
-            	if(mes.status==1){
-		            $ionicLoading.show({
-		                template: "入金成功"
-		            });
-		            $timeout(function () {
-		                $ionicLoading.hide();
-		                $scope.pay_money_modal.hide();
-		            }, 2000);
-            	}else{
-		            $ionicLoading.show({
-		                template: "验证码错误"
-		            });
-		            $timeout(function () {
-		                $ionicLoading.hide();
-		            }, 2000);
-            	}
 
-            },
-            "fail": function(status, message) {
-	            $ionicLoading.show({
-	                template: "验证码错误"
-	            });
-	            $timeout(function () {
-	                $ionicLoading.hide();
-	            }, 2000);
-	        },
-            "error": function(status, message) {
-	            $ionicLoading.show({
-	                template: message
-	            });
-	            $timeout(function () {
-	                $ionicLoading.hide();
-	            }, 2000);
-	        },
-        });
-    }
 	//出金页面
     $scope.show_withdraw_modal = function() {
         $scope.capital_withdraw_modal.show();
@@ -519,8 +314,8 @@ angular.module('starter.controllers')
         $scope.money_fee.outmoney_bank_card_icon = "";
         if($rootScope.user.bankaccount){
         	$scope.money_fee.outmoney_bank_card = '**** **** **** '+$rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length-4);
-        	$scope.money_fee.outmoney_bank = $scope.deposit_bank_list.filter(function(value){
-				if([value.name,value.HCcode,value.HXcode,value.SXcode].indexOf($rootScope.user.bank)!=-1){
+        	$scope.money_fee.outmoney_bank = $scope.bank_list.filter(function(value){
+				if(value.code == $rootScope.user.bank){
 					return value;
 				}
 			});

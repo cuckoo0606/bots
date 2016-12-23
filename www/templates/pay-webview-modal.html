@@ -6,7 +6,6 @@
         </div>
     </ion-header-bar>
     <div class="iframe_scroll">
-    	<iframe src="{{ pay_modal_url }}" type="text/html"></iframe>
+    	<iframe src="{{pay_modal_url}}" type="text/html" security="restricted" sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation"></iframe>
     </div>
-    
 </ion-modal-view>

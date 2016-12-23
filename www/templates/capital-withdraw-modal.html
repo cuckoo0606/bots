@@ -6,31 +6,35 @@
         </div>
     </ion-header-bar>
     <ion-content class="out_money_content">
-        <header class="coldbg" ng-class="{'hotbg':(money_fee.outmoney_bank[0].name == '中国银行'||money_fee.outmoney_bank[0].name == '中国工商银行'||money_fee.outmoney_bank[0].name == '招商银行'||money_fee.outmoney_bank[0].name == '中信银行'||money_fee.outmoney_bank[0].name == '华夏银行'||money_fee.outmoney_bank[0].name == '长沙银行'||money_fee.outmoney_bank[0].name == '徽商银行'||money_fee.outmoney_bank[0].name == '广发银行'||money_fee.outmoney_bank[0].name == '平安银行')}" ng-show="user.bank">
-        	<p>{{money_fee.outmoney_bank[0].name}}</p>
-        	<p>{{money_fee.outmoney_bank_card}}</p>
-        	<i class="iconfont {{money_fee.outmoney_bank[0].icon}}"></i>
-        	<i class="iconfont {{money_fee.outmoney_bank[0].icon}}"></i>
-        </header>
-        <header class="ifnone_add_bank" ng-hide="user.bank" ng-click="go_add_bank()">
+    	<header class="ifnone_add_bank" ng-hide="user.bank && user.bankaccount && user.bankbranch && user.bankholder" ng-click="go_add_bank()">
         	<p>+</p>
         	<p>添加银行卡</p>
         </header>
-        <article>
-        	<span>
-        		<i class="iconfont icon--4"></i>
-        		提现金额：
-        	</span>
-        	<input type="number" placeholder="请输入出金金额" ng-model="outAmount.outamount" ng-keydown="only_number()" required/>
-        </article>
-        <section ng-show="money_fee.outmoneymin != '0'">单次提现金额至少{{currency_symbol}}{{money_fee.outmoneymin}}</section>
-        <footer>
-        	余额：<span>{{user.amount.toFixed(2)}}</span>
-        	手续费：<span ng-show="money_fee.outmoney_fee_type == 0">{{money_fee.outmoney_fee}}%</span>
-        	<span ng-show="money_fee.outmoney_fee_type == 1">{{currency_symbol}}{{money_fee.outmoney_fee}}</span>
-        	实际支付：<span ng-show="money_fee.outmoney_fee_type == 0">{{outAmount.outamount>0?(outAmount.outamount*(money_fee.outmoney_fee/100+1)).toFixed(2):0}}</span>
-        	<span ng-show="money_fee.outmoney_fee_type == 1">{{outAmount.outamount>0?outAmount.outamount+money_fee.outmoney_fee:0}}</span>
-        </footer>
-        <button class="newbutton outmoneybtn" ng-disabled="outAmount.outamount==''||outAmount.outamount==undefined||(outAmount.outamount<money_fee.outmoneymin)||(user.amount < (money_fee.outmoney_fee_type == 0?outAmount.outamount*(money_fee.outmoney_fee/100+1):outAmount.outamount+money_fee.outmoney_fee))" ng-click="out_withdraw()">确认出金</button>
+        <div ng-show="user.bank && user.bankaccount && user.bankbranch && user.bankholder">
+	        <header class="coldbg" ng-class="{'hotbg':(money_fee.outmoney_bank[0].name == '中国银行'||money_fee.outmoney_bank[0].name == '中国工商银行'||money_fee.outmoney_bank[0].name == '招商银行'||money_fee.outmoney_bank[0].name == '中信银行'||money_fee.outmoney_bank[0].name == '华夏银行'||money_fee.outmoney_bank[0].name == '长沙银行'||money_fee.outmoney_bank[0].name == '徽商银行'||money_fee.outmoney_bank[0].name == '广发银行'||money_fee.outmoney_bank[0].name == '平安银行')}">
+	        	<p>{{money_fee.outmoney_bank[0].name}}</p>
+	        	<p>{{money_fee.outmoney_bank_card}}</p>
+	        	<i class="iconfont {{money_fee.outmoney_bank[0].icon}}"></i>
+	        	<i class="iconfont {{money_fee.outmoney_bank[0].icon}}"></i>
+	        </header>
+	
+	        <article>
+	        	<span>
+	        		<i class="iconfont icon--4"></i>
+	        		提现金额：
+	        	</span>
+	        	<input type="number" placeholder="请输入出金金额" ng-model="outAmount.outamount" ng-keydown="only_number()" required/>
+	        </article>
+	        <section ng-show="money_fee.outmoneymin != '0'">单次提现金额至少{{currency_symbol}}{{money_fee.outmoneymin}}</section>
+	        <footer>
+	        	余额：<span>{{user.amount.toFixed(2)}}</span>
+	        	手续费：<span ng-show="money_fee.outmoney_fee_type == 0">{{money_fee.outmoney_fee}}%</span>
+	        	<span ng-show="money_fee.outmoney_fee_type == 1">{{currency_symbol}}{{money_fee.outmoney_fee}}</span>
+	        	实际支付：<span ng-show="money_fee.outmoney_fee_type == 0">{{outAmount.outamount>0?(outAmount.outamount*(money_fee.outmoney_fee/100+1)).toFixed(2):0}}</span>
+	        	<span ng-show="money_fee.outmoney_fee_type == 1">{{outAmount.outamount>0?outAmount.outamount+money_fee.outmoney_fee:0}}</span>
+	        </footer>
+	        <button class="newbutton outmoneybtn" ng-disabled="outAmount.outamount==''||outAmount.outamount==undefined||(outAmount.outamount<money_fee.outmoneymin)||(user.amount < (money_fee.outmoney_fee_type == 0?outAmount.outamount*(money_fee.outmoney_fee/100+1):outAmount.outamount+money_fee.outmoney_fee))" ng-click="out_withdraw()">确认出金</button>
+        </div>
+
     </ion-content>
 </ion-modal-view>
