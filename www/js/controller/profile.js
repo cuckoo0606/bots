@@ -30,7 +30,6 @@ angular.module('starter.controllers')
     };
     $scope.money_page_index = 0;
     $scope.pay_banklists = AppConfigService.pay_banklists;
-    $scope.pay_type_list = AppConfigService.pay_type_list;
     $scope.bank_list = AppConfigService.bank_list;
     $scope.type_list = AppConfigService.type_list;
     $scope.pay_bank_list = [];
@@ -71,17 +70,6 @@ angular.module('starter.controllers')
     };
     $scope.inmoneybank={
     	'bankmes' : ''
-    };
-    $scope.pay_shangyinxin_mes = {
-		'bankcard':'',
-		'usercard':'',
-		'phone':'',
-		'name':'',
-		'success':true
-    };
-    $scope.pay_shangyinxin_pay = {
-    	'surecode':"",
-    	'surelistid':'',
     };
     $ionicModal.fromTemplateUrl('templates/capital-history-modal.html', {
         scope: $scope,
@@ -139,6 +127,30 @@ angular.module('starter.controllers')
         $scope.pay_money_modal = modal;
     });
     
+    //银行列表默认显示
+    $scope.changeuserbank = function(mes){
+    	if(mes.bank_list.length > 0){
+    		if($rootScope.user.bank){
+    			var bankmes = $scope.bank_list.filter(function(obj){
+    				if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
+    					return obj;
+    				}
+    			});
+    			var userbankmes = mes.pay_bank_list.filter(function(userbank){
+    				if(userbank.icon == bankmes[0].icon){
+    					return userbank;
+    				}
+    			});
+    			if(userbankmes.length > 0){
+    				$scope.inmoneybank.bankmes = userbankmes[0];
+    			}else{
+    				$scope.inmoneybank.bankmes = mes.pay_bank_list[0];
+    			}
+    		}else{
+    			$scope.inmoneybank.bankmes = mes.pay_bank_list[0];
+    		}
+    	}
+    }
 	//入金界面
     $scope.show_deposit_modal = function() {
     	CapitalService.get_pay_channel({
@@ -220,33 +232,14 @@ angular.module('starter.controllers')
 			}
 		});
 		
-		$scope.capital_deposit_modal.show();
+        $timeout(function () {
+    		$scope.changeuserbank($scope.pay_channel_lists[0]);
+    		$scope.capital_deposit_modal.show();
+        }, 500);
+
     }
 
-    //银行列表默认显示
-    $scope.changeuserbank = function(mes){
-    	if(mes.bank_list.length > 0){
-    		if($rootScope.user.bank){
-    			var bankmes = $scope.bank_list.filter(function(obj){
-    				if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
-    					return obj;
-    				}
-    			});
-    			var userbankmes = mes.pay_bank_list.filter(function(userbank){
-    				if(userbank.icon == bankmes[0].icon){
-    					return userbank;
-    				}
-    			});
-    			if(userbankmes.length > 0){
-    				$scope.inmoneybank.bankmes = userbankmes[0];
-    			}else{
-    				$scope.inmoneybank.bankmes = mes.pay_bank_list[0];
-    			}
-    		}else{
-    			$scope.inmoneybank.bankmes = mes.pay_bank_list[0];
-    		}
-    	}
-    }
+
     
 	//入金接口
     $scope.submit_deposit = function() {

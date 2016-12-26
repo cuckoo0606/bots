@@ -34,9 +34,6 @@ angular.module('starter.services', [])
     this.erweima_url= "http://weixin.buut.cn/index.html";
     this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
 
-    this.default_pay_type = "ymd";
-    this.pay_type_list = [ "ymd","weifutong" ];
-
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC", 'icon':'icon-nongyeyinxing1 green'},
             { "name": "中国银行", "code": "BOC", 'icon':'icon-zhongguoyinhang red'},
