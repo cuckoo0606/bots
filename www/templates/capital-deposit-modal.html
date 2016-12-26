@@ -7,137 +7,32 @@
     </ion-header-bar>
     <ion-content id="in_money_content">
     	<header>
-			<ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'huichao'"  ng-show="pay_type_list.indexOf('huichao') != -1">
-				<div class="pay_bank_list_header">
-					<div class="kuang"></div>
-					<i class="pay_blue_bg"></i>
-					<article>
-						<p class="pay_blue"><span class="iconfont icon--19"></span><span>快捷支付</span></p>
-						<p><span class="iconfont {{inmoneybank.bankmes.icon}}"></span><span>{{inmoneybank.bankmes.name}}</span></p>
-					</article>
-				</div>
-	        </ion-radio>
-	        <ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'huanxun'"  ng-show="pay_type_list.indexOf('huanxun') != -1">
-				<div class="pay_bank_list_header">
-					<div class="kuang"></div>
-					<i class="pay_blue_bg"></i>
-					<article>
-						<p class="pay_blue"><span class="iconfont icon--19"></span><span>快捷支付</span></p>
-						<p><span class="iconfont {{inmoneybank.bankmes.icon}}"></span><span>{{inmoneybank.bankmes.name}}</span></p>
-					</article>
-				</div>
-	       	</ion-radio>
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'ymd'"  ng-show="pay_type_list.indexOf('ymd') != -1">
-				<div class="pay_bank_list_header">
-					<div class="kuang"></div>
-					<i class="pay_blue_bg"></i>
-					<article>
-						<p class="pay_blue"><span class="iconfont icon--19"></span><span>快捷支付</span></p>
-						<p><span class="iconfont {{inmoneybank.bankmes.icon}}"></span><span>{{inmoneybank.bankmes.name}}</span></p>
-					</article>
-				</div>
-	       	</ion-radio>
-	       	<ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'zhongyun'"  ng-show="pay_type_list.indexOf('zhongyun') != -1">
-				<div class="pay_bank_list_header">
-					<div class="kuang"></div>
-					<i class="pay_blue_bg"></i>
-					<article>
-						<p class="pay_blue"><span class="iconfont icon--19"></span><span>快捷支付</span></p>
-					</article>
-				</div>
-	       </ion-radio>
-	       	<ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'zhihui'"  ng-show="pay_type_list.indexOf('zhihui') != -1">
-				<div class="pay_bank_list_header">
-					<div class="kuang"></div>
-					<i class="pay_blue_bg"></i>
-					<article>
-						<p class="pay_blue"><span class="iconfont icon--19"></span><span>快捷支付</span></p>
-					</article>
-				</div>
-	       </ion-radio>
-			<ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'shangxin'"  ng-show="pay_type_list.indexOf('shangxin') != -1">
-				<div class="pay_bank_list_header">
-					<div class="kuang"></div>
-					<i class="pay_blue_bg"></i>
-					<article>
-						<p class="pay_blue"><span class="iconfont icon--19"></span><span>快捷支付</span></p>
-						<p><span class="iconfont {{inmoneybank.bankmes.icon}}"></span><span>{{inmoneybank.bankmes.name}}</span></p>
-					</article>
-				</div>
-	        </ion-radio>
-	        <div ng-show="deposit.pay_type == 'huichao' || deposit.pay_type == 'huanxun' ||deposit.pay_type == 'shangxin'" class="pay_bank_list_content" >
-				<ion-scroll style="height: 100%;" scrollbar-y="true" scrollbar-x="false">
-					<ul>
-						<li ng-repeat="item in pay_bank_list">
+    		<ul>
+    			<li class="pay_channel" ng-repeat="paymes in pay_channel_lists">
+					<ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'{{paymes._id}}'" class="{{paymes.pay_height}}" ng-change="changeuserbank(paymes)">
+						<div class="pay_bank_list_header">
 							<div class="kuang"></div>
-							<ion-radio name="pay_bank_name" ng-model="inmoneybank.bankmes" ng-value="item" >
-					            <p><span class="bankicon iconfont {{item.icon}}"></span><span>{{item.name}}</span></p>
-					        </ion-radio>
-						</li>
-					</ul>
-				</ion-scroll>
-			</div>
-	       
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'wechat'" ng-show="(pay_type_list.indexOf('wechat') != -1)&&iswecat">
-	            <div class="pay_bank_list_header">
-	            	<div class="kuang"></div>
-					<i class="pay_green_bg"></i>
-					<article>
-						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
-					</article>
-				</div>
-	        </ion-radio>
-	        
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'weifutong'" ng-show="(pay_type_list.indexOf('weifutong') != -1)&&iswecat">
-	            <div class="pay_bank_list_header">
-	            	<div class="kuang"></div>
-					<i class="pay_green_bg"></i>
-					<article>
-						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
-					</article>
-				</div>
-	        </ion-radio>
-
-	        
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'huanxun_wecat'" ng-show="(pay_type_list.indexOf('huanxun_wecat') != -1)&&iswecat">
-	            <div class="pay_bank_list_header">
-	            	<div class="kuang"></div>
-					<i class="pay_green_bg"></i>
-					<article>
-						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
-					</article>
-				</div>
-	        </ion-radio>
-	        
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'zhongyun_wecat'" ng-show="(pay_type_list.indexOf('zhongyun_wecat') != -1)">
-	            <div class="pay_bank_list_header">
-	            	<div class="kuang"></div>
-					<i class="pay_green_bg"></i>
-					<article>
-						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
-					</article>
-				</div>
-	        </ion-radio>
-	        
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'zhihui_wecat'" ng-show="(pay_type_list.indexOf('zhihui_wecat') != -1)&&iswecat">
-	            <div class="pay_bank_list_header">
-	            	<div class="kuang"></div>
-					<i class="pay_green_bg"></i>
-					<article>
-						<p class="pay_green"><span class="iconfont icon-weixin"></span><span>微信支付</span></p>
-					</article>
-				</div>
-	        </ion-radio>
-	        
-	        <ion-radio class="pay_weixin" name="pay_type" ng-model="deposit.pay_type" ng-value="'alipay'" ng-show="pay_type_list.indexOf('alipay') !=  -1">
-	            <div class="pay_bank_list_header">
-		            <div class="kuang"></div>
-		            <i class="pay_alipay_bg"></i>
-					<article>
-						<p class="pay_alipay"><span class="iconfont icon-zhifubao"></span><span>支付宝支付</span></p>
-					</article>
-				</div>
-	        </ion-radio>
+							<i class="{{paymes.pay_bg}}"></i>
+							<article>
+								<p class="{{paymes.pay_color}}"><span class="{{paymes.pay_icon}}"></span><span>{{paymes.payment_channel_style == 'wechat'?'微信支付':'快捷支付'}}</span></p>
+								<p ng-show="paymes.bank_list.length > 0 && deposit.pay_type == paymes._id"><span class="iconfont {{inmoneybank.bankmes.icon}}"></span><span>{{inmoneybank.bankmes.bank_title}}</span></p>
+							</article>
+						</div>
+			        </ion-radio>
+			        <div ng-show="paymes.bank_list.length > 0 && deposit.pay_type == paymes._id" class="pay_bank_list_content" >
+						<ion-scroll style="height: 100%;" scrollbar-y="true" scrollbar-x="false">
+							<ul>
+								<li ng-repeat="item in paymes.pay_bank_list">
+									<div class="kuang"></div>
+									<ion-radio name="{{paymes.paymes._id}}" ng-model="inmoneybank.bankmes" ng-value="item" >
+							            <p><span class="bankicon iconfont {{item.icon}}"></span><span>{{item.bank_title}}</span></p>
+							        </ion-radio>
+								</li>
+							</ul>
+						</ion-scroll>
+					</div>
+    			</li>
+    		</ul>
     	</header>
     	<div class="out_money_content">
     		<article>
@@ -155,7 +50,7 @@
 	        	实际支付：<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?(deposit.amount*(money_fee.inmoney_fee/100+1)).toFixed(2):0}}</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{deposit.amount>0?deposit.amount+money_fee.inmoney_fee:0}}</span>
 	        </footer>
-	        <button class="newbutton outmoneybtn" ng-disabled="deposit.amount==''||deposit.amount==undefined||(deposit.amount<money_fee.inmoneymin)||(deposit.pay_type=='shangxin'&&!inmoneybank.bankmes)" ng-click="submit_deposit()">确认充值</button>
+	        <button class="newbutton outmoneybtn" ng-disabled="deposit.amount==''||deposit.amount==undefined||deposit.amount<money_fee.inmoneymin" ng-click="submit_deposit()">确认充值</button>
     	</div>
 	</ion-content>
 </ion-modal-view>

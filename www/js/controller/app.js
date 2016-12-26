@@ -274,4 +274,4 @@ angular.module('starter.controllers', [])
    		$interval($scope.remain_interval);
    	});
 });
->>>>>>> 12fd8bb515838d2cd6287d5bffff47ccdd150c98
+
