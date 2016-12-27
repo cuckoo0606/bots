@@ -2,15 +2,12 @@ angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
-<<<<<<< HEAD
-=======
 	$scope.updateUser = function(){
 		UserService.request_user(function(newuser){
 			$rootScope.user = newuser;
 		})
 	};
 	$scope.pay_channel_lists = {};
->>>>>>> edd4680b285e14f50b0a050d37012f24d76cf85c
     $scope.qrcode_url = AppConfigService.get_erweima_url + escape(AppConfigService.erweima_url + "?show=signup&ref=" + $rootScope.user.referee + "#/signup");
     $scope.order_list = OrderService.order_list;
     $scope.close_order_list = CloseOrderService.order_list;
@@ -309,22 +306,9 @@ angular.module('starter.controllers')
         $scope.money_fee.outmoney_bank_card = "";
         $scope.money_fee.outmoney_bank_card_icon = "";
         if($rootScope.user.bankaccount){
-<<<<<<< HEAD
-        	var bank_lengths = [4,10,16,22];
-        	for(var i=0;i<($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);i++){
-        		$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card+'*';
-        		if(bank_lengths.indexOf($scope.money_fee.outmoney_bank_card.length) != -1){
-        			$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card+'  ';
-        		}
-        	};
-        	$scope.money_fee.outmoney_bank_card = $scope.money_fee.outmoney_bank_card + $rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length - $rootScope.user.bankaccount.length % 4);
-        	$scope.money_fee.outmoney_bank = $scope.deposit_bank_list.filter(function(value){
-				if([value.name,value.HCcode,value.HXcode,value.SXcode].indexOf($rootScope.user.bank)!=-1){
-=======
         	$scope.money_fee.outmoney_bank_card = '**** **** **** '+$rootScope.user.bankaccount.substring($rootScope.user.bankaccount.length-4);
         	$scope.money_fee.outmoney_bank = $scope.bank_list.filter(function(value){
 				if(value.code == $rootScope.user.bank){
->>>>>>> edd4680b285e14f50b0a050d37012f24d76cf85c
 					return value;
 				}
 			});

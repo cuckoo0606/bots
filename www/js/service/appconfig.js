@@ -28,21 +28,12 @@ angular.module('starter.services', [])
 	//配置货币符号
 	this.currency_symbol = '￥';
 	//配置接口地址
-<<<<<<< HEAD
-    this.api_url = "http://weixin.leather-boss.com:8793/";
-	this.qoute_url = "http://weixin.leather-boss.com:7794/";
-    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
-    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
-
-    this.default_pay_type = "huichao";
-    this.pay_type_list = [ "huichao","wechat","alipay" ];
-=======
     this.api_url = "http://weixin.buut.cn:8793/";
     this.pay_url = "http://weixin.buut.cn:8989/";
     this.qoute_url = "http://weixin.buut.cn:7794/";
     this.erweima_url= "http://weixin.buut.cn/index.html";
     this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
->>>>>>> edd4680b285e14f50b0a050d37012f24d76cf85c
+
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC", 'icon':'icon-nongyeyinxing1 green'},
