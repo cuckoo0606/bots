@@ -28,8 +28,7 @@ angular.module('starter.services', [])
 	//配置货币符号
 	this.currency_symbol = '￥';
 	//配置接口地址
-    this.api_url = "http://weixin.buut.cn:8793/";
-    this.pay_url = "http://weixin.buut.cn:8989/";
+    this.api_url = "http://pay.buut.cn/";
     this.qoute_url = "http://weixin.buut.cn:7794/";
     this.erweima_url= "http://weixin.buut.cn/index.html";
     this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
