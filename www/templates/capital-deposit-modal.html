@@ -9,7 +9,7 @@
     	<header>
     		<ul>
     			<li class="pay_channel" ng-repeat="paymes in pay_channel_lists">
-					<ion-radio name="pay_type" ng-model="deposit.pay_type" ng-value="'{{paymes._id}}'" class="{{paymes.pay_height}}" ng-change="changeuserbank(paymes)">
+					<ion-radio name="pay_type" ng-model="deposit.type" ng-value="'{{paymes.type}}'" class="{{paymes.pay_height}}" ng-change="changeuserbank(paymes)">
 						<div class="pay_bank_list_header">
 							<div class="kuang"></div>
 							<i class="{{paymes.pay_bg}}"></i>
@@ -19,7 +19,7 @@
 							</article>
 						</div>
 			        </ion-radio>
-			        <div ng-show="paymes.bank_list.length > 0 && deposit.pay_type == paymes._id" class="pay_bank_list_content" >
+			        <div ng-show="paymes.bank_list.length > 0 && deposit.type == paymes.type" class="pay_bank_list_content" >
 						<ion-scroll style="height: 100%;" scrollbar-y="true" scrollbar-x="false">
 							<ul>
 								<li ng-repeat="item in paymes.pay_bank_list">
