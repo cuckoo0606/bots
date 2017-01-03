@@ -184,10 +184,10 @@ angular.module('starter.controllers')
 				$scope.deposit.pay_type = $scope.pay_channel_lists[0]._id;
 			},
 			'fail':function(message) {
-				$scope.pay_channel_lists = {};
+				$scope.pay_channel_lists = [];
 	        },
 			"error":function(status,message){
-				$scope.pay_channel_lists = {};
+				$scope.pay_channel_lists = [];
 			}
 		});
 
@@ -233,7 +233,9 @@ angular.module('starter.controllers')
 		});
 		
         $timeout(function () {
-    		$scope.changeuserbank($scope.pay_channel_lists[0]);
+        	if($scope.pay_channel_lists.length!=0){
+        		$scope.changeuserbank($scope.pay_channel_lists[0]);
+        	}
     		$scope.capital_deposit_modal.show();
         }, 500);
 
