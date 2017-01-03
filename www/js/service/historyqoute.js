@@ -24,7 +24,7 @@ angular.module('starter.services')
 
         $http.get(url, { 
             "timeout": 10000,
-            "params": { "market": market, "code": code, "limit": 100 }
+            "params": { "market": market, "code": code, "limit": 50 }
         })
         
         .success(function(protocol) {
