@@ -240,7 +240,7 @@ angular.module('starter.controllers')
 		});
 		
         $timeout(function () {
-        	if(!$scope.pay_channel_lists){
+        	if($scope.pay_channel_lists){
         		$scope.changeuserbank($scope.pay_channel_lists[0]);
         	}
     		$scope.capital_deposit_modal.show();
