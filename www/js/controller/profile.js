@@ -292,20 +292,27 @@ angular.module('starter.controllers')
 	        	'bank_code':$scope.inmoneybank.bankmes.bank_code,
 	        	'openid':AppConfigService.wx_auth.openid,
 	        	'success':function(mes){
-	        		if(mes.data.action == 'qrcode'){
-		            	$ionicLoading.hide();
+	        		if($rootScope.iswecat == true){
+						$ionicLoading.hide();
 		                $scope.capital_deposit_modal.hide();
 		                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
 		                $scope.pay_qrcode_modal.show();
-	        		}else if(mes.data.action == 'redirect'){
-		                $ionicLoading.hide();
-	                    $scope.capital_deposit_modal.hide();
-	                    $scope.pay_webview_modal.show();
-	                    $scope.pay_modal_url = $sce.trustAsResourceUrl(mes.data.url);
-	        		}else{
-	        			$ionicLoading.hide();
-	        		}
-	        	},
+			        }else{
+		        		if(mes.data.action == 'qrcode'){
+							$ionicLoading.hide();
+			                $scope.capital_deposit_modal.hide();
+			                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
+			                $scope.pay_qrcode_modal.show();
+		        		}else if(mes.data.action == 'redirect'){
+			                $ionicLoading.hide();
+		                    $scope.capital_deposit_modal.hide();
+		                    $scope.pay_webview_modal.show();
+		                    $scope.pay_modal_url = $sce.trustAsResourceUrl(mes.data.url);
+		        		}else{
+		        			$ionicLoading.hide();
+		        		}
+			        }
+		        },
 	            "fail": fail,
 	            "error": error
 	        });
@@ -315,20 +322,27 @@ angular.module('starter.controllers')
 	        	'payment_channel':JSON.parse($scope.deposit.type).id,
 	        	'bank_code':$scope.inmoneybank.bankmes.bank_code,
 	        	'success':function(mes){
-	        		if(mes.data.action == 'qrcode'){
-		            	$ionicLoading.hide();
+	        		if($rootScope.iswecat == true){
+						$ionicLoading.hide();
 		                $scope.capital_deposit_modal.hide();
-		                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
+		                $scope.pay_qrcode_url = mes.data.action == 'qrcode'?AppConfigService.get_erweima_url + escape(mes.data.qrcode):AppConfigService.get_erweima_url + escape(mes.data.url);
 		                $scope.pay_qrcode_modal.show();
-	        		}else if(mes.data.action == 'redirect'){
-		                $ionicLoading.hide();
-	                    $scope.capital_deposit_modal.hide();
-	                    $scope.pay_webview_modal.show();
-	                    $scope.pay_modal_url = $sce.trustAsResourceUrl(mes.data.url);
-	        		}else{
-	        			$ionicLoading.hide();
-	        		}
-	        	},
+			        }else{
+		        		if(mes.data.action == 'qrcode'){
+							$ionicLoading.hide();
+			                $scope.capital_deposit_modal.hide();
+			                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
+			                $scope.pay_qrcode_modal.show();
+		        		}else if(mes.data.action == 'redirect'){
+			                $ionicLoading.hide();
+		                    $scope.capital_deposit_modal.hide();
+		                    $scope.pay_webview_modal.show();
+		                    $scope.pay_modal_url = $sce.trustAsResourceUrl(mes.data.url);
+		        		}else{
+		        			$ionicLoading.hide();
+		        		}
+			        }
+		        },
 	            "fail": fail,
 	            "error": error
 	        });
