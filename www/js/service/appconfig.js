@@ -93,11 +93,13 @@ angular.module('starter.services', [])
 	       {bank_title: "渤海银行", bank_code: "2012", 'icon':'icon-bohaiyinhang blue'},
 	       {bank_title: "广东发展银行", bank_code: "2013", 'icon':'icon-guangfayinxing red'},
 	       {bank_title: "浙江泰隆商业银行", bank_code: "2014", 'icon':'icon-zhejiangtailongshangyeyinhang orange'},
-		{bank_title: "银联电子商务", bank_code: "2015",'icon':'icon-yinlianzhifu pay_blue'},
-		{bank_title: "上海浦东发展银行", bank_code: "2016",'icon':'icon-pufayinhang pay_blue'},
-		{bank_title: "银联无卡支付", bank_code: "2017",'icon':'icon-yinlianzhifu pay_blue'},
-		{bank_title: "银联其他银行", bank_code: "2018",'icon':'icon-yinlianzhifu pay_blue'},
-		{bank_title: "中行-大额", bank_code: "2019",'icon':'icon-zhongguoyinhang red'}
+			{bank_title: "银联电子商务", bank_code: "2015",'icon':'icon-yinlianzhifu pay_blue'},
+			{bank_title: "上海浦东发展银行", bank_code: "2016",'icon':'icon-pufayinhang pay_blue'},
+			{bank_title: "银联无卡支付", bank_code: "2017",'icon':'icon-yinlianzhifu pay_blue'},
+			{bank_title: "银联其他银行", bank_code: "2018",'icon':'icon-yinlianzhifu pay_blue'},
+			{bank_title: "中行-大额", bank_code: "2019",'icon':'icon-zhongguoyinhang red'},
+			{bank_title: "天津银行", bank_code: "2020",'icon':'icon-tianjinyinxing pay_blue'},
+	  		{bank_title: "微信支付", bank_code: "3001",'icon':'icon-weixin green'}
      ]
 	this.type_list = [
 			{ "value": 0, "name": "初始化" },
