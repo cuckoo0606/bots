@@ -315,7 +315,6 @@ angular.module('starter.controllers')
 	        	'payment_channel':JSON.parse($scope.deposit.type).id,
 	        	'bank_code':$scope.inmoneybank.bankmes.bank_code,
 	        	'success':function(mes){
-	        		alert(mes)
 	        		if(mes.data.action == 'qrcode'){
 		            	$ionicLoading.hide();
 		                $scope.capital_deposit_modal.hide();
