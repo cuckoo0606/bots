@@ -15,7 +15,7 @@
 							<i class="{{paymes.pay_bg}}"></i>
 							<article>
 								<p class="{{paymes.pay_color}}"><span class="{{paymes.pay_icon}}"></span><span>{{paymes.payment_channel_style == 'wechat'?'微信支付':'快捷支付'}}</span></p>
-								<p ng-show="paymes.bank_list.length > 0 && deposit.pay_type == paymes._id"><span class="iconfont {{inmoneybank.bankmes.icon}}"></span><span>{{inmoneybank.bankmes.bank_title}}</span></p>
+								<p ng-show="paymes.bank_list.length > 0 && deposit.type == paymes.type"><span class="iconfont {{inmoneybank.bankmes.icon}}"></span><span>{{inmoneybank.bankmes.bank_title}}</span></p>
 							</article>
 						</div>
 			        </ion-radio>
@@ -24,7 +24,7 @@
 							<ul>
 								<li ng-repeat="item in paymes.pay_bank_list">
 									<div class="kuang"></div>
-									<ion-radio name="{{paymes.paymes._id}}" ng-model="inmoneybank.bankmes" ng-value="item" >
+									<ion-radio name="{{paymes.type}}" ng-model="inmoneybank.bankmes" ng-value="item" >
 							            <p><span class="bankicon iconfont {{item.icon}}"></span><span>{{item.bank_title}}</span></p>
 							        </ion-radio>
 								</li>

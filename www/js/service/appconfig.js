@@ -28,8 +28,8 @@ angular.module('starter.services', [])
 	//配置货币符号
 	this.currency_symbol = '￥';
 	//配置接口地址
-    this.api_url = "http://weixin.leather-boss.com:8793/";
-    this.inmoney_url = "http://weixin.leather-boss.com:8989/";
+    this.api_url = "http://weixin.buut.cn:8793/";
+    this.inmoney_url = "http://weixin.buut.cn:8989/";
 	this.qoute_url = "http://weixin.leather-boss.com:7794/";
     this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
     this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";

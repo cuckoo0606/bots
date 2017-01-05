@@ -138,7 +138,7 @@ angular.module('starter.controllers')
     				}
     			});
     			var userbankmes = mes.pay_bank_list.filter(function(userbank){
-    				if(userbank.icon == bankmes[0].icon){
+    				if(userbank.bank_title == bankmes[0].name){
     					return userbank;
     				}
     			});
