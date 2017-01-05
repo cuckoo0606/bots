@@ -295,7 +295,7 @@ angular.module('starter.controllers')
 	        		if($rootScope.iswecat == true){
 						$ionicLoading.hide();
 		                $scope.capital_deposit_modal.hide();
-		                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
+		                $scope.pay_qrcode_url = mes.data.action == 'qrcode'AppConfigService.get_erweima_url + escape(mes.data.qrcode);
 		                $scope.pay_qrcode_modal.show();
 			        }else{
 		        		if(mes.data.action == 'qrcode'){
@@ -325,7 +325,7 @@ angular.module('starter.controllers')
 	        		if($rootScope.iswecat == true){
 						$ionicLoading.hide();
 		                $scope.capital_deposit_modal.hide();
-		                $scope.pay_qrcode_url = mes.data.action == 'qrcode'?AppConfigService.get_erweima_url + escape(mes.data.qrcode):AppConfigService.get_erweima_url + escape(mes.data.url);
+		                $scope.pay_qrcode_url = mes.data.action == 'qrcode'AppConfigService.get_erweima_url + escape(mes.data.qrcode);
 		                $scope.pay_qrcode_modal.show();
 			        }else{
 		        		if(mes.data.action == 'qrcode'){
