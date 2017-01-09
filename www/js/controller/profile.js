@@ -50,6 +50,7 @@ angular.module('starter.controllers')
 		}
 	});
     $scope.judge_bank_value=false;
+    $scope.is_get_pay_list=false;
     $scope.user_info = {
         "id_card": "",
         "bank": {},
@@ -65,7 +66,7 @@ angular.module('starter.controllers')
 		"outamount":100,
 	};
     $scope.deposit = {
-    	"pay_type":'',
+    	"type":'',
         "amount": 100,
     };
     $scope.inmoneybank={
@@ -137,7 +138,7 @@ angular.module('starter.controllers')
     				}
     			});
     			var userbankmes = mes.pay_bank_list.filter(function(userbank){
-    				if(userbank.icon == bankmes[0].icon){
+    				if(userbank.bank_title == bankmes[0].name){
     					return userbank;
     				}
     			});
@@ -151,45 +152,51 @@ angular.module('starter.controllers')
     		}
     	}
     }
+    //拿入金列表
+	CapitalService.get_pay_channel({
+		"client_type":$rootScope.iswecat == true ? 'wechat':'app',
+		"success":function(data){
+			$scope.is_get_pay_list=true
+			$scope.pay_channel_lists = data.map(function(value){
+				if(value.payment_channel_style == 'wechat'){
+					value.pay_color = 'pay_green';
+					value.pay_bg = 'pay_green_bg';
+					value.pay_icon = 'iconfont icon-weixin';
+				}else{
+					value.pay_color = 'pay_blue';
+					value.pay_bg = 'pay_blue_bg';
+					value.pay_icon = 'iconfont icon--19';
+				};
+				if(value.bank_list.length == 0){
+					value.pay_height = 'pay_weixin';
+				}else{
+					value.pay_height = '';
+				};
+				if(value.bank_list.length > 0){
+					value.bank_list_str = JSON.stringify(value.bank_list)
+					value.pay_bank_list = $scope.pay_banklists.filter(function(mes){
+						if(value.bank_list_str.indexOf(mes.bank_code)!=-1){
+							return mes;
+						}
+					})
+				};
+				value.type=JSON.stringify({
+					id:value._id,
+					pay_type:value.payment_type
+				})
+				return value;
+			});
+			$scope.deposit.type = $scope.pay_channel_lists[0].type;
+		},
+		'fail':function(message) {
+			$scope.pay_channel_lists = [];
+        },
+		"error":function(status,message){
+			$scope.pay_channel_lists = [];
+		}
+	});
 	//入金界面
     $scope.show_deposit_modal = function() {
-    	CapitalService.get_pay_channel({
-    		"client_type":$rootScope.iswecat == true ? 'wecaht':'app',
-			"success":function(data){
-				$scope.pay_channel_lists = data.map(function(value){
-					if(value.payment_channel_style == 'wechat'){
-						value.pay_color = 'pay_green';
-						value.pay_bg = 'pay_green_bg';
-						value.pay_icon = 'iconfont icon-weixin';
-					}else{
-						value.pay_color = 'pay_blue';
-						value.pay_bg = 'pay_blue_bg';
-						value.pay_icon = 'iconfont icon--19';
-					};
-					if(value.bank_list.length == 0){
-						value.pay_height = 'pay_weixin';
-					}else{
-						value.pay_height = '';
-					};
-					if(value.bank_list.length > 0){
-						value.bank_list_str = JSON.stringify(value.bank_list)
-						value.pay_bank_list = $scope.pay_banklists.filter(function(mes){
-							if(value.bank_list_str.indexOf(mes.bank_code)!=-1){
-								return mes;
-							}
-						})
-					};
-					return value;
-				});
-				$scope.deposit.pay_type = $scope.pay_channel_lists[0]._id;
-			},
-			'fail':function(message) {
-				$scope.pay_channel_lists = {};
-	        },
-			"error":function(status,message){
-				$scope.pay_channel_lists = {};
-			}
-		});
 
         CapitalService.system_config({
         	"type":"income-handling-type",
@@ -233,7 +240,9 @@ angular.module('starter.controllers')
 		});
 		
         $timeout(function () {
-    		$scope.changeuserbank($scope.pay_channel_lists[0]);
+        	if($scope.pay_channel_lists){
+        		$scope.changeuserbank($scope.pay_channel_lists[0]);
+        	}
     		$scope.capital_deposit_modal.show();
         }, 500);
 
@@ -276,28 +285,59 @@ angular.module('starter.controllers')
                 $ionicLoading.hide();
             }, 2000);
         }
-        CapitalService.payment({
-        	'fee':$scope.deposit.amount,
-        	'payment_channel':$scope.deposit.pay_type,
-        	'bank_code':$scope.inmoneybank.bankmes.bank_code,
-        	'success':function(mes){
-        		if(mes.data.action == 'qrcode'){
-	            	$ionicLoading.hide();
-	                $scope.capital_deposit_modal.hide();
-	                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
-	                $scope.pay_qrcode_modal.show();
-        		}else if(mes.data.action == 'redirect'){
-	                $ionicLoading.hide();
-                    $scope.capital_deposit_modal.hide();
-                    $scope.pay_webview_modal.show();
-                    $scope.pay_modal_url = $sce.trustAsResourceUrl(mes.data.url);
-        		}else{
-        			$ionicLoading.hide();
-        		}
-        	},
-            "fail": fail,
-            "error": error
-        });
+        if(JSON.parse($scope.deposit.type).pay_type =='swiftpass'){
+	        CapitalService.pay_openid({
+	        	'fee':$scope.deposit.amount,
+	        	'payment_channel':JSON.parse($scope.deposit.type).id,
+	        	'bank_code':$scope.inmoneybank.bankmes.bank_code,
+	        	'openid':AppConfigService.wx_auth.openid,
+	        	'success':function(mes){
+						$ionicLoading.hide();
+		                $scope.capital_deposit_modal.hide();
+		                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
+		                $scope.pay_qrcode_modal.show();
+		        },
+	            "fail": fail,
+	            "error": error
+	        });
+        }else{
+	        CapitalService.payment({
+	        	'fee':$scope.deposit.amount,
+	        	'payment_channel':JSON.parse($scope.deposit.type).id,
+	        	'bank_code':$scope.inmoneybank.bankmes.bank_code,
+	        	'success':function(mes){
+	        		if($rootScope.iswecat == true){
+						$ionicLoading.hide();
+		                $scope.capital_deposit_modal.hide();
+		                if(mes.data.action == 'qrcode'){
+		                	$scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode)
+		                }else if(mes.data.action == 'redirect'){
+		                	$scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.url);
+		                }else{
+		        			$ionicLoading.hide();
+		        		}
+		                $scope.pay_qrcode_modal.show();
+			        }else{
+		        		if(mes.data.action == 'qrcode'){
+							$ionicLoading.hide();
+			                $scope.capital_deposit_modal.hide();
+			                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
+			                $scope.pay_qrcode_modal.show();
+		        		}else if(mes.data.action == 'redirect'){
+			                $ionicLoading.hide();
+		                    $scope.capital_deposit_modal.hide();
+		                    $scope.pay_webview_modal.show();
+		                    $scope.pay_modal_url = $sce.trustAsResourceUrl(mes.data.url);
+		        		}else{
+		        			$ionicLoading.hide();
+		        		}
+			        }
+		        },
+	            "fail": fail,
+	            "error": error
+	        });
+        }
+        
     }
 
 	//出金页面

@@ -2,7 +2,7 @@ angular.module('starter.controllers')
 
 .controller('TradeCtrl', function($scope, $filter, $rootScope, $timeout, $interval, $stateParams, $echartsDelegate,
             $ionicModal, QouteService, OrderService, UserService, HistoryQouteService, CloseOrderService) {
-    $scope.chart_period = "m5";
+    $scope.chart_period = "m1";
 
     $scope.chart_data = [];
     $rootScope.trade_order_list = [];
@@ -76,7 +76,7 @@ angular.module('starter.controllers')
     }
 
     function change_chart_data(history_list) {
-        $scope.chart_data = history_list;
+        $scope.chart_data = history_list
         var dates = history_list.map(function(value) {
             return value.datetime;
         });
