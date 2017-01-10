@@ -156,37 +156,40 @@ angular.module('starter.controllers')
 	CapitalService.get_pay_channel({
 		"client_type":$rootScope.iswecat == true ? 'wechat':'app',
 		"success":function(data){
-			$scope.is_get_pay_list=true
-			$scope.pay_channel_lists = data.map(function(value){
-				if(value.payment_channel_style == 'wechat'){
-					value.pay_color = 'pay_green';
-					value.pay_bg = 'pay_green_bg';
-					value.pay_icon = 'iconfont icon-weixin';
-				}else{
-					value.pay_color = 'pay_blue';
-					value.pay_bg = 'pay_blue_bg';
-					value.pay_icon = 'iconfont icon--19';
-				};
-				if(value.bank_list.length == 0){
-					value.pay_height = 'pay_weixin';
-				}else{
-					value.pay_height = '';
-				};
-				if(value.bank_list.length > 0){
-					value.bank_list_str = JSON.stringify(value.bank_list)
-					value.pay_bank_list = $scope.pay_banklists.filter(function(mes){
-						if(value.bank_list_str.indexOf(mes.bank_code)!=-1){
-							return mes;
-						}
+			if(data.length!=0){
+				$scope.is_get_pay_list=true
+				$scope.pay_channel_lists = data.map(function(value){
+					if(value.payment_channel_style == 'wechat'){
+						value.pay_color = 'pay_green';
+						value.pay_bg = 'pay_green_bg';
+						value.pay_icon = 'iconfont icon-weixin';
+					}else{
+						value.pay_color = 'pay_blue';
+						value.pay_bg = 'pay_blue_bg';
+						value.pay_icon = 'iconfont icon--19';
+					};
+					if(value.bank_list.length == 0){
+						value.pay_height = 'pay_weixin';
+					}else{
+						value.pay_height = '';
+					};
+					if(value.bank_list.length > 0){
+						value.bank_list_str = JSON.stringify(value.bank_list)
+						value.pay_bank_list = $scope.pay_banklists.filter(function(mes){
+							if(value.bank_list_str.indexOf(mes.bank_code)!=-1){
+								return mes;
+							}
+						})
+					};
+					value.type=JSON.stringify({
+						id:value._id,
+						pay_type:value.payment_type
 					})
-				};
-				value.type=JSON.stringify({
-					id:value._id,
-					pay_type:value.payment_type
-				})
-				return value;
-			});
-			$scope.deposit.type = $scope.pay_channel_lists[0].type;
+					return value;
+				});
+				
+				$scope.deposit.type = $scope.pay_channel_lists[0].type;
+			}
 		},
 		'fail':function(message) {
 			$scope.pay_channel_lists = [];

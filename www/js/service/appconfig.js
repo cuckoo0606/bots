@@ -30,9 +30,9 @@ angular.module('starter.services', [])
     //配置接口地址
     this.api_url = "http://weixin.buut.cn:8793/";
     this.inmoney_url = "http://weixin.buut.cn:8989/";
-    this.qoute_url = "http://weixin.leather-boss.com:7794/";
-    this.erweima_url= "http://weixin.leather-boss.com:8085/index.html";
-    this.get_erweima_url = "http://weixin.leather-boss.com:8085/qrcode?text=";
+    this.qoute_url = "http://weixin.buut.cn:7794/";
+    this.erweima_url= "http://weixin.buut.cn/index.html";
+    this.get_erweima_url = "http://weixin.buut.cn/qrcode?text=";
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC", 'icon':'icon-nongyeyinxing1 green'},
