@@ -295,10 +295,26 @@ angular.module('starter.controllers')
 	        	'bank_code':$scope.inmoneybank.bankmes.bank_code,
 	        	'openid':AppConfigService.wx_auth.openid,
 	        	'success':function(mes){
+	        		if($rootScope.iswecat == true){
 						$ionicLoading.hide();
 		                $scope.capital_deposit_modal.hide();
-		                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
+		                $scope.pay_qrcode_url = mes.data.action == 'qrcode'?AppConfigService.get_erweima_url + escape(mes.data.qrcode):AppConfigService.get_erweima_url + escape(mes.data.url);
 		                $scope.pay_qrcode_modal.show();
+			        }else{
+		        		if(mes.data.action == 'qrcode'){
+							$ionicLoading.hide();
+			                $scope.capital_deposit_modal.hide();
+			                $scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode);
+			                $scope.pay_qrcode_modal.show();
+		        		}else if(mes.data.action == 'redirect'){
+			                $ionicLoading.hide();
+		                    $scope.capital_deposit_modal.hide();
+		                    $scope.pay_webview_modal.show();
+		                    $scope.pay_modal_url = $sce.trustAsResourceUrl(mes.data.url);
+		        		}else{
+		        			$ionicLoading.hide();
+		        		}
+			        }
 		        },
 	            "fail": fail,
 	            "error": error
@@ -312,13 +328,7 @@ angular.module('starter.controllers')
 	        		if($rootScope.iswecat == true){
 						$ionicLoading.hide();
 		                $scope.capital_deposit_modal.hide();
-		                if(mes.data.action == 'qrcode'){
-		                	$scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.qrcode)
-		                }else if(mes.data.action == 'redirect'){
-		                	$scope.pay_qrcode_url = AppConfigService.get_erweima_url + escape(mes.data.url);
-		                }else{
-		        			$ionicLoading.hide();
-		        		}
+		                $scope.pay_qrcode_url = mes.data.action == 'qrcode'?AppConfigService.get_erweima_url + escape(mes.data.qrcode):AppConfigService.get_erweima_url + escape(mes.data.url);
 		                $scope.pay_qrcode_modal.show();
 			        }else{
 		        		if(mes.data.action == 'qrcode'){
@@ -594,17 +604,15 @@ angular.module('starter.controllers')
 	                    }, 3000);
 	                }
 	                else {
-	                	$timeout(function(){
-							$scope.updateUser();
-		                    $ionicLoading.show({
-		                        template: "提交成功"
-		                    });
-	                	},1000)
-
+							
+	                    $rootScope.user.amount -= ($scope.money_fee.outmoney_fee_type == 0?$scope.outAmount.outamount*($scope.money_fee.outmoney_fee+1):$scope.outAmount.outamount+$scope.money_fee.outmoney_fee);
+	                    $ionicLoading.show({
+	                        template: "提交成功"
+	                    });
 	                    $timeout(function() {
-		                    $ionicLoading.hide();
-		                    $scope.capital_withdraw_modal.hide();
-	                	}, 2000);
+	                    $ionicLoading.hide();
+	                    $scope.capital_withdraw_modal.hide();
+	                	}, 1000);
 	                }
 	          	},
 	        	"fail": function(message) {

@@ -274,3 +274,4 @@ angular.module('starter.controllers', [])
    		$interval($scope.remain_interval);
    	});
 });
+
