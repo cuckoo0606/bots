@@ -21,7 +21,7 @@
                     	</p>
                     	<p style="margin: 0">{{o.created|date:'yyyy-MM-dd HH:mm:ss'}}</p>
                     </section><section>
-                    	<p style="margin: 0" ng-class="{'in_money':(o.direction == '0' && o.qoute.value < o.buyQoute) || (o.direction == '1' && o.qoute.value > o.buyQoute) ,'out_money':(o.direction == '1' && o.qoute.value < o.buyQoute) || (o.direction == '0' && o.qoute.value > o.buyQoute)}">{{(o.direction == '0'  && o.qoute.value > o.buyQoute) || (o.direction == '1' && o.qoute.value  < o.buyQoute)? o.profit - o.money: o.profit + o.money}}</p>
+                    	<p style="margin: 0" ng-class="{'in_money':(o.direction == '0' && o.qoute.value < o.buyQoute) || (o.direction == '1' && o.qoute.value > o.buyQoute) ,'out_money':(o.direction == '1' && o.qoute.value < o.buyQoute) || (o.direction == '0' && o.qoute.value > o.buyQoute)}">{{(o.direction == '0'  && o.qoute.value > o.buyQoute) || (o.direction == '1' && o.qoute.value  < o.buyQoute)? (o.profit - o.money).toFixed(2): (o.profit + o.money).toFixed(2)}}</p>
                     	<p style="margin: 0">{{o.remaining*1000-28800000>86400000?(((o.remaining*1000-28800000)/86400000|number:0) +'天'+(o.remaining*1000-28800000|date:'HH:mm:ss')):(o.remaining*1000-28800000|date:'HH:mm:ss')}}</p>
                 	</section>
                 	<article ng-hide="o.remaining === 0">
