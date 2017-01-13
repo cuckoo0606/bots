@@ -37,7 +37,15 @@ with open("../index.html", "r") as index_src:
         pattern = "href=[\"']([^\"']+)[\"']"
         c = re.sub(pattern, "href=\"{{ static_url(\"\\1\") }}\"", c)
 
-        pattern = "src=[\"']([^\"']+)[\"']"
-        c = re.sub(pattern, "src=\"{{ static_url(\"\\1\") }}\"", c)
+        # pattern = "src=[\"']([^\"']+)[\"']"
+        # c = re.sub(pattern, "src=\"{{ static_url(\"\\1\") }}\"", c)
+
+        pattern = "src=[\"']js([^\"']+)[\"']"
+        c = re.sub(pattern, "src=\"{{ static_url(\"js\\1\") }}\"", c)
+
+        pattern = "src=[\"']lib([^\"']+)[\"']"
+        c = re.sub(pattern, "src=\"{{ static_url(\"lib\\1\") }}\"", c)
 
         index_dest.write(c)
+
+os.system("sed -i '' '/cordova.js/d' views/index.html")
