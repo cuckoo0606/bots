@@ -377,12 +377,15 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	text-align: center;
 	color: #838383;
 }
-.sign_up_erweima article section{
+.sign_up_erweima section{
+	position: absolute;
+	top:2rem;
+	left:30%;
 	width: 1.5rem;
 	height: 1.5rem;
 	margin: 0 auto;
 }
-.sign_up_erweima article section img{
+.sign_up_erweima section img{
 	width: 100%;
 	height: 100%;
 }
