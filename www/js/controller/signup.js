@@ -99,7 +99,7 @@ angular.module('starter.controllers')
                             $rootScope.user = user;
                             $ionicHistory.clearHistory();
                             $timeout(function() {
-                            	if(ionic.Platform.isAndroid()||ionic.Platform.isIOS()){
+                            	if($rootScope.iswecat == false){
                             		$scope.is_signin = false;
 				                    $scope.spinner(false);
 				                    $scope.sign_in_trade();
