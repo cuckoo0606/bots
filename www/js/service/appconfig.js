@@ -44,7 +44,7 @@ angular.module('starter.services', [])
             { "name": "中国邮政储蓄银行", "code": "PSBC", 'icon':'icon-youzhengyinhang green' },
             { "name": "招商银行", "code": "CMBC", 'icon':'icon-zhaoshangyinhang red' },
             { "name": "浦发银行", "code": "SPDB", 'icon':'icon-pufayinhang pay_blue' },
-            { "name": "中国光大银行", "code": "CEEBBANK", 'icon':'icon-guangdayinhang pay_yellow' },
+            { "name": "中国光大银行", "code": "CEBBANK", 'icon':'icon-guangdayinhang pay_yellow' },
             { "name": "中信银行", "code": "ECITIC", 'icon':'icon-zhongxinyinhang red' },
             { "name": "平安银行", "code": "PINGAN", 'icon':'icon-pinganyinxing orange' },
             { "name": "中国民生银行", "code": "CMBCS", 'icon':'icon-minshengyinhang pay_blue' },
