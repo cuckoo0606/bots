@@ -7,8 +7,8 @@ angular.module('starter.services', [])
     this.wx_auth = {}
     this.wx_user_info = {}
 
-    this.system_name = "瑞盈财富通";
-    this.company_name = "瑞盈财富通";
+    this.system_name = "环球互动";
+    this.company_name = "环球互动";
     this.show_system_name = false;
     this.system_logo = "img/logo/logo.png";
     this.show_system_logo = true;
@@ -18,22 +18,21 @@ angular.module('starter.services', [])
     //配置注册跳转二维码
     this.if_weixin = {
         erweima_img:"img/logo/qcode.jpg",
-        weixin_name:"瑞盈财富通"
+        weixin_name:"环球互动"
     };
     //配置交易金额
     this.trade_money={
-        min_money:20,
+        min_money:100,
         max_money:5000
     };
     //配置货币符号
     this.currency_symbol = '￥';
     //配置接口地址
-    this.api_url = "http://pay.kuuyc.cc:8793/";
-    this.inmoney_url = "http://pay.kuuyc.cc:8989/";
-    this.qoute_url = "http://pay.kuuyc.cc:7794/";
-    this.erweima_url= "http://pay.kuuyc.cc/index.html";
-    this.get_erweima_url = "http://pay.kuuyc.cc/qrcode?text=";
-
+    this.api_url = "http://weixin.jinxsr.top:8793/";
+    this.inmoney_url = "http://weixin.jinxsr.top:8989/";
+    this.qoute_url = "http://weixin.jinxsr.top:7794/";
+    this.erweima_url= "http://weixin.jinxsr.top:8080/index.html";
+    this.get_erweima_url = "http://weixin.jinxsr.top:8080/qrcode?text=";
 
     this.bank_list = [ 
             { "name": "中国农业银行", "code": "ABC", 'icon':'icon-nongyeyinxing1 green'},
@@ -44,7 +43,7 @@ angular.module('starter.services', [])
             { "name": "中国邮政储蓄银行", "code": "PSBC", 'icon':'icon-youzhengyinhang green' },
             { "name": "招商银行", "code": "CMBC", 'icon':'icon-zhaoshangyinhang red' },
             { "name": "浦发银行", "code": "SPDB", 'icon':'icon-pufayinhang pay_blue' },
-            { "name": "中国光大银行", "code": "CEBBANK", 'icon':'icon-guangdayinhang pay_yellow' },
+            { "name": "中国光大银行", "code": "CEEBBANK", 'icon':'icon-guangdayinhang pay_yellow' },
             { "name": "中信银行", "code": "ECITIC", 'icon':'icon-zhongxinyinhang red' },
             { "name": "平安银行", "code": "PINGAN", 'icon':'icon-pinganyinxing orange' },
             { "name": "中国民生银行", "code": "CMBCS", 'icon':'icon-minshengyinhang pay_blue' },
