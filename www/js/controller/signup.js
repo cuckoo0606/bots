@@ -129,8 +129,24 @@ angular.module('starter.controllers')
 		            },
 		        });
             },
-            "fail": function(status, message) {
-                $scope.message = "该用户已注册";
+            "fail": function(status) {
+            	switch(status){
+		    		case 'PARAM_ERROR':
+		    		$scope.message ="输入信息有误"
+	    			break
+	    			case 'USER_EXIST':
+	    			$scope.message ="该用户已注册"
+	    			break
+	    			case 'REFERRAL_CODE_NOT_EXIST':
+	    			$scope.message ="邀请码不存在"
+	    			break
+	    			case 'SMS_CODE_ERROR':
+	    			$scope.message ="验证码错误"
+	    			break
+	    			case 'MEMBER_ROLE_ERROR':
+	    			$scope.message ="会员角色错误"
+	    			break
+		    	}
                 $timeout(function() {
                     $scope.message = "";
                     $scope.spinner(false);

@@ -75,7 +75,7 @@ angular.module('starter.services')
             }
             else {
                 if (params.fail) {
-                    params.fail(protocol.return_code, protocol.return_message);
+                    params.fail(protocol.error);
                 }
             }
         })
