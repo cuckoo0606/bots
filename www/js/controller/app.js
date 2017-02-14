@@ -9,6 +9,7 @@ angular.module('starter.controllers', [])
 		$rootScope.iswecat = true;
 	};
     $scope.message = "";
+    $rootScope.qoute_list_inter = 0
     $scope.is_loading = false;
     $scope.show_update = ionic.Platform.isAndroid();
     $scope.system_name = AppConfigService.system_name;
@@ -36,6 +37,8 @@ angular.module('starter.controllers', [])
     }
 
     $scope.app_exit = function() {
+    	$rootScope.socket.close()
+    	$interval.cancel($rootScope.qoute_list_inter);
         if (ionic.Platform.isWebView) {
             $rootScope.user = "";
             $ionicHistory.clearHistory();
@@ -262,13 +265,7 @@ angular.module('starter.controllers', [])
         });
     };
 
-    var user_interval = $interval(function() {
-        if ($rootScope.user) {
-            UserService.request_user(function(user) {
-                $rootScope.user = user;
-            });
-        }
-    }, 1000);
+
     
    	$scope.$on('$destroy', function() {
    		$interval($scope.remain_interval);

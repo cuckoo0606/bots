@@ -1,6 +1,7 @@
 angular.module('starter.services')
 
 .service('QouteService', function($http, $interval, $filter, AppConfigService) {
+	
     var service = this;
     this.mode = 0;
     this.qoute_list = [];
@@ -76,6 +77,7 @@ angular.module('starter.services')
     	})
         
         .success(function(protocol) {
+        	console.log(protocol)
             if(complete) {
                 complete(protocol);
             }
@@ -122,46 +124,63 @@ angular.module('starter.services')
                         "change_percent": "+0.00%",
                     });
         	    });
+        	    service.request_qoute_list(service.mode, function(qoute_list) {
+		            angular.forEach(qoute_list, function(qoute) {
+		                service.category_list.forEach(function(category) {
+		                    var q = service.qoute(category.mode, qoute.market, qoute.code);
+		                    if(q) {
+		                        if (qoute.value != q.value) {
+		                            var sub = q.value - q.open;
+		                            var sub_percent = sub / q.open;
+		                            if(q.open == 0) {
+		                                sub_percent = 0;
+		                            }
+		                            q.change_value = sub.toFixed(2);
+		                            q.change_percent = (sub_percent * 100).toFixed(2) + "%";
+		                            if (sub >= 0) {
+		                                q.change_value = "+" + q.change_value;
+		                                q.change_percent = "+" + q.change_percent;
+		                            }
+		                        }
+		                        if (qoute.value > q.value) {
+		                            q.state = "up";
+		                        }
+		                        else if(qoute.value < q.value) {
+		                            q.state = "down";
+		                        }
+		                        q.open = qoute.open;
+		                        q.close = qoute.close;
+		                        q.high = qoute.high;
+		                        q.low = qoute.low;
+		                        q.value = qoute.value;
+		                        q.time = qoute.time;
+		                    }
+		                });
+		            });
+	            	service.socket = io(AppConfigService.socket_url);
+				    service.socket.on('tick', function(data) {
+				    	if(data){
+				    		if(service.qoute_list){
+				    			
+				    			service.qoute_list.forEach(function(item){
+					    			if(item.code==data.code){
+					    				if(item.value < data.value){
+					    					item.state = 'up'
+					    				}else if(item.value > data.value){
+					    					item.state = 'down'
+					    				}
+					    				item.value = data.value
+					    				item.time = $filter('date')(data.time*1000,'yyyy-MM-dd HH:mm:ss')
+					    				return item
+					    			}
+					    		})
+				    		}
+				    	}
+				    });
+		        });
             });
         })
-
-        $interval(function() {
-            service.request_qoute_list(service.mode, function(qoute_list) {
-                angular.forEach(qoute_list, function(qoute) {
-                    service.category_list.forEach(function(category) {
-                        var q = service.qoute(category.mode, qoute.market, qoute.code);
-                        if(q) {
-                            if (qoute.value != q.value) {
-                                var sub = q.value - q.open;
-                                var sub_percent = sub / q.open;
-                                if(q.open == 0) {
-                                    sub_percent = 0;
-                                }
-                                q.change_value = sub.toFixed(2);
-                                q.change_percent = (sub_percent * 100).toFixed(2) + "%";
-                                if (sub >= 0) {
-                                    q.change_value = "+" + q.change_value;
-                                    q.change_percent = "+" + q.change_percent;
-                                }
-                            }
-                            if (qoute.value > q.value) {
-                                q.state = "up";
-                            }
-                            else if(qoute.value < q.value) {
-                                q.state = "down";
-                            }
-                            q.open = qoute.open;
-                            q.close = qoute.close;
-                            q.high = qoute.high;
-                            q.low = qoute.low;
-                            q.value = qoute.value;
-                            q.time = qoute.time;
-                        }
-                    });
-                });
-            });
-        }, 1000);
+        
     };
-
     return this;
 });
