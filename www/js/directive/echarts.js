@@ -15,9 +15,7 @@ angular.module('ng-echarts',[])
 
     $scope.$watch('option', function(value) {
         if (value) {
-        	let start = new Date().getTime()
             chart.setOption(value);
-            let stop = new Date().getTime()
         }
     }, true);
 
