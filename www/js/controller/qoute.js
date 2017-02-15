@@ -5,7 +5,7 @@ angular.module('starter.controllers')
     $scope.qoute_list = QouteService.qoute_list;
 	$rootScope.qoute_list_inter = $interval(function(){
     	
-    }, 1000)
+    }, 250)
 
     $scope.category_list = QouteService.category_list;
 	$rootScope.socket = QouteService.socket
