@@ -21,6 +21,7 @@ angular.module('starter.controllers', [])
     $scope.last_result = [];
     $scope.phase = "";
     $scope.time_unit = "";
+    $scope.check_order_inter='';
 	$scope.trade_money = AppConfigService.trade_money;
 	$rootScope.has_more_order = false;
     $scope.order_params = {
@@ -85,7 +86,7 @@ angular.module('starter.controllers', [])
         angular.element(document.querySelectorAll(".history-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
-	      angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
+      	angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
         $scope.order_params.direction = direction == "lookup" ? "1" : "0";
         $scope.trade_boundage();
         
@@ -158,6 +159,7 @@ angular.module('starter.controllers', [])
         $rootScope.has_more_order = true;
         $rootScope.load_more_order();
         angular.element(document.querySelectorAll(".order-confirm-panel")).removeClass("open");
+        angular.element(document.querySelectorAll(".order-confirm-panel")).parent().removeClass("glass_mask");
         angular.element(document.querySelectorAll(".history-panel")).toggleClass("open");
     };
     
@@ -231,7 +233,15 @@ angular.module('starter.controllers', [])
             "success": function(status, protocol) {
                 var check_order = function() {
                     OrderService.request_order(protocol._id, function(protocol) {
+                    	if (protocol.status == 0 || protocol.status == 2) {
+				            $scope.check_order_inter = $timeout(check_order, 500);
+				          } else if (protocol.status == -1) {
+				            window.clearTimeout($scope.check_order_inter)
+				            $scope.order_result.status = "FAIL";
+                            $scope.order_result.message = "交易失败";
+				          }
                         if (protocol.status === 1) {
+                        	window.clearTimeout($scope.check_order_inter)
                             $scope.order_result.status = "SUCCESS";
                             $scope.order_result.message = "交易成功";
                             $scope.order_result.order = protocol;
@@ -246,9 +256,6 @@ angular.module('starter.controllers', [])
 			                if(remaining > 0){
 			                	$rootScope.trade_order_list.push(protocol);
 			                }
-                        }
-                        else {
-                            $timeout(check_order, 1000);                
                         }
                     });
                 }

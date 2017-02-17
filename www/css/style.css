@@ -1205,7 +1205,7 @@ button:disabled{
     background: -webkit-linear-gradient(left top, rgba(255, 177, 0, 0.49), rgba(0, 161, 255, 0.76));
     background: -moz-linear-gradient(left top, rgba(255, 177, 0, 0.49), rgba(0, 161, 255, 0.76));
     background: linear-gradient(left top, rgba(255, 177, 0, 0.49), rgba(0, 161, 255, 0.76));
-    z-index: 20;
+    z-index: 10000;
     display: block;
 }
 
