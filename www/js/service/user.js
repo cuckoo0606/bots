@@ -14,6 +14,9 @@ angular.module('starter.services')
         })
         
         .success(function(protocol,status) {
+        	if(status >=500){
+        		$timeout(service.signin(params),500)
+        	}
             if (!protocol.error_code) {
                 if (params.success) {
                     AppConfigService.token = protocol.access_token;
