@@ -25,6 +25,8 @@ angular.module('starter.services', [])
         min_money:100,
         max_money:5000
     };
+    //配置是否必选省市
+    this.must_city = true;
     //配置货币符号
     this.currency_symbol = '￥';
     //配置接口地址

@@ -7,6 +7,7 @@ angular.module('starter.controllers')
 			$rootScope.user = newuser;
 		})
 	};
+	$rootScope.must_city = AppConfigService.must_city
 	//省市列表
 	$scope.province_list=AppConfigService.province_list;
 	$scope.city_list=$scope.province_list[0].city_list;
@@ -478,57 +479,74 @@ angular.module('starter.controllers')
     
     //修改个人银行资料
     $scope.update_user = function() {
-        $ionicLoading.show({
-            template: "正在操作"   
-        });
-        UserService.update_user({
-        	"name": $rootScope.user.name,
-        	"sex": $rootScope.user.sex,
-        	"phone": $rootScope.user.phone,
-        	"address": $rootScope.user.address,
-        	"email": $rootScope.user.email,
-        	"id_card": $scope.user_info.id_card,
-            "bank": $scope.user_info.bank.code,
-            "bankholder": $scope.user_info.bank_user,
-            "bankbranch": $scope.user_info.bank_brand,
-            "bankaccount": $scope.user_info.bank_card,
-            "province":$scope.user_info.province.name,
-            "city":$scope.user_info.city,
-            "success": function(status, message, protocol) {
-                UserService.request_user(function(user) {
-                    $rootScope.user = user;
-                    $scope.user_bank.userbankmes=$scope.bank_list.filter(function(obj){
-						if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
-							return obj;
-						}
-					});
-                    $ionicLoading.show({
-			            template: "修改成功"   
-			        });
-                    $timeout(function () {
-                    $ionicLoading.hide();
-                    $scope.user_info_modal.hide();
+if($scope.user_info.bank==""||$scope.user_info.bank_brand==""||$scope.user_info.bank_user==""||$scope.user_info.bank_card==""||$scope.user_info.id_card==""||$scope.user_info.bank==null||$scope.user_info.bank_brand==null||$scope.user_info.bank_user==null||$scope.user_info.bank_card==null||$scope.user_info.id_card==null){
+        	$ionicLoading.show({
+	            template: "信息请填写完整"   
+	        });
+            $timeout(function () {
+            $ionicLoading.hide();
+            }, 2000);
+        }else if($rootScope.must_city&&$scope.user_info.bank==""||$scope.user_info.bank_brand==""||$scope.user_info.bank_user==""||$scope.user_info.bank_card==""||$scope.user_info.id_card==""||$scope.user_info.province==""||$scope.user_info.city==""||$scope.user_info.bank==null||$scope.user_info.bank_brand==null||$scope.user_info.bank_user==null||$scope.user_info.bank_card==null||$scope.user_info.id_card==null||$scope.user_info.province==null||$scope.user_info.city==null){
+        	$ionicLoading.show({
+	            template: "信息请填写完整"   
+	        });
+            $timeout(function () {
+            $ionicLoading.hide();
+            }, 2000);
+        }else{
+			$ionicLoading.show({
+	            template: "正在操作"   
+	        });
+	        UserService.update_user({
+	        	"name": $rootScope.user.name,
+	        	"sex": $rootScope.user.sex,
+	        	"phone": $rootScope.user.phone,
+	        	"address": $rootScope.user.address,
+	        	"email": $rootScope.user.email,
+	        	"id_card": $scope.user_info.id_card,
+	            "bank": $scope.user_info.bank.code,
+	            "bankholder": $scope.user_info.bank_user,
+	            "bankbranch": $scope.user_info.bank_brand,
+	            "bankaccount": $scope.user_info.bank_card,
+	            "province":$scope.user_info.province.name,
+	            "city":$scope.user_info.city,
+	            "success": function(status, message, protocol) {
+	                UserService.request_user(function(user) {
+	                    $rootScope.user = user;
+	                    $scope.user_bank.userbankmes=$scope.bank_list.filter(function(obj){
+							if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
+								return obj;
+							}
+						});
+	                    $ionicLoading.show({
+				            template: "修改成功"   
+				        });
+	                    $timeout(function () {
+	                    $ionicLoading.hide();
+	                    $scope.user_info_modal.hide();
+		                }, 2000);
+	                });
+	            },
+	            "fail": function(status, message) {
+	                $ionicLoading.show({
+	                    template: message
+	                });
+	                $timeout(function () {
+	                    $ionicLoading.hide();
 	                }, 2000);
-                });
-            },
-            "fail": function(status, message) {
-                $ionicLoading.show({
-                    template: message
-                });
-                $timeout(function () {
-                    $ionicLoading.hide();
-                }, 2000);
-            },
-            "error": function(status, message) {
-                $ionicLoading.show({
-                    template: message
-                });
-                $timeout(function () {
-                    $ionicLoading.hide();
-                }, 2000);
-            },
-        });
-        $scope.capital_deposit_modal.hide();
+	            },
+	            "error": function(status, message) {
+	                $ionicLoading.show({
+	                    template: message
+	                });
+	                $timeout(function () {
+	                    $ionicLoading.hide();
+	                }, 2000);
+	            },
+	        });
+	        $scope.capital_deposit_modal.hide();
+        }
+        
     }
 
 	//修改用户密码
