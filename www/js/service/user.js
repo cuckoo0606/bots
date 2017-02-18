@@ -1,6 +1,6 @@
 angular.module('starter.services')
 
-.service('UserService', function($http, AppConfigService) {
+.service('UserService', function($http, $timeout,AppConfigService) {
     this.user = {};
     var service = this;
 
@@ -13,7 +13,7 @@ angular.module('starter.services')
             "data": { "username": params.phone, "password": params.passwd } 
         })
         
-        .success(function(protocol) {
+        .success(function(protocol,status) {
             if (!protocol.error_code) {
                 if (params.success) {
                     AppConfigService.token = protocol.access_token;
@@ -27,7 +27,10 @@ angular.module('starter.services')
             }
         })
             
-        .error(function(protocol) {
+        .error(function(protocol,status) {
+        	if(status >=500){
+        		$timeout(service.signin(params),500)
+        	}
             if (params.error) {
                 params.error("ERROR", "网络错误");
             }
@@ -103,7 +106,9 @@ angular.module('starter.services')
 	            "bank": params.bank,
 	            "bankholder": params.bankholder,
 	            "bankbranch": params.bankbranch,
-	            "bankaccount": params.bankaccount
+	            "bankaccount": params.bankaccount,
+		        "province":params.province,
+		        "city":params.city,
             }
         })
         

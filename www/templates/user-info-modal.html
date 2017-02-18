@@ -12,6 +12,16 @@
                 <select ng-model="user_info.bank" ng-options="r.name for r in bank_list">
                 </select>
             </li>
+            <li class="item item-select">
+                <span class="input-label">省份</span>
+                <select ng-model="user_info.province" ng-options="r.name for r in province_list" ng-change="change_city_list()">
+                </select>
+            </li>
+            <li class="item item-select">
+                <span class="input-label">市名</span>
+                <select ng-model="user_info.city" ng-options="r for r in city_list">
+                </select>
+            </li>
             <li class="item item-input">
                 <span class="input-label">支行名称</span>
                 <input type="text" placeholder="支行名称" ng-model="user_info.bank_brand" required />

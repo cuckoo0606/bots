@@ -7,6 +7,9 @@ angular.module('starter.controllers')
 			$rootScope.user = newuser;
 		})
 	};
+	//省市列表
+	$scope.province_list=AppConfigService.province_list;
+	$scope.city_list=$scope.province_list[0].city_list;
 	$scope.pay_channel_lists = {};
     $scope.qrcode_url = AppConfigService.get_erweima_url + escape(AppConfigService.erweima_url + "?show=signup&ref=" + $rootScope.user.referee + "#/signup");
     $scope.order_list = OrderService.order_list;
@@ -57,6 +60,8 @@ angular.module('starter.controllers')
         "bank_user": "",
         "bank_brand": "",
         "bank_card": "",
+        "province":"",
+		"city":"",
     };
 	$scope.choseDate={
 		"startDate":"",
@@ -425,14 +430,33 @@ angular.module('starter.controllers')
         $scope.user_info.bank = $scope.user_bank.userbankmes[0];
         if($scope.user_info.bank == "" || $scope.bank_list.indexOf($scope.user_info.bank) < 0) {
             $scope.user_info.bank = $scope.bank_list[0];
+            
+        }
+        if($rootScope.user.province!==""&&$rootScope.user.city!==""){
+        	var a = $scope.province_list.filter(function(item){
+        		if(item.name == $rootScope.user.province){
+        			return item
+        		}
+        	})
+        	$scope.user_info.province = a[0]
+        	$scope.city_list = $scope.user_info.province.city_list
+        	$scope.user_info.city = $rootScope.user.city
+        }else{
+        	$scope.user_info.province = $scope.province_list[0]
+        	$scope.user_info.city = $scope.city_list[0]
         }
         $scope.user_info.id_card = $rootScope.user.idcard;
         $scope.user_info.bank_brand = $rootScope.user.bankbranch;
         $scope.user_info.bank_user = $rootScope.user.bankholder;
         $scope.user_info.bank_card = $rootScope.user.bankaccount;
+        
         $scope.user_info_modal.show();
     }
 	
+	$scope.change_city_list = function(){
+		$scope.city_list = $scope.user_info.province.city_list
+		$scope.user_info.city = $scope.city_list[0]
+	}
 	$scope.show_money_list_footer = function() {
 		var article_list = document.getElementsByClassName("today_list_footer");
 		var clickshow_list = document.getElementsByClassName("clickshow");
@@ -468,6 +492,8 @@ angular.module('starter.controllers')
             "bankholder": $scope.user_info.bank_user,
             "bankbranch": $scope.user_info.bank_brand,
             "bankaccount": $scope.user_info.bank_card,
+            "province":$scope.user_info.province.name,
+            "city":$scope.user_info.city,
             "success": function(status, message, protocol) {
                 UserService.request_user(function(user) {
                     $rootScope.user = user;
