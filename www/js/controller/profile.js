@@ -631,15 +631,13 @@ angular.module('starter.controllers')
 			}
 			return judge_bank_value;
 		})();
-		if($rootScope.must_city){
-			if($rootScope.user.province==null||$rootScope.user.city==null||$rootScope.user.province==undefined||$rootScope.user.city==undefined&&$rootScope.user.province==""||$rootScope.user.city==""){
+		if($rootScope.must_city&&$rootScope.user.province==null||$rootScope.user.city==null||$rootScope.user.province==undefined||$rootScope.user.city==undefined&&$rootScope.user.province==""||$rootScope.user.city==""){
 				$ionicLoading.show({
 	            template: "请前往签约银行页面补全省市"
 		        });
                 $timeout(function() {
                     $ionicLoading.hide();
                 }, 2000);
-			}
 		}else if(judge_bank_value){
         	$ionicLoading.show({
             template: "正在提交"
