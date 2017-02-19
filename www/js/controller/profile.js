@@ -48,11 +48,13 @@ angular.module('starter.controllers')
     $scope.user_bank={
     	"userbankmes":"",
     };
-    $scope.user_bank.userbankmes=$scope.bank_list.filter(function(obj){
-		if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
-			return obj;
-		}
-	});
+    if($rootScope.user.bank!=null){
+	    $scope.user_bank.userbankmes=$scope.bank_list.filter(function(obj){
+			if(obj.code==$rootScope.user.bank||obj.name==$rootScope.user.bank){
+				return obj;
+			}
+		});
+    }
     $scope.judge_bank_value=false;
     $scope.is_get_pay_list=false;
     $scope.user_info = {
@@ -428,12 +430,16 @@ angular.module('starter.controllers')
 	//修改个人银行资料页面
     $scope.show_user_bank_modal = function() {
     	$ionicHistory.clearHistory();
-        $scope.user_info.bank = $scope.user_bank.userbankmes[0];
-        if($scope.user_info.bank == "" || $scope.bank_list.indexOf($scope.user_info.bank) < 0) {
-            $scope.user_info.bank = $scope.bank_list[0];
-            
-        }
-        if($rootScope.user.province!==""&&$rootScope.user.city!==""){
+    	if($scope.user_bank.userbankmes.length>0){
+    		$scope.user_info.bank = $scope.user_bank.userbankmes[0];
+    	}else{
+    		$scope.user_info.bank = $scope.bank_list[0]
+    	}
+        if($rootScope.user.province==""||$rootScope.user.city==""||$rootScope.user.province==null||$rootScope.user.city==null){
+        	$scope.user_info.province = $scope.province_list[0]
+        	$scope.user_info.city = $scope.city_list[0]
+        	
+        }else{
         	var a = $scope.province_list.filter(function(item){
         		if(item.name == $rootScope.user.province){
         			return item
@@ -442,15 +448,13 @@ angular.module('starter.controllers')
         	$scope.user_info.province = a[0]
         	$scope.city_list = $scope.user_info.province.city_list
         	$scope.user_info.city = $rootScope.user.city
-        }else{
-        	$scope.user_info.province = $scope.province_list[0]
-        	$scope.user_info.city = $scope.city_list[0]
         }
-        $scope.user_info.id_card = $rootScope.user.idcard;
-        $scope.user_info.bank_brand = $rootScope.user.bankbranch;
-        $scope.user_info.bank_user = $rootScope.user.bankholder;
-        $scope.user_info.bank_card = $rootScope.user.bankaccount;
-        
+        if($rootScope.user.idcard!=null&&$rootScope.user.bankbranch!=null&&$rootScope.user.bankholder!=null&&$rootScope.user.bankaccount!=null){
+        	$scope.user_info.id_card = $rootScope.user.idcard;
+	        $scope.user_info.bank_brand = $rootScope.user.bankbranch;
+	        $scope.user_info.bank_user = $rootScope.user.bankholder;
+	        $scope.user_info.bank_card = $rootScope.user.bankaccount;
+        }
         $scope.user_info_modal.show();
     }
 	
