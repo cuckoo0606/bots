@@ -478,22 +478,23 @@ angular.module('starter.controllers')
 
     
     //修改个人银行资料
-    $scope.update_user = function() {
-if($scope.user_info.bank==""||$scope.user_info.bank_brand==""||$scope.user_info.bank_user==""||$scope.user_info.bank_card==""||$scope.user_info.id_card==""||$scope.user_info.bank==null||$scope.user_info.bank_brand==null||$scope.user_info.bank_user==null||$scope.user_info.bank_card==null||$scope.user_info.id_card==null){
+    $scope.update_user = function() {		
+    	if($scope.user_info.bank==""||$scope.user_info.bank_brand==""||$scope.user_info.bank_user==""||$scope.user_info.bank_card==""||$scope.user_info.id_card==""||$scope.user_info.bank==null||$scope.user_info.bank_brand==null||$scope.user_info.bank_user==null||$scope.user_info.bank_card==null||$scope.user_info.id_card==null){
         	$ionicLoading.show({
 	            template: "信息请填写完整"   
 	        });
             $timeout(function () {
-            $ionicLoading.hide();
+            	$ionicLoading.hide();
             }, 2000);
-        }else if($rootScope.must_city&&$scope.user_info.bank==""||$scope.user_info.bank_brand==""||$scope.user_info.bank_user==""||$scope.user_info.bank_card==""||$scope.user_info.id_card==""||$scope.user_info.province==""||$scope.user_info.city==""||$scope.user_info.bank==null||$scope.user_info.bank_brand==null||$scope.user_info.bank_user==null||$scope.user_info.bank_card==null||$scope.user_info.id_card==null||$scope.user_info.province==null||$scope.user_info.city==null){
-        	$ionicLoading.show({
-	            template: "信息请填写完整"   
-	        });
-            $timeout(function () {
-            $ionicLoading.hide();
-            }, 2000);
-        }else{
+            
+    	}else if($rootScope.must_city&&$scope.user_info.province==null||$scope.user_info.city==null||$scope.user_info.province==""||$scope.user_info.city==""){
+            	$ionicLoading.show({
+		            template: "请填写省市"   
+		        });
+	            $timeout(function () {
+	            	$ionicLoading.hide();
+	            }, 2000);
+            }else{
 			$ionicLoading.show({
 	            template: "正在操作"   
 	        });
@@ -545,8 +546,8 @@ if($scope.user_info.bank==""||$scope.user_info.bank_brand==""||$scope.user_info.
 	            },
 	        });
 	        $scope.capital_deposit_modal.hide();
-        }
-        
+    	}
+
     }
 
 	//修改用户密码
@@ -630,8 +631,16 @@ if($scope.user_info.bank==""||$scope.user_info.bank_brand==""||$scope.user_info.
 			}
 			return judge_bank_value;
 		})();
-
-        if(judge_bank_value){
+		if($rootScope.must_city){
+			if($rootScope.user.province==null||$rootScope.user.city==null||$rootScope.user.province==undefined||$rootScope.user.city==undefined&&$rootScope.user.province==""||$rootScope.user.city==""){
+				$ionicLoading.show({
+	            template: "请前往签约银行页面补全省市"
+		        });
+                $timeout(function() {
+                    $ionicLoading.hide();
+                }, 2000);
+			}
+		}else if(judge_bank_value){
         	$ionicLoading.show({
             template: "正在提交"
 	        });

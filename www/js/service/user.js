@@ -5,7 +5,7 @@ angular.module('starter.services')
     var service = this;
 
     this.signin = function(params) {
-        var signinUrl = AppConfigService.build_api_url("v1/authorize");
+        var signinUrl = AppConfigService.api_url+"v1/authorize"
         $http({
             "url": signinUrl,
             "method": "POST", 

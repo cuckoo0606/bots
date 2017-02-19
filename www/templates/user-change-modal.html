@@ -6,17 +6,17 @@
         </div>
     </ion-header-bar>
     <ion-content class="order-modal-content">
-        <ul class="list">
-            <li class="item item-input">
-                <span class="input-label">旧密码</span>
+        <ul >
+            <li class="newinput">
+                <span class="input-text" style="width: 1rem;">旧密码</span>
                 <input type="password" placeholder="输入旧密码" ng-model="change_userpass.oldpass" required />
             </li>
-            <li class="item item-input">
-                <span class="input-label">新密码</span>
+            <li class="newinput">
+                <span class="input-text" style="width: 1rem;">新密码</span>
                 <input type="password" placeholder="输入新密码" ng-model="change_userpass.newpass"  required />
             </li>
-            <li class="item item-input">
-                <span class="input-label">确认新密码</span>
+            <li class="newinput">
+                <span class="input-text" style="width: 1rem;">确认新密码</span>
                 <input type="password" placeholder="再输入一次新密码" ng-model="change_userpass.newpassangin" required />
             </li>
         </ul>

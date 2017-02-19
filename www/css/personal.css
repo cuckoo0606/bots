@@ -141,6 +141,52 @@
 	font-size: 0.12rem;
 }
 
+/* 签约银行 */
+.bank-info-modal{
+	background: #1b1b1b;
+}
+.bank-info-modal ul{
+	margin-top: 0.8rem;
+	width: 100%;
+	height: auto;
+}
+.bank-info-modal ul li{
+	width: 100%;
+	height: 0.51rem;
+	border-bottom: 1px solid #343438;
+}
+.bank-info-modal ul li span{
+	display: inline-block;
+    vertical-align: middle;
+    width: 0.6rem;
+    height: 0.5rem;
+    text-align: right;
+    font-size: 0.12rem;
+    line-height: 0.5rem;
+    color: white;
+}
+.bank-info-modal ul li input {
+    display: inline-block;
+    vertical-align: middle;
+    border: none;
+    padding: 0;
+    width: 2rem;
+    height: 0.5rem;
+    color: #fdbe19;
+    background: transparent;
+    font-size: 0.14rem;
+    line-height: 0.5rem;
+    margin: 0 0 0 0.1rem;
+    overflow: hidden;
+  }
+ .bank-info-modal ul li select{
+ 	vertical-align: middle;
+ 	-webkit-font-smoothing:initial;
+	font-family: arial;
+	color: #fdbe19;
+	background: transparent;
+	border: 1px solid #fdbe19;
+ }
 /* 个人中心资金流水样式 */
 .order-modal-header{
 	height: 0.3rem;

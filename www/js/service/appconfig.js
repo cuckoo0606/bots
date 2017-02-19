@@ -120,6 +120,9 @@ angular.module('starter.services', [])
     ]
     this.province_list=[
     	{
+    		"name":"","city_list":[""]
+    	},
+    	{
     		"name":"北京市","city_list":["北京市"]
     	},
     	{

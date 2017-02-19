@@ -1539,6 +1539,8 @@ button:disabled{
 
 .order-modal-content {
     background-color: rgb(30, 30, 40);
+    overflow:visible;
+    height:100%;
 }
 
 .order-modal-content .list > .item {
@@ -1804,26 +1806,17 @@ button:disabled{
     height: 100%;
 }
 
-.bank-info-modal select {
-    color: rgb(200, 200, 200);
-    font-size: 12px;
-    background-color: #1d1d25;
-}
-
-.bank-info-modal .item-select .input-label {
-    padding-top: 0px;
-}
 
 .modal {
     background-color: #1b1b1b;
 }
-
-.order-modal .item-select select {
-    color: rgb(200, 200, 200);
-    font-size: 12px;
-    background-color: #1d1d25;
+.order-modal-content .newinput{
+	padding: 0;
 }
-
+.order-modal-content .newinput .input-text{
+	height: 0.5rem;
+	line-height: 0.5rem;
+}
 .web-install .header {
     border-bottom: 1px solid rgb(220, 220, 220);
 }
