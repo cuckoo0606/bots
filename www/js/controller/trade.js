@@ -24,7 +24,6 @@ angular.module('starter.controllers')
     $rootScope.trade = QouteService.trade($scope.mode, $scope.market, $scope.code);
     $scope.order_params.cycle = $rootScope.trade.cycle[0];
     $scope.order_params.amount = $rootScope.trade.amounts[0];
-	console.log($rootScope.qoute)
     $scope.change_cycle = function(c) {
         $scope.order_params.cycle = c;
     }
