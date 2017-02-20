@@ -24,6 +24,11 @@ angular.module('starter.controllers', [])
     $scope.check_order_inter='';
 	$scope.trade_money = AppConfigService.trade_money;
 	$rootScope.has_more_order = false;
+	$rootScope.updateUser = function(){
+		UserService.request_user(function(newuser){
+			$rootScope.user = newuser;
+		})
+	};
     $scope.order_params = {
         "cycle": {},
         "amount": "",
@@ -106,6 +111,7 @@ angular.module('starter.controllers', [])
     $scope.continue_order = function() {
     	angular.element(document.querySelectorAll(".order-confirm-panel")).toggleClass("open");
         angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
+        $rootScope.updateUser()
         angular.element(document.querySelectorAll(".order-state-panel")).parent().removeClass("glass_mask");
         angular.element(document.querySelectorAll(".order-confirm-panel")).parent().toggleClass("glass_mask");
         $scope.order_params.direction = $scope.order_result.order.direction;

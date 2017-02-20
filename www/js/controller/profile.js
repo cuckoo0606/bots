@@ -2,11 +2,7 @@ angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
-	$scope.updateUser = function(){
-		UserService.request_user(function(newuser){
-			$rootScope.user = newuser;
-		})
-	};
+	
 	$rootScope.must_city = AppConfigService.must_city
 	//省市列表
 	$scope.province_list=AppConfigService.province_list;

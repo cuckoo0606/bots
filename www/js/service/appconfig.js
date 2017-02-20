@@ -30,11 +30,11 @@ angular.module('starter.services', [])
     //配置货币符号
     this.currency_symbol = '￥';
     //配置接口地址
-    this.api_url = "http://120.24.44.211:4002/";
-	this.qoute_url = "http://120.24.44.211:7794/";
-    this.erweima_url= "http://120.24.44.211:8085/index.html";
-    this.get_erweima_url = "http://120.24.44.211:8085/qrcode?text=";
-    this.inmoney_url = "http://120.24.44.211:8989/";
+    this.api_url = "http://120.76.237.19:8793/";
+	this.qoute_url = "http://120.76.237.19:7794/";
+    this.erweima_url= "http://120.76.237.19:8085/index.html";
+    this.get_erweima_url = "http://120.76.237.19:8085/qrcode?text=";
+    this.inmoney_url = "http://120.76.237.19:8989/";
     //scoket地址
     this.socket_url = 'http://120.76.24.38:8000'
 
