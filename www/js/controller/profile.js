@@ -2,7 +2,7 @@ angular.module('starter.controllers')
 
 .controller('ProfileCtrl', function($scope, $rootScope, $ionicModal, $ionicLoading, $timeout, $sce, $ionicHistory,$filter,
             UserService, OrderService, CloseOrderService, AppConfigService, CapitalService) {
-	
+	$rootScope.updateUser()
 	$rootScope.must_city = AppConfigService.must_city
 	//省市列表
 	$scope.province_list=AppConfigService.province_list;
@@ -655,8 +655,7 @@ angular.module('starter.controllers')
 	                    }, 3000);
 	                }
 	                else {
-							
-	                    $rootScope.user.amount -= ($scope.money_fee.outmoney_fee_type == 0?$scope.outAmount.outamount*($scope.money_fee.outmoney_fee+1):$scope.outAmount.outamount+$scope.money_fee.outmoney_fee);
+	                    $rootScope.updateUser()
 	                    $ionicLoading.show({
 	                        template: "提交成功"
 	                    });

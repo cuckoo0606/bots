@@ -87,6 +87,7 @@ angular.module('starter.controllers', [])
 
 
     $scope.toggle_order_confirm_panel = function(direction) {
+    	$rootScope.updateUser()
         $scope.hold_order_modal.hide();
         angular.element(document.querySelectorAll(".history-panel")).removeClass("open");
         angular.element(document.querySelectorAll(".order-state-panel")).removeClass("open");
