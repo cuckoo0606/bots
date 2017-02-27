@@ -475,7 +475,15 @@ angular.module('starter.controllers')
 			}
 		}
     }
-
+	$scope.just_ch = function(){
+		$scope.user_info.bank_brand=$scope.user_info.bank_brand.replace(/[^\u4E00-\u9FA5]/g,'')
+		$scope.user_info.bank_user=$scope.user_info.bank_user.replace(/[^\u4E00-\u9FA5]/g,'')
+	}
+	$scope.only_sfz = function(){
+		if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105) && (event.keyCode != 8)&&(event.keyCode != 88)) {
+	      	event.preventDefault();
+	    }
+	}
     
     //修改个人银行资料
     $scope.update_user = function() {		

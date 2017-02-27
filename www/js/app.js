@@ -1,5 +1,19 @@
-angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 'starter.controllers', 'starter.services'])
-
+var App = angular.module('starter', ['ionic', 'ng-echarts', 'ngCookies', 'ionic-toast', 'starter.controllers', 'starter.services'])
+App.directive('ngInput', [function () {
+    return {
+        restrict: 'A',
+        require: '?ngModel',
+        link: function(scope, element, attrs) {
+            element.on('input',oninput);
+            scope.$on('$destroy',function(){//销毁的时候取消事件监听
+                element.off('input',oninput);
+            });
+            function oninput(event){
+                scope.$evalAsync(attrs['ngInput'],{$event:event,$value:this.value});
+            }
+        }
+    }
+}])
 .run(function($ionicPlatform, $rootScope, $state, $timeout, $ionicLoading, $ionicPopup, $http, $cookies, $location, AppConfigService) {
     $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
