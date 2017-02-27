@@ -167,10 +167,18 @@ angular.module('starter.controllers')
 						value.pay_color = 'pay_green';
 						value.pay_bg = 'pay_green_bg';
 						value.pay_icon = 'iconfont icon-weixin';
-					}else{
+					}else if(value.payment_channel_style == 'kuaijiezhifu'){
 						value.pay_color = 'pay_blue';
 						value.pay_bg = 'pay_blue_bg';
 						value.pay_icon = 'iconfont icon--19';
+					}else if(value.payment_channel_style == 'zhifubao'){
+						value.pay_color = 'pay_alipay';
+						value.pay_bg = 'pay_alipay_bg';
+						value.pay_icon = 'iconfont icon-zhifubao';
+					}else if(value.payment_channel_style == 'wangyinzhifu'){
+						value.pay_color = 'pay_yinlian';
+						value.pay_bg = 'pay_yinlian_bg';
+						value.pay_icon = 'iconfont icon-yinlianzhifu';
 					};
 					if(value.bank_list.length == 0){
 						value.pay_height = 'pay_weixin';

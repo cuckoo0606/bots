@@ -526,8 +526,14 @@
 .pay_alipay_bg{
 	background: #00a3ee;
 }
+.pay_yinlian_bg{
+	background: #006a65;
+}
 .pay_alipay{
 	color: #00a3ee !important;
+}
+.pay_yinlian{
+	color: #006a65 !important;
 }
 #in_money_content{
 	background: #1b1b1d;
