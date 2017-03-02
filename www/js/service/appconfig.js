@@ -103,7 +103,8 @@ angular.module('starter.services', [])
             {bank_title: "银联其他银行", bank_code: "2018",'icon':'icon-yinlianzhifu pay_blue'},
             {bank_title: "中行-大额", bank_code: "2019",'icon':'icon-zhongguoyinhang red'},
             {bank_title: "天津银行", bank_code: "2020",'icon':'icon-tianjinyinxing pay_blue'},
-            {bank_title: "微信支付", bank_code: "3001",'icon':'icon-weixin green'}
+            {bank_title: "浙江稠州商业银行", bank_code: "2021", 'icon':'icon-chouzhoushangyeyinxing bank_red'},
+            {bank_title: "中国银联", bank_code: "2022", 'icon':'icon--19 pay_blue'},
      ]
     this.type_list = [
             { "value": 0, "name": "初始化" },
