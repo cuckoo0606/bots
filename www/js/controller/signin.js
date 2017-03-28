@@ -8,6 +8,7 @@ angular.module('starter.controllers')
     $scope.is_signin = false;
     $scope.show_sign_in_mistake = false;
     $scope.if_signup = AppConfigService.ifsignup;
+    
     $scope.spinner = function(visible) {
         if (visible) {
             angular.element(document.querySelectorAll(".spinner-view")).removeClass("hide");

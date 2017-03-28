@@ -5,18 +5,20 @@
             <i class="icon ion-ios-close-empty"></i>
         </div>
     </ion-header-bar>
-    <ion-content class="pay_weixin_code">
-        <header >
+    <ion-content scroll="false">
+    	<div class="pay_weixin_code">
+    		<header >
         	<p>支付金额：
         		<span ng-show="money_fee.inmoney_fee_type == 0">{{deposit.amount>0?(deposit.amount*(money_fee.inmoney_fee/100+1)).toFixed(2):0}}</span>
 	        	<span ng-show="money_fee.inmoney_fee_type == 1">{{deposit.amount>0?deposit.amount+money_fee.inmoney_fee:0}}</span>
         	</p>
-
-        </header>
-        <section>长按识别</section>
-        <footer>
-        	使用其他手机，打开微信，扫一扫也可以支付
-        </footer>
+	        </header>
+	<!--        <section>长按识别</section>-->
+	        <footer>
+	        	请截图保存至相册，通过微信扫一扫功能，选择已保存的二维码进行支付
+	        </footer>
+	        <div class="no-erweima"></div>
+    	</div>
     </ion-content>
    	<article>
 		<img ng-src="{{ pay_qrcode_url }}" >

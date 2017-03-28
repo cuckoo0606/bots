@@ -33,7 +33,7 @@ angular.module('starter.services', [])
     this.api_url = "http://120.76.237.19:8793/";
 	this.qoute_url = "http://120.76.237.19:7794/";
     this.erweima_url= "http://120.76.237.19:8085/index.html";
-    this.get_erweima_url = "http://120.76.237.19:8085/qrcode?text=";
+    this.get_erweima_url = "http://weixin.leather-boss.com/qrcode?text=";
     this.inmoney_url = "http://120.76.237.19:8989/";
     //scoket地址
     this.socket_url = 'http://120.76.24.38:8000'
