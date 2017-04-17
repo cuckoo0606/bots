@@ -1,0 +1,109 @@
+{% extends "share/master.html" %}
+{% block css %}
+<link href="{{ static_url("css/pay.css") }}" rel="stylesheet">
+
+<style>
+    .page-title {
+        height: 90px;
+    }
+</style>
+{% end %}
+{% block main %}
+{% set kvs = {1:"申请中", 2:"已完成", 3:"已取消", 4:"处理中", 5:"出金中", 6:"已失败"} %}
+<div class="page-inner">
+    <div class="page-title">
+        <div class="of">
+            <p>订单编号：{{ outflow and outflow.no or "" }}</p>
+            <p>出金用户：{{ outflow and outflow.user.fetch("user").username }}</p>
+        </div>
+        <div class="om pull-right" style="margin-left:30px;">
+            {% set handling_charge = "handling_charge" in outflow and round(outflow.handling_charge, 2) or 0 %}
+            <span>手续费：</span><span>{{ handling_charge }}</span>
+        </div>
+        <div class="om pull-right">
+            <span>订单金额：</span><span>{{ outflow and round(outflow.amount, 2) }}</span>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="panel panel-white">
+            <div class="qr_code">
+                <div class="col-md-12">
+                    <div class="page-header">
+                       <h4>
+                   日志跟踪
+                   {% set status = outflow and outflow.status %}
+                   <small style="font-size:16px;" class="pull-right">
+                   订单状态：{{ status in kvs and kvs[outflow.status] or "" }}
+                           </small>
+                       </h4>
+                    </div>
+                    <table class="table dataTable display">
+                        <thead>
+                            <tr>
+                                <th nowrap="nowrap" style="width:40%">
+                                    <span>处理时间</span>
+                                </th>
+                                <th nowrap="nowrap" style="width:40%">
+                                    <span>处理信息</span>
+                                </th>
+                                <th nowrap="nowrap" style="width:30%">
+                                    <span>操作人</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if outflow %}
+                            {% for l in outflow.log %}
+                            <tr class="unread">
+                                <td>
+                                    {{ func_time(l.addon, 8) }}
+                                </td>
+                                <td>
+                                    {{ l.desc }}
+                                </td>
+                                <td>
+                                    {{ l.operator }}
+                                </td>
+                            </tr>
+                            {% end %}
+                        {% end %}
+                        </tbody>
+                        {% if current_user_role == "admin" and status == 5 and "refund" not in outflow %}
+                            <a id="refund" class="btn btn-success" style="width:80px;margin-right:5px;">退款</a>
+                        {% end %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $(function(){
+        $("#refund").click(function() {
+            $.post("/outflow/refund", { "outflowid" : "{{outflow._id}}" }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+
+                    setTimeout(function() {
+                        window.location.href = "/outflowview?outflowid={{outflow._id}}"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+    })
+</script>
+{% end %}
+

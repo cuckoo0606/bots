@@ -1,0 +1,937 @@
+#!/usr/bin/env python
+# -*- encoding:utf-8 -*-
+
+# Author: hongyi
+# Email: hongyi@hewoyi.com.cn
+# Create Date: 2016-1-25
+
+import os
+import re
+import operator
+import datetime
+import tornado.web
+from bson import ObjectId
+from cuckoo import per_result
+from core.web import HandlerBase
+from framework.web import paging
+from framework.mvc.web import url, get_url
+from framework.data.mongo import db, Document, DBRef
+
+from elasticsearch import Elasticsearch
+from elasticsearch_dsl import Search, Q
+from settings import DEFAULT_PAGESIZE
+
+@url("/commission")
+class Commission(HandlerBase):
+
+    @tornado.web.authenticated
+    def get(self):
+        UP = self.context.UP
+        per = ["commission"]
+        result = per_result(per, UP)
+
+        if not result:
+            return self.redirect("/account/signin")
+
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        userid = self.get_argument("userid", "")
+
+        rendering = self.is_rendering(starttime, endtime)
+        if not rendering:
+            return self.template()
+
+        com = self.find_user_commission(starttime, endtime, userid)
+        coms = sorted(com, key=operator.itemgetter("amount"), reverse=True)
+
+        p = paging.parse(self)
+        self.context.paging = p
+        self.context.coms = coms[paging.skip(p):paging.skip(p) + p.size]
+        self.context.paging.count = len(coms)
+
+        return self.template()
+
+    def find_user_commission(self, starttime, endtime, userid):
+        """
+            作用: 找出用户下一级的佣金
+            参数: starttime(开始时间), endtime(结束时间), userid(单个用户的ID, 字符串形式)
+            下一级用户: 如果是管理员, 则找出一级代理商; 否则找出用户的下一级代理商
+            userid: 如果传入参数不为空, 则以参数ID为用户; 否则是当前用户
+            佣金通过订单的用户来统计金额, 如果下级佣金金额为0, 也要显示
+        """
+        where = {}
+        where["type"] = 8
+        where_users = {}
+        where_users["type"] = 1
+
+        current_user = self.context.current_user
+        if userid:
+            where_users["parent.$id"] = ObjectId(userid)
+        else:
+            if current_user.userrole.fetch().roleid == "admin":
+                admin_roleid = db.role.find_one({"roleid": "admin"})._id
+                admins = [u._id for u in db.user.find({"userrole.$id": admin_roleid})]
+                where_users["parent.$id"] = {"$in": admins}
+            else:
+                where_users["parent.$id"] = current_user._id
+
+        users = [u._id for u in db.user.find(where_users)]
+
+        where["user"] = {"$in": users}
+
+        select_time = self.select_time("datetime", starttime, endtime, 8)
+        if select_time:
+            where["created"] = select_time
+        books = db.books.aggregate([
+            {
+                "$match": where
+            },
+            {
+                "$group": {
+                    "_id": "$user",
+                    "amount": {"$sum": "$amount"}
+                }
+            }
+        ])
+        books = list(books)
+
+        commissions = []
+        c_users = []
+        if len(books) > 0:
+            for c in books:
+                c_user = c._id.fetch("user")
+                c_userid = c_user._id
+                c_users.append(c_userid)
+                commissions.append({"user": c_user, "amount": c.amount})
+
+        nomoney_users = list(set(c_users) ^ set(users))
+        if len(nomoney_users) > 0:
+            for n in nomoney_users:
+                n_user = db.user.find_one({"_id": n})
+                commissions.append({"user": n_user, "amount": 0})
+
+        return commissions
+
+
+@url("/commission/view")
+class CommissionView(HandlerBase):
+
+    @tornado.web.authenticated
+    def get(self):
+        UP = self.context.UP
+        per = ["commission"]
+        result = per_result(per, UP)
+
+        if not result:
+            return self.redirect("/account/signin")
+
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        key = self.get_argument("key", "")
+        userid = self.get_argument("userid", "")
+
+        self.context.starttime = starttime
+        self.context.endtime = endtime
+        self.context.key = key
+        self.context.userid = userid
+        try:
+            where = self.where_com_pos(starttime, endtime, userid, key, 8)
+            coms = db.books.find(where)
+            self.context.coms = coms \
+                .skip(paging.skip(self.context.paging)) \
+                .limit(self.context.paging.size)
+
+            self.context.paging = paging.parse(self)
+            self.context.paging.count = coms.count()
+        except Exception, e:
+            print e
+
+        return self.template()
+
+
+@url("/positions")
+class Positions(HandlerBase):
+
+    @tornado.web.authenticated
+    def get(self):
+        UP = self.context.UP
+        per = ["position"]
+        result = per_result(per, UP)
+
+        if not result:
+            return self.redirect("/account/signin")
+
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        userid = self.get_argument("userid", "")
+
+        rendering = self.is_rendering(starttime, endtime)
+        if not rendering:
+            return self.template()
+
+        po = self.find_user_position(starttime, endtime, userid)
+        pos = sorted(po, key=operator.itemgetter("amount"), reverse=True)
+
+        p = paging.parse(self)
+        self.context.paging = p
+        self.context.pos = pos[paging.skip(p):paging.skip(p) + p.size]
+        self.context.paging.count = len(pos)
+
+        return self.template()
+
+    def find_user_position(self, starttime, endtime, userid):
+        where = {}
+        where["type"] = 9
+        where_users = {}
+        where_users["type"] = 1
+
+        current_user = self.context.current_user
+        if userid:
+            where_users["parent.$id"] = ObjectId(userid)
+        else:
+            if current_user.userrole.fetch().roleid == "admin":
+                admin_roleid = db.role.find_one({"roleid": "admin"})._id
+                admins = [u._id for u in db.user.find({"userrole.$id": admin_roleid})]
+                where_users["parent.$id"] = {"$in": admins}
+            else:
+                where_users["parent.$id"] = current_user._id
+
+        users = [u._id for u in db.user.find(where_users)]
+        where["user"] = {"$in": users}
+
+        select_time = self.select_time("datetime", starttime, endtime, 8)
+        if select_time:
+            where["created"] = select_time
+
+        books = db.books.aggregate([
+            {
+                "$match": where
+            },
+            {
+                "$group": {
+                    "_id": "$user",
+                    "amount": {"$sum": "$amount"}
+                }
+            }
+        ])
+        books = list(books)
+
+        positions = []
+        c_users = []
+
+        if len(books) > 0:
+            for c in books:
+                c_user = c._id.fetch("user")
+                c_userid = c_user._id
+                c_users.append(c_userid)
+                positions.append({"user": c_user, "amount": c.amount})
+
+        nomoney_users = list(set(c_users) ^ set(users))
+        if len(nomoney_users) > 0:
+            for n in nomoney_users:
+                n_user = db.user.find_one({"_id": n})
+                positions.append({"user": n_user, "amount": 0})
+
+        return positions
+
+
+@url("/positions/view")
+class PositionsView(HandlerBase):
+
+    @tornado.web.authenticated
+    def get(self):
+        UP = self.context.UP
+        per = ["position"]
+        result = per_result(per, UP)
+
+        if not result:
+            return self.redirect("/account/signin")
+
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        key = self.get_argument("key", "")
+        userid = self.get_argument("userid", "")
+
+        self.context.starttime = starttime
+        self.context.endtime = endtime
+        self.context.key = key
+        self.context.userid = userid
+        try:
+            where = self.where_com_pos(starttime, endtime, userid, key, 9)
+            pos = db.books.find(where)
+            self.context.pos = pos \
+                .skip(paging.skip(self.context.paging)) \
+                .limit(self.context.paging.size)
+
+            self.context.paging = paging.parse(self)
+            self.context.paging.count = pos.count()
+        except Exception, e:
+            print e
+            self.context.pos = []
+
+        return self.template()
+
+
+@url("/position/export")
+class PositionExport(HandlerBase):
+
+    @tornado.web.authenticated
+    def get(self):
+        UP = self.context.UP
+        per = ["position"]
+        result = per_result(per, UP)
+
+        if not result:
+            return self.redirect("/account/signin")
+
+        userid = self.get_argument("userid", "")
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        key = self.get_argument("key", "")
+
+        where = self.where_com_pos(starttime, endtime, userid, key, 9)
+        pos = db.books.find(where)
+
+        CUSTOMER = self.context.CUSTOMER
+        try:
+            self.set_header("Content-Type", "text/csv; charset=gb2312")
+            if CUSTOMER == "SHANDONG":
+                self.set_header("Content-Disposition", "attachment;filename=commission报表.csv")
+            else:
+                self.set_header("Content-Disposition", "attachment;filename=红利报表.csv")
+
+            self.write("用户, 金额, 订单, 日期\r\n".decode('utf8').encode('gbk'))
+            for i in pos:
+                username = "system" == i.payee and i.payer.fetch("user").username or i.payee.fetch("user").username
+                amount = "system" != i.payee and i.amount or i.amount * -1
+                tradeno = "remark" in i and i.remark or ""
+                created = str(i.created).split(".")[0]
+                line = "{0}, {1}, {2}, {3}\n".format(username, amount, tradeno, created)
+
+                self.write(line.decode('utf8').encode('gbk'))
+
+            self.finish()
+        except Exception, e:
+            print e
+
+
+@url("/commission/export")
+class CommissionExport(HandlerBase):
+
+    @tornado.web.authenticated
+    def get(self):
+        UP = self.context.UP
+        per = ["commission"]
+        result = per_result(per, UP)
+
+        if not result:
+            return self.redirect("/account/signin")
+
+        userid = self.get_argument("userid", "")
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        key = self.get_argument("key", "")
+
+        where = find_pos_com(starttime, endtime, userid, key, 5)
+        coms = db.books.find(where)
+
+        try:
+            self.set_header("Content-Type", "text/csv; charset=gb2312")
+            self.set_header("Content-Disposition", "attachment;filename=佣金报表.csv")
+
+            self.write("用户, 金额, 订单, 日期\r\n".decode('utf8').encode('gbk'))
+            for i in coms:
+                username = i.payee.fetch("user").username
+                amount = i.amount
+                tradeno = "remark" in i and i.remark or ""
+                created = str(i.created).split(".")[0]
+                line = "{0}, {1}, {2}, {3}\n".format(username, amount, tradeno, created)
+
+                self.write(line.decode('utf8').encode('gbk'))
+
+            self.finish()
+        except Exception, e:
+            print e
+
+
+@url("/booksreport")
+class BooksReport(HandlerBase):
+    """
+        统计:
+        1, 当日变动(当前余额-昨天前最后一个变动)
+        2, 入金金额, 入金次数
+        3, 出金金额, 出金次数
+        4, 当前余额
+        5, 净入金 netincome
+        6, 今日盈亏 today_t_l (结单+下单)
+    """
+
+    @tornado.web.authenticated
+    def where(self, starttime, endtime, users):
+        where = {}
+
+        select_time = {}
+        o = datetime.timedelta(hours=8)
+        if starttime:
+            select_time["$gt"] = datetime.datetime.strptime(
+                starttime + ":00", "%Y-%m-%d %H:%M:%S") - o
+        if endtime:
+            select_time["$lt"] = datetime.datetime.strptime(
+                endtime + ":59", "%Y-%m-%d %H:%M:%S") - o
+        if select_time:
+            where["created"] = select_time
+
+        where["user"] = {"$in": users}
+
+        return where
+
+
+    @tornado.web.authenticated
+    def where_pays(self, starttime, endtime, user):
+        where_pays = {}
+        where_pays["status"] = 2
+
+        select_time = {}
+        delta = datetime.timedelta(hours=8)
+        if starttime:
+            select_time["$gt"] = datetime.datetime.strptime(
+                starttime + ":00", "%Y-%m-%d %H:%M:%S") - delta
+        if endtime:
+            select_time["$lt"] = datetime.datetime.strptime(
+                endtime + ":59", "%Y-%m-%d %H:%M:%S") - delta
+        if select_time:
+            where_pays["created"] = select_time
+
+        where_pays["user"] = user
+
+        return where_pays
+
+
+    # 先找出查询的用户
+    @tornado.web.authenticated
+    def where_users(self, receiver, subordinate, minprice, maxprice):
+        where_users = {}
+        where_users["type"] = 1
+
+        current_user = self.context.current_user
+        if receiver:
+            user =  db.user.find_one({"userid" : receiver})
+            if user and current_user.relation in user.relation:
+                where_users["_id"] = user._id
+            else:
+                where_users["_id"] = None
+        elif subordinate:
+            sub_user = db.user.find_one({"userid" :subordinate}) 
+            if sub_user and current_user.relation in sub_user.relation:
+                sub_reg = "^%s/" % sub_user.relation
+                where_users["relation"] = {"$regex" : sub_reg}
+            else:
+                where_users["_id"] = None
+        else:
+            reg = self.get_lower_user()
+            where_users["relation"] = {"$regex" : reg}
+
+        where_amount = {}
+        if minprice != "":
+            where_amount["$gte"] = minprice
+        if maxprice != "":
+            where_amount["$lte"] = maxprice
+
+        if where_amount:
+            where_users["amount"] = where_amount
+
+        return where_users
+        
+
+    @tornado.web.authenticated
+    def get(self):
+        UP = self.context.UP
+        per = ["booksreport"]
+        result = per_result(per, UP)
+
+        if not result:
+            return self.redirect("/account/signin")
+
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        receiver = self.get_argument("receiver", "")
+        subordinate = self.get_argument("subordinate", "")
+        minprice = self.get_argument("minprice", "")
+        maxprice = self.get_argument("maxprice", "")
+
+        try:
+            minprice = round(float(minprice), 2)
+        except Exception, e:
+            minprice = ""
+
+        try:
+            maxprice = round(float(maxprice), 2)
+        except Exception, e:
+            maxprice = ""
+
+        self.context.starttime = starttime
+        self.context.endtime = endtime
+        self.context.receiver = receiver
+        self.context.subordinate = subordinate
+        self.context.minprice = minprice
+        self.context.maxprice = maxprice
+
+        # 获取当前用户的下级
+        reg = self.get_lower_user()
+
+        # 获取查询用户
+        where_users = self.where_users(receiver, subordinate, minprice, maxprice)
+        find_users = [i._id for i in db.user.find(where_users).skip(paging.skip(self.context.paging)) \
+                .limit(self.context.paging.size)]
+
+        try:
+            where_books = self.where(starttime, endtime, find_users)
+            find_books = db.books.aggregate([
+                {
+                    "$match": where_books
+                },
+                {
+                    "$group": {
+                        "_id": {"user": "$user", "type": "$type"},
+                        "count": {"$sum": 1},
+                        "amount": {"$sum": "$amount"}
+                    }
+                }
+            ])
+            books = list(find_books)
+
+            # 计算昨天时间
+            d1 = datetime.datetime.now()
+            d3 = d1 - datetime.timedelta(days=1)
+            d2 = str(d3).split(" ")[0]
+            d4 = datetime.datetime.strptime(d2 + " 23:59:59", "%Y-%m-%d %H:%M:%S")
+
+            today = datetime.date.today()
+            to_end = datetime.datetime.strptime(str(today)+ " 23:59:59", "%Y-%m-%d %H:%M:%S")
+            to_start = datetime.datetime.strptime(str(today)+ " 00:00:00", "%Y-%m-%d %H:%M:%S")
+
+            where_ye = {}
+            where_ye["created"] = {"$lt" : d4}
+
+            where_to = {}
+            where_to["type"] = {"$in" : [6, 7]}
+            where_to["created"] = {"$gt" : to_start, "$lt" : to_end}
+
+            books_list = []
+            for u in find_users:
+                in_amount = 0
+                in_count = 0
+                pay_amount = 0
+                pay_count = 0
+                position = 0
+                commission = 0
+
+                where_ye["user"] = u
+                where_to["user"] = u
+
+                # 当日盈亏
+                today_books = db.books.aggregate([
+                    {
+                        "$match": where_to
+                    },
+                    {
+                        "$group": {
+                            "_id" : -1,
+                            "amount": {"$sum": "$amount"}
+                        }
+                    }
+                ])
+                today_books = list(today_books)
+                today_t_l = today_books and today_books[0]["amount"] or 0
+
+                # 昨天结余
+                u_book = [i for i in db.books.find(where_ye)]
+                last_record = u_book and sorted(u_book, key=lambda u_book: u_book['created'], reverse=True)[0] or None
+                y_amount = last_record and last_record["balance"] or 0
+                
+                # 当前结余
+                c_amount = db.user.find_one({"_id" : u}).amount
+
+                # 出金计算(按outflow表里已确认的数据查询)
+                where_pays = self.where_pays(starttime, endtime, u)
+                find_pays = db.outflow.aggregate([
+                    {
+                    "$match": where_pays
+                    },
+                    {
+                    "$group": {
+                        "_id": -1,
+                        "count": {"$sum": 1},
+                        "amount": {"$sum": "$amount"}
+                        }
+                    }
+                ])
+                list_pays = list(find_pays)
+                if len(list_pays) > 0:
+                    pay_amount = list_pays[0]["amount"]
+                    pay_count = list_pays[0]["count"]
+
+                u_agent = db.user.find_one({"_id" : u}).parent
+
+                try:
+                    u_agent = db.user.find_one({"_id" : u}).parent.fetch().username
+                except:
+                    u_agent = ""
+
+                dicts = Document()
+                dicts.user = u
+                dicts.agent = u_agent
+                dicts.pay_amount = pay_amount
+                dicts.pay_count = pay_count
+                dicts.y_amount = c_amount - y_amount
+                dicts.today_t_l = today_t_l
+
+                for b in books:
+                    # 入金统计
+                    if b._id.type == 1:
+                        if b._id.user == u:
+                            in_amount += b.amount
+                            in_count += b.count
+
+                    # 佣金统计
+                    if b._id.type == 8:
+                        if b._id.user == u:
+                            commission += b.amount
+
+                    # 头寸统计
+                    if b._id.type == 9:
+                        if b._id.user == u:
+                            position += b.amount
+
+                dicts.user = u
+                dicts.in_amount = in_amount
+                dicts.in_count = in_count
+                dicts.position = position
+                dicts.commission = commission
+                dicts.netincome = in_amount - pay_amount
+
+                books_list.append(dicts)
+
+            p = paging.parse(self)
+            self.context.paging = p
+            self.context.books = books_list
+            self.context.paging.count = db.user.count(where_users)
+        except Exception, e:
+            print e
+            self.context.books = []
+        return self.template()
+
+
+@url("/personal")
+class Personal(HandlerBase):
+
+    @tornado.web.authenticated
+    def ela_where_books(self, starttime, endtime, userid, status):
+        result_list = []
+        current_user = self.context.current_user
+
+        if userid:
+            user = db.user.find_one({ "userid" : userid, "type" : 1 })
+            if user and current_user.relation in user.relation:
+                q = Q('term', user=str(user._id))
+            else:
+                q = Q('term', relation="^///")
+        else:
+            q = Q('term', user=str(current_user._id))
+        result_list.append(q)
+
+        if status and status != "0":
+            try:
+                status = int(status)
+            except Exception, e:
+                status = 9999
+            result_list.append(Q('term', type=status))
+
+        result_list.append(Q('range', created={'gte':starttime, 'lt':endtime, 'time_zone': '+08:00', 'format': 'yyyy-MM-dd HH:mm'}))
+        q = Q('bool', filter=result_list)
+
+        return q
+
+
+    @tornado.web.authenticated
+    def ela_aggs_books(self, starttime, endtime, userid, status, page):
+        client = Elasticsearch()
+        sea = Search(using=client, index="books", doc_type='books').using(client)
+        
+        q = self.ela_where_books(starttime, endtime, userid, status)
+        s = sea.query(q)
+        # 按类型统计金额和数量
+        s.aggs.bucket("agg_sum", "terms", field="type").metric("amount", "sum", field="amount")
+        s = s.sort({'created': 'desc'})[ ((page-1)* DEFAULT_PAGESIZE) : (page*DEFAULT_PAGESIZE) ]
+        r = s.execute()
+        return r
+
+
+    @tornado.web.authenticated
+    def get(self):
+        '''
+            只能针对个人查询
+            需要判断relation
+            02-21: 添加 所有用户都可以查询任一下级
+        '''
+        UP = self.context.UP
+        per = ["personal"]
+        result = per_result(per, UP)
+
+        if not result:
+            return self.redirect("/account/signin")
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        status = self.get_argument("status", "0")
+        userid = self.get_argument("userid", "")
+        page = self.get_argument("page", "1")
+
+        self.context.userid = userid
+        self.context.status = status
+        rendering = self.is_rendering(starttime, endtime)
+        if not rendering:
+            return self.template()
+
+        s = self.ela_aggs_books(starttime, endtime, userid, status, int(page))
+
+        books_list = []
+        for i in s.hits:
+            books_id = i.meta.id
+            i['_id'] = ObjectId(books_id)
+            books = db.books.find_one({"_id": i['_id']})
+
+            i['user_infos'] = self.redis_cache("user", str(i.user))
+            i['amount'] = round(books.amount, 2)
+            i['balance'] = round(books.balance, 2)
+            i['remark'] = books.remark
+            i['type'] = books.type
+            i['created'] = books.created
+            
+            books_list.append(i)
+        self.context.aggs_books = s.aggregations.agg_sum.buckets
+        self.context.books_list = books_list
+        self.context.paging = paging.parse(self)
+        self.context.paging.count = s.hits.total
+
+        return self.template()
+
+
+    @tornado.web.authenticated
+    def post(self):
+        UP = self.context.UP
+        per = ["personal"]
+        result = per_result(per, UP)
+
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        status = self.get_argument("status", "0")
+        userid = self.get_argument("userid", "")
+
+        self.context.status = status
+        self.context.userid = userid
+
+        rendering = self.is_rendering(starttime, endtime)
+        if not rendering:
+            return self.template()
+
+        try:
+            client = Elasticsearch()
+            sea = Search(using=client, index="books", doc_type='books').using(client)
+            q = self.ela_where_books(starttime, endtime, userid, status)
+            s = sea.query(q)
+
+            self.set_header("Content-Type", "text/csv; charset=gbk")
+            self.set_header("Content-Disposition", "attachment;filename=个人报表.csv")
+            self.write("用户, 类型, 金额, 余额, 备注, 时间\r\n".decode('utf8').encode('gbk'))
+
+            kvs = {
+                1: "入金",
+                2: "入金手续费",
+                3: "出金申请",
+                4: "出金手续费",
+                5: "出金失败",
+                6: "下单",
+                7: "结单",
+                8: "佣金",
+                9: "红利",
+                10: "管理员加款",
+                99: "系统调整"
+            }
+            for i in s.sort({"created": 'asc'})[0: s.count()]:
+                user_infos = self.redis_cache("user", str(i.user))
+                user = user_infos['userid'] + '【' + user_infos['username'] +  '】'
+                line = "{0}, {1}, {2}, {3}, {4}, {5}\n".format(user, kvs[i.type], round(i.amount, 2), round(i.balance, 2), i.remark.replace(',', ' '), i.created.split('.')[0])
+                self.write(line.decode('utf8').encode('gbk'))
+            self.finish()
+        except Exception, e:
+            print e
+
+
+@url("/newbooksreport")
+class NewBooksReport(HandlerBase):
+    '''
+        新资金统计表(daily)
+        字段:
+            用户, 初始金额, 下单次数, 盈利次数, 亏损次数, 持平次数, 盈利率, 下单总额, 盈利总额, 亏损总额
+            手续费, 出金次数, 出金总额, 入金次数, 入金总额
+    '''
+    @tornado.web.authenticated
+    def books_where(self, starttime, endtime, receiver, subordinate):
+        where = {}
+        select_start = datetime.datetime.strptime(starttime + " 00:00:00", "%Y-%m-%d %H:%M:%S")
+        select_end = datetime.datetime.strptime(endtime + " 23:59:59", "%Y-%m-%d %H:%M:%S")
+
+        select_time = {}
+        select_time["$gte"] = select_start
+        select_time["$lte"] = select_end
+
+        where["date"] = select_time
+
+        relation = self.where_relation(receiver, subordinate)
+        where["relation"] = relation
+
+        return where
+
+
+    @tornado.web.authenticated
+    def statistics_where(self, where):
+        '''
+            未完成, 差分页和sort
+        '''
+        dailys = db.daily.aggregate([
+            {
+                "$match" : where
+            },
+            {
+                "$group" : {    
+                    "_id" : "$user",
+                    "ordernumbers" : { "$sum" : "$ordernumbers" },
+                    "profitnumbers" : { "$sum" : "$profitnumbers" },
+                    "lossnumbers" : { "$sum" : "$lossnumbers" },
+                    "flatnumbers" : { "$sum" : "$flatnumbers" },
+                    "totalamounts" : { "$sum" : "$totalamounts" },
+                    "profitamounts" : { "$sum" : "$profitamounts" },
+                    "lossamounts" : { "$sum" : "$lossamounts" },
+                    "fees" : { "$sum" : "$fees" },
+                    "expenditure_numbers" : { "$sum" : "$expenditure_numbers" },
+                    "expenditure_amounts" : { "$sum" : "$expenditure_amounts" },
+                    "paymentnumbers" : { "$sum" : "$paymentnumbers" },
+                    "paymentamounts" : { "$sum" : "$paymentamounts" },
+                    "commissionnumbers" : { "$sum" : "$commissionnumbers" },
+                    "commissionamounts" : { "$sum" : "$commissionamounts" },
+                    "bonusnumbers" : { "$sum" : "$bonusnumbers" },
+                    "bonusamounts" : { "$sum" : "$bonusamounts" }
+                }
+            },
+            {"$sort": {"fees":-1}},
+            {"$skip": paging.skip(self.context.paging)},
+            { "$limit": self.context.paging.size }
+        ])
+        result = [ i for i in dailys ]
+        return result 
+
+
+    @tornado.web.authenticated
+    def get(self):
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        receiver = self.get_argument("receiver", "")
+        subordinate = self.get_argument("subordinate", "")
+
+        self.context.receiver = receiver
+        self.context.subordinate = subordinate
+        rendering = self.is_rendering(starttime, endtime, "day")
+        if not rendering:
+            return self.template()
+
+        where = self.books_where(starttime, endtime, receiver, subordinate)
+        daily = self.statistics_where(where)
+        self.context.paging.count = db.daily.count(where)
+        result = self.userinofs_lists(daily, "_id")
+        self.context.daily = result
+
+        return self.template()
+
+
+    @tornado.web.authenticated
+    def post(self):
+        starttime = self.get_argument("starttime", "")
+        endtime = self.get_argument("endtime", "")
+        receiver = self.get_argument("receiver", "")
+        subordinate = self.get_argument("subordinate", "")
+
+        rendering = self.is_rendering(starttime, endtime, "day")
+        if not rendering:
+            return self.redirect("/newbooksreport")
+        where = self.books_where(starttime, endtime, receiver, subordinate)
+        #daily = self.statistics_where(where)
+        daily = db.daily.find(where)
+        result = self.userinofs_lists(daily, "_id")
+
+        try:
+            self.set_header("Content-Type", "text/csv; charset=gbk")
+            self.set_header("Content-Disposition", "attachment;filename=个人报表.csv")
+            # self.write("用户, 下单次数, 盈利次数, 亏损次数, 持平次数, 盈利率, 下单总额, 盈利总额, 亏损总额, \
+            #     手续费, 出金次数, 出金总额, 入金次数, 入金总额, 佣金次数, 佣金总额, 红利次数, 红利总额\r\n".decode('utf8').encode('gbk'))
+            self.write("用户, 代理商, 下单次数, 盈利次数, 亏损次数, 持平次数, 盈利率, 下单总额, 盈利总额, 亏损总额, \
+                手续费, 出金次数, 出金总额, 入金次数, 入金总额\r\n".decode('utf8').encode('gbk'))
+            for i in result:
+                if not i.user_infos:
+                    db_user = db.user.find_one({"_id":i.user})
+                    db_parent = 'parent' in db_user and db_user.parent and db_user.parent.fetch() or ''
+                    user = db_user.userid + "【" + db_user.username + "】"
+                    parent = db_parent and db_parent.userid + "【" + db_parent.username + "】" or ''
+                else:
+                    user = i.user_infos.userid + "【" + i.user_infos.username + "】"
+                    parent = i.user_infos.parent_infos['userid'] + "【" + i.user_infos.parent_infos['username'] + "】"
+                ordernumbers = "ordernumbers" in i and i.ordernumbers or 0
+                profitnumbers = "profitnumbers" in i and i.profitnumbers or 0
+                lossnumbers = "lossnumbers" in i and i.lossnumbers or 0
+                flatnumbers = "flatnumbers" in i and i.flatnumbers or 0
+                profitability = ordernumbers and profitnumbers and round(profitnumbers*1.0 / ordernumbers*1.0, 4)*100 or 0
+                totalamounts = "totalamounts" in i and round(i.totalamounts, 2) or 0
+                profitamounts = "profitamounts" in i and round(i.profitamounts, 2) or 0
+                lossamounts = "lossamounts" in i and round(i.lossamounts, 2) or 0
+                fees = "fees" in i and round(i.fees, 2) or 0
+                expenditure_numbers = "expenditure_numbers" in i and i.expenditure_numbers or 0
+                expenditure_amounts = "expenditure_amounts" in i and round(i.expenditure_amounts, 2) or 0
+                paymentnumbers = "paymentnumbers" in i and i.paymentnumbers or 0
+                paymentamounts = "paymentamounts" in i and round(i.paymentamounts, 2) or 0
+                # commissionnumbers = "commissionnumbers" in i and i.commissionnumbers or 0
+                # commissionamounts = "commissionamounts" in i and round(i.commissionamounts, 2) or 0
+                # bonusnumbers = "bonusnumbers" in i and i.bonusnumbers or 0
+                # bonusamounts = "bonusamounts" in i and round(i.bonusamounts, 2) or 0
+
+                # line = "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, \
+                #     {14}, {15}, {16}, {17}\n".format(user, ordernumbers, profitnumbers, lossnumbers, flatnumbers, profitability, \
+                #         totalamounts, profitamounts, lossamounts, fees, expenditure_numbers, expenditure_amounts, paymentnumbers, \
+                #         paymentamounts, commissionnumbers, commissionamounts, bonusnumbers, bonusamounts)
+                line = "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}\n".format(user, parent, \
+                        ordernumbers, profitnumbers, lossnumbers, flatnumbers, profitability, totalamounts, profitamounts, \
+                        lossamounts, fees, expenditure_numbers, expenditure_amounts, paymentnumbers, paymentamounts)
+                self.write(line.decode('utf8').encode('gbk'))
+            self.finish()
+        except Exception, e:
+            print e
+
+
+@url("/warning")
+class Warning(HandlerBase):
+    '''
+        所有余额小于500, 并且有红利设置的代理商
+    '''
+    @tornado.web.authenticated
+    def get(self):
+        if self.context.current_user_role != 'admin':
+            return self.redirect('/account/signin')
+
+        agent_roleid = db.role.find_one({ 'roleid': 'agent' })._id
+
+        where = {}
+        where['userrole.$id'] = agent_roleid
+        where['position'] = {'$exists': True}
+        where['amount'] = {'$lt': 500}
+
+        self.context.result = db.user.find(where).sort([("amount", 1)])
+
+        return self.template()

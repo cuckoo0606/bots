@@ -1,0 +1,82 @@
+{% extends "share/master.html" %}
+{% block title %}系统调整{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>系统调整</h3>
+    </div>
+    <div id="main-wrapper">                         
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="amount" class="col-md-2 control-label" style="margin-left:15px">选择用户：</label>
+                                <div class="input-group">
+                                    <select class="selectpicker" data-live-search="true" id="receiver" name="receiver" data-width="100%" title="查询用户" >
+                                        {% for i in users %}
+                                            <option value="{{ i._id }}">{{i.username}}【{{i.userid}}】</option>
+                                        {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount" class="col-md-2 control-label">调整金额：</label>
+                                <div class="col-md-2">
+                                    <input id="amount" type="text" class="form-control" placeholder="金额" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="remark" class="col-md-2 control-label">备注：</label>
+                                <div class="col-md-2">
+                                    <input id="remark" type="text" class="form-control" placeholder="备注" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="adjust" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $(function(){
+        $("#adjust").click(function() {
+            id = $("#receiver").val();
+            amount = $("#amount").val();
+            remark = $("#remark").val();
+
+            $.post("/adjust", { "id" : id, "amount" : amount, "remark" : remark }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+
+                    setTimeout(function() {
+                        window.location.href = "/adjust"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+    })
+</script>
+{% end %}

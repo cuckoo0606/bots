@@ -1,0 +1,99 @@
+{% extends "share/master.html" %}
+{% block title %}级别编辑{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>用户管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/level">级别</a></li>
+                <li class="active">级别编辑</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                         
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <input id="id" type="hidden" value="{{ level and level._id or "" }}">
+                            <div class="form-group">
+                                <label for="name" class="col-md-2 control-label">名称：</label>
+                                <div class="col-md-2">
+                                    <input id="name" type="text" class="form-control" placeholder="级别名称" value="{{ level and level.name or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="code" class="col-md-2 control-label">标识：</label>
+                                <div class="col-md-2">
+                                    <input id="code" type="text" class="form-control" placeholder="级别标识" value="{{ level and level.code or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="maximum" class="col-md-2 control-label">最大值：</label>
+                                <div class="col-md-2">
+                                    <input id="maximum" type="text" class="form-control" placeholder="级别标识" value="{{ level and level.maximum or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="minimum" class="col-md-2 control-label">最小值：</label>
+                                <div class="col-md-2">
+                                    <input id="minimum" type="text" class="form-control" placeholder="级别标识" value="{{ level and level.minimum or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="odds" class="col-sm-2 control-label">赔率：</label>
+                                <div class="col-md-2">
+                                    <input id="odds" type="text" class="form-control" placeholder="比例(百分比)" value="{{ level and "odds" in level and level.odds or 0 }}" />
+                                </div>
+                                <div style="float:left; margin-top:10px;"><span>%</span></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_level" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $("#save_level").click(function() {
+        id = $("#id").val();
+        name = $("#name").val();
+        code = $("#code").val();
+        odds = $("#odds").val();
+        maximum = $("#maximum").val();
+        minimum = $("#minimum").val();
+
+        $.post("/level/edit", { "id" : id, "name" : name, "code" : code, "odds" : odds, "maximum" : maximum, "minimum" : minimum }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/level"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script>
+{% end %}

@@ -1,0 +1,185 @@
+{% extends "share/master.html" %}
+{% block title %}角色权限{% end %}
+
+{% block css %}
+<link href="{{ static_url("css/bootstrap.css") }}" rel="stylesheet" />
+{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>角色权限</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/role">角色管理</a></li>
+                <li class="active">角色权限</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <input id="id" type="hidden" value="">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">角色:</label>
+                                <div class="col-md-4">
+                                    <select id="role" class="selectpicker" data-width="100%">
+                                    {% for i in role %}
+                                        {% if i.roleid != "admin" %}
+                                            <option value="{{ i._id }}">{{ i.rolename }}</option>
+                                        {% end %}
+                                    {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="tree" class="col-md-2 control-label">权限：</label>
+                                <div class="col-md-4">
+                                    <div id="tree"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_prset" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+
+{% block script %}
+<script src="{{ static_url("js/bootstrap-treeview.js") }}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var hasSelected = function(node){
+            var select = false
+            if(node.nodes){
+                for(i=0; i<node.nodes.length;i++){
+                    if(hasSelected(node.nodes[i])){
+                        select = true
+                    }
+                    if (select){
+                        break
+                    }
+                    i+=1
+                }
+            }else{
+                select = node.state.selected
+            }
+            return select
+        }
+
+        var select = function(data, selected){
+            
+            // if (data.state.selected){
+            //     var parent = $('#tree').treeview('getParent', data);
+            //     $('#tree').treeview('selectNode', [ parent.nodeId, { silent: true } ]);
+            // }else{
+            //     var parent = $('#tree').treeview('getParent', data);
+            //     $('#tree').treeview('selectNode', [ parent.nodeId, { silent: true } ]);
+            // }
+            console.log(data.state.selected)
+            if(data.nodes){
+                // $('#tree').treeview('unselectNode', [ data.nodeId, { silent: true } ])
+                // $('#tree').treeview('expandNode', [ data.nodeId, { silent: true ,ignoreChildren: false} ])
+
+                // if (hasSelected(data)){
+                //     $.each(data.nodes, function(i, node){
+                //         if (node.nodes){
+                //             select(node)  
+                //         }else{
+                //             $('#tree').treeview('unselectNode', [ node.nodeId, { silent: true } ]);
+                //         }
+                //     });
+                // }else{
+                //     $.each(data.nodes, function(i, node){
+                //         if (node.nodes){
+                //             select(node)  
+                //         }else{
+                //             $('#tree').treeview('selectNode', [ node.nodeId, { silent: true } ]);
+                //         }
+                //     });
+                // }
+                $.each(data.nodes, function(i, node){
+                    if(selected){
+                        $('#tree').treeview('selectNode', [ node.nodeId, { silent: true } ]);
+                    }else{
+                        $('#tree').treeview('unselectNode', [ node.nodeId, { silent: true } ]);
+                    }
+                    if (node.nodes){
+                        select(node, selected)
+                    }
+                });
+
+            }
+        }
+
+        
+
+        var rolePermissionSelect = function(role){
+            $.get('/prset/permission/tree?role='+role, function(data){
+                $('#tree').treeview({
+                    data: data,
+                    multiSelect: true,
+                    highlightSearchResults: false,
+                    onNodeSelected: function(event, data) {
+                        select(data, true)
+                    },
+                    onNodeUnselected:function(event, data){
+                        select(data, false)
+                    }
+                });
+                $('#tree').treeview('expandAll', { silent: true });
+            })
+        }
+
+        rolePermissionSelect($("#role option:selected").val())
+
+        $("#role").on("change", function(){
+            rolePermissionSelect($("#role option:selected").val())
+        })
+
+        $('#save_prset').click(function(){
+            var tree = $('#tree').treeview('getSelected')
+            role = $("#role option:selected").val();
+            var pids = []
+ 
+            $.each(tree, function(i, node){
+                pids[pids.length] = node.id || node.text
+            })
+
+            $.post("/prset", {"tree" : pids.join(' '), "role" : role }, function(res){
+                toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/role"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+            })
+        })
+
+    });
+
+    
+</script>
+{% end %}

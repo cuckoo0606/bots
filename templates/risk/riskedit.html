@@ -1,0 +1,149 @@
+{% extends "share/master.html" %}
+{% block title %}风险编辑{% end %}  
+{% block css %}
+<style type="text/css">
+    .radio {
+        display:none;
+    }
+</style>
+{% end %}                                          
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>风险管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/risk/management">风险管理</a></li>
+                <li class="active">风险编辑</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                        <input id="id" type="hidden" value="{{ risk and risk._id or ""}}">
+{#                             <div class="form-group">
+                                <label for="marketcode" class="col-sm-2 control-label">行情编码：</label>
+                                <div class="col-md-4">
+                                    <input id="marketcode" type="text" class="form-control" placeholder="行情编码" value="{{ risk and risk.marketcode or "" }}" />
+                                </div>
+                            </div> #}
+                            <div class="form-group">
+                                <label for="marketcode" class="col-md-2 control-label">行情编码：</label>
+                                <div class="col-md-3">
+                                    <select id="marketcode" class="selectpicker" data-width="100%">
+                                    {% for i in commoditys %}
+                                        <option value="{{ i.code }}" {{ risk and risk.marketcode == i.code and "selected=selected" or "" }}>{{ i.name }}({{i.code}})</option>
+                                    {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+{#                             <div class="form-group">
+                                <label for="cycle" class="col-sm-2 control-label">周期：</label>
+                                <div class="col-md-4">
+                                    <input id="cycle" type="text" class="form-control" placeholder="周期" value="{{ risk and risk.cycle or "" }}" />
+                                </div>
+                            </div> #}
+{#                             <div class="form-group">
+                                <label for="openingprice" class="col-sm-2 control-label">开盘价：</label>
+                                <div class="col-md-4">
+                                    <input id="openingprice" type="text" class="form-control" placeholder="开盘价" value="{{ risk and risk.openingprice or "" }}" />
+                                </div>
+                            </div> #}
+                            <div class="form-group">
+                                <label for="closingprice" class="col-sm-2 control-label">收盘价：</label>
+                                <div class="col-md-3">
+                                    <input id="closingprice" type="text" class="form-control" placeholder="收盘价" value="{{ risk and risk.closingprice or "" }}" />
+                                </div>
+                            </div>
+{#                            <div class="form-group">
+                                <label for="maxprice" class="col-sm-2 control-label">最高价：</label>
+                                <div class="col-md-4">
+                                    <input id="maxprice" type="text" class="form-control" placeholder="最高价" value="{{ risk and risk.maxprice or "" }}" />
+                                </div>
+                            </div>
+                           <div class="form-group">
+                                <label for="miniprice" class="col-sm-2 control-label">最低价：</label>
+                                <div class="col-md-4">
+                                    <input id="miniprice" type="text" class="form-control" placeholder="最低价" value="{{ risk and risk.miniprice or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="volume" class="col-sm-2 control-label">成交量：</label>
+                                <div class="col-md-4">
+                                    <input id="volume" type="text" class="form-control" placeholder="成交量" value="{{ risk and risk.volume or "" }}" />
+                                </div>
+                            </div> #}
+                            <div class="form-group">
+                                <label for="endtime" class="col-md-2 control-label">到期时间：</label>
+                                <div class="col-md-3">
+                                    <input id="endtime" type="text" class="form-control form_date" placeholder="到期时间" value="{{ risk and "endtime" in risk and risk.endtime or "" }}" readonly="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_risk" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $("#save_risk").click(function() {
+        id = $("#id").val();
+        marketcode = $("#marketcode option:selected").val();
+        // cycle = $("#cycle").val();
+        // openingprice = $("#openingprice").val();
+        closingprice = $("#closingprice").val();
+        // maxprice = $("#maxprice").val();
+        // miniprice = $("#miniprice").val();
+        // volume = $("#volume").val();
+        endtime = $("#endtime").val()
+
+        $.post("/risk/edit", { "id" : id, "marketcode" : marketcode, "closingprice" : closingprice, "endtime" : endtime }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/risk"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: false,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 4,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii:ss',
+        minuteStep:1
+    });
+
+</script> 
+{% end %}

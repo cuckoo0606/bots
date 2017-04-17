@@ -1,0 +1,205 @@
+{% extends "share/master.html" %}
+{% block title %}资金报表{% end %}
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">
+        <h3>新资金报表</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">报表管理</a></li>
+                <li class="active"><a href="/newbooksreport">新资金报表</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/newbooksreport" method="get">
+                        <div class="form-group">
+                            <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="开始时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input id="endtime" name="endtime" class="form-control form_date starttime" type="text" value="{{ endtime }}" placeholder="结束时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="receiver" name="receiver" type="text" class="form-control" placeholder="输入下级用户id查询" value="{{ receiver }}" />    
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="subordinate" name="subordinate" type="text" class="form-control" placeholder="用户下级(用户id)" value="{{ subordinate }}" />    
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                    <a id="export" href="#" class="btn btn-default">导出</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        {% if not show %}
+                            <h1>请点击查找按钮查询数据(最大时间范围支持3天)</h1>
+                        {% else %}
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap">
+                                                <span>用户</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>代理商</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>下单次数</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>盈利次数</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>亏损次数</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>持平次数</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>盈利率</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>下单总额</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>盈利总额</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>亏损总额</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>手续费</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>出金次数</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>出金总额</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>入金次数</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>入金总额</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in daily %}
+                                            <tr class="unread">
+                                                <td>
+                                                    {{ i.user_infos.userid }}【{{ i.user_infos.username }}】
+                                                </td>
+                                                <td>
+                                                    {{ i.user_infos.parent_infos['userid'] }}【{{ i.user_infos.parent_infos['username'] }}】
+                                                </td>
+                                                {% set ordernumbers = "ordernumbers" in i and i.ordernumbers or 0 %}
+                                                <td>
+                                                    {{ ordernumbers }}
+                                                </td>
+                                                {% set profitnumbers = "profitnumbers" in i and i.profitnumbers or 0 %}
+                                                <td>
+                                                    {{ profitnumbers }}
+                                                </td>
+                                                <td>
+                                                    {{ "lossnumbers" in i and i.lossnumbers or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "flatnumbers" in i and i.flatnumbers or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ ordernumbers and profitnumbers and round(profitnumbers*1.0 / ordernumbers*1.0, 4)*100 or 0 }}%
+                                                </td>
+                                                <td>
+                                                    {{ "totalamounts" in i and round(i.totalamounts, 2) or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "profitamounts" in i and round(i.profitamounts, 2) or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "lossamounts" in i and round(i.lossamounts, 2) or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "fees" in i and round(i.fees, 2) or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "expenditure_numbers" in i and i.expenditure_numbers or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "expenditure_amounts" in i and round(i.expenditure_amounts, 2) or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "paymentnumbers" in i and i.paymentnumbers or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "paymentamounts" in i and round(i.paymentamounts, 2) or 0 }}
+                                                </td>
+                                            </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                        {% end %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 4,
+        maxView: 5,
+        forceParse: 0,
+        format:'yyyy-mm-dd',
+        minuteStep:1
+    });
+
+    $("#export").on("click", function(){
+        start = $("#starttime").val();
+        end = $("#endtime").val();
+        receiver = $("#receiver").val();
+        subordinate = $("#subordinate").val();
+        var data = "starttime=" + start + "&endtime=" + end + "&receiver=" + receiver + "&subordinate=" + subordinate;
+        $.download("/newbooksreport", data, "post")
+    })
+
+    jQuery.download = function(url, data, method){
+        if( url && data ){ 
+            data = typeof data == 'string' ? data : jQuery.param(data);
+            var inputs = '';
+            jQuery.each(data.split('&'), function(){
+                var pair = this.split('=');
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />';
+            });
+            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+        };
+    };
+</script>
+{% end %}

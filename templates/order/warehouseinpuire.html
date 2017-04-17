@@ -1,0 +1,248 @@
+{% extends "share/master.html" %} 
+{% block title %}持仓单查询{% end %}
+
+{% block main %}
+{% set modes = { 0 : "短期期权", 1 : "长期", 2 : "60秒", 3 : "一触即付" } %}
+{% set directions = { 1 : "买涨", 0 : "买跌", 2 : "未知", 4 : "还是未知" } %}
+
+<div class="page-inner">
+    <div class="page-title">
+        <h3>持仓单查询</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">订单管理</a></li>
+                <li class="active"><a href="/order/warehouseinpuire">持仓单查询</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/order/warehouseinpuire" method="get">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input id="receiver" name="receiver" type="text" class="form-control" placeholder="单用户(用户id)" value="{{ receiver }}" />     
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input id="subordinate" name="subordinate" type="text" class="form-control" placeholder="用户下级(用户id)" value="{{ subordinate }}" />    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="mode" name="mode" class="selectpicker" data-width="100%">
+                                        <option value="-1" {{ mode == "-1" and "selected=selected" or "" }}>模式</option>
+                                        <option value="0" {{ mode == "0" and "selected=selected" or "" }}>短期期权</option>
+                                        <option value="1" {{ mode == "1" and "selected=selected" or "" }}>长期</option>
+                                        <option value="2" {{ mode == "2" and "selected=selected" or "" }}>60秒</option>
+                                        <option value="3" {{ mode == "3" and "selected=selected" or "" }}>一触即付</option>
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="direction" name="direction" class="selectpicker" data-width="100%">
+                                        <option value="-1" {{ direction == "-1" and "selected=selected" or "" }}>方向</option>
+                                        <option value="1" {{ direction == "1" and "selected=selected" or "" }}>买涨</option>
+                                        <option value="0" {{ direction == "0" and "selected=selected" or "" }}>买跌</option>
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="2017-05-01" style="width:130px;background-color:white;" readonly>
+                            </div>
+                            <div class="form-group">
+                                <input id="endtime" name="endtime" class="form-control form_date starttime" type="text" value="{{ endtime }}" placeholder="2017-05-01" style="width:130px;background-color:white;" readonly>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select id="statistics" name="statistics" class="selectpicker" data-width="100%">
+                                        <option value="-1" {{ statistics == "-1" and "selected=selected" or "" }}>关闭统计</option>
+                                        <option value="1" {{ statistics == "1" and "selected=selected" or "" }}>开启统计</option>
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                        {# <a id="export" href="#" class="btn btn-default">导出</a> #}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        {% if not show %}
+                            <h1>请点击查找按钮查询数据(最大时间范围支持3天)</h1>
+                        {% else %}
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>编号</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>用户</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>代理商</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>资产</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:5%">
+                                                <span>投入金额</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:5%">
+                                                <span>方向</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:8%">
+                                                <span>模式</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:5%">
+                                                <span>下单价</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:5%">
+                                                <span>手续费</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:5%">
+                                                <span>下单时间</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:5%">
+                                                <span>到期时间</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for r in warehouse %}
+                                        <tr class="unread">
+                                            <td>
+                                                {{ r.no }}
+                                            </td>
+                                            <td>
+                                                {{ r.user_infos.userid }}【{{ r.user_infos.username }}】
+                                            </td>
+                                            <td>
+                                                {{ r.user_infos.parent_infos['userid'] }}【{{ r.user_infos.parent_infos['username'] }}】
+                                            </td>
+                                            <td>
+                                                ￥{{ r.assets.name }}
+                                            </td>
+                                            <td>
+                                                {{ round(r.money, 2) }}
+                                            </td>
+                                            <td>
+                                                {{ directions[r.direction] }}
+                                            </td>
+                                            <td>
+                                                {{ modes[r.mode] }}
+                                            </td>
+                                            <td>
+                                                {{ r.buyQoute }}
+                                            </td>
+                                            <td>
+                                                {{ "tax" in r and r.tax or 0 }}
+                                            </td>
+                                            <td>
+                                                {{ func_time(r.created, 8) }}
+                                            </td>
+                                            <td>
+                                                {{ func_time(r.expired, 8) }}
+                                            </td>
+                                        </tr>
+                                        {% end %}
+                                        {% if ware %}
+                                        <tr class="unread">
+                                            <td>
+                                                合计: 
+                                            </td>
+                                            <td>
+                                                数量:{{ware[0]["count"]}}
+                                            </td>
+                                            <td>
+                                                总金额:{{ ware[0]["money"] and round(ware[0]["money"], 2) or 0 }}
+                                            </td>
+                                            <td>
+                                                手续费: {{ ware[0]["tax"] and round(ware[0]["tax"], 2) or 0 }}
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                        {% end %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        maxView: 5,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii',
+        minuteStep:1
+    });
+
+    $("#export").on("click", function(){
+        start = $("#starttime").val();
+        end = $("#endtime").val();
+        key = $("#key").val();
+        status = $("#status option:selected").val();
+
+        receiver = new Array();
+        $("#receiver option:selected").each(function(index, e) {
+            receiver.push($(e).val());
+        });
+
+        var data = "starttime=" + start + "&endtime=" + end + "&key=" + key + "&status=" + status + "&receiver=" + receiver.toString() ;
+        $.download("/recharge/warehouseinpuire/export", data, "get")
+    })
+
+    jQuery.download = function(url, data, method){    // 获得url和data
+        if( url && data ){ 
+            // data 是 string 或者 array/object
+            data = typeof data == 'string' ? data : jQuery.param(data);        // 把参数组装成 form的  input
+            var inputs = '';
+            jQuery.each(data.split('&'), function(){ 
+                var pair = this.split('=');
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />'; 
+            });        // request发送请求
+            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+        };
+    };
+</script>
+{% end %}

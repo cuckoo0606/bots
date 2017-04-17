@@ -1,0 +1,75 @@
+{% extends "share/master.html" %}
+{% block title %}角色管理{% end %}                                             
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>权限管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/permission">权限管理</a></li>
+                <li class="active">编辑权限</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                        <input id="id" type="hidden" value="{{ permission and permission._id or ""}}">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">功能：</label>
+                                <div class="col-md-4">
+                                    <input id="name" type="text" class="form-control" placeholder="功能" value="{{ permission and permission.name or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="code" class="col-sm-2 control-label">标识：</label>
+                                <div class="col-md-4">
+                                    <input id="code" type="text" class="form-control" placeholder="标识" value="{{ permission and permission.code or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <a id="save_permission" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $("#save_permission").click(function() {
+        id = $("#id").val();
+        name = $("#name").val();
+        code = $("#code").val();
+        
+        $.post("/permission/edit", { "id" : id, "name" : name, "code" : code }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/permission"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script> 
+{% end %}

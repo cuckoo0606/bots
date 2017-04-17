@@ -1,0 +1,166 @@
+{% extends "share/master.html" %}
+{% block title %}用户管理{% end %}{% block main %}
+<div class="page-inner">
+    <div class="page-title">                                                   
+        <h3>用户管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">用户管理</a></li>
+                <li><a href="/simulation">模拟账户</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                                                             
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="row mailbox-header">
+                    <div class="pull-left" style="padding:15px 0 0 15px;">
+                        <a href="#" id="delete" class="btn btn-success">删除</a>
+                    </div>
+                    <div class="col-sm-3 col-xs-1 pull-right" style="width:50%">
+                        <form action="/simulation" method="get">
+                            <div class="input-group" style="width:1%; float:right;">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-success" type="submit" style="margin-right:20px"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group" style="float:right;">
+                                    <select id="user_id" name="user_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                        <option value="0" {{ user_id == "0" and "selected=selected" or "" }}>查询用户名称</option>
+                                        {% for i in users %}
+                                            <option value="{{i._id}}" {{ str(i._id) == user_id and "selected=selected" or "" }}>{{i.username}}【{{i.userid}}】</option>
+                                        {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="1" style="width:5%">
+                                                <span><input id="selectall" type="checkbox" class="check-mail-all"></span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:11%">
+                                                <span>名称</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>标识</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>金额</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:5%;">
+                                                <span>状态</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for u in simulation_users %}
+                                        <tr class="unread">
+                                            <td>
+                                                <span><input type="checkbox" class="checkbox-mail cb" data-id={{ u._id}} /></span>
+                                            </td>
+                                            <td id="mod">
+                                                {{ "username" in u and u.username or "" }}
+                                            </td>
+                                            <td>
+                                                {{ "userid" in u and u.userid or "" }}
+                                            </td>
+                                            <td>
+                                                {{ "amount" in u and round(u.amount, 2) or 0 }}
+                                            </td>
+                                            <td>
+                                                {% set kvs_status = {0 : "禁用", 1 : "开启"} %}
+                                                <div>
+                                                    {% if "status" in u and u.status == 1 %}
+                                                        <a href="/user/status?id={{u._id}}" class="btn btn-success">
+                                                        开启
+                                                    {% else %}
+                                                        <a href="/user/status?id={{u._id}}" class="btn btn-danger">
+                                                        禁用
+                                                    {% end %}
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+{% block script %}
+    <script type="text/javascript">
+        $("#selectall").change(function() {
+            src = this;
+            $(".cb").each(function(i, item) {
+                $(item).prop('checked', src.checked)
+                console.dir(item)
+            });
+            $.uniform.update()
+        });
+
+        $("#delete").on("click", function() {
+            var ids = new Array();
+            $("table>tbody .checker .checked input").each(function(index, e) {
+                ids.push($(e).attr("data-id"));
+            });
+
+            $.get("/simulation/delete", { "id" : ids.toString() }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "/simulation"
+                    }, 1000);
+                }else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+
+        // 状态
+        function show_status_modal(id) {
+            $.post("/user/stauts", { "id" : id }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "/simulation"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        };
+
+    </script>
+{% end %}

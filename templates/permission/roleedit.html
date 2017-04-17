@@ -1,0 +1,80 @@
+{% extends "share/master.html" %}
+{% block title %}角色管理{% end %}                                             
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>权限管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/role">角色管理</a></li>
+                <li class="active">角色定义编辑</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                        <input id="id" type="hidden" value="{{ role and role._id or ""}}">
+                            <div class="form-group">
+                                <label for="rolename" class="col-sm-2 control-label">角色名称：</label>
+                                <div class="col-md-2">
+                                    <input id="rolename" type="text" class="form-control" placeholder="角色名称" value="{{ role and role.rolename or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="roleid" class="col-sm-2 control-label">角色标识：</label>
+                                <div class="col-md-2">
+                                    {% if role %}
+                                        <input id="roleid" type="text" class="form-control" placeholder="角色标识" value="{{ role and role.roleid or "" }}" readonly="" />
+                                    {% else %}
+                                        <input id="roleid" type="text" class="form-control" placeholder="角色标识" value="{{ role and role.roleid or "" }}" />
+                                    {% end %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_role" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $("#save_role").click(function() {
+        rolename = $("#rolename").val();
+        roleid = $("#roleid").val();
+        id = $("#id").val();
+
+        $.post("/role/edit", { "id" : id, "rolename" : rolename, "roleid" : roleid}, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/role"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script> 
+{% end %}

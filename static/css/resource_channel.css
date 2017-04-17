@@ -1,0 +1,59 @@
+@charset "utf-8";
+/* CSS Document */
+.advertising_map{
+    margin-top:20px;
+    height:auto;
+    }
+.advertising_map a img{
+    padding:10px 10px;
+    }
+.announcement{
+    margin-top: 20px;
+    margin-bottom:20px;
+    }
+.img{
+    margin-top:15px;
+    text-align:center;
+    }
+.content{
+    margin:15px 0;
+    padding-bottom:20px;
+    }
+.content h4{
+    padding:0 20px;
+    text-align:left;
+    }
+.content p{
+    padding:0 20px;
+    text-align:left;
+    }
+.section-header .line{
+    position:absolute;
+    top: 16px;
+    left:0;
+    right:0;
+    height:1px;
+    width:70%;
+    margin:0 auto;
+    background-color:#ccc;
+    z-index:-1;
+    }
+.section-header h2{
+    position:relative;
+    margin-top:0;
+    z-index:1;
+    }
+.section-header{
+    text-align:center;
+    padding:20px 0;
+    }
+.section-header span{
+    padding:0 30px;
+    background-color:#f1f4f9;
+    }
+.info{
+    margin-top:13px;
+    }
+.info p a{
+    color:#333;
+    }

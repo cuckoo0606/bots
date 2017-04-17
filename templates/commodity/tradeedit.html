@@ -1,0 +1,214 @@
+{% extends "share/master.html" %}
+{% block title %}模式编辑{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>交易模式</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/trade">交易模式</a></li>
+                <li class="active">模式编辑</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                         
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            {% set tradeid = trade and trade._id or "" %}
+                            {% set old_mode = trade and trade.mode or "" %}
+                            {% set dict = { 0 : "短期期权", 1 : "长期", 2 : "60秒", 3 : "一触即付" } %}
+                            <input id="id" type="hidden" value="{{ tradeid }}">
+                            <div class="form-group">
+                                <label for="mode" class="col-md-2 control-label">交易模式:</label>
+                                <div class="col-md-4">
+                                    <select id="mode" name="mode" class="selectpicker" data-width="100%">
+                                    {% if tradeid == "" %}
+                                        <option value="0" {{ mode==0 and 'selected="selected"' or ''}}>{{ dict[0] }}</option>
+                                        <option value="1" {{ mode==1 and 'selected="selected"' or ''}}>{{ dict[1] }}</option>
+                                        <option value="2" {{ mode==2 and 'selected="selected"' or ''}}>{{ dict[2] }}</option>
+                                        <option value="3" {{ mode==3 and 'selected="selected"' or ''}}>{{ dict[3] }}</option>
+                                    {% else %}
+                                         <option value="{{ trade.mode }}" selected="selected">{{ dict[trade.mode] }}</option>
+                                    {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="commodity" class="col-md-2 control-label">商品:</label>
+                                <div class="col-md-4">
+                                    <select id="commodity" name="commodity" class="selectpicker" data-width="100%">
+                                        {% for i in commoditys %}
+                                        <option value="{{ i._id }}" {{ trade and trade.commodity == i._id and 'selected="selected"' or ''}}>
+                                            {{ i.name }}
+                                        </option>
+                                        {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="status" class="col-md-2 control-label">状态:</label>
+                                <div class="col-md-4">
+                                    <select id="status" name="status" class="selectpicker" data-width="100%">
+                                        <option value="1" {{ trade and trade.status=='1' and 'selected="selected"' or ''}}>开启</option>
+                                        <option value="0" {{ trade and trade.status=='0' and 'selected="selected"' or ''}}>禁用</option>
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="amounts" class="col-md-2 control-label">投资额度：</label>
+                                <div class="col-md-4">
+                                    {# <input id="amounts" type="text" class="form-control" placeholder="投资额度" value="{{ trade and 'amounts' in trade and ','.join(trade.amounts) or "" }}" /> #}
+                                    <input id="amounts" type="text" class="form-control" placeholder="投资额度" value="{{ trade and 'amounts' in trade and amounts or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cycle" class="col-md-2 control-label">周期：</label>
+                                <div id="cycle" class="col-md-4">
+                                    {% if trade %}
+                                        {% for i in cycles %}
+                                        <input type="text" class="form-control cycle" value="{{i}}" />
+                                        {% end %}
+                                    {% else %}
+                                        <input type="text" class="form-control cycle" placeholder="周期,价内,价外" value="" />
+                                    {% end %}
+                                </div>
+                                <button id="add_cycle">添加</button>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_cycle" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $('.form_point').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 1,
+        minpriceView: 0,
+        maxpriceView: 2,
+        forceParse: 0,
+        format:'hh:ii',
+        minpriceuteStep:5
+    });
+
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 3,
+        minpriceView: 0,
+        maxpriceView: 2,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii:ss',
+        minpriceuteStep:5
+    });
+
+    $("#mode").on("change", function(){
+        mode = $("#mode").val();
+        window.location.href = "/trade/edit?mode=" + mode
+    })
+    
+
+    $("#save_cycle").click(function() {
+        id = $("#id").val();
+        mode = $("#mode option:selected").val();
+        commodity = $("#commodity option:selected").val();
+        status = $("#status option:selected").val();
+        amounts = $("#amounts").val();
+
+        cycle = new Array();
+        $(".cycle").each(function(index, e) {
+            cycle.push($(e).val());
+        })
+
+        data = { "id" : id, "mode" : mode, "commodity" : commodity, "status" : status, 
+            "cycle" : cycle.join("+"), "amounts": amounts}
+
+        $.post("/trade/edit", data, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/trade"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+        
+    $("#add_point").click(function(){
+        var html = "<div class='input-group date form_point' data-date-format='yyyy-mm-dd' data-link-field='dtp_input3' data-link-format= 'hh:ii'><input class='form-control timepoint' size='16' style='background-color: #fff' type='text'><span class='input-group-addon'><span class='glyphicon glyphicon-remove'></span></span><span class='input-group-addon'><span class='glyphicon glyphicon-time'></div>"
+        var input = $(html)
+        input.datetimepicker({                                         
+            language: 'fr',
+            weekStart: 0,
+            todayBtn: 1,
+            autoclose: true,
+            todayHighlight: 1,
+            startView: 1,
+            minpriceView: 0,
+            maxpriceView: 2,
+            forceParse: 0,
+            format:'hh:ii',
+            minpriceuteStep:5
+        });
+
+        $('#timepoint').append(input)
+    })
+
+    // $("#add_cycle").click(function(){
+    //     var html = "<div class='input-group date form_date' data-date-format='yyyy-mm-dd' data-link-field='dtp_input3' data-link-format='hh:ii'><input class='form-control cycletime' size='16' style='background-color: #fff' type='text'><span class='input-group-addon'><span class='glyphicon glyphicon-remove'></span></span><span class='input-group-addon'><span class='glyphicon glyphicon-time'></span></span></div>"
+    //     var input = $(html)
+    //         input.datetimepicker({                                         
+    //         language: 'fr',
+    //         weekStart: 0,
+    //         todayBtn: 1,
+    //         autoclose: true,
+    //         todayHighlight: 1,
+    //         startView: 3,
+    //         minpriceView: 0,
+    //         maxpriceView: 2,
+    //         forceParse: 0,
+    //         format:'yyyy-mm-dd hh:ii:ss',
+    //         minpriceuteStep:5
+    //     });
+
+    //     $('#cycletime').append(input)
+    // })
+
+    $("#add_cycle").click(function(){
+        var html = "<input type='text' class='form-control cycle' placeholder='周期,价内,价外' />"
+        $('#cycle').append(html)
+    })
+</script>
+{% end %}
+    

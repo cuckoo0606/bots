@@ -1,0 +1,189 @@
+<div class="page-sidebar sidebar">
+    <input id="global_per" type="hidden" value="{{ current_user and current_user.userrole.fetch().permission or [] }}">
+    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+        <div class="page-sidebar-inner slimscroll" style="overflow: hidden; width: auto; height: 100%;">
+            <ul class="menu accordion-menu">
+                {% if 'news' in UP %}
+                    <li class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-bullhorn"></span>
+                            <p>公告管理</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            {% if 'newsis' in UP %}
+                                <li><a href="/news/issue">公告发布</a></li>
+                            {% end %}
+                            {% if 'newscl' in UP %}
+                                <li><a href="/news/classify">公告分类</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+                {% if 'commodity' in UP %}
+                    <li id="" class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-shopping-cart"></span>
+                            <p>商品管理</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            {% if 'commodityma' in UP %}
+                                <li><a href="/commodity/manage">管理商品</a></li>
+                            {% end %}
+                            {% if 'commoditycl' in UP %}
+                                <li><a href="/commodity/classify">商品分类</a></li>
+                            {% end %}
+                            {% if 'commoditytr' in UP %}
+                                <li><a href="/trade">交易模式</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+                {% if 'user' in UP %}
+                    <li class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-user"></span>
+                            <p>用户管理</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            <li><a href="/user">用户</a></li>
+                            {% if current_user_role == "admin" and CUSTOMER not in ["SHANDONG", "HANGZHOU"] %}
+                                <li><a href="/simulation">模拟用户</a></li>
+                            {% end %}
+                            {% if "level" in UP %}
+                                <li><a href="/level">级别</a></li>
+                            {% end %}
+                            {% if "usergroup" in UP %}
+                                <li><a href="/usergroup">用户组</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+                {% if 'permission' in UP %}
+                    <li class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-lock"></span>
+                            <p>权限管理</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            {% if 'permissionro' in UP %}
+                                <li><a href="/role">角色管理</a></li>
+                            {% end %}
+                            {% if 'permissionpe' in UP %}
+                                <li><a href="/permission">权限管理</a></li>
+                            {% end %}
+                            {% if 'permissionpr' in UP %}
+                                <li><a href="/prset">角色权限</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+                {% if 'oder' in UP %}
+                    <li class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-pushpin"></span>
+                            <p>订单管理</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            {% if 'oderwa' in UP %}
+                                <li><a href="/order/warehouseinpuire">持仓单查询</a></li>
+                            {% end %}
+                            {% if 'oderhi' in UP %}
+                                <li><a href="/order/historyinpuire">历史订单查询</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+                {% if 'fundsflow' in UP %}
+                    <li class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-usd"></span>
+                            <p>资金流转</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            {% if 'pay' in UP %}
+                                <li><a href="/pay">出金申请</a></li>
+                            {% end %}
+                            {% if 'confirm' in UP %}
+                                <li><a href="/confirm">资金确认</a></li>
+                            {% end %}
+                            {% if 'payreport' in UP %}
+                                <li><a href="/payreport">出金记录</a></li>
+                            {% end %}
+                            {% if 'incomereport' in UP %}
+                                <li><a href="/incomereport">入金记录</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+                {% if 'risk' in UP %}
+                    <li class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-warning-sign"></span>
+                            <p>风险管理</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            {% if 'riskmanage' in UP %}
+                                <li><a href="/risk">风险管理</a></li>
+                            {% end %}
+                            {% if 'riskkey' in UP %}
+                                <li><a href="/keyaccount">重点客户</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+                {% if 'report' in UP %}
+                    <li class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-list-alt"></span>
+                            <p>报表管理</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            {% if 'commission' in UP %}
+                                <li><a href="/commission">佣金报表</a></li>
+                            {% end %}
+                            {% if 'position' in UP %}
+                                <li><a href="/positions">{{tcname}}报表</a></li>
+                            {% end %}
+                            {% if "booksreport" in UP %}
+                                <li><a href="/booksreport">资金报表</a></li>
+                                <!-- <li><a href="/newbooksreport">新资金报表</a></li> -->
+                            {% end %}
+                            {% if "personal" in UP %}
+                                <li><a href="/personal">个人报表</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+                {% if 'system' in UP %}
+                    <li class="droplink">
+                        <a href="#" class="waves-effect waves-button">
+                            <span class="menu-icon glyphicon glyphicon-cog"></span>
+                            <p>系统管理</p>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            {% if 'systemconfig' in UP %}
+                                <li><a href="/system/config">系统设置</a></li>
+                            {% end %}
+                            {% if 'systemlog' in UP %}
+                                <li><a href="/system/log">系统日志</a></li>
+                            {% end %}
+                        </ul>
+                    </li>
+                {% end %}
+            </ul>
+        </div>
+        <div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 768px; background: rgb(204, 204, 204);"></div>
+        <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 0px; background: rgb(51, 51, 51);"></div>
+    </div><!-- Page Sidebar Inner -->
+</div>
+
+{% block operate_menu %}{% end %}

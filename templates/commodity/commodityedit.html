@@ -1,0 +1,164 @@
+{% extends "share/master.html" %}
+{% block title %}商品编辑{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>商品管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/commodity/manage">商品管理</a></li>
+                <li class="active">商品编辑</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                         
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <input id="id" type="hidden" value="{{ commodity and commodity._id or "" }}">
+                            <div class="form-group">
+                                <label for="name" class="col-md-2 control-label">商品名称：</label>
+                                <div class="col-md-3">
+                                    <input id="name" type="text" class="form-control" placeholder="商品名称" value="{{ commodity and commodity.name or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="intro" class="col-md-2 control-label">商品说明：</label>
+                                <div class="col-md-3">
+                                    <input id="intro" type="text" class="form-control" placeholder="商品说明" value="{{ commodity and commodity.intro or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="classify" class="col-md-2 control-label">商品分类：</label>
+                                <div class="col-md-3">
+                                    <select id="classify" class="selectpicker" data-width="100%">
+                                    {% for i in classify %}
+                                        <option value="{{ i._id }}" {{ commodity and commodity.classify.fetch()._id == i._id and "selected=selected" or "" }}>{{ i.name }}</option>
+                                    {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="decimal" class="col-md-2 control-label">小数位：</label>
+                                <div class="col-md-3">
+                                    <select id="decimal" class="selectpicker" data-width="100%">
+                                        <option value="0" {{ commodity and "decimal" in commodity and commodity.decimal == 0 and "selected=selected" or "" }}>0</option>
+                                        <option value="1" {{ commodity and "decimal" in commodity and commodity.decimal == 1 and "selected=selected" or "" }}>1</option>
+                                        <option value="2" {{ commodity and "decimal" in commodity and commodity.decimal == 2 and "selected=selected" or "" }}>2</option>
+                                        <option value="3" {{ commodity and "decimal" in commodity and commodity.decimal == 3 and "selected=selected" or "" }}>3</option>
+                                        <option value="4" {{ commodity and "decimal" in commodity and commodity.decimal == 4 and "selected=selected" or "" }}>4</option>
+                                        <option value="5" {{ commodity and "decimal" in commodity and commodity.decimal == 5 and "selected=selected" or "" }}>5</option>
+                                    </select> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="quotation" class="col-md-2 control-label">行情编码：</label>
+                                <div class="col-md-3">
+                                    <input id="quotation" type="text" class="form-control" placeholder="行情编码" value="{{ commodity and commodity.quotation or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="market" class="col-md-2 control-label">市场编码：</label>
+                                <div class="col-md-3">
+                                    <input id="market" type="text" class="form-control" placeholder="行情编码" value="{{ commodity and 'market' in commodity and commodity.market or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="code" class="col-md-2 control-label">行情标识：</label>
+                                <div class="col-md-3">
+                                    <input id="code" type="text" class="form-control" placeholder="行情标识" value="{{ commodity and 'code' in commodity and commodity.code or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="openingday" class="col-md-2 control-label">开放日期：</label>
+                                <div class="col-md-3">
+                                    <select id="openingday" class="selectpicker" data-width="100%">
+                                        <option value="0" {{ commodity and "openingday" in commodity and commodity.openingday == 0 and "selected=selected" or "" }}>无限制</option>
+                                        <option value="1" {{ commodity and "openingday" in commodity and commodity.openingday == 1 and "selected=selected" or "" }}>周一到周五</option>
+                                        <option value="2" {{ commodity and "openingday" in commodity and commodity.openingday == 2 and "selected=selected" or "" }}>周六日</option>
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="openingtime" class="col-md-2 control-label">开放时间：</label>
+                                <div class="col-md-3">
+                                    <input id="openingtime" type="text" class="form-control" placeholder="例如 09:00-18:00,20:00-22:00(无限制请留空)" value="{{ commodity and "openingtime" in commodity and commodity.openingtime or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="isgroup" class="col-md-2 control-label">分组状态：</label>
+                                <div class="col-md-3">
+                                    <select id="isgroup" class="selectpicker" data-width="100%">
+                                        <option value="0" {{ commodity and commodity.isgroup == "0" and "selected=selected" or "" }}>禁用</option>
+                                        <option value="1" {{ commodity and commodity.isgroup == "1" and "selected=selected" or "" }}>开启</option>
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_commodify" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $("#save_commodify").click(function() {
+        id = $("#id").val();
+        name = $("#name").val();
+        intro = $("#intro").val();
+        quotation = $("#quotation").val();
+        decimal = $("#decimal option:selected").val();
+        market = $("#market").val();
+        code = $("#code").val();
+        classify = $("#classify option:selected").val();
+        openingday = $("#openingday option:selected").val();
+        openingtime = $("#openingtime").val()
+        isgroup = $("#isgroup option:selected").val();
+
+        $.post("/commodity/edit", { "id" : id, "name" : name, "intro" : intro, "quotation" : quotation, "classify" : classify, "market":market, "code":code, "openingtime" : openingtime, "openingday" : openingday, "isgroup" : isgroup, "decimal" : decimal }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/commodity/manage"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: false,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 2,
+        forceParse: 0,
+        format:'hh:ii:ss',
+        minuteStep:30
+    });
+</script>
+{% end %}

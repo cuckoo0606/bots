@@ -1,0 +1,1166 @@
+{% extends "share/master.html" %}                                                                                           {% block title %}通道类型{% end %}
+{% block title %}系统设置{% end %}
+
+{% block css %}
+<style>
+    #main-wrapper .page-title {
+        padding: 0px !important;
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+
+    .config-title {
+        text-align:right;
+        padding-right:0px;
+        width: 100px;
+    }
+
+    .config-title h4 {
+        font-weight:normal;
+    }
+
+    .config-body {
+        padding-top: 2px;
+        width: 200px;
+    }
+</style>
+{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>系统设置</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">系统管理</a></li>
+                <li class="active"><a href="/config">系统设置</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                         
+        <h4>模拟账户</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>初始金额：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "sim-initial-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="sim-initial-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>下单设置</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>手续费比例：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "order-handling-percent" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="order-handling-percent" type="text" value="{{ conf and conf.value or 0 }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>商品设置</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>出售赔率：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "goods-sale-percent" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="goods-sale-percent" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>预警阙值</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>单笔额度：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "warning-single-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="warning-single-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>总额度：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "warning-total-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="warning-total-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>风险控制</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>多空比：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "risk-pupil-ratio" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="risk-pupil-ratio" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>交易总额：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "risk-trading-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="risk-trading-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>1分钟风险</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>交易次数：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "oneminute-trading-count" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="oneminute-trading-count" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>交易总额：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "oneminute-trading-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="oneminute-trading-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>汇率设置</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>入金汇率：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "exchange-income-rate" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="exchange-income-rate" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>出金汇率：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "exchange-pay-rate" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="exchange-pay-rate" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>出金设置</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>开始时间：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "pay-starttime" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="pay-starttime" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>结束时间：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "pay-endtime" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="pay-endtime" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>当天限额：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "pay-quota-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="pay-quota-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>最少额度：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "pay-least-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="pay-least-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>自入金设置</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>开始时间：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "income-starttime" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="income-starttime" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>结束时间：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "income-endtime" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="income-endtime" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>当天限额：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "income-quota-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="income-quota-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>最少额度：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "income-least-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="income-least-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+        <h4>出金手续费</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>方式：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "pay-handling-type" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="pay-handling-type" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>百分比</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>固定值</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>百分比：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "pay-handling-percent" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="pay-handling-percent" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" style="width:80px;float:left;" />
+                <div style="margin-top:10px">
+                    <span>%</span>
+                </div>
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>固定值</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "pay-handling-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="pay-handling-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+
+        <h4>入金手续费</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>方式：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "income-handling-type" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="income-handling-type" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>百分比</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>固定值</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>百分比：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "income-handling-percent" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="income-handling-percent" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" style="width:80px;float:left;" />
+                <div style="margin-top:10px">
+                    <span>%</span>
+                </div>
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>固定值</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "income-handling-amount" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="income-handling-amount" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+
+        <h4>用户状态</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>会员：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "member-status" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="member-status" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == 0 and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == 1 and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>经纪：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "agent-status" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="agent-status" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == 0 and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == 1 and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>其他：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "other-status" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="other-status" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == 0 and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == 1 and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+        </div>
+
+        <h4>用户组绑定</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>会员：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:22%">
+                {% set conf = [ c for c in systemconfigs if c.key == "member-group" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="member-group" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+
+        <h4>初始配置</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>推荐人：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "init-referralcode" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <input id="init-referralcode" type="text" value="{{ conf and conf.value or "" }}"  class="form-control" />
+            </div>
+        </div>
+
+        <h4>用户页面</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>普通会员：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "member-normal-register" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="member-normal-register" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>普通经纪：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "agent-normal-register" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="agent-normal-register" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>快速会员：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "member-fast-register" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="member-fast-register" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>快速经纪：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "agent-fast-register" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="agent-fast-register" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>模拟用户：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "simulation-register" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="simulation-register" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+        </div>
+
+        <h4>信息设置</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>注册验证：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "message-verify" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="message-verify" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+            <div class="col-md-1 config-title">
+                <h4>发送信息：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "send-message" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="send-message" class="selectpicker" data-width="100%">
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>关闭</option>
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>开启</option>
+                </select>   
+            </div>
+        </div>
+
+        <h4>系统控制</h4>
+        <div class="row">
+            <div class="col-md-1 config-title">
+                <h4>交易状态：</h4>    
+            </div>
+            <div class="col-md-1 config-body" style="width:10%">
+                {% set conf = [ c for c in systemconfigs if c.key == "system-trade-status" ] %}
+                {% set conf = conf and conf[0] or None %}
+                <select id="system-trade-status" class="selectpicker" data-width="100%">
+                    <option value="1"{{ conf and conf.value == "1" and "selected=selected" or "" }}>开启</option>
+                    <option value="0"{{ conf and conf.value == "0" and "selected=selected" or "" }}>关闭</option>
+                </select>   
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $(function(){
+        $(document).ready(function() {
+            $("#sim-initial-amount").on("blur", function(){
+                $.get("/config/sim-initial-amount/" + $("#sim-initial-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#order-handling-percent").on("blur", function(){
+                $.get("/config/order-handling-percent/" + $("#order-handling-percent").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#goods-sale-percent").on("blur", function(){
+                $.get("/config/goods-sale-percent/" + $("#goods-sale-percent").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#warning-single-amount").on("blur", function(){
+                $.get("/config/warning-single-amount/" + $("#warning-single-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#warning-total-amount").on("blur", function(){
+                $.get("/config/warning-total-amount/" + $("#warning-total-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#risk-pupil-ratio").on("blur", function(){
+                $.get("/config/risk-pupil-ratio/" + $("#risk-pupil-ratio").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#risk-trading-amount").on("blur", function(){
+                $.get("/config/risk-trading-amount/" + $("#risk-trading-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#risk-auto-check").on("change", function(){
+                $.get("/config/risk-auto-check/" + $("#risk-auto-check").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#oneminute-trading-count").on("change", function(){
+                $.get("/config/oneminute-trading-count/" + $("#oneminute-trading-count").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#oneminute-trading-amount").on("change", function(){
+                $.get("/config/oneminute-trading-amount/" + $("#oneminute-trading-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#exchange-income-rate").on("change", function(){
+                $.get("/config/exchange-income-rate/" + $("#exchange-income-rate").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#exchange-pay-rate").on("change", function(){
+                $.get("/config/exchange-pay-rate/" + $("#exchange-pay-rate").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+
+            $("#pay-starttime").on("change", function(){
+                $.get("/config/pay-starttime/" + $("#pay-starttime").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+            
+            $("#pay-endtime").on("change", function(){
+                $.get("/config/pay-endtime/" + $("#pay-endtime").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#pay-handling-amount").on("change", function(){
+                $.get("/config/pay-handling-amount/" + $("#pay-handling-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#pay-handling-percent").on("change", function(){
+                $.get("/config/pay-handling-percent/" + $("#pay-handling-percent").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#pay-quota-amount").on("change", function(){
+                $.get("/config/pay-quota-amount/" + $("#pay-quota-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#pay-least-amount").on("change", function(){
+                $.get("/config/pay-least-amount/" + $("#pay-least-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+           $("#income-starttime").on("change", function(){
+                $.get("/config/income-starttime/" + $("#income-starttime").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+            
+            $("#income-endtime").on("change", function(){
+                $.get("/config/income-endtime/" + $("#income-endtime").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#income-handling-amount").on("change", function(){
+                $.get("/config/income-handling-amount/" + $("#income-handling-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#income-handling-percent").on("change", function(){
+                $.get("/config/income-handling-percent/" + $("#income-handling-percent").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#income-quota-amount").on("change", function(){
+                $.get("/config/income-quota-amount/" + $("#income-quota-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#income-least-amount").on("change", function(){
+                $.get("/config/income-least-amount/" + $("#income-least-amount").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#pay-handling-type").on("change", function(){
+                $.get("/config/pay-handling-type/" + $("#pay-handling-type").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#income-handling-type").on("change", function(){
+                $.get("/config/income-handling-type/" + $("#income-handling-type").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#system-trade-status").on("change", function(){
+                $.get("/config/system-trade-status/" + $("#system-trade-status").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            // 用户状态
+            $("#member-status").on("change", function(){
+                $.get("/config/member-status/" + $("#member-status").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#agent-status").on("change", function(){
+                $.get("/config/agent-status/" + $("#agent-status").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#other-status").on("change", function(){
+                $.get("/config/other-status/" + $("#other-status").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            // 会员用户组绑定
+            $("#member-group").on("blur", function(){
+                $.get("/config/member-group/" + $("#member-group").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            // 默认推荐人
+            $("#init-referralcode").on("blur", function(){
+                $.get("/config/init-referralcode/" + $("#init-referralcode").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            // 用户页面
+            $("#member-normal-register").on("change", function(){
+                $.get("/config/member-normal-register/" + $("#member-normal-register").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#agent-normal-register").on("change", function(){
+                $.get("/config/agent-normal-register/" + $("#agent-normal-register").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#member-fast-register").on("change", function(){
+                $.get("/config/member-fast-register/" + $("#member-fast-register").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#agent-fast-register").on("change", function(){
+                $.get("/config/agent-fast-register/" + $("#agent-fast-register").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#simulation-register").on("change", function(){
+                $.get("/config/simulation-register/" + $("#simulation-register").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            // 信息设置
+            $("#message-verify").on("change", function(){
+                $.get("/config/message-verify/" + $("#message-verify").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+            $("#send-message").on("change", function(){
+                $.get("/config/send-message/" + $("#send-message").val(), function(res) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 1000
+                    };
+
+                    if(res.status === "ok") {
+                        toastr.success(res.desc, '设置成功');
+                    } else {
+                        toastr.error(res.desc, '设置失败');
+                    }
+                });
+            });
+
+        });
+    })
+</script>
+{% end %}

@@ -1,0 +1,39 @@
+{% extends "share/master.html" %}                                                           
+{% block main %}
+<div class="page-inner">
+    <div class="container-fluid">
+        <div class="row">
+            <div id="myCarousel" class="carousel slide col-md-12" data-ride="carousel" style="padding:0px;">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                    <li data-target="#myCarousel" data-slide-to="4"></li>
+                </ol>   
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <a class="carousel-control left" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                <a class="carousel-control right" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+        </div>
+        <section class="resource_channel">
+        <div class="row">
+            <div class="advertising_map col-md-7">
+            </div>
+            <div class="announcement col-md-5">
+                <div class="info">
+                    <div class="panel panel-white">
+                        <div class="panel-body">          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+    </div>
+</div><!-- Page Inner -->
+{% end %}

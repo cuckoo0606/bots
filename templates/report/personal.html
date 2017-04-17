@@ -1,0 +1,184 @@
+{% extends "share/master.html" %} 
+{% block title %}个人报表{% end %}
+
+{% block main %}
+{% set kvs = {1:"入金", 2:"入金手续费", 3:"出金申请", 4:"出金手续费", 5:"出金失败", 6:"下单", 7:"结单", 8:"佣金", 9:tcname, 10:"管理员加款", 99:"系统调整"} %}
+<div class="page-inner">
+    <div class="page-title">
+        <h3>个人报表</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">报表管理</a></li>
+                <li class="active"><a href="/personal">个人报表</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/personal" method="get">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="userid" name="userid" type="text" class="form-control" placeholder="输入下级用户id查询" value="{{ userid }}" />      
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="开始时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input id="endtime" name="endtime" class="form-control form_date starttime" type="text" value="{{ endtime }}" placeholder="结束时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="status" name="status" class="selectpicker" data-width="100%">
+                                    <option value="0" {{ status == "0" and "selected=selected" or "" }}>资金类型</option>
+                                    <option value="1" {{ status == "1" and "selected=selected" or "" }}>入金</option>
+                                    <option value="2" {{ status == "2" and "selected=selected" or "" }}>入金手续费</option>
+                                    <option value="3" {{ status == "3" and "selected=selected" or "" }}>出金申请</option>
+                                    <option value="4" {{ status == "4" and "selected=selected" or "" }}>出金手续费</option>
+                                    <option value="5" {{ status == "5" and "selected=selected" or "" }}>出金失败</option>
+                                    <option value="6" {{ status == "6" and "selected=selected" or "" }}>下单</option>
+                                    <option value="7" {{ status == "7" and "selected=selected" or "" }}>结单</option>
+                                    <option value="8" {{ status == "8" and "selected=selected" or "" }}>佣金</option>
+                                    <option value="9" {{ status == "9" and "selected=selected" or "" }}>{{tcname}}</option>
+                                    <option value="10" {{ status == "10" and "selected=selected" or "" }}>管理员加款</option>
+                                    <option value="99" {{ status == "99" and "selected=selected" or "" }}>系统调整</option>
+                                </select>       
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                    <a id="export" href="#" class="btn btn-default">导出</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        {% if not show %}
+                            <h1>请点击查找按钮查询数据(最大时间范围支持3天)</h1>
+                        {% else %}
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap" style="width:15%">
+                                                <span>用户</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:15%">
+                                                <span>类型</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:15%">
+                                                <span>金额</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:15%">
+                                                <span>余额</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:20%">
+                                                <span>备注</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:15%">
+                                                <span>时间</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    {% for r in books_list %}
+                                    <tbody>
+                                        <tr class="unread">
+                                            <td>
+                                                {{ r['user_infos']['userid'] }}【{{ r['user_infos']['username'] }}】
+                                            </td>
+                                            <td>
+                                                {{ kvs[r['type']] }}
+                                            </td>
+                                            <td>
+                                                {{ r['amount'] }}
+                                            </td>
+                                            <td>
+                                                {{ r['balance']}}
+                                            </td>
+                                            <td>
+                                                {{ r['remark'] }}
+                                            </td>
+                                            <td>
+                                                {{ func_time(r.created, 8) }}
+                                            </td>
+                                        </tr>
+                                        {% end %}
+                                        {% for i in aggs_books %}
+                                        <tr class="unread">
+                                            <td>
+                                                合计:
+                                            </td>
+                                            <td>
+                                                类型: {{ kvs[ i.key ] }}
+                                            </td>
+                                            <td>
+                                                次数: {{ i.doc_count }}
+                                            </td>
+                                            <td>
+                                                金额: {{ round(float(i.amount.value), 2) }}
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                        {% end %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        maxView: 5,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii',
+        minuteStep:1
+    });
+
+    $("#export").on("click", function(){
+        start = $("#starttime").val();
+        end = $("#endtime").val();
+        status = $("#status option:selected").val();
+        userid = $("#userid").val();
+        var data = "starttime=" + start + "&endtime=" + end + "&status=" + status + "&userid=" + userid;
+        $.download("/personal", data, "post")
+    })
+
+    jQuery.download = function(url, data, method){
+        if( url && data ){ 
+            data = typeof data == 'string' ? data : jQuery.param(data);
+            var inputs = '';
+            jQuery.each(data.split('&'), function(){
+                var pair = this.split('=');
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />';
+            });
+            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+        };
+    };
+</script>
+{% end %}

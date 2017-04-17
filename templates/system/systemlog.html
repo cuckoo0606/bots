@@ -1,0 +1,172 @@
+{% extends "share/master.html" %} 
+{% block title %}系统日志{% end %}
+
+{% block main %}
+{% set kvs = { "WAIT_FOR_PAYMENT" : "等待支付", "WAIT_FOR_RECHARGE" : "正在充值", "FINISH" : "已完成" } %}
+<div class="page-inner">
+    <div class="page-title">
+        <h3>系统日志</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">系统管理</a></li>
+                <li class="active"><a href="/system/log">系统日志</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/system/log" method="get">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="receiver" name="receiver" type="text" class="form-control" placeholder="输入下级用户id以查询" value="{{ receiver }}" />      
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="logtype" name="logtype" class="selectpicker" data-width="100%">
+                                    <option value="-1" {{ logtype == "-1" and "selected=selected" or "" }}>日志类型</option>
+                                    <option value="1" {{ logtype == "1" and "selected=selected" or "" }}>登陆记录</option>
+                                    <option value="2" {{ logtype == "2" and "selected=selected" or "" }}>资金变动</option>
+                                    <option value="3" {{ logtype == "3" and "selected=selected" or "" }}>用户操作</option>
+                                    <option value="99" {{ logtype == "99" and "selected=selected" or "" }}>系统调整</option>
+                                </select>       
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="开始时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input id="endtime" name="endtime" class="form-control form_date starttime" type="text" value="{{ endtime }}" placeholder="结束时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <input id="key" name="key" type="text" class="form-control input-search" value="{{ key }}"  placeholder="关键字" style="width:120px;">
+                                <span class="input-group-btn">
+                                    <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                    <a id="export" href="#" class="btn btn-default">导出</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        {% if not show %}
+                            <h1>请点击查找按钮查询数据</h1>
+                        {% else %}
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap">
+                                                <span>操作用户</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>操作类型</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>操作模块</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>操作功能</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>操作时间</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>操作IP</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for r in systemlog %}
+                                        <tr class="unread">
+                                            <td>
+                                                {{ r.user in ["管理员", "系统"] and r.user or r.user.fetch().username }}
+                                            </td>
+                                            <td>
+                                                {% set kvs = {0:"系统异常", 1:"登陆记录", 2:"资金变动", 3:"用户操作", 99:"系统调整"} %}
+                                                {{ kvs[r.logtype] }}
+                                            </td>
+                                            <td>
+                                                {{ r.module }}
+                                            </td>
+                                            <td>
+                                                {{ r.operation }}
+                                            </td>
+                                            <td>
+                                                {{ r.createtime.strftime("%Y-%m-%d %H:%M:%S") }}
+                                            </td>
+                                            <td>
+                                                {{ r.ip }}
+                                            </td>
+                                        </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                        {% end %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        maxView: 5,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii',
+        minuteStep:1
+    });
+
+    $("#export").on("click", function(){
+        start = $("#starttime").val();
+        end = $("#endtime").val();
+        key = $("#key").val();
+        channel = $("#channel").val()
+        logtype = $("#logtype option:selected").val();
+
+        if(typeof(channel) == "undefined") {
+            var channel = "0";
+        }
+
+        receiver = new Array();
+        $("#receiver option:selected").each(function(index, e) {
+            receiver.push($(e).val());
+        });
+
+        var data = "starttime=" + start + "&endtime=" + end + "&key=" + key + "&logtype=" + logtype + "&receiver=" + receiver.toString() + "&channel=" + channel;
+
+        $.download("/system/log/export", data, "get")
+    })
+
+    jQuery.download = function(url, data, method){    // 获得url和data
+        if( url && data ){ 
+            // data 是 string 或者 array/object
+            data = typeof data == 'string' ? data : jQuery.param(data);        // 把参数组装成 form的  input
+            var inputs = '';
+            jQuery.each(data.split('&'), function(){ 
+                var pair = this.split('=');
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />'; 
+            });        // request发送请求
+            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+        };
+    };
+</script>
+{% end %}

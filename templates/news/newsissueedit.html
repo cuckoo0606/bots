@@ -1,0 +1,88 @@
+{% extends "share/master.html" %}
+{% block title %}公告编辑{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>公告编辑</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/news/issue">公告管理</a></li>
+                <li class="active">公告编辑</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                         
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <input id="id" type="hidden" value="{{ news and news._id or "" }}">
+                            <div class="form-group">
+                                <label for="title" class="col-md-2 control-label">公告标题：</label>
+                                <div class="col-md-4">
+                                    <input id="title" type="text" class="form-control" placeholder="公告标题" value="{{ news and news.title or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="summernote" class="col-md-2 control-label">公告内容：</label>
+                                <div class="col-md-10">
+                                    <div class="compose-message">
+                                        <div id="summernote">
+                                            {% raw news and news.content or "" %}
+                                        </div>
+                                    </div>                                
+                                </div>
+                            </div>
+                            <input type="hidden" id="content" value="{{ news and news.content or "" }}" />
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_news" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#summernote").summernote({ height:200 });
+    });
+
+    $("#save_news").click(function() {
+        $('#content').val($("#summernote").code());
+
+        id = $("#id").val();
+        title = $("#title").val();
+        content = $("#content").val();
+
+        $.post("/news/issue/edit", { "id" : id, "title" : title, "content" : content }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/news/issue"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script>
+{% end %}

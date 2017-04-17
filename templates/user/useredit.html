@@ -1,0 +1,299 @@
+{% extends "share/master.html" %}
+{% block title %}用户编辑{% end %}  
+{% block css %}
+<style type="text/css">
+    .radio {
+        display:none;
+    }
+</style>
+{% end %}                                          
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>用户管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/user">用户管理</a></li>
+                <li class="active">用户编辑</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                        <input id="id" type="hidden" value="{{ user and user._id or ""}}">
+                            <div class="form-group">
+                                <label for="userid" class="col-sm-2 control-label">* 注册名：</label>
+                                <div class="col-md-4">
+                                    {% if user%}
+                                        <input id="userid" type="text" class="form-control" value="{{ user and user.userid or "" }}" readonly />
+                                    {% else %}
+                                        <input id="userid" type="text" class="form-control" placeholder="数字或字母" value="{{ user and user.userid or "" }}" />
+                                    {% end %}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label">* 用户姓名：</label>
+                                <div class="col-md-4">
+                                    <input id="username" type="text" class="form-control" placeholder="用户姓名" value="{{ user and "username" in user and user.username or "" }}" />
+                                </div>
+                            </div>
+                            {% if not user or current_user_role == "admin" %}
+                            <div class="form-group">
+                                <label for="password" class="col-sm-2 control-label">* 密码：</label>
+                                <div class="col-md-4">
+                                    <input id="password" type="password" class="form-control" placeholder="密码" />
+                                </div>
+                            </div>
+                            {% end %}
+                            {% if not user or current_user_role == "admin" %}
+                            <div class="form-group">
+                                <label for="IDcard" class="col-sm-2 control-label">身份证：</label>
+                                <div class="col-md-4">
+                                    <input id="IDcard" type="text" class="form-control" placeholder="身份证" value="{{ user and "IDcard" in user and user.IDcard or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bankholder" class="col-sm-2 control-label">* 开户人：</label>
+                                <div class="col-md-4">
+                                    <input id="bankholder" type="text" class="form-control" placeholder="开户人" value="{{ user and "bankholder" in user and user.bankholder or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bank" class="col-md-2 control-label">* 银行名称：</label>
+                                <div class="col-md-4">
+                                    <select id="bank" class="selectpicker" data-width="100%" name="bank">
+                                        <option value="ABC" {{ user and "bank" in user and user.bank == "ABC" and "selected=selected" or "" }}>中国农业银行</option>
+                                        <option value="BOC" {{ user and "bank" in user and user.bank == "BOC" and "selected=selected" or "" }}>中国银行</option>
+                                        <option value="BOCOM" {{ user and "bank" in user and user.bank == "BOCOM" and "selected=selected" or "" }}>交通银行</option>
+                                        <option value="CCB" {{ user and "bank" in user and user.bank == "CCB" and "selected=selected" or "" }}>中国建设银行</option>
+                                        <option value="ICBC" {{ user and "bank" in user and user.bank == "ICBC" and "selected=selected" or "" }}>中国工商银行</option>
+                                        <option value="PSBC" {{ user and "bank" in user and user.bank == "PSBC" and "selected=selected" or "" }}>中国邮政储蓄银行</option>
+                                        <option value="CMBC" {{ user and "bank" in user and user.bank == "CMBC" and "selected=selected" or "" }}>招商银行</option>
+                                        <option value="SPDB" {{ user and "bank" in user and user.bank == "SPDB" and "selected=selected" or "" }}>浦发银行</option>
+                                        <option value="CEBBANK" {{ user and "bank" in user and user.bank == "CEBBANK" and "selected=selected" or "" }}>中国光大银行</option>
+                                        <option value="ECITIC" {{ user and "bank" in user and user.bank == "ECITIC" and "selected=selected" or "" }}>中信银行</option>
+                                        <option value="PINGAN" {{ user and "bank" in user and user.bank == "PINGAN" and "selected=selected" or "" }}>平安银行</option>
+                                        <option value="CMBCS" {{ user and "bank" in user and user.bank == "CMBCS" and "selected=selected" or "" }}>中国民生银行</option>
+                                        <option value="HXB" {{ user and "bank" in user and user.bank == "HXB" and "selected=selected" or "" }}>华夏银行</option>
+                                        <option value="CGB" {{ user and "bank" in user and user.bank == "CGB" and "selected=selected" or "" }}>广发银行</option>
+                                        <option value="CIB" {{ user and "bank" in user and user.bank == "CIB" and "selected=selected" or "" }}>兴业银行</option>
+                                        <option value="HSB" {{ user and "bank" in user and user.bank == "HSB" and "selected=selected" or "" }}>徽商银行</option>
+                                        <option value="CSCB" {{ user and "bank" in user and user.bank == "CSCB" and "selected=selected" or "" }}>长沙银行</option>
+                                        <option value="ZJRCC" {{ user and "bank" in user and user.bank == "ZJRCC" and "selected=selected" or "" }}>浙江省农村信用社联合社</option>
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bankbranch" class="col-sm-2 control-label">* 支行名称：</label>
+                                <div class="col-md-4">
+                                    <input id="bankbranch" type="text" class="form-control" placeholder="支行名称" value="{{ user and "bankbranch" in user and user.bankbranch or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bankId" class="col-sm-2 control-label">开户行行号：</label>
+                                <div class="col-md-4">
+                                    <input id="bankId" type="text" class="form-control" placeholder="开户行行号" value="{{ user and "bankId" in user and user.bankId or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bankaccount" class="col-sm-2 control-label">* 银行账号：</label>
+                                <div class="col-md-4">
+                                    <input id="bankaccount" type="text" class="form-control" placeholder="银行账号" value="{{ user and "bankaccount" in user and user.bankaccount or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="province" class="col-sm-2 control-label">* 开户省份：</label>
+                                <div class="col-md-4">
+                                    <input id="province" type="text" class="form-control" placeholder="开户省份" value="{{ user and "province" in user and user.province or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class="col-sm-2 control-label">* 开户城市：</label>
+                                <div class="col-md-4">
+                                    <input id="city" type="text" class="form-control" placeholder="开户城市" value="{{ user and "city" in user and user.city or "" }}" />
+                                </div>
+                            </div>
+                            {% end %}
+                            <div class="form-group">
+                                <label for="email" class="col-sm-2 control-label">邮箱：</label>
+                                <div class="col-md-4">
+                                    <input id="email" type="email" class="form-control" placeholder="邮箱" value="{{ user and "email" in user and user.email or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="col-sm-2 control-label">* 电话：</label>
+                                <div class="col-md-4">
+                                    <input id="phone" type="text" class="form-control" placeholder="电话" value="{{ user and "phone" in user and user.phone or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="col-sm-2 control-label">地址：</label>
+                                <div class="col-md-4">
+                                    <input id="address" type="text" class="form-control" placeholder="地址" value="{{ user and "address" in user and user.address or "" }}" />
+                                </div>
+                            </div>
+                            <div id="sex" class="form-group">
+                                <label class="col-md-2 control-label">性别：</label>
+                                <div class="col-md-4">
+                                    <div class="btn-group aa" data-toggle="buttons">
+                                        <label class="btn btn-default {{ user and "sex" in user and user.sex == "male" and "active" or "" }}">
+                                            <input style="height:30px" type="radio" name="sex" class="sex" value="male" />
+                                            男
+                                        </label>
+                                        <label class="btn btn-default {{ user and "sex" in user and user.sex == "female" and "active" or "" }}">
+                                            <input type="radio" name="sex" class="sex" value="female" />
+                                            女
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if user %}
+                            <div class="form-group">
+                                <label for="brokerage" class="col-sm-2 control-label">佣金：</label>
+                                <div class="col-md-4">
+                                    <input id="brokerage" type="text" class="form-control" placeholder="佣金(百分比)" value="{{ "brokerage" in user and user.brokerage or 0 }}" readonly="" />
+                                </div>
+                                <div style="float:left; margin-top:10px;"><span>%</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="position" class="col-sm-2 control-label">{{tcname}}：</label>
+                                <div class="col-md-4">
+                                    <input id="position" type="text" class="form-control" placeholder="{{tcname}}(百分比)" value="{{ "position" in user and user.position or 0 }}" readonly="" />
+                                </div>
+                                <div style="float:left; margin-top:10px;"><span>%</span></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">推荐码：</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" value="{{ user and "referralcode" in user and user.referralcode or "" }}" readonly="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">推荐链接：</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" value="{{ hyperlink }}" readonly="" />
+                                </div>
+                            </div>
+                            {% end %}
+                            <div class="form-group">
+                                <label for="userrole" class="col-md-2 control-label">* 角色：</label>
+                                <div class="col-md-4">
+                                    <select id="userrole" class="selectpicker" data-width="100%" name="userrole">
+                                    {% for r in role %}
+                                        <option value="{{ r._id }}" {{ user and user.userrole.id == r._id and "selected=selected" or "" }}>{{ r.rolename }}</option>
+                                    {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                            {% if current_user_role == "admin" %}
+                            <div class="form-group">
+                                <label for="agent" class="col-md-2 control-label">* 所属代理商：</label>
+                                <div class="col-md-4">
+                                    {% if user %}
+                                        <input id="agent" name="agent" type="text" class="form-control" placeholder="单用户(用户id)" value="{{ 'parent' in user and user.parent and user.parent.fetch() and user.parent.fetch().userid or "admin" }}" readonly />
+                                    {% else %}
+                                        <input id="agent" name="agent" type="text" class="form-control" placeholder="单用户(用户id)" value="" />
+                                    {% end %}
+                                </div>
+                            </div>
+                            {% end %}
+                            {% if current_user_role == "admin" %}
+                            <div class="form-group">
+                                <label for="totalbets" class="col-sm-2 control-label">总盘口：</label>
+                                <div class="col-md-4">
+                                    <input id="totalbets" type="text" class="form-control" placeholder="总盘口" value="{{  user and "totalbets" in user and user.totalbets or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="usergroup" class="col-md-2 control-label">用户组：</label>
+                                <div class="col-md-4">
+                                    <select id="usergroup" class="selectpicker" data-width="100%" name="usergroup">
+                                        <option value="" {{ user and "usergroup" in user and user.usergroup == "" and "selected=selected" or "" }}>未设置</option>
+                                    {% for r in usergroup %}
+                                        <option value="{{ r._id }}" {{ user and "usergroup" in user and user.usergroup and user.usergroup.id == r._id and "selected=selected" or "" }}>{{ r.groupname }}</option>
+                                    {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="level" class="col-md-2 control-label">级别：</label>
+                                <div class="col-md-4">
+                                    <select id="level" class="selectpicker" data-width="100%" name="level">
+                                        <option value="" {{ user and "level" in user and user.level == "" and "selected=selected" or "" }}>未设置</option>
+                                    {% for r in level %}
+                                        <option value="{{ r._id }}" {{ user and "level" in user and user.level and user.level.id == r._id and "selected=selected" or "" }}>{{ r.name }}</option>
+                                    {% end %}
+                                    </select>       
+                                </div>
+                            </div>
+                            {% end %}
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <a id="save_user" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $("#save_user").click(function() {
+        var data = {};
+        data["id"] = $("#id").val();
+        data["userid"] = $("#userid").val();
+        data["username"] = $("#username").val();
+        data["IDcard"] = $("#IDcard").val();
+        data["email"] = $("#email").val();
+        data["phone"] = $("#phone").val();
+        data["address"] = $("#address").val();
+        data["totalbets"] = $("#totalbets").val();
+        data["sex"] = $("#sex .active input").val();
+        data["userrole"] = $("#userrole option:selected").val();
+        data["agent"] = $("#agent").val();
+        data["password"] = $("#password").val();
+
+        data["bankholder"] = $("#bankholder").val();
+        data["bankbranch"] = $("#bankbranch").val();
+        data["bankaccount"] = $("#bankaccount").val();
+        data["bank"] = $("#bank option:selected").val();
+        data["bankId"] = $("#bankId").val();
+        data["province"] = $("#province").val();
+        data["city"] = $("#city").val();
+        
+        if("{{current_user_role}}" === "admin") {
+            data["usergroup"] = $("#usergroup option:selected").val();
+            data["level"] = $("#level option:selected").val();
+        }
+
+        $.post("/user/edit", data, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/user"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script> 
+{% end %}

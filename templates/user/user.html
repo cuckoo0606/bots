@@ -1,0 +1,544 @@
+{% extends "share/master.html" %}
+{% block title %}用户管理{% end %}{% block main %}
+<div class="page-inner">
+    <div class="page-title">                                                   
+        <h3>用户管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">用户管理</a></li>
+                <li><a href="/user">查询用户</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                                                             
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="row mailbox-header">
+                    {% if "usera" in UP %}
+                        <div class="pull-left" style="padding:15px 0 0 15px;">
+                            <a href="/user/edit" class="btn btn-success">添加用户</a>
+                        </div>
+                    {% end %}
+                    {% if "userd" in UP %}
+                        {% if "usera" not in UP %}
+                            <div class="pull-left" style="padding:15px 0 0 60px;">
+                                <a href="#" id="delete" class="btn btn-success">删除</a>
+                            </div>
+                        {% else %}
+                            <div class="pull-left" style="padding:15px 0 0 15px;">
+                                <a href="#" id="delete" class="btn btn-success">删除</a>
+                            </div>
+                        {% end %}
+                    {% end %}
+                    {% if "userc" in UP %}
+                        <div class="form-inline  pull-right" style="margin:15px 20px 0 0">
+                            <form action="/user" method="get">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input id="user_id" name="user_id" type="text" class="form-control" placeholder="查询用户(用户id)" value="{{ user_id }}" /> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <select id="role_id" name="role_id" class="selectpicker" data-width="100%" data-live-search="true">
+                                            <option value="0" {{ role_id == "0" and "selected=selected" or "" }}>用户角色</option>
+                                            {% for i in roles %}
+                                                <option value="{{i._id}}" {{ str(i._id) == role_id and "selected=selected" or "" }}>{{i.rolename}}</option>
+                                            {% end %}
+                                        </select>       
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-success" type="submit" style="margin-right:20px"><i class="fa fa-search"></i></button>
+                                        </span>
+                                        <a href="/user" class="btn btn-success" style="width:90px;">重置用户</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {% end %}
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="1" style="width:6%">
+                                                <span><input id="selectall" type="checkbox" class="check-mail-all"></span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:13%">
+                                                <span>名称</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>佣金</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>{{tcname}}</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:12%">
+                                                <span>代理商</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:8%">
+                                                <span>角色名称</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:8%">
+                                                <span>金额</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>注册时间</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:200px; text-align:center">
+                                                <span>功能</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for u in user %}
+                                        <tr class="unread">
+                                            <td>
+                                                <span><input type="checkbox" class="checkbox-mail cb" data-id={{ u['_id']}} /></span>
+                                            </td>
+                                            {% if "userm" in UP %}
+                                                <td id="mod">
+                                                    <a href="/user/edit?id={{ u['_id'] }}">
+                                                        {{ u['user_infos']['userid'] }}【{{ u['user_infos']['username'] }}】
+                                                    </a>
+                                                </td>
+                                            {% else %}
+                                                <td id="mod">
+                                                    {{ u['user_infos']['userid'] }}【{{ u['user_infos']['username'] }}】
+                                                </td>
+                                            {% end %}
+                                            <td>
+                                                {{ u['brokerage'] }}%
+                                            </td>
+                                            <td>
+                                                {{ u['position'] }}%
+                                            </td>
+                                            <td>
+                                            {{ u['user_infos']['parent_infos']['userid'] }}【{{ u['user_infos']['parent_infos']['username'] }}】
+                                            </td>
+                                            <td>
+                                                {{ u['userrole'] }}
+                                            </td>
+                                            <td>
+                                                {{ u['amount'] }}
+                                            </td>
+                                            <td>
+                                                {{ u['created'] and u['created'].strftime("%Y-%m-%d %H:%M:%S") or "" }}
+                                            </td>
+                                            <td>
+                                                {% set a_url='/user/status?id=' + str(u['_id']) + "&" + status_url  %}
+                                                <div style="float:left; margin:0 5px 5px 0;">
+                                                    {% if u['status'] == 1 %}
+                                                        <a href="{{a_url}}" class="btn btn-success">
+                                                        开启
+                                                    {% else %}
+                                                        <a href="{{a_url}}" class="btn btn-danger">
+                                                        禁用
+                                                    {% end %}
+                                                    </a>
+                                                </div>
+                                                {% if "userp" in UP %}
+                                                <div style="float:left; margin:0 5px 5px 0;">
+                                                    <a href="#" onclick="show_pay_modal('{{ u['_id'] }}');" class="btn btn-success">
+                                                    出金
+                                                    </a>
+                                                </div>
+                                                {% end %}
+                                                <div style="float:left; margin:0 5px 5px 0;">
+                                                    <a href="#" onclick="check_user('{{ u['_id'] }}');" class="btn btn-success" >下级</a>
+                                                </div>
+                                                {% if current_user_role == 'admin' or u['user_infos']['userid'] in ratio_users %}
+                                                    {% if "com_ratio" in UP %}
+                                                    <div style="float:left; margin:0 5px 5px 0;">
+                                                        <a href="#" onclick="show_commission_modal('{{ u['_id'] }}');" class="btn btn-success">
+                                                        佣金
+                                                        </a>
+                                                    </div>
+                                                    {% end %}
+                                                    {% if "pos_ratio" in UP %}
+                                                    <div style="float:left; margin:0 5px 5px 0;">
+                                                        <a href="#" onclick="show_position_modal('{{ u['_id'] }}');" class="btn btn-success">
+                                                        红利
+                                                        </a>
+                                                    </div>
+                                                    {% end %}
+                                                {% end %}
+                                                {% if current_user_role == "admin" %}
+                                                <div style="float:left; margin:0 5px 5px 0;">
+                                                    <a href="#" onclick="show_income_modal('{{ u['_id'] }}');" class="btn btn-success">
+                                                    加款
+                                                    </a>
+                                                </div> 
+                                                {% end %}
+                                            </td>
+                                        </tr>
+                                    {% end %}
+                                    </tbody>
+                                    {% for i in statistics_list %}
+                                        <tr class="unread">
+                                            <td>
+                                               <span>合计</span>
+                                            </td>
+                                            <td>
+                                                <span>角色: {{i['rolename']}}</span>
+                                            </td>
+                                            <td>
+                                               <span>{{i['count']}}位</span>
+                                            </td>
+                                            <td>
+                                               <span>{{i['amount']}}元</span>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    {% end %}
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+<div class="modal fade" id="income_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel" >
+                    入金
+                </h4>
+            </div>
+            <div class="modal-body">
+                <input id="id" type="hidden" value="" />
+                <div>
+                    <div class="form-group">
+                        <label for="title" class="control-label">金额:</label>
+                        <input id="income_amount" type="text" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="save" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="pay_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel" >
+                    出金手续费: {{handling_charge}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <input id="id" type="hidden" value="" />
+                <div>
+                    <div class="form-group">
+                        <label for="title" class="control-label">金额:</label>
+                        <input id="income_amount" type="text" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="save" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="commission_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel" >
+                    佣金
+                </h4>
+            </div>
+            <div class="modal-body">
+                <input id="id" type="hidden" value="" />
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" style="width:70px">比例:</label>
+                    <div>
+                        <input id="set_commission" type="text" style="width:80px" />%
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="save_com" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="position_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalLabel" >
+                    红利
+                </h4>
+            </div>
+            <div class="modal-body">
+                <input id="id" type="hidden" value="" />
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" style="width:70px">比例:</label>
+                    <div>
+                        <input id="set_position" type="text" style="width:80px" />%
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="save_pos" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% end %}
+{% block script %}
+    <script type="text/javascript">
+        $("#selectall").change(function() {
+            src = this;
+            $(".cb").each(function(i, item) {
+                $(item).prop('checked', src.checked)
+                console.dir(item)
+            });
+            $.uniform.update()
+        });
+
+        $("#delete").on("click", function() {
+            var ids = new Array();
+            $("table>tbody .checker .checked input").each(function(index, e) {
+                ids.push($(e).attr("data-id"));
+            });
+
+            $.get("/user/delete", { "id" : ids.toString() }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "{{newurl}}"
+                    }, 1000);
+                }else if(res.status == "warning"){
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 3000
+                    };
+
+                    toastr.warning(res.desc, '部分删除');
+                    setTimeout(function() {
+                        window.location.href = "{{newurl}}"
+                    }, 1500);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+
+        // 入金
+        function show_income_modal(id) {
+            $("#income_modal #id").val("");
+            $("#income_modal #id").val(id);
+
+            $("#income_modal").modal("show");
+        };
+
+        $("#income_modal #save").on("click", function(){
+            $("#income_modal").modal("hide");
+
+            id = $("#income_modal #id").val();
+            amount = $("#income_modal #income_amount").val();
+
+            $.post("/income", { "receiver" : id, "amount" : amount }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "{{newurl}}"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+
+        // 出金
+        function show_pay_modal(id) {
+            $("#pay_modal #id").val("");
+            $("#pay_modal #id").val(id);
+
+            $("#pay_modal").modal("show");
+        };
+
+        $("#pay_modal #save").on("click", function(){
+            $("#pay_modal").modal("hide");
+
+            id = $("#pay_modal #id").val();
+            amount = $("#pay_modal #income_amount").val();
+
+            $.post("/pay", { "id" : id, "amount" : amount }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "{{newurl}}"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+
+        // 状态
+        function show_status_modal(id) {
+            $.post("/user/stauts", { "id" : id }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "{{newurl}}"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        };
+
+        //下级查询
+        function check_user(id) {
+            role_id = $("#role_id option:selected").val()
+            url = "/user?subordinate=" + id + "&role_id=" + role_id;
+            // alert(url)
+            window.location.href = url
+        };
+
+        // 佣金设置
+        function show_commission_modal(id) {
+            $("#commission_modal #id").val("");
+            $("#commission_modal #id").val(id);
+            $("#commission_modal").modal("show");
+        };
+
+        $("#save_com").on("click", function(){
+            $("#commission_modal").modal("hide");
+
+            id = $("#commission_modal #id").val();
+            commission = $("#set_commission").val();
+
+            $.post("/user/setcom", { "user_id" : id, "commission" : commission }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "{{newurl}}"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+
+        // 红利设置
+        function show_position_modal(id) {
+            $("#position_modal #id").val("");
+            $("#position_modal #id").val(id);
+            $("#position_modal").modal("show");
+        };
+
+        $("#save_pos").on("click", function(){
+            $("#position_modal").modal("hide");
+
+            id = $("#position_modal #id").val();
+            position = $("#set_position").val();
+
+            $.post("/user/setpos", { "user_id" : id, "position" : position }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "{{newurl}}"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+
+    </script>
+{% end %}

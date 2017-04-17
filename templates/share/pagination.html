@@ -1,0 +1,38 @@
+{% if paging and paging.pagecount > 1 %}
+{# <div class="dataTables_info" id="example_info" role="status" aria-live="polite">显示 {{ paging.index * paging.size }} 到 {{ paging.index * paging.size + paging.size - 1 }} 的 {{ paging.count }} 项</div> #}
+
+<div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+    <a href="{{ url("?page={0}".format(paging.first)) }}" class="paginate_button previous" aria-controls="example" data-dt-idx="0" tabindex="0" id="example_previous">
+        <span class="glyphicon glyphicon-fast-backward"></span>
+    </a>
+
+    <a href="{{ url("?page={0}".format(paging.prev)) }}" class="paginate_button previous" aria-controls="example" data-dt-idx="0" tabindex="0" id="example_previous">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+
+    {% set offset = 0 %}
+    {% if paging.pagecount > 10 and paging.index > 6 %}
+        {% if paging.index < paging.pagecount - 4 %}
+            {% set offset = paging.index - 6 %}
+        {% else %}
+            {% set offset = paging.pagecount - 10 %}
+        {% end %}
+    {% end %}
+
+    <span>
+        {% for i in range(1, min(10 + 1, paging.pagecount + 1)) %}
+            {% set index = i + offset %}
+            <a href="{{ url("?page={0}".format(index)) }}" class="paginate_button {{ index == paging.index and 'current' or '' }}" aria-controls="example" data-dt-idx="1" tabindex="0">
+                {{ index }}
+            </a>
+        {% end %}
+    </span>
+    <a href="{{ url("?page={0}".format(paging.next)) }}" class="paginate_button next" aria-controls="example" data-dt-idx="7" tabindex="0" id="example_next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+
+    <a href="{{ url("?page={0}".format(paging.last)) }}" class="paginate_button next" aria-controls="example" data-dt-idx="7" tabindex="0" id="example_next">
+        <span class="glyphicon glyphicon-fast-forward"></span>
+    </a>
+</div>
+{% end %}

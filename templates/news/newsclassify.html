@@ -1,0 +1,138 @@
+{% extends "share/master.html" %}                                                                                           
+{% block title %}公告管理{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                  
+        <h3>公告管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">公告管理</a></li>
+                <li class="active"><a href="/news/classify">公告分类</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">               
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="row mailbox-header">
+                    {% if "newscla" in UP %}
+                        <div class="pull-left" style="padding:0 0 0 15px;">
+                            <a href="/news/classify/edit" style="width:100px;" class="btn btn-success">添加分类</a>
+                        </div>
+                    {% end %}
+                    {% if "newscld" in UP %}
+                        {% if "newscla" not in UP %}
+                            <div class="pull-left" style="padding:0 0 0 60px;">
+                                <a href="#" id="delete" class="btn btn-success">删除</a>
+                            </div>
+                        {% else %}
+                            <div class="pull-left" style="padding:0 0 0 10px;">
+                                <a href="#" id="delete" class="btn btn-success">删除</a>
+                            </div>
+                        {% end %}
+                    {% end %}
+                    {% if "newsclc" in UP %}
+                        <div class="col-md-3 col-sm-4 pull-right">
+                            <form action="/news/classify" method="get">
+                                <div class="input-group">
+                                    <input type="text" name="key" class="form-control input-search" value="{{key}}" placeholder="查找">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div><!-- Input Group -->
+                            </form>
+                        </div>
+                    {% end %}
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div class="dataTables_wrapper">
+                                <table class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="1" style="width:20px;">
+                                                <input id="selectall" type="checkbox" class="check-mail-all">
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>名称</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>标识</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for i in newsclassify %}
+                                        <tr class="unread">
+                                            <td>
+                                                <input type="checkbox" class="checkbox-mail cb" data-id={{ i._id }} >
+                                            </td>
+                                            {% if "newsclm" in UP %}
+                                                <td>
+                                                    <a href="/news/classify/edit?id={{ i._id }}">
+                                                        {{ i.classifyname }}
+                                                    </a>
+                                                </td>
+                                            {% else %}
+                                                <td>
+                                                    {{ i.classifyname }}
+                                                </td>
+                                            {% end %}
+                                            <td>
+                                                {{ i.classifyid }}
+                                            </td>
+                                        </tr>
+                                    {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- Page Inner -->
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block script %}
+    <script type="text/javascript">
+        $("#selectall").change(function() {
+            src = this;
+            $(".cb").each(function(i, item) {
+                $(item).prop('checked', src.checked)
+                console.dir(item)
+            });
+            $.uniform.update()
+        });
+
+        $("#delete").on("click", function() {
+            var ids = new Array();
+            $("table>tbody .checker .checked input").each(function(index, e) {
+                ids.push($(e).attr("data-id"));
+            });
+
+            $.get("/news/classify/delete", { "id" : ids.toString() }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "/news/classify"
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });      
+    </script>
+{% end %}

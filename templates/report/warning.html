@@ -1,0 +1,53 @@
+{% extends "share/master.html" %}
+{% block title %}预警用户{% end %}
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">
+        <h3>预警用户</h3>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <tbody>
+                                        <thead>
+                                            <tr>
+                                                <th nowrap="nowrap" style="width:15%">
+                                                    <span>用户ID</span>
+                                                </th>
+                                                <th nowrap="nowrap" style="width:15%">
+                                                    <span>用户名称</span>
+                                                </th>
+                                                <th nowrap="nowrap" style="width:15%">
+                                                    <span>余额</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        {% for i in result %}
+                                            <tr class="unread">
+                                                <td>
+                                                    {{ i['userid'] }}
+                                                </td>
+                                                <td>
+                                                    {{ i['username'] }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i['amount'], 2) }}
+                                                </td>
+                                            </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}

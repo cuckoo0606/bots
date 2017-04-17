@@ -1,0 +1,210 @@
+{% extends "share/master.html" %}
+{% block title %}角色管理{% end %}                                                   
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                                                   
+        <h3>权限管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">权限管理</a></li>
+                <li class="active">角色定义</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                                                               
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="row mailbox-header">
+                    {% if "permissionroa" in UP %}
+                        <div class="pull-left" style="padding:0 0 0 15px">
+                            <a href="/role/edit" class="btn btn-success">添加角色</a>
+                        </div>
+                    {% end %}
+                    {% if "permissionrod" in UP %}
+                        {% if "permissionroa" not in UP %}
+                            <div class="pull-left" style="padding:0 0 0 60px">
+                                <a href="#" id="delete" class="btn btn-success">删除</a>
+                            </div>
+                        {% else %}
+                            <div class="pull-left" style="padding:0 0 0 15px">
+                                <a href="#" id="delete" class="btn btn-success">删除</a>
+                            </div>
+                        {% end %}
+                    {% end %}
+                    {% if "permissionroc" in UP %}
+                        <div class="col-md-3 col-sm-3 col-xs-3 pull-right">
+                            <form action="/role" method="post">
+                                <div class="input-group">
+                                    <input type="text" name="key" class="form-control input-search" placeholder="查找">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-success" type="submit"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div><!-- Input Group -->
+                            </form>
+                        </div>
+                    {% end %}
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="1" style="width:20px;">
+                                                <span><input id="selectall" type="checkbox" class="check-mail-all"></span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>角色名称</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>角色标识</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for r in role %}
+                                        <tr class="unread">
+                                            <td>
+                                                <span><input type="checkbox" class="checkbox-mail cb" data-id={{ r._id}} /></span>
+                                            </td>
+                                            <td>
+                                                {% if "permissionrom in UP "%}
+                                                    <a href="/role/edit?id={{ r._id }}">
+                                                        {{ r.rolename or "" }}
+                                                    </a>
+                                                {% else %}
+                                                    {{ r.rolename or "" }}
+                                                {% end %}
+                                            </td>
+                                            <td>
+                                                {{ r.roleid or "" }}
+                                            </td>
+                                        </tr>
+                                    {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+{% block script %}
+    <script type="text/javascript">
+        $("#selectall").change(function() {
+            src = this;
+            $(".cb").each(function(i, item) {
+                $(item).prop('checked', src.checked)
+                console.dir(item)
+            });
+            $.uniform.update()
+        });
+
+        $("#delete").on("click", function() {
+            var ids = new Array();
+            $("table>tbody .checker .checked input").each(function(index, e) {
+                ids.push($(e).attr("data-id"));
+            });
+
+            $.post("/role/delete", { "id" : ids.toString() }, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "/role"
+                    }, 1000);
+                } else if(res.status === "warning") {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        showMethod: 'fadeIn',
+                        hideMethod: 'fadeOut',
+                        timeOut: 3000
+                    };
+
+                    toastr.warning(res.desc, '部分删除');
+                    setTimeout(function() {
+                        window.location.href = "/role"
+                    }, 3000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            });
+        });
+
+        function show_prset(id) {
+            $("#prset #id").val(id);
+            $("#prset .switch").attr("class", "btn btn-default switch");
+
+            $("#prset").modal("show");
+
+            $.get("/role/prset", { "id" : id }, function(data){
+                
+                $("#per-switch a").each(function(){
+                    var self = $(this)
+                    id = self.attr("data-id");
+                    console.log(id)
+                    console.log(data)
+                    if ($.inArray(id, data) != -1){
+                        self.attr("class", "switch btn btn-success active");
+                    }else{
+                        self.attr("class", "switch btn btn-default");
+                    }
+                })
+            })
+        };
+
+        $("#per-switch .switch").on("click", function(){
+            current = $(this);
+
+            if($(this).hasClass("active") == false) {
+                $(this).attr("class", "switch btn btn-success active");
+            }
+            else {
+                $(this).attr("class", "switch btn btn-default");
+            }
+        })
+
+        $("#pr_save").on("click", function(){
+            $("#prset").modal("hide")
+            id = $("#prset #id").val();
+
+            obj = ""
+            $("#per-switch .active").each(function(){
+                obj +=  $(this).attr("data-id") + " "
+            });
+
+            $.post("/role/prset", { "id" : id, "permission" : obj }, function(res){          
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+                    setTimeout(function() {
+                        window.location.href = "/role"
+                    }, 1000);
+                }else {
+                    toastr.error(res.desc, '操作失败');
+                }
+            })
+        })
+    
+    </script>
+{% end %}

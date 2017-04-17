@@ -1,0 +1,162 @@
+{% extends "share/master.html" %}
+{% block title %}资金操作{% end %}  
+{% block css %}
+<style type="text/css">
+    .radio {
+        display:none;
+    }
+</style>
+{% end %}                                          
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>资金操作</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/confirm">资金确认</a></li>
+                <li class="active">资金操作</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <input id="starttime" type="hidden" value="{{starttime}}">
+                            <input id="endtime" type="hidden" value="{{endtime}}">
+                            <input id="receiver" type="hidden" value="{{receiver}}">
+                            <input id="page" type="hidden" value="{{page}}">
+                            <div class="form-group">
+                                <label for="userid" class="col-sm-2 control-label">用户ID：</label>
+                                <div class="col-md-4">
+                                    <input id="userid" type="text" class="form-control" placeholder="用户ID" value="{{ user and user.userid or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label">名称：</label>
+                                <div class="col-md-4">
+                                    <input id="username" type="text" class="form-control" placeholder="用户名称" value="{{ user and "username" in user and user.username or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bankholder" class="col-sm-2 control-label">开户人：</label>
+                                <div class="col-md-4">
+                                    <input id="bankholder" type="text" class="form-control" placeholder="开户人" value="{{ user and "bankholder" in user and user.bankholder or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="IDcard" class="col-sm-2 control-label">身份证：</label>
+                                <div class="col-md-4">
+                                    <input id="IDcard" type="text" class="form-control" value="{{ user and "IDcard" in user and user.IDcard or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bank" class="col-md-2 control-label">银行名称：</label>
+                                <div class="col-md-4">
+                                    {% set kvs = {"CEEBBANK":"中国光大银行", "ABC":"中国农业银行", "BOC":"中国银行", "BOCOM":"交通银行", "CCB":"中国建设银行", "ICBC":"中国工商银行", "PSBC":"中国邮政储蓄银行", "CMBC":"招商银行", "SPDB":"浦发银行", "CEBBANK":"中国光大银行", "ECITIC":"中信银行", "PINGAN":"平安银行", "CMBCS":"中国民生银行", "HXB":"华夏银行", "CGB":"广发银行", "CIB":"兴业银行", "HSB":"徽商银行", "CSCB":"长沙银行", "ZJRCC":"浙江省农村信用社联合社"} %}
+                                    <input id="bank" type="text" class="form-control" value="{{ user and "bank" in user and user.bank and kvs[user.bank] or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bankbranch" class="col-sm-2 control-label">支行名称：</label>
+                                <div class="col-md-4">
+                                    <input id="bankbranch" type="text" class="form-control" value="{{ user and "bankbranch" in user and user.bankbranch and user.bankbranch or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bankaccount" class="col-sm-2 control-label">银行账号：</label>
+                                <div class="col-md-4">
+                                    <input id="bankaccount" type="text" class="form-control" value="{{ user and "bankaccount" in user and user.bankaccount or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="province" class="col-sm-2 control-label">开户省份：</label>
+                                <div class="col-md-4">
+                                    <input id="province" type="text" class="form-control" value="{{ user and "province" in user and user.province or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class="col-sm-2 control-label">开户城市：</label>
+                                <div class="col-md-4">
+                                    <input id="city" type="text" class="form-control" value="{{ user and "city" in user and user.city or "" }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="col-sm-2 control-label">出金金额：</label>
+                                <div class="col-md-4">
+                                    <input id="email" type="text" class="form-control" value="{{ "amount" in outflow and outflow.amount or 0 }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="col-sm-2 control-label">出金汇率：</label>
+                                <div class="col-md-4">
+                                    <input id="phone" type="text" class="form-control" value="{{ exchange_pay_rate }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="col-sm-2 control-label">手续费：</label>
+                                <div class="col-md-4">
+                                    <input id="address" type="text" class="form-control" value="{{ "handling_charge" in outflow and outflow.handling_charge or 0 }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="col-sm-2 control-label">实付金额：</label>
+                                <div class="col-md-4">
+                                    <input id="address" type="text" class="form-control" value="{{ pay_amount }}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <a id="confirm_pay" type="hidden" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">确定</a>
+                                    <input id="outflowid" type="hidden" name="channel_id" value="{{outflow._id}}">
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $(function(){
+        $("#confirm_pay").click(function() {
+            var id = $("#outflowid").val();
+            var starttime = $("#starttime").val();
+            var endtime = $("#endtime").val();
+            var receiver = $("#receiver").val();
+            var page = $("#page").val();
+            var href = "/confirm?starttime=" + starttime + "&endtime=" + endtime + "&receiver=" + receiver + "&page=" + page;
+
+            $.post("/confirm/pay", {"id" : id}, function(res){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000
+                };
+
+                if(res.status === "ok") {
+                    toastr.success('操作成功!', '操作成功');
+
+                    setTimeout(function() {
+                        window.location.href = href
+                    }, 1000);
+                } else {
+                    toastr.error(res.desc, '操作失败');
+
+                    setTimeout(function() {
+                        window.location.href = href
+                    }, 1000);
+                }
+            });
+        });
+    })
+</script> 
+{% end %}

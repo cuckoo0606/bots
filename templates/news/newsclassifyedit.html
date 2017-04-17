@@ -1,0 +1,82 @@
+{% extends "share/master.html" %}
+{% block title %}分类编辑{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>公告管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/news/classify">公告分类</a></li>
+                <li class="active">分类编辑</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                         
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <input id="id" type="hidden" value="{{ newsclassify and newsclassify._id or "" }}">
+                            <div class="form-group">
+                                <label for="classifyname" class="col-md-2 control-label">分类名称：</label>
+                                <div class="col-md-4">
+                                    <input id="classifyname" type="text" class="form-control" placeholder="公告标题" value="{{ newsclassify and newsclassify.classifyname or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="classifyid" class="col-md-2 control-label">分类标识：</label>
+                                <div class="col-md-4">
+                                    <input id="classifyid" type="text" class="form-control" placeholder="公告标题" value="{{ newsclassify and newsclassify.classifyid or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_classify" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#summernote").summernote({ height:200 });
+    });
+
+    $("#save_classify").click(function() {
+
+        id = $("#id").val();
+        classifyname = $("#classifyname").val();
+        classifyid = $("#classifyid").val();
+
+        $.post("/news/classify/edit", { "id" : id, "classifyname" : classifyname, "classifyid" : classifyid }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/news/classify"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script>
+{% end %}

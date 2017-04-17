@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>登录</title>
+<link href="{{ static_url("plugins/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css"/>
+<link href="{{ static_url("css/login.css") }}" rel="stylesheet">
+<script src="{{ static_url("plugins/jquery/jquery-2.1.4.min.js") }}"></script>
+<script src="{{ static_url("plugins/bootstrap/js/bootstrap.min.js") }}"></script>
+</head>
+
+<body class="bg_img">
+	<div class="bg_img">
+		<div class="container-fulid">
+        	<div class="row">
+            	<div class="col-md-7 col-sm-5 hidden-xs lg_left" style="width:37%;">
+                </div>
+                <form action="/account/signin" method="post">
+                    <div class="col-md-5 col-sm-7 lg_right">
+                        {% if CUSTOMER not in ["ZHONGYING"] %}
+                    	<div class="log_img">
+                            <img style="widht:78px; height:78px;" src="{{ static_url("images/"+pro_icon+".png")}}" alt="">
+                            <p>账户登录</p>
+                        </div>
+                        {% else %}
+                        <div class="log_img">
+                            <img style="widht:200px; height:200px;" src="{{ static_url("images/"+pro_icon+".png")}}" alt="">
+                            {# <p>账户登录</p> #}
+                        </div>
+                        {% end %}
+                        <div class="btn_bg">
+                        	<div class="name">
+                            	<div class="icon pull-left">
+                                    <img src="{{ static_url("images/icon1.png") }}">
+                                    <img src="{{ static_url("images/icon2.png") }}">
+                                </div>
+                                <div class="bt pull-left">
+                                	<input type="text" name="userid">
+                                </div>
+                          	</div>
+                            <div class="name">
+                            	<div class="icon pull-left">
+                                    <img src="{{ static_url("images/icon3.png") }}">
+                                    <img src="{{ static_url("images/icon2.png") }}">
+                                </div>
+                                <div class="bt pull-left">
+                                	<input type="password" name="password">
+                                </div>
+                          	</div>
+                            <div class="left">
+                                <input type="checkbox" name="remenber">一周内免登录
+                                <span>{{ message }}</span>
+                            </div>
+                            <div class="btn_btn">
+                        		<input type="submit" name="btn" class="btn" value="Login">
+                          	</div>
+                        </div>   
+                    </div>
+                </form>
+            </div>
+    	</div>
+            {# <footer class="footer_bq">
+                	<p>Copyright©2014-2015 <a href="#">和沃易网络科技</a> 版权所有</p>
+            </footer> #}
+        </div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+{% block global %}{% end %}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        {% block head %}{% end %}
+        <meta charset="utf-8">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% end %}</title>
+        <link href="{{ static_url("plugins/pace-master/themes/blue/pace-theme-flash.css") }}" rel="stylesheet"/>
+        <link href="{{ static_url("plugins/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("plugins/fontawesome/css/font-awesome.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("plugins/line-icons/simple-line-icons.css") }}" rel="stylesheet" type="text/css"/>    
+        <link href="{{ static_url("plugins/offcanvasmenueffects/css/menu_cornerbox.css") }}" rel="stylesheet" type="text/css"/> 
+        <link href="{{ static_url("plugins/waves/waves.min.css") }}" rel="stylesheet" type="text/css"/> 
+        <link href="{{ static_url("plugins/switchery/switchery.min.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("plugins/3d-bold-navigation/css/style.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("plugins/slidepushmenus/css/component.css") }}" rel="stylesheet" type="text/css"/>    
+        <link href="{{ static_url("plugins/weather-icons-master/css/weather-icons.min.css") }}" rel="stylesheet" type="text/css"/>  
+        <link href="{{ static_url("plugins/metrojs/MetroJs.min.css") }}" rel="stylesheet" type="text/css"/> 
+        <link href="{{ static_url("plugins/toastr/toastr.min.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("plugins/datatables/css/jquery.datatables.min.css") }}" rel="stylesheet" type="text/css"/> 
+        <link href="{{ static_url("plugins/datatables/css/jquery.datatables_themeroller.css") }}" rel="stylesheet" type="text/css"/>    
+        <link href="{{ static_url("plugins/summernote-master/summernote.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("plugins/x-editable/bootstrap3-editable/css/bootstrap-editable.css") }}" rel="stylesheet" type="text/css">
+        <link href="{{ static_url("plugins/chengshi/chengshi.css") }}" rel="stylesheet" type="text/css"/>    
+
+        <!-- Theme Styles -->
+        <link href="{{ static_url("css/modern.min.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("css/themes/green.css") }}" class="theme-color" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("css/custom.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("css/bootstrap-select.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("css/bootstrap-select.min.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("css/resource_channel.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("css/bootstrap-fileupload.css") }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ static_url("css/bootstrap-datetimepicker.css") }}" rel="stylesheet" type="text/css"/>
+
+        <script src="{{ static_url("plugins/3d-bold-navigation/js/modernizr.js") }}"></script>
+        <script src="{{ static_url("plugins/offcanvasmenueffects/js/snap.svg-min.js") }}"></script>
+
+
+
+        {% block css %}{% end %}
+
+        <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body class="page-header-fixed">
+        <div class="pace  pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+            <div class="pace-progress-inner"></div>
+        </div>
+        <div class="pace-activity"></div></div>
+        <div class="overlay"></div>
+        <main class="page-content content-wrap">
+            {% include "navbar.html" %}
+            {% include "sidebar.html" %}
+            {% block main %}{% end %}
+        </main>
+        <div class="cd-overlay"></div>
+        
+
+        <script src="{{ static_url("plugins/jquery/jquery-2.1.4.min.js") }}"></script>
+        <script src="{{ static_url("plugins/jquery-ui/jquery-ui.min.js") }}"></script>
+        <script src="{{ static_url("plugins/pace-master/pace.min.js") }}"></script>
+        <script src="{{ static_url("plugins/jquery-blockui/jquery.blockui.js") }}"></script>
+        <script src="{{ static_url("plugins/bootstrap/js/bootstrap.min.js") }}"></script>
+        <script src="{{ static_url("plugins/jquery-slimscroll/jquery.slimscroll.min.js") }}"></script>
+        <script src="{{ static_url("plugins/switchery/switchery.min.js") }}"></script>
+        <script src="{{ static_url("plugins/uniform/jquery.uniform.min.js") }}"></script>
+        
+        <script src="{{ static_url("plugins/waves/waves.min.js") }}"></script>
+        <script src="{{ static_url("plugins/3d-bold-navigation/js/main.js") }}"></script>
+        <script src="{{ static_url("plugins/waypoints/jquery.waypoints.min.js") }}"></script>
+        <script src="{{ static_url("plugins/summernote-master/summernote.min.js") }}"></script>
+        <script src="{{ static_url("plugins/jquery-counterup/jquery.counterup.min.js") }}"></script>
+        <script src="{{ static_url("plugins/toastr/toastr.min.js") }}"></script>
+        <script src="{{ static_url("plugins/metrojs/MetroJs.min.js") }}"></script>
+        <script src="{{ static_url("plugins/jquery-mockjax-master/jquery.mockjax.js") }}"></script>
+        <script src="{{ static_url("plugins/moment/moment.js") }}"></script>
+        <script src="{{ static_url("plugins/datatables/js/jquery.datatables.min.js") }}"></script>
+        <script src="{{ static_url("plugins/x-editable/bootstrap3-editable/js/bootstrap-editable.js") }}"></script>
+        <script src="{{ static_url("js/modern.min.js") }}"></script>
+        <script src="{{ static_url("js/bootstrap-select.js") }}"></script>
+        <script src="{{ static_url("js/bootstrap-select.min.js") }}"></script>
+        <script src="{{ static_url("js/bootstrap-fileupload.js") }}"></script>
+        <script src="{{ static_url("js/bootstrap-datetimepicker.js") }}"></script>
+        <script src="{{ static_url("js/bootstrap-datetimepicker.fr.js") }}"></script>  
+        <script src="{{ static_url("js/pay.js") }}"></script>
+
+        <script type="text/javascript">
+            $(".selectpicker").selectpicker({
+                        "noneSelectedText" : "请选择",
+                        "noneResultsText" : "没有找到",
+                        "countSelectedText" : "选择了{1}项中的{0}个"
+                    });
+            $('.fileupload').fileupload();
+            $('.form_time').datetimepicker({                                         
+                language:  'fr',
+                weekStart: 0,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 1,
+                maxView: 5,
+                forceParse: 0,
+                format:'yyyy-mm-dd hh:ii:ss'
+            });
+
+            $("#pwd_save").on("click", function(){
+                $("#pwdmodify").modal("hide");
+                var oldpwd = $("#oldpwd").val();
+                var firstnew = $("#firstnew").val();
+                var secondnew = $("#secondnew").val();
+                var user = $("#user").val();
+
+                $.post("/password/modify", {"user" : user, "oldpwd" : oldpwd, "firstnew" : firstnew, "secondnew" : secondnew}, function(res){
+                    toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 1000                        
+                    }
+
+                    if(res.status == "ok") {
+                        toastr.success("设置密码成功", "操作成功");
+                    } else{
+                        toastr.error(res.desc, "操作失败");
+                    }
+                });
+            });
+        </script>
+
+        {% block script %}{% end %}
+    </body>
+</html>

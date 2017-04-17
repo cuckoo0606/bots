@@ -1,0 +1,169 @@
+{% extends "share/master.html" %} 
+{% block title %}入金报表{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">
+        <h3>入金报表</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">资金流转</a></li>
+                <li class="active"><a href="/incomereport">入金报表</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/incomereport" method="get">
+                        <div class="form-group">
+                            <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="开始时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input id="endtime" name="endtime" class="form-control form_date starttime" type="text" value="{{ endtime }}" placeholder="结束时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="receiver" name="receiver" type="text" class="form-control" placeholder="输入下级用户id查询" value="{{ receiver }}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="subordinate" name="subordinate" type="text" class="form-control" placeholder="用户下级(用户id)" value="{{ subordinate }}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="statistics" name="statistics" class="selectpicker" data-width="100%">
+                                    <option value="-1" {{ statistics == "-1" and "selected=selected" or "" }}>关闭统计</option>
+                                    <option value="1" {{ statistics == "1" and "selected=selected" or "" }}>开启统计</option>
+                                </select>       
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                    <a id="export" href="#" class="btn btn-default">导出</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        {% if not show %}
+                            <h1>请点击查找按钮查询数据(最大时间范围支持3天)</h1>
+                        {% else %}
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap">
+                                                <span>入金用户</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>代理商</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>入金金额</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:15%;">
+                                                <span>入金时间</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for r in books %}
+                                        <tr class="unread">
+                                            <td>
+                                                {{ r.user_infos.userid }}【{{ r.user_infos.username }}】
+                                            </td>
+                                            <td>
+                                                {{ r.user_infos.parent_infos['userid'] }}【{{ r.user_infos.parent_infos['username'] }}】
+                                            </td>
+                                            <td>
+                                                {{ "fee" in r and round(r.fee, 2) or 0 }}
+                                            </td>
+                                            <td>
+                                                {{ r.created }}
+                                            </td>
+                                        </tr>
+                                        {% end %}
+                                        {% if income %}
+                                            <tr class="unread">
+                                                <td>
+                                                    合计
+                                                </td>
+                                                <td>
+                                                    次数:{{income["count"]}}
+                                                </td>
+                                                <td>
+                                                    金额:{{ round(income["amount"], 2) }}
+                                                </td>
+                                                <td>
+                                                    
+                                                </td>
+                                            </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                        {% end %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $(function(){
+        $('.form_date').datetimepicker({
+            language: 'fr',
+            weekStart: 0,
+            todayBtn: 1,
+            autoclose: true,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 0,
+            maxView: 5,
+            forceParse: 0,
+            format:'yyyy-mm-dd hh:ii',
+            minuteStep:1
+        });
+
+        // 导出
+        $("#export").on("click", function(){
+            start = $("#starttime").val();
+            end = $("#endtime").val();
+            receiver = $("#receiver").val();
+            subordinate = $("#subordinate").val();
+            status = $("#status option:selected").val();
+
+            var data = "starttime=" + start + "&endtime=" + end + "&receiver=" + receiver + "&subordinate=" + subordinate + "&status=" + status;
+            console.log(data);
+            $.download("/incomereport", data, "post")
+        })
+
+        jQuery.download = function(url, data, method){    // 获得url和data
+            if( url && data ){ 
+                // data 是 string 或者 array/object
+                data = typeof data == 'string' ? data : jQuery.param(data);        // 把参数组装成 form的  input
+                var inputs = '';
+                jQuery.each(data.split('&'), function(){ 
+                    var pair = this.split('=');
+                    inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />'; 
+                });        // request发送请求
+                jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+                .appendTo('body').submit().remove();
+            };
+        };
+    })
+</script>
+{% end %}

@@ -1,0 +1,81 @@
+{% extends "share/master.html" %}
+{% block title %}用户组编辑{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>用户管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/usergroup">用户组</a></li>
+                <li class="active">用户组编辑</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                         
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <input id="id" type="hidden" value="{{ usergroup and usergroup._id or "" }}">
+                            <div class="form-group">
+                                <label for="groupname" class="col-md-2 control-label">用户组名称：</label>
+                                <div class="col-md-3">
+                                    <input id="groupname" type="text" class="form-control" placeholder="用户组名称" value="{{ usergroup and usergroup.groupname or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="groupcode" class="col-md-2 control-label">用户组标识：</label>
+                                <div class="col-md-3">
+                                    <input id="groupcode" type="text" class="form-control" placeholder="用户组标识" value="{{ usergroup and usergroup.groupcode or "" }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_group" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Page Inner -->
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#summernote").summernote({ height:200 });
+    });
+
+    $("#save_group").click(function() {
+        id = $("#id").val();
+        groupname = $("#groupname").val();
+        groupcode = $("#groupcode").val();
+
+        $.post("/usergroup/edit", { "id" : id, "groupname" : groupname, "groupcode" : groupcode }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/usergroup"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script>
+{% end %}

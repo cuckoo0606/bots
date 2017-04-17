@@ -1,0 +1,126 @@
+{% extends "share/master.html" %}
+{% block title %}{{tcname}}报表{% end %}
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">
+        <h3>{{tcname}}报表</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">报表管理</a></li>
+                <li class="active"><a href="/position">{{tcname}}报表</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/positions/view" method="get">
+                        <div class="form-group">
+                            <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="开始时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input id="endtime" name="endtime" class="form-control form_date endtime" type="text" value="{{ endtime }}" placeholder="结束时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <input id="key" name="key" type="text" class="form-control input-search" value="{{ key }}"  placeholder="关键字" style="width:120px;">
+                                <span class="input-group-btn">
+                                    <input type="hidden" id="userid" name="userid" value="{{ userid }}"></input>
+                                    <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                    {# <a id="export" href="#" class="btn btn-default">导出</a> #}
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap" style="width:25%">
+                                                <span>用户</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:20%">
+                                                <span>金额</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:40%">
+                                                <span>备注</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:15%">
+                                                <span>日期</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for c in pos %}
+                                            <tr class="unread">
+                                                <td>
+                                                    {{ "user" in c and c.user.fetch("user").username or "" }}
+                                                </td>
+                                                <td>
+                                                    {{ "amount" in c and round(c.amount, 2) or 0 }}
+                                                </td>
+                                                <td>
+                                                    {{ "remark" in c and c.remark or "" }}
+                                                </td>
+                                                <td>
+                                                    {{ func_time(c.created, 8) }}
+                                                </td>
+                                            </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        maxView: 5,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii',
+        minuteStep:1
+    });
+
+    $("#export").on("click", function(){
+        start = $("#starttime").val();
+        end = $("#endtime").val();
+        key = $("#key").val();
+        userid = $("#userid").val();
+
+        var data = "starttime=" + start + "&endtime=" + end + "&key=" + key + "&userid=" + userid;
+        $.download("/position/export", data, "get")
+    })
+
+    jQuery.download = function(url, data, method){
+        if( url && data ){ 
+            data = typeof data == 'string' ? data : jQuery.param(data);
+            var inputs = '';
+            jQuery.each(data.split('&'), function(){ 
+                var pair = this.split('=');
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />'; 
+            });
+            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+        };
+    };
+</script>
+{% end %}

@@ -1,0 +1,309 @@
+{% extends "share/master.html" %} 
+{% block title %}资金确认{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">
+        <h3>资金确认</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">资金流转</a></li>
+                <li class="active"><a href="/confirm">资金确认</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/confirm" method="get">
+                        <div class="form-group">
+                            <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="开始时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input id="endtime" name="endtime" class="form-control form_date starttime" type="text" value="{{ endtime }}" placeholder="结束时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="receiver" name="receiver" type="text" class="form-control" placeholder="输入下级用户id查询" value="{{ receiver }}" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                    {% if current_user_role == "admin" %}
+                                        <a id="export" href="#" class="btn btn-default">导出</a>
+                                    {% end %}
+                                </span>
+                            </div>
+                        </div>
+                        <a id="batchconfrim" class="btn btn-success" type="submit" style="margin-left: 350px">批量确认</a>
+                        <a id="batchcancle" class="btn btn-danger" type="submit">批量拒绝</a>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        {% if not show %}
+                            <h1>请点击查找按钮查询数据(最大时间范围支持3天)</h1>
+                        {% else %}
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="1" style="width:5%">
+                                                <span><input id="selectall" type="checkbox" class="check-mail-all"></span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:15%">
+                                                <span>资金单号</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:18%">
+                                                <span>出金用户</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>出金金额</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>手续费</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:10%">
+                                                <span>申请状态</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:15%">
+                                                <span>申请时间</span>
+                                            </th>
+                                            <th nowrap="nowrap" style="width:20%">
+                                                <span>资金操作</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for r in outflow %}
+                                        <tr class="unread">
+                                            <td>
+                                                <span><input type="checkbox" class="checkbox-mail cb" data-id={{ r._id}} /></span>
+                                            </td>
+                                            <td>
+                                                <a href="/outflowview?outflowid={{ r._id }}">
+                                                    {{ "no" in r and r.no or "" }}
+                                                </a>
+                                            </td>
+                                            {% set user = 'user' in r and r.user.fetch('user') or '' %}
+                                            <td>
+                                                {% if user %}
+                                                    {{ user.userid }}【{{user.username}}】
+                                                {% else %}
+                                                    未知客户
+                                                {% end %}
+                                            </td>
+                                            <td>
+                                                {{ "amount" in r and round(r.amount, 2) or 0 }}
+                                            </td>
+                                            <td>
+                                                {{ 'handling_charge' in r and round(r.handling_charge, 2) or 0 }}
+                                            </td>
+                                            <td>
+                                                {% set kvs_status = {1 : "申请中", 2 : "已完成", 3 : "已取消", 4:"处理中", 5:"已失败"} %}
+                                                {{ 'status' in r and r.status in kvs_status and kvs_status[r.status] or "" }}  
+                                            </td>
+                                            <td>
+                                                {{ func_time(r.created, 8) }}
+                                            </td>
+                                            <td>
+                                                {% if 'status' in r and r.status == 1 %}
+                                                    {% if  current_user_role == "admin" %}
+                                                        <div style="float:left; margin-right:5px; height:20px">
+                                                            <a href="/confirm/detail?id={{r._id}}&starttime={{starttime}}&endtime={{endtime}}&receiver={{receiver}}&page={{page}}" class="btn btn-success">
+                                                            明细
+                                                            </a>
+                                                        </div>
+                                                        <div style="float:left; margin-right:5px; height:20px">
+                                                            <a href="#" onclick="pay_cancel('{{ r['_id'] }}');" class="btn btn-danger pay_cancel">
+                                                            拒绝
+                                                            </a>
+                                                        </div>
+                                                    {% end %}
+                                                {% end %}
+                                            </td>
+                                        </tr>
+                                        {% end %}
+                                        <input id="pay_confirm" type="hidden" value="" />
+                                        <input id="pay_cancel" type="hidden" value="" />
+                                        <input id="page" type="hidden" value="{{page}}" />
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                        {% end %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        maxView: 5,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii',
+        minuteStep:1
+    });
+
+    var href = "/confirm?starttime=" + "{{starttime}}" + "&endtime=" + "{{endtime}}" + "&receiver=" + "{{receiver}}" + "&page=" + "{{page}}";
+
+    function pay_cancel(id) {
+        console.log(id)
+        $("#pay_cancel").val("");
+        $("#pay_cancel").val(id);
+    };
+
+    $(".pay_cancel").on("click", function(){
+        var id = $("#pay_cancel").val();
+
+        $.post("/cancel/pay", { "id" : id }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+                setTimeout(function() {
+                    window.location.href = href
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    })
+
+    // 导出
+    $("#export").on("click", function(){
+        start = $("#starttime").val();
+        end = $("#endtime").val();
+        receiver = $("#receiver").val();
+
+        var data = "starttime=" + start + "&endtime=" + end + "&receiver=" + receiver;
+
+        $.download("/confirm", data, "post")
+    })
+
+    jQuery.download = function(url, data, method){
+        if( url && data ){
+            data = typeof data == 'string' ? data : jQuery.param(data);
+            var inputs = '';
+            jQuery.each(data.split('&'), function(){ 
+                var pair = this.split('=');
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />'; 
+            });
+            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+        };
+    };
+
+    // 全选
+    $("#selectall").change(function() {
+        src = this;
+        $(".cb").each(function(i, item) {
+            $(item).prop('checked', src.checked)
+            console.dir(item)
+        });
+        $.uniform.update()
+    });
+
+    // 批量确认
+    $("#batchconfrim").on("click", function() {
+        var ids = new Array();
+        $("table>tbody .checker .checked input").each(function(index, e) {
+            ids.push($(e).attr("data-id"));
+        });
+
+        $.post("/batchconfrim", { "id" : ids.toString() }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+                setTimeout(function() {
+                    window.location.href = href
+                }, 1000);
+            }else if(res.status == "warning"){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 10000
+                };
+
+                toastr.warning(res.desc, '异常, 请复制记录');
+                setTimeout(function() {
+                    window.location.href = href
+                }, 10000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+
+    // 批量取消
+    $("#batchcancle").on("click", function() {
+        var ids = new Array();
+        $("table>tbody .checker .checked input").each(function(index, e) {
+            ids.push($(e).attr("data-id"));
+        });
+
+        $.post("/batchcancle", { "id" : ids.toString() }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+                setTimeout(function() {
+                    window.location.href = href
+                }, 1000);
+            }else if(res.status == "warning"){
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 10000
+                };
+
+                toastr.warning(res.desc, '异常, 请复制记录');
+                setTimeout(function() {
+                    window.location.href = href
+                }, 10000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script>
+{% end %}

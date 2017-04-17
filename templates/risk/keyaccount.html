@@ -1,0 +1,208 @@
+{% extends "share/master.html" %} 
+{% block title %}重点客户{% end %}
+{% block head %}
+{% if autocheck == "1" %}
+    <meta http-equiv="refresh" content="10">
+{% end %}
+{% end %}
+
+{% block main %}
+{% set modes = { 0 : "短期期权", 1 : "长期", 2 : "60秒", 3 : "一触即付" } %}
+{% set directions = { 1 : "买涨", 0 : "买跌", 2 : "未知", 4 : "还是未知" } %}
+
+<div class="page-inner">
+    <div class="page-title">
+        <h3>重点客户</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">报表管理</a></li>
+                <li class="active"><a href="/keyaccount">重点客户</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/keyaccount" method="get">
+                    <div class="form-group">
+                            <div class="input-group">
+                                <select class="selectpicker" multiple data-selected-text-format="count > 4" data-live-search="true" id="receiver" name="receiver" data-width="100%" data-actions-box="true" title="用户" >
+                                    {% for i in users %}
+                                        <option data-icon="glyphicon glyphicon-user" value="{{ i._id }}" {{ str(i._id) in receiver and "selected=selected" or "" }}>{{ i.username }}【{{i.userid}}】</option>
+                                    {% end %}
+                                </select>       
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="mode" name="mode" class="selectpicker" data-width="100%">
+                                    <option value="4" {{ mode == "4" and "selected=selected" or "" }}>模式</option>
+                                    <option value="0" {{ mode == "0" and "selected=selected" or "" }}>短期期权</option>
+                                    <option value="1" {{ mode == "1" and "selected=selected" or "" }}>长期</option>
+                                    <option value="2" {{ mode == "2" and "selected=selected" or "" }}>60秒</option>
+                                    <option value="3" {{ mode == "3" and "selected=selected" or "" }}>一触即付</option>
+                                </select>       
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="direction" name="direction" class="selectpicker" data-width="100%">
+                                    <option value="2" {{ direction == "2" and "selected=selected" or "" }}>方向</option>
+                                    <option value="1" {{ direction == "1" and "selected=selected" or "" }}>买涨</option>
+                                    <option value="0" {{ direction == "0" and "selected=selected" or "" }}>买跌</option>
+                                </select>       
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="usertype" name="usertype" class="selectpicker" data-width="100%">
+                                    <option value="0" {{ usertype == "0" and "selected=selected" or "" }}>用户类型</option>
+                                    <option value="1" {{ usertype == "1" and "selected=selected" or "" }}>真实用户</option>
+                                    <option value="2" {{ usertype == "2" and "selected=selected" or "" }}>模拟账户</option>
+                                </select>       
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="开始时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input id="endtime" name="endtime" class="form-control form_date starttime" type="text" value="{{ endtime }}" placeholder="结束时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <input id="minimum" name="minimum" type="text" class="form-control input-search" value="{{ minimum }}"  placeholder="最小值" style="width:80px;">
+                                <input id="maximum" name="maximum" type="text" class="form-control input-search" value="{{ maximum }}"  placeholder="最大值" style="width:80px;">
+                                <input id="key" name="key" type="text" class="form-control input-search" value="{{ key }}"  placeholder="关键字" style="width:120px;">
+                                <span class="input-group-btn">
+                                    <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                    {# <a id="export" href="#" class="btn btn-default">导出</a> #}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <select id="autocheck" name="autocheck" class="selectpicker" data-width="100%">
+                                    <option value="0" {{ autocheck == "0" and "selected=selected" or "" }}>关闭查询</option>
+                                    <option value="1" {{ autocheck == "1" and "selected=selected" or "" }}>自动查询</option>
+                                </select>       
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap">
+                                                <span>编号</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>用户</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>代理商</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>资产</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>投入金额</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>方向</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>模式</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>买入价</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>下单时间</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>到期时间</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for r in warehouse %}
+                                        <tr class="unread">
+                                            <td>
+                                                {{ r.no }}
+                                            </td>
+                                            <td>
+                                                {{ r.user.username }}
+                                            </td>
+                                            <td>
+                                                {{ "parent" in r.user and r.user.parent and r.user.parent.fetch().username or "管理员" }}
+                                            </td>
+                                            <td>
+                                                ￥{{ r.assets.name }}
+                                            </td>
+                                            <td>
+                                                {{ round(r.money, 2) }}
+                                            </td>
+                                            <td>
+                                                {{ directions[r.direction] }}
+                                            </td>
+                                            <td>
+                                                {{ modes[r.mode] }}
+                                            </td>
+                                            <td>
+                                                {{ 'buyQoute' in r and r.buyQoute or '' }}
+                                            </td>
+                                            {% set o = datetime.timedelta(hours=-8) %}
+                                            <td>
+                                                {{ (r.created - o).strftime("%Y-%m-%d %H:%M:%S") }}
+                                            </td>
+                                            <td>
+                                                {{ (r.expired - o).strftime("%Y-%m-%d %H:%M:%S") }}
+                                            </td>
+                                        </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        maxView: 5,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii',
+        minuteStep:1
+    });
+
+    function myrefresh() { 
+        window.location.reload(); 
+    }
+    $("#kaiqi").click(function() {
+        setInterval(myrefresh,5000);
+    })
+    
+</script>
+{% end %}

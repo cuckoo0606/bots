@@ -1,0 +1,200 @@
+{% extends "share/master.html" %}
+{% block title %}资金报表{% end %}
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">
+        <h3>资金报表</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">报表管理</a></li>
+                <li class="active"><a href="/booksreport">资金报表</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="form-inline" style="margin-bottom:20px">
+                    <form action="/booksreport" method="get">
+                        <div class="form-group">
+                            <input id="starttime" name="starttime" class="form-control form_date starttime" type="text" value="{{ starttime }}" placeholder="开始时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <input id="endtime" name="endtime" class="form-control form_date starttime" type="text" value="{{ endtime }}" placeholder="结束时间" style="width:130px;background-color:white;" readonly>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="receiver" name="receiver" type="text" class="form-control" placeholder="输入下级用户id查询" value="{{ receiver }}" />    
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="subordinate" name="subordinate" type="text" class="form-control" placeholder="用户下级(用户id)" value="{{ subordinate }}" />      
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="minprice" name="minprice" type="text" value="{{ minprice }}" style="height:34px; width:80px" placeholder="最小值" /></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="maxprice" name="maxprice" type="text" value="{{ maxprice }}" style="height:34px; width:80px" placeholder="最大值" /></input>
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    {# <input type="hidden" id="userid" name="userid" value="{{ userid }}"></input> #}
+                                    <button id="key_save" class="btn btn-success" type="submit">查找</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th nowrap="nowrap">
+                                                <span>用户</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>代理商</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>入金总额</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>入金次数</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>出金总额</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>出金次数</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>佣金</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>{{tcname}}</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>余额</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>净入金</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>当日变动</span>
+                                            </th>
+                                            <th nowrap="nowrap">
+                                                <span>当日盈亏</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in books %}
+                                            <tr class="unread">
+                                                {% set user = 'user' in i and i.user.fetch('user') or '' %}
+                                                <td>
+                                                    <a href="/personal?userid={{i.user.fetch('user').userid}}">
+                                                    {% if user %}
+                                                        {{ user.userid }}【{{user.username}}】
+                                                    {% else %}
+                                                        未知客户
+                                                    {% end %}
+                                                </td>
+                                                <td>
+                                                    {{ i.agent }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i.in_amount, 2) }}
+                                                </td>
+                                                <td>
+                                                    {{ i.in_count }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i.pay_amount, 2) }}
+                                                </td>
+                                                <td>
+                                                    {{ i.pay_count }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i.commission, 2) }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i.position, 2) }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i.user.fetch("user").amount, 2) }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i.netincome, 2) }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i.y_amount, 2) }}
+                                                </td>
+                                                <td>
+                                                    {{ round(i.today_t_l, 2) }}
+                                                </td>
+                                            </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                {% include "share/pagination.html" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block script %}
+<script type="text/javascript">
+
+
+    $('.form_date').datetimepicker({                                         
+        language: 'fr',
+        weekStart: 0,
+        todayBtn: 1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        maxView: 5,
+        forceParse: 0,
+        format:'yyyy-mm-dd hh:ii',
+        minuteStep:1
+    });
+
+    $("#export").on("click", function(){
+        start = $("#starttime").val();
+        end = $("#endtime").val();
+        key = $("#key").val();
+        userid = $("#userid").val();
+
+        var data = "starttime=" + start + "&endtime=" + end + "&key=" + key + "&userid=" + userid;
+        $.download("/position/export", data, "get")
+    })
+
+    jQuery.download = function(url, data, method){
+        if( url && data ){ 
+            data = typeof data == 'string' ? data : jQuery.param(data);
+            var inputs = '';
+            jQuery.each(data.split('&'), function(){ 
+                var pair = this.split('=');
+                inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'" />'; 
+            });
+            jQuery('<form action="'+ url +'" method="'+ (method||'post') +'">'+inputs+'</form>')
+            .appendTo('body').submit().remove();
+        };
+    };
+</script>
+{% end %}

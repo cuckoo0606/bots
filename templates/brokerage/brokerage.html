@@ -1,0 +1,104 @@
+{% extends "share/master.html" %}
+{% block title %}销量报表{% end %}                   
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                                                                                                                                      
+        <h3>报表管理</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="#">报表管理</a></li>
+                <li class="active">佣金报表</li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">                                                                                                                                      
+        <div class="row m-t-md">
+            <div class="col-md-12">
+                <div class="row mailbox-header">
+                    <div class="pull-left" style="padding:0 0 0 15px">
+                        <a href="/depositreportedit" class="btn btn-success">删除</a>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-xs-8 pull-right">
+                        <form action="#" method="GET">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control input-search" placeholder="查找">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-success" type="button"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div><!-- Input Group -->
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mailbox-content panel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <div id="example_wrapper" class="dataTables_wrapper">
+                                <table id="example" class="table dataTable display">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="1" style="width:20px;">
+                                                <span><input type="checkbox" class="check-mail-all"></span>
+                                            </th>
+                                            <th colspan="1">
+                                                <span>利润</span>
+                                            </th>
+                                            <th colspan="1">
+                                                <span>业务范围</span>
+                                            </th>
+                                            <th colspan="1">
+                                                <span>充值套餐</span>
+                                            </th>
+                                            <th colspan="1">
+                                                <span>单价</span>
+                                            </th>
+                                            <th colspan="1">
+                                                <span>充值时间</span>
+                                            </th>
+                                            <th colspan="1">
+                                                <span>折扣率</span>
+                                            </th>
+                                            <th colspan="1">
+                                                <span>所属代理商</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="unread">
+                                            <td>
+                                                <span><input type="checkbox" class="checkbox-mail"></span>
+                                            </td>
+                                            <td>
+                                                cuckoo  
+                                            </td>
+                                            <td>
+                                                100
+                                            </td>
+                                            <td>
+                                                2016-1-3 10:22
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="dataTables_info" id="example_info" role="status" aria-live="polite">显示 1 到 10 的 57 项</div>
+                                <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+                                    <a class="paginate_button previous disabled" aria-controls="example" data-dt-idx="0" tabindex="0" id="example_previous">
+                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                    </a>
+                                    <span>
+                                        <a class="paginate_button current" aria-controls="example" data-dt-idx="1" tabindex="0">1</a>
+                                        <a class="paginate_button " aria-controls="example" data-dt-idx="2" tabindex="0">2</a>
+                                        <a class="paginate_button " aria-controls="example" data-dt-idx="3" tabindex="0">3</a>
+                                        <a class="paginate_button " aria-controls="example" data-dt-idx="4" tabindex="0">4</a>
+                                        <a class="paginate_button " aria-controls="example" data-dt-idx="5" tabindex="0">5</a>
+                                        <a class="paginate_button " aria-controls="example" data-dt-idx="6" tabindex="0">6</a>
+                                    </span>
+                                    <a class="paginate_button next" aria-controls="example" data-dt-idx="7" tabindex="0" id="example_next">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- Page Inner -->
+{% end %}

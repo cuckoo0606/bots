@@ -1,0 +1,87 @@
+{% extends "share/master.html" %}
+{% block title %}入金{% end %}
+
+{% block main %}
+<div class="page-inner">
+    <div class="page-title">                
+        <h3>入金</h3>
+    </div>
+    <div id="main-wrapper">                         
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="receiver" class="col-md-2 control-label">接收人：</label>
+                                <div class="col-md-2">
+                                    <select class="selectpicker" data-selected-text-format="count > 4" data-live-search="true" id="receiver" data-width="100%" data-actions-box="true">
+                                        <optgroup label="代理商">
+                                        {% for i in [ u for u in users if u.userrole.fetch().roleid == "agent" ] %}
+                                            <option data-icon="glyphicon glyphicon-user" value="{{ i._id }}" }}>{{ i.username }}</option>
+                                        {% end %}
+                                        </optgroup>
+                                        <optgroup label="会员">
+                                        {% for i in [ u for u in users if u.userrole.fetch().roleid == "member" ] %}
+                                            <option data-icon="glyphicon glyphicon-user" value="{{ i._id }}" }}>{{ i.username }}</option>
+                                        {% end %}
+                                        </optgroup>
+                                    </select>       
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount" class="col-md-2 control-label">充值金额：</label>
+                                <div class="col-md-2">
+                                    <input id="amount" type="text" class="form-control" placeholder="金额" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <a id="save_recharge" href="#" class="btn btn-success" style="width:100px;margin-right:5px;">保存</a>
+                                    <button type="button" class="btn btn-default" style="width:80px;" onClick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $("#save_recharge").click(function() {
+        amount = $("#amount").val();
+        
+        receiver = $("#receiver option:selected").val();
+        // receiver = []
+        // $("#receiver option:selected").each(function(index, e) {
+        //     receiver[receiver.length] = $(e).val();
+        // });
+
+        console.log(receiver)
+        // $.post("/income", { "amount" : amount, "receiver" : receiver.join(",") }, function(res){
+        $.post("/income", { "amount" : amount, "receiver" : receiver }, function(res){
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'fadeIn',
+                hideMethod: 'fadeOut',
+                timeOut: 1000
+            };
+
+            if(res.status === "ok") {
+                toastr.success('操作成功!', '操作成功');
+
+                setTimeout(function() {
+                    window.location.href = "/incomereport"
+                }, 1000);
+            } else {
+                toastr.error(res.desc, '操作失败');
+            }
+        });
+    });
+</script>
+{% end %}
