@@ -1,2 +1,2 @@
 # bots
-dirst test
+This is a test project.
