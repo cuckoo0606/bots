@@ -42,14 +42,11 @@ permanent_session_lifetime = 30000
 # 客户名
 CUSTOMER = "TEST"
 # 项目名(显示在左上角, 默认是'微交易')
-PROJECT_NAME = '微交易'
+PROJECT_NAME = 'text'
 # 代理模式(1:旧模式, 2:新模式, 默认是新模式)
 AGENT_MODE = 2
 # LOGO(登陆界面图片, icon为默认. 如客户许修改, 必须交图片给我)
 PRO_ICON = "icon"
-
-# 推荐码地址(将'localhost'换成ip地址)
-HYPERLINK = "http://localhost:8866/"
 
 #
 # 佣金和红利设置:
